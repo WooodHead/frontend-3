@@ -1,0 +1,46 @@
+<script setup lang="ts">
+import type { UnitID } from '@project-chiral/unit-system'
+import { HEADER_HEIGHT, UNIT_WIDTH } from '../../../const'
+import { useStore } from '../../../store'
+
+const { id, left, right } = defineProps<{
+  id: UnitID
+  left?: boolean
+  right?: boolean
+}>()
+
+const store = useStore()
+const offset = store.unitOffset(id)
+
+const target = ref<HTMLElement | null>(null)
+useIntersectionObserver(
+  target,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      if (left) { store.loadLeft(4) }
+      if (right) { store.loadRight(4) }
+    }
+  },
+  {
+    root: store.viewPort,
+    threshold: [0, 1],
+  },
+)
+</script>
+
+<template>
+  <div
+    ref="target"
+    :style="{
+      left: `${offset}px`,
+      width: `${id.children.length * UNIT_WIDTH}px`,
+      height: `${HEADER_HEIGHT / 2}px`,
+    }"
+    absolute center
+    bg="white dark:gray-600"
+    uno-border="r-2 b-2 gray-200"
+    select-none z-50
+  >
+    {{ id.toString() }}
+  </div>
+</template>

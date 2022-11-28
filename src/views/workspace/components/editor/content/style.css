@@ -1,0 +1,19 @@
+.ProseMirror {
+    height: 100%;
+}
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #adb5bd;
+    pointer-events: none;
+    height: 0;
+}
+
+.ProseMirror p {
+    font-size: 18px;
+}
+
+.ProseMirror h1 {
+    font-size: 28px;
+    font-weight: bold;
+}

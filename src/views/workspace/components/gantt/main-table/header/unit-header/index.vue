@@ -1,0 +1,17 @@
+<script setup lang="ts">
+import { UnitID } from '@project-chiral/unit-system'
+import { useStore } from '../../../store'
+import Unit from './unit.vue'
+
+const { unitQueue } = $(useStore())
+</script>
+
+<template>
+  <Unit
+    v-for="(unit, i) of unitQueue"
+    :id="unit as UnitID"
+    :key="unit.uid"
+    :left="i === 0"
+    :right="i === unitQueue.length - 1"
+  />
+</template>
