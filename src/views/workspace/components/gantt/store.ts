@@ -17,6 +17,8 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     unitQueue: [] as UnitID[], // 单位队列，用于渲染
 
+    visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位可见时，可见面积更大的被认为是可见单位）
+
     eventQueue: [] as UnitID[], // 事件队列，用于渲染
 
     _offset: 0, // 主视图的偏移量

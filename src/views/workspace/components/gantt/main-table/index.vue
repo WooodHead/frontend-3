@@ -5,7 +5,8 @@ import Body from './body.vue'
 import useDraggable from '@/utils/useDraggable'
 
 const store = useStore()
-let offset = $(store.offset)
+let { offset } = $(store)
+const viewPortRef = toRef(store, 'viewPort')
 
 const tableRef = $ref<HTMLElement | null>(null)
 const { x, isDragging } = $(useDraggable($$(tableRef), {
@@ -20,7 +21,7 @@ const handleWheel = (e: WheelEvent) => {
 
 <template>
   <div grow>
-    <div relative h-99999px>
+    <div ref="viewPortRef" relative h-99999px>
       <div
         ref="tableRef"
         :style="{ transform: `translateX(${offset + x}px)` }"

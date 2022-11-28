@@ -7,6 +7,8 @@ import MainTable from './main-table/index.vue'
 import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
 import type { IGanttData } from './types'
+import query from './query'
+import { setOrigin } from '@/api/gantt'
 
 interface GanttProps {
   props: ComponentProps
@@ -21,6 +23,10 @@ const store = registerStore(id)
 onMounted(() => {
   if (data === undefined) { store.init(UnitID.fromDayjs('2022-11-20', 'month')) }
   else { store.initWithData(data) }
+})
+
+onUnmounted(async () => {
+  if (store.visibleUnit) { await setOrigin(store.visibleUnit.serialize()) }
 })
 </script>
 

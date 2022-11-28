@@ -13,6 +13,8 @@ const store = useStore()
 const offset = store.unitOffset(id)
 
 const target = ref<HTMLElement | null>(null)
+
+// 加载下一个单位
 useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
@@ -23,6 +25,19 @@ useIntersectionObserver(
   },
   {
     root: store.viewPort,
+    threshold: [0, 1],
+  },
+)
+
+// 检测当前单位是否可见
+useIntersectionObserver(
+  target,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) { store.visibleUnit = id }
+  },
+  {
+    root: store.viewPort,
+    rootMargin: '0px -50% 0px -50%',
     threshold: [0, 1],
   },
 )

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { HEADER_HEIGHT } from '../const'
+import { useStore } from '../store'
 import EventItems from './event-items/index.vue'
 
-const title = $ref<string>('114514')
+const store = useStore()
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const title = $ref<string>('114514')
       center flex-shrink-0
       uno-border="b-2 gray-200"
     >
-      {{ title }}
+      {{ store.visibleUnit?.toString() }}
     </div>
     <EventItems />
   </div>
