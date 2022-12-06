@@ -14,11 +14,9 @@ import './main.css'
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
 import 'vuetify/styles'
-import '@vue-flow/core/dist/style.css'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 const app = createApp(App)
-  .use(VueQueryPlugin, queryConfig)
+  .use(VueQueryPlugin, { queryClientConfig: queryConfig })
   .use(Vuetify)
   .use(createPinia())
   .use(createRouter({

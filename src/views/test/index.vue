@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { Motion, Presence } from '@motionone/vue'
+import { useStore } from './store'
 import TestComponent from './testComponent.vue'
-import message from '@/components/message'
 
-const props = $ref([
-  { id: '1', position: [1, 2, 3, 4] },
-  { id: '2', position: [1, 2, 3, 4] },
-])
+const store = useStore()
 
 const handleClick = () => {
-  message.success('1')
+  store.push()
+  console.log(store.array)
+}
+
+const [first] = $(store.array)
+
+const handleChange = () => {
+  first.fuck = 2
 }
 </script>
 
 <template>
-  <div relative>
-    <v-btn color="primary" @click="handleClick">
-      更改
-    </v-btn>
-    <!-- <TestComponent
-      v-for="info in props" :key="info.id"
-      :position="info.position"
-    /> -->
-  </div>
+  <v-btn color="primary" @click="handleClick">
+    添加
+  </v-btn>
+  <v-btn color="primary" @click="handleChange">
+    改变
+  </v-btn>
+  {{ first }}
 </template>

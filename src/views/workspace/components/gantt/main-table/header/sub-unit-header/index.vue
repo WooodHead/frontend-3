@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-system'
 import { useStore } from '../../../store'
-import { HEADER_HEIGHT } from '../../../const'
+import { HEADER_HEIGHT, UNIT_WIDTH } from '../../../const'
 import Unit from './unit.vue'
 
 const store = useStore()
@@ -12,7 +11,7 @@ const store = useStore()
     v-for="id in store.unitQueue"
     :key="id.uid"
     :style="{
-      left: `${store.unitOffset(id)}px`,
+      left: `${store.subUnitOffset(id) * UNIT_WIDTH}px`,
       top: `${HEADER_HEIGHT / 2}px`,
     }"
     absolute row bg-white

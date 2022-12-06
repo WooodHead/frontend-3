@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <div></div>
+  <div grow></div>
 </template>

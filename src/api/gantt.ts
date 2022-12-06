@@ -1,12 +1,12 @@
-import { get, post } from './query'
-import type { IEvent } from './type'
+import { createQueryKeys } from '@lukemorales/query-key-factory'
+import api from './api'
 
-export const getOrigin = () => get<string>('/event/origin')
+export const setOrigin = api.workspace.setGanttOrigin
 
-export const setOrigin = (origin: string) => post('/event/origin', { origin })
-
-export const getAllEvents = () => get<IEvent[]>('/event')
-
-export const getEvents = (start: string) => get<IEvent[]>('/event', { start })
-
-export const getEventsRange = (start: string, end: string) => get<IEvent[]>('/event', { start, end })
+export default createQueryKeys('gantt', {
+  origin: {
+    queryKey: null,
+    // TODO queryFn: api.workspace.getGanttOrigin,
+    queryFn: () => Promise.resolve('32022_09'),
+  },
+})

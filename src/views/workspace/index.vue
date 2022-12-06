@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import '@unocss/reset/tailwind.css'
 import SideBar from './side-bar/index.vue'
-import Body from './body/index.vue'
+import Body from './body.vue'
+
+onMounted(() => {
+  const route = useRoute()
+  const { id } = route.params
+  sessionStorage.setItem('project-id', `${id}`)
+})
+onUnmounted(() => {
+  sessionStorage.removeItem('project-id')
+})
 </script>
 
 <template>

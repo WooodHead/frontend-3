@@ -1,9 +1,9 @@
 export enum IPositionState { Corner, Vertical, Horizontal, Full }
 export type IPosition = [number, number, number, number]
 export type IPositionID = 'lt' | 'rt' | 'lb' | 'rb' | 'top' | 'bottom' | 'left' | 'right' | 'full'
+export type ILayout = { id: string; position: IPosition; positionID: IPositionID }[]
 
 enum Position { LT, RT, LB, RB }
-
 const LT = Position.LT
 const RT = Position.RT
 const LB = Position.LB
@@ -34,10 +34,12 @@ const POSITON: { [id: string]: IPosition } = {
 }
 
 export class LayoutStatus {
+  id: IPositionID
   occupy: Set<Position>
   state: IPositionState
 
-  constructor(id: string, occupy: Position[]) {
+  constructor(id: IPositionID) {
+    this.id = id
     switch (id) {
       case 'lt':
       case 'rt':
@@ -60,7 +62,7 @@ export class LayoutStatus {
         throw new Error(`Invalid position id: ${id}`)
     }
 
-    this.occupy = new Set(occupy)
+    this.occupy = new Set(TABLE[id])
   }
 
   intersectionWith(other: LayoutStatus) {
@@ -72,18 +74,30 @@ export class LayoutStatus {
 }
 
 export class Layout {
-  private _components: {
+  _components: {
     id: string
     position: IPosition
     status: LayoutStatus
   }[] = []
+
+  static deserialize(data: ILayout) {
+    const layout = new Layout()
+    layout._components = data.map(({ id, position, positionID }) => ({
+      id, position, status: new LayoutStatus(positionID),
+    }))
+    return layout
+  }
+
+  serialize(): ILayout {
+    return this._components.map(({ id, position, status: { id: positionID } }) => ({ id, position, positionID }))
+  }
 
   get components() {
     return this._components.map(({ id, position, status: { state } }) => ({ id, position, state }))
   }
 
   insert(handlerID: string, dropID: IPositionID) {
-    const status = new LayoutStatus(dropID, TABLE[dropID])
+    const status = new LayoutStatus(dropID)
     const position = POSITON[dropID]
 
     this._components = this._components

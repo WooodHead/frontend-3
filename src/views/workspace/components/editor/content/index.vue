@@ -3,9 +3,9 @@ import './style.css'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/vue-3'
+import BubbleMenu from './bubble-menu.vue'
 
 const editor = useEditor({
-  content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
   extensions: [
     StarterKit,
     Placeholder.configure({
@@ -23,6 +23,7 @@ const editor = useEditor({
 <template>
   <div grow p-4 overflow-y-scroll>
     <div column h-full>
+      <BubbleMenu :editor="editor" />
       <EditorContent grow :editor="editor" />
     </div>
   </div>

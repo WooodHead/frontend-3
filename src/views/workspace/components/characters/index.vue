@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ComponentProps } from '../index.vue'
 import SideTable from './side-table/index.vue'
+import Body from './body/index.vue'
 import ComponentHeader from '@/components/component-header.vue'
 
 interface CharacterProps {
@@ -14,6 +15,7 @@ const { id, state, position, onClose } = props
 <template>
   <div
     component-light dark:component-dark
+    column overflow-hidden
   >
     <ComponentHeader>
       <template #left>
@@ -28,6 +30,9 @@ const { id, state, position, onClose } = props
         </div>
       </template>
     </ComponentHeader>
-    <SideTable />
+    <div row grow>
+      <SideTable />
+      <Body />
+    </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 const { position } = defineProps<{ position: number[] }>()
 
 const [a, b] = $(position)
+
 watchEffect(() => {
   console.log(a, b)
 })

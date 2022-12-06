@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { UnitID } from '@project-chiral/unit-system'
+import { UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 import Unit from './unit.vue'
 const { id } = defineProps<{
@@ -7,13 +8,12 @@ const { id } = defineProps<{
 }>()
 
 const store = useStore()
-const offset = store.unitOffset(id)
+const offset = $computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
 const subUnits = id.children
 </script>
 
 <template>
   <div
-    :draggable="false"
     :style="{ left: `${offset}px` }"
     absolute row z-0
   >

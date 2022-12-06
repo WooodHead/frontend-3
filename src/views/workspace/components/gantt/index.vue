@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { UnitID } from '@project-chiral/unit-system'
 import type { ComponentProps } from '../index.vue'
 import SideTable from './side-table/index.vue'
@@ -7,22 +7,26 @@ import MainTable from './main-table/index.vue'
 import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
 import type { IGanttData } from './types'
-import query from './query'
-import { setOrigin } from '@/api/gantt'
+import Tools from './tools/index.vue'
+import ganttQuery, { setOrigin } from '@/api/gantt'
+import Status from '@/components/status.vue'
 
 interface GanttProps {
   props: ComponentProps
   data?: IGanttData
 }
-
 const { props, data } = defineProps<GanttProps>()
 const { id, state, position, onClose } = $(props)
 
 const store = registerStore(id)
 
-onMounted(() => {
-  if (data === undefined) { store.init(UnitID.fromDayjs('2022-11-20', 'month')) }
-  else { store.initWithData(data) }
+const { isError, isLoading, isSuccess } = $(useQuery({
+  ...ganttQuery.origin,
+  enabled: data === undefined,
+  onSuccess: id => { store.init(UnitID.deserialize(id)) },
+}))
+watch($$(data), data => {
+  if (data !== undefined) { store.initWithData(data) }
 })
 
 onUnmounted(async () => {
@@ -49,9 +53,13 @@ onUnmounted(async () => {
       </ComponentHeader>
       <div relative row h-0 grow>
         <SideTable />
-        <MainTable />
+        <MainTable v-if="isSuccess" />
+        <div v-else grow>
+          <Status :error="isError" :loading="isLoading" />
+        </div>
+        <Tools />
       </div>
     </div>
-    <TimeBar v-if="store.fullMode" />
+    <TimeBar v-if="store.fullMode" :id="id" />
   </div>
 </template>

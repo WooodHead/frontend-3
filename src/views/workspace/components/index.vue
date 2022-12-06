@@ -3,7 +3,7 @@ import type { IPosition, IPositionState } from '../layout'
 
 import Gantt from './gantt/index.vue'
 import Editor from './editor/index.vue'
-import Timeline from './timeline/index.vue'
+import Graph from './graph/index.vue'
 import Characters from './characters/index.vue'
 
 export interface ComponentProps {
@@ -14,10 +14,10 @@ export interface ComponentProps {
 }
 
 const props = defineProps<ComponentProps>()
-const { position, id } = $(props)
+const { position, id, state, onClose } = $(props)
 
 // TODO 为什么数组解构后失去响应性
-const [colStart, colEnd, rowStart, rowEnd] = $(position)
+// const [colStart, colEnd, rowStart, rowEnd] = $(props.position)
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const [colStart, colEnd, rowStart, rowEnd] = $(position)
   >
     <Gantt v-if="props.id === 'gantt'" :props="props" />
     <Editor v-else-if="props.id === 'editor'" :props="props" />
-    <Timeline v-else-if="props.id === 'timeline'" :props="props" />
+    <Graph v-else-if="props.id === 'graph'" :props="props" />
     <Characters v-else-if="props.id === 'characters'" :props="props" />
   </div>
 </template>

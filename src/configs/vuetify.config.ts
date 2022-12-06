@@ -27,7 +27,7 @@ export default createVuetify({
   },
   defaults: {
     global: {
-      flat: true,
+      // flat: true,
     },
     VBtn: {
       minWidth: 0,

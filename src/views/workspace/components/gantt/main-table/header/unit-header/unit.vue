@@ -10,7 +10,8 @@ const { id, left, right } = defineProps<{
 }>()
 
 const store = useStore()
-const offset = store.unitOffset(id)
+const offset = $computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
+const { viewPort } = storeToRefs(store)
 
 const target = ref<HTMLElement | null>(null)
 
@@ -24,7 +25,7 @@ useIntersectionObserver(
     }
   },
   {
-    root: store.viewPort,
+    root: viewPort,
     threshold: [0, 1],
   },
 )
@@ -36,7 +37,7 @@ useIntersectionObserver(
     if (isIntersecting) { store.visibleUnit = id }
   },
   {
-    root: store.viewPort,
+    root: viewPort,
     rootMargin: '0px -50% 0px -50%',
     threshold: [0, 1],
   },
@@ -46,6 +47,7 @@ useIntersectionObserver(
 <template>
   <div
     ref="target"
+    :title="id.toString()"
     :style="{
       left: `${offset}px`,
       width: `${id.children.length * UNIT_WIDTH}px`,

@@ -4,17 +4,10 @@ import presetRemToPx from '@unocss/preset-rem-to-px'
 export default defineConfig({
   preflights: [
   ],
+  rules: [],
   shortcuts: [
     {
       full: 'w-full h-full',
-    },
-    {
-      'component-light': 'full bg-white rounded-lg shadow-lg',
-      'component-dark': 'full bg-gray-800 rounded-lg shadow-lg',
-    },
-    {
-      'button-light': 'transition-colors duration-200 bg-white hover:(bg-gray-100) active:bg-gray-200 select-none cursor-pointer',
-      'button-dark': 'transition-colors duration-200 bg-gray-400 hover:bg-gray-500 active:bg-gray-600 text-gray-100 select-none cursor-pointer',
     },
     {
       'column': 'flex flex-col',
@@ -23,6 +16,11 @@ export default defineConfig({
       'center-x': 'flex flex-row items-center',
       'center-y': 'flex flex-col items-center',
     },
+    {
+      'component-light': 'full bg-white rounded-lg shadow-lg',
+      'component-dark': 'full bg-gray-700 rounded-lg shadow-lg',
+    },
+
   ],
   safelist: [
     // col-start 1 到 5

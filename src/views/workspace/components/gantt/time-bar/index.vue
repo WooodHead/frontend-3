@@ -1,7 +1,31 @@
 <script setup lang="ts">
+import { useStore as useGanttStore } from '../store'
+import { registerStore } from './store'
+import BlockList from './block-list/index.vue'
 
+const { id } = defineProps<{ id: string }>()
+
+const ganttStore = useGanttStore()
+const store = registerStore(id)
 </script>
 
 <template>
-  <div component-light dark:component-dark row h-10 mt-4></div>
+  <div
+    component-light dark:component-dark
+    row h="!10" mt-4 overflow-hidden
+  >
+    <div w-8 uno-border="r gray-200">
+      <v-btn width="100%" height="100%" variant="text" rounded-0>
+        <div class="i-radix-icons-caret-left" text="2xl gray-600"></div>
+      </v-btn>
+    </div>
+    <div grow shrink-0 overflow-x-hidden>
+      <BlockList />
+    </div>
+    <div w-8 uno-border="l gray-200">
+      <v-btn width="100%" height="100%" variant="text" rounded-0>
+        <div class="i-radix-icons-caret-right" text="2xl gray-600"></div>
+      </v-btn>
+    </div>
+  </div>
 </template>

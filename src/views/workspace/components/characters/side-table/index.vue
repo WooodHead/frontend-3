@@ -3,7 +3,11 @@ import Item from './item.vue'
 </script>
 
 <template>
-  <div>
+  <div
+    w="25%" uno-border="r-2 gray-200"
+    column overflow-y-scroll
+  >
+    <Item />
     <Item />
   </div>
 </template>

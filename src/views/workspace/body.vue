@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import WSComponent from '../components/index.vue'
-import useWSStore from '../store'
+import WSComponent from './components/index.vue'
+import useWSStore from './store'
 
 const WSStore = useWSStore()
+
 onMounted(() => {
   WSStore.insertComponent('editor', 'left')
   WSStore.insertComponent('gantt', 'right')
@@ -13,7 +14,7 @@ onMounted(() => {
   <div
     grow relative
     h-screen
-    bg-gray-200
+    bg="gray-200 dark:gray-500"
     grid="~ cols-2 rows-2"
     gap-4 p-4
   >

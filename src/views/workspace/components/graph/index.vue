@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { VueFlow } from '@vue-flow/core'
+import { Background, Controls } from '@vue-flow/additional-components'
+import { ref } from 'vue'
 import type { ComponentProps } from '../index.vue'
 
-interface TimelineProps {
+import ToolBar from './tool-bar/index.vue'
+
+interface GraphProps {
   props: ComponentProps
 }
 
-const { props } = defineProps<TimelineProps>()
-const { id, state, position, onClose } = props
+const { props } = defineProps<GraphProps>()
+const { id, state, position, onClose } = $(props)
 
 const elements = ref([
   // Nodes
@@ -31,7 +35,13 @@ const elements = ref([
 </script>
 
 <template>
-  <div component-light dark:component-dark>
-    <VueFlow v-model="elements" />
+  <div full column>
+    <div component-light dark:component-dark>
+      <VueFlow v-model="elements">
+        <Background />
+        <Controls />
+      </VueFlow>
+    </div>
+    <ToolBar />
   </div>
 </template>

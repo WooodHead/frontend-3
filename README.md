@@ -1,16 +1,61 @@
-# Vue 3 + TypeScript + Vite
+# 待解决问题
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 甘特图可视化
+  
+当前采用的方案为：每个事件有开始时间和结束时间，用来表示这个时间的是一种带有单位的Date对象，类似于：`('2022-09-08', 'day')`。
+采用这种对象来表示时间的目的为：用户在创建事件时选择起始时间和结束时间并不是精确的，大多数时候只是粗略的说明这个时间（
 
-## Recommended IDE Setup
+* 对于过短的事件该如何展示？
+* 对于过长的事件该如何展示？
+  * 时间折叠
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+## 事件的关系如何建模
 
-## Type Support For `.vue` Imports in TS
+有三种有关“事件关系”的设施。
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+### 关系
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+事件之间的单向边。具有如下性质：
+* 关系类别（强烈因果、影响、伏笔等类别）；
+* 属于哪个关系图。一个关系可以属于多个图，也可以不属于任何图，是多对多的关系；
+* 该关系的详细描述；
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+### 关系图
+
+由多个事件和它们之间的关系构成的图。用于表达**事件之间实在的逻辑**关系，而**不必与叙事逻辑相吻合**。
+ 
+当一个新的事件被加入一张图时，默认行为为：将该事件与当前图中已有的事件之间的所有关系也加入到该图中。
+
+也可以手动选择哪些关系被加入到图中。
+
+### 父事件
+
+由**多个关系图**构成的抽象事件。
+
+父事件可以有独立的事件详细描述、独立的事件关系等，但不能有独立的角色关联：父事件所关联的角色为其包含的所有子事件中参与的角色。
+
+单个事件也可以被加入到某个父事件中（作为没有边的图来看待）。
+
+父事件的起始和结束将会是所有关系图中所有事件中最早发生和最晚结束事件的相应时间。
+
+## 叙事线该如何设计
+
+将“故事”和“话语”分离，即：最终构建出的叙事线是一条独立的链表，其中的节点称为**叙事节点**。
+* 每一个叙事节点承担着一定的叙事功能，可能直接对应一个事件节点，但也有可能对应其它类型的信息（引用外部材料，比如《时间之外的往事》、“叙事者”的陈述等）；
+* 每一个叙事节点有着独立的元信息，如：
+  * 该叙事节点由谁来进行叙述（某个角色，或是第三方“叙事者”等）；
+  * 外部文档链接（该叙事节点对应着作品的真正文本的哪一部分）等；
+  
+在构建叙事线时，可以先将某个选定的关系图放在流程图画板上，将关系图中的边用虚线表示；随后由用户来决定是否要应用关系图中的某条连通路径来作为叙事线的一部分，将这一路径中的边转为实线表示。通过这样的方式，可以将事件的实际逻辑复用到叙事逻辑中（这一点在大多数作品中都非常常见），能够加快叙事线的构建；
+
+![1670309798362](image/README/1670309798362.png)
+
+除此之外，用户也可以自主选择当前叙事线的末尾应该连接何种节点，比如新建一个引用外部信息的叙事节点。
+
+## 是否还需要更多新功能
+
+好像还需要添加一个元信息组件，用于描述世界观等信息。
+
+# 参考
+
+* 《作家之旅》1：八种人物原型和故事的十二个阶段 - 郭少川的文章 - 知乎 https://zhuanlan.zhihu.com/p/77784781

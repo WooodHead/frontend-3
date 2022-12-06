@@ -7,38 +7,45 @@ export interface Position {
 }
 
 export interface UseDraggableOptions {
+  minDistance?: number
   onMove?: (position: Position, event: PointerEvent) => void
-
   onEnd?: (position: Position, event: PointerEvent) => void
 }
 
 const useDraggable = (
   target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
-  options: UseDraggableOptions = {},
+  { onMove, onEnd, minDistance = 0 }: UseDraggableOptions = {},
 ) => {
-  const start = ref<Position>()
-  const delta = ref<Position>({ x: 0, y: 0 })
-
-  const { onMove, onEnd } = options
+  let start = $ref<Position>()
+  let delta = $ref<Position>({ x: 0, y: 0 })
+  let isDragging = $ref(false)
 
   const handleStart = (e: PointerEvent) => {
-    start.value = { x: e.clientX, y: e.clientY }
+    e.preventDefault()
+    start = { x: e.clientX, y: e.clientY }
   }
 
   const handleMove = (e: PointerEvent) => {
-    if (!start.value) { return }
+    if (!start) { return }
+    const { x, y } = start
+    const nowDelta = { x: e.clientX - x, y: e.clientY - y }
 
-    const { x, y } = start.value
-    delta.value = { x: e.clientX - x, y: e.clientY - y }
+    if (isDragging) { delta = nowDelta }
+    // 拖动距离过短时不触发拖动
+    else if (Math.abs(nowDelta.x) >= minDistance) {
+      isDragging = true
+      delta = nowDelta
+    }
 
-    onMove?.(delta.value, e)
+    onMove?.(delta, e)
   }
 
   const handleEnd = (e: PointerEvent) => {
-    if (onEnd && delta.value) { onEnd(delta.value, e) }
+    if (onEnd && delta) { onEnd(delta, e) }
 
-    start.value = undefined
-    delta.value = { x: 0, y: 0 }
+    start = undefined
+    isDragging = false
+    delta = { x: 0, y: 0 }
   }
 
   useEventListener(target, 'pointerdown', handleStart, true)
@@ -46,8 +53,8 @@ const useDraggable = (
   useEventListener(document, 'pointerup', handleEnd, true)
 
   return {
-    ...toRefs(delta),
-    isDragging: computed(() => start.value !== undefined),
+    ...toRefs($$(delta)),
+    isDragging: $$(isDragging),
   }
 }
 export default useDraggable

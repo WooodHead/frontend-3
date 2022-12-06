@@ -9,7 +9,7 @@
     rounded-0 relative overflow-hidden
   >
     <div absolute full row>
-      <slot />
+      <slot></slot>
     </div>
   </v-btn>
 </template>

@@ -8,18 +8,18 @@ export const { registerStore, useStore } = createStore('gantt', {
   state: () => ({
     fullMode: true, // 完全模式
 
+    dragging: false, // 当前视图是否正在被拖拽
+
     eventScrollTop: 0, // 侧边栏滚动距离，用于与主视图同步
 
     origin: undefined as (UnitID | undefined), // 当前视图的原点单位
 
-    viewPort: null as (HTMLDivElement | null),
-    viewPortWidth: 0,
+    viewPort: null as (HTMLDivElement | null), // 当前视区的 DOM
+    viewPortWidth: 0, // 当前视区的宽度
 
     unitQueue: [] as UnitID[], // 单位队列，用于渲染
 
     visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位可见时，可见面积更大的被认为是可见单位）
-
-    eventQueue: [] as UnitID[], // 事件队列，用于渲染
 
     _offset: 0, // 主视图的偏移量
     offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
@@ -38,7 +38,18 @@ export const { registerStore, useStore } = createStore('gantt', {
         else { state._offset = value }
       },
     }),
+
     unitOffset: state => (unit: UnitID) => {
+      const origin = state.origin
+      if (!origin || !unit) { return 0 }
+      if (!origin.unit.isSame(unit.unit)) {
+        throw new Error('unit not match')
+      }
+
+      return unit.diff(origin)
+    },
+
+    subUnitOffset: state => (unit: UnitID) => {
       const origin = state.origin
       if (!origin || !unit) { return 0 }
       if (!origin.unit.isSame(unit.unit)) {
@@ -48,7 +59,7 @@ export const { registerStore, useStore } = createStore('gantt', {
       const zero = origin.start as UnitID
       const now = unit.start as UnitID
 
-      return now.diff(zero) * UNIT_WIDTH
+      return now.diff(zero)
     },
   },
   actions: {
@@ -102,6 +113,19 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     removeRight(count = 1) {
       this.unitQueue.splice(this.unitQueue.length - count)
+    },
+
+    navigateTo(unit: UnitID) {
+      const start = this.unitQueue[0]
+      const end = this.unitQueue[this.unitQueue.length - 1]
+
+      if (unit.isBetween(start, end, '[]')) {
+        const offset = this.unitOffset(unit)
+        this.offset.value = offset
+      }
+      else {
+        this.init(unit)
+      }
     },
   },
 })

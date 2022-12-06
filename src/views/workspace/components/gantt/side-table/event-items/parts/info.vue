@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Basic from './basic.vue'
 import Editor from '@/views/workspace/components/editor/index.vue'
-import type { IEvent } from '@/api/type'
+import type { IEvent } from '@/api/event'
 
 const { isLoading, data, color } = defineProps<{
   isLoading?: boolean
