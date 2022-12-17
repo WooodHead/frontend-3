@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { UnitID } from '@project-chiral/unit-system'
 import type { ComponentProps } from '../index.vue'
 import SideTable from './side-table/index.vue'
@@ -8,8 +8,8 @@ import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
 import type { IGanttData } from './types'
 import Tools from './tools/index.vue'
-import ganttQuery, { setOrigin } from '@/api/gantt'
 import Status from '@/components/status.vue'
+import projectQuery from '@/api/project'
 
 interface GanttProps {
   props: ComponentProps
@@ -20,17 +20,17 @@ const { id, state, position, onClose } = $(props)
 
 const store = registerStore(id)
 
-const { isError, isLoading, isSuccess } = $(useQuery({
-  ...ganttQuery.origin,
+if (data !== undefined) { store.initWithData(data) }
+
+const { isSuccess, isLoading, isError } = $(useQuery({
+  ...projectQuery.workspace,
+  select: ({ origin }) => origin,
   enabled: data === undefined,
   onSuccess: id => { store.init(UnitID.deserialize(id)) },
 }))
-watch($$(data), data => {
-  if (data !== undefined) { store.initWithData(data) }
-})
 
-onUnmounted(async () => {
-  if (store.visibleUnit) { await setOrigin(store.visibleUnit.serialize()) }
+onUnmounted(() => {
+  projectQuery.updateWorkspaceInfo({ origin: store.visibleUnit?.serialize() })
 })
 </script>
 

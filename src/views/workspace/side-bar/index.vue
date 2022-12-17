@@ -3,8 +3,8 @@ import { Presence } from '@motionone/vue'
 import useWSStore from '../store'
 import DropArea from './drop-area/index.vue'
 import Handler from './component-handler.vue'
-
 import Menu from './menu.vue'
+
 import CharactersIcon from '@/assets/workspace/character.png'
 import EditorIcon from '@/assets/workspace/editor.png'
 import GanttIcon from '@/assets/workspace/gantt.png'
@@ -25,7 +25,7 @@ const handleClickOutside = () => {
   <div v-click-outside="handleClickOutside" h-full>
     <Menu :expand="expand" />
     <div
-      :class="`${!expand && `shadow-lg`}`"
+      :class="!expand && `shadow-lg`"
       column shrink-0 relative
       w-16 h-full bg-gray-100 z-50
     >
@@ -50,7 +50,7 @@ const handleClickOutside = () => {
         </Handler>
       </div>
       <div center h="10%" w-full>
-        <v-btn icon color="#d1d5db">
+        <v-btn flat icon color="#d1d5db">
           <div w-30px h-30px text-gray-100 i-radix-icons-person></div>
         </v-btn>
       </div>

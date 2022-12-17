@@ -2,9 +2,11 @@
 import { useQuery } from '@tanstack/vue-query'
 import eventQuery from '@/api/event'
 
-const { id } = defineProps<{ id: string }>()
+const { id } = defineProps<{ id: number }>()
 
-// const { data } = useQuery(eventQuery)
+const { data } = useQuery({
+  ...eventQuery.id(id)._ctx.detail,
+})
 </script>
 
 <template>

@@ -29,37 +29,57 @@ export const { registerStore, useStore } = createStore('gantt', {
     offset: state => computed({
       get: () => state._offset,
       set: value => {
-        if (state.offsetUpperBound !== undefined && value > state.offsetUpperBound) {
+        if (
+          state.offsetUpperBound !== undefined
+          && value > state.offsetUpperBound
+        ) {
           state._offset = state.offsetUpperBound
         }
-        else if (state.offsetLowerBound !== undefined && value < (state.offsetLowerBound + state.viewPortWidth)) {
+        else if (
+          state.offsetLowerBound !== undefined
+          && value < (state.offsetLowerBound + state.viewPortWidth)
+        ) {
           state._offset = (state.offsetLowerBound + state.viewPortWidth)
         }
         else { state._offset = value }
       },
     }),
 
-    unitOffset: state => (unit: UnitID) => {
+    unitOffset: state => (id: UnitID) => {
       const origin = state.origin
-      if (!origin || !unit) { return 0 }
-      if (!origin.unit.isSame(unit.unit)) {
+      if (!origin || !id) { return 0 }
+      if (!origin.unit.isSame(id.unit)) {
         throw new Error('unit not match')
       }
 
-      return unit.diff(origin)
+      return id.diff(origin)
     },
 
-    subUnitOffset: state => (unit: UnitID) => {
+    subUnitOffset: state => (id: UnitID) => {
       const origin = state.origin
-      if (!origin || !unit) { return 0 }
-      if (!origin.unit.isSame(unit.unit)) {
+      if (!origin || !id) { return 0 }
+      if (!origin.unit.isSame(id.unit)) {
         throw new Error('unit not match')
       }
 
-      const zero = origin.start as UnitID
-      const now = unit.start as UnitID
+      const zero = origin.firstChild as UnitID
+      const now = id.firstChild as UnitID
 
       return now.diff(zero)
+    },
+
+    unitRange: state => {
+      const first = state.unitQueue[0]
+      const last = state.unitQueue[state.unitQueue.length - 1]
+      if (!first || !last) { return undefined }
+      return UnitIDRange.fromUnitID(first, last)
+    },
+
+    subUnitRange: state => {
+      const first = state.unitQueue[0]
+      const last = state.unitQueue[state.unitQueue.length - 1]
+      if (!first || !last) { return undefined }
+      return UnitIDRange.fromUnitID(first.firstChild, last.lastChild)
     },
   },
   actions: {
@@ -72,8 +92,8 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     init(_origin: UnitID) {
       this._reset()
-      this.origin = _origin.clone()
-      this.unitQueue = [this.origin]
+      this.origin = _origin
+      this.unitQueue = [_origin]
       this.loadLeft(4)
       this.loadRight(4)
     },
@@ -88,7 +108,7 @@ export const { registerStore, useStore } = createStore('gantt', {
       this.offsetUpperBound = 0
       this.offsetLowerBound = -(lastChild.diff(firstChild) + 1) * UNIT_WIDTH
 
-      this.origin = start.clone()
+      this.origin = start
 
       this.unitQueue = range.ids
     },

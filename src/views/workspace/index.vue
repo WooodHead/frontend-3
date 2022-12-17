@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@unocss/reset/tailwind.css'
 import SideBar from './side-bar/index.vue'
 import Body from './body.vue'
 

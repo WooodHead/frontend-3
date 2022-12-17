@@ -28,9 +28,9 @@ const { position, id, state, onClose } = $(props)
     row-start-${position?.[2]}
     row-end-${position?.[3]}`"
   >
-    <Gantt v-if="props.id === 'gantt'" :props="props" />
-    <Editor v-else-if="props.id === 'editor'" :props="props" />
-    <Graph v-else-if="props.id === 'graph'" :props="props" />
-    <Characters v-else-if="props.id === 'characters'" :props="props" />
+    <Gantt v-if="id === 'gantt'" :props="props" />
+    <Editor v-else-if="id === 'editor'" :props="props" />
+    <Graph v-else-if="id === 'graph'" :props="props" />
+    <Characters v-else-if="id === 'characters'" :props="props" />
   </div>
 </template>

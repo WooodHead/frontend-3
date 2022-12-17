@@ -1,29 +1,33 @@
 <script setup lang="ts">
-import { UnitID } from '@project-chiral/unit-system'
-import { useQueries } from '@tanstack/vue-query'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { UnitIDRange } from '@project-chiral/unit-system'
 import { useStore } from '../../store'
 import type { BlockProps } from './block.vue'
 import Block from './block.vue'
-import type { IEvent } from '@/api/event'
 import eventQuery from '@/api/event'
 
 const store = useStore()
+const { subUnitRange } = $(storeToRefs(store))
 
-const result = useQueries({
-  queries: computed(() => store.unitQueue.map(id => ({
-    ...eventQuery.start(id.serialize()),
-    enabled: false,
-  }))),
-})
+const client = useQueryClient()
 
-const eventData: IEvent[] = []
-const blockData = $computed<BlockProps[]>(() =>
-  eventData.map(({ id, start, end, type }) => ({
-    id,
-    start: UnitID.deserialize(start),
-    end: UnitID.deserialize(end),
-    short: type === 'auto-collection',
-  })))
+const { data: events } = $(useQuery({
+  enabled: computed(() => subUnitRange !== undefined),
+  ...eventQuery.range(subUnitRange),
+  onSuccess: events => {
+    // 批量请求数据后，顺便更新一下单个请求的缓存
+    for (const event of events) {
+      client.setQueryData(eventQuery.id(event.id).queryKey, event)
+    }
+  },
+}))
+
+const blockData = $computed(() => events?.map(({ id, range, color, type }) => ({
+  id,
+  color,
+  type,
+  range: UnitIDRange.deserialize(range),
+}) as BlockProps))
 </script>
 
 <template>

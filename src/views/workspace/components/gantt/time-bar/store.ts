@@ -11,7 +11,7 @@ export const { registerStore, useStore } = createStore('gantt/time-bar', {
   actions: {
     init(origin: UnitID) {
       this.offset = 0
-      this.blockQueue = [origin.clone()]
+      this.blockQueue = [origin]
       this.loadLeft(20)
       this.loadRight(20)
     },

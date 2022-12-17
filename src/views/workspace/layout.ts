@@ -1,7 +1,7 @@
 export enum IPositionState { Corner, Vertical, Horizontal, Full }
 export type IPosition = [number, number, number, number]
 export type IPositionID = 'lt' | 'rt' | 'lb' | 'rb' | 'top' | 'bottom' | 'left' | 'right' | 'full'
-export type ILayout = { id: string; position: IPosition; positionID: IPositionID }[]
+export type ILayout = { id: string; position: IPosition }[]
 
 enum Position { LT, RT, LB, RB }
 const LT = Position.LT
@@ -21,7 +21,7 @@ const TABLE: Record<IPositionID, Position[]> = {
   full: [LT, RT, LB, RB],
 }
 
-const POSITON: { [id: string]: IPosition } = {
+const ID_TO_POSITION = new Map<string, IPosition>(Object.entries({
   lt: [1, 2, 1, 2],
   rt: [2, 3, 1, 2],
   lb: [1, 2, 2, 3],
@@ -31,16 +31,22 @@ const POSITON: { [id: string]: IPosition } = {
   left: [1, 2, 1, 3],
   right: [2, 3, 1, 3],
   full: [1, 3, 1, 3],
-}
+}))
+
+const POSITION_TO_ID = new Map(
+  Array.from(ID_TO_POSITION.entries())
+    .map(([id, position]) => [position.join(''), id] as [string, IPositionID]),
+)
 
 export class LayoutStatus {
   id: IPositionID
   occupy: Set<Position>
   state: IPositionState
 
-  constructor(id: IPositionID) {
-    this.id = id
-    switch (id) {
+  constructor(position: IPosition) {
+    this.id = POSITION_TO_ID.get(position.join(''))!
+
+    switch (this.id) {
       case 'lt':
       case 'rt':
       case 'lb':
@@ -58,11 +64,9 @@ export class LayoutStatus {
       case 'full':
         this.state = IPositionState.Full
         break
-      default:
-        throw new Error(`Invalid position id: ${id}`)
     }
 
-    this.occupy = new Set(TABLE[id])
+    this.occupy = new Set(TABLE[this.id])
   }
 
   intersectionWith(other: LayoutStatus) {
@@ -82,14 +86,14 @@ export class Layout {
 
   static deserialize(data: ILayout) {
     const layout = new Layout()
-    layout._components = data.map(({ id, position, positionID }) => ({
-      id, position, status: new LayoutStatus(positionID),
+    layout._components = data.map(({ id, position }) => ({
+      id, position, status: new LayoutStatus(position),
     }))
     return layout
   }
 
   serialize(): ILayout {
-    return this._components.map(({ id, position, status: { id: positionID } }) => ({ id, position, positionID }))
+    return this._components.map(({ id, position }) => ({ id, position }))
   }
 
   get components() {
@@ -97,8 +101,8 @@ export class Layout {
   }
 
   insert(handlerID: string, dropID: IPositionID) {
-    const status = new LayoutStatus(dropID)
-    const position = POSITON[dropID]
+    const position = ID_TO_POSITION.get(dropID)!
+    const status = new LayoutStatus(position)
 
     this._components = this._components
       .filter(({ status: _status, id }) =>

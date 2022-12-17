@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import WSComponent from './components/index.vue'
 import useWSStore from './store'
+import type { ILayout } from './layout'
+import { Layout } from './layout'
+import projectQuery from '@/api/project'
 
 const WSStore = useWSStore()
 
-onMounted(() => {
-  WSStore.insertComponent('editor', 'left')
-  WSStore.insertComponent('gantt', 'right')
+const { isLoading } = useQuery({
+  ...projectQuery.workspace,
+  select: ({ layout }) => layout,
+  onSuccess: config => { WSStore.layout = Layout.deserialize(config as ILayout) },
+})
+
+onUnmounted(() => {
+  projectQuery.updateWorkspaceInfo({ layout: WSStore.layout.serialize() })
 })
 </script>
 

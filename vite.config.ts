@@ -9,6 +9,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 
+import { viteMockServe } from 'vite-plugin-mock'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -17,10 +19,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    UnoCSS('./uno.config.ts'),
     vue({
       reactivityTransform: true,
     }),
+    viteMockServe(),
+    UnoCSS('./uno.config.ts'),
     Vuetify({}),
     AutoImport({
       dts: true,

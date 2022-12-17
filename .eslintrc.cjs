@@ -6,6 +6,9 @@ module.exports = {
   parserOptions: {
     parser: '@typescript-eslint/parser',
   },
+  plugins: [
+    'unused-imports',
+  ],
   rules: {
     // 有时需要将 props 的 interface 定义放在最前面
     'vue/define-macros-order': [
@@ -53,6 +56,19 @@ module.exports = {
     ],
     'no-console': [
       'warn',
+    ],
+
+    // 自动删除未使用的 import
+    'no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
     ],
   },
 }

@@ -9,46 +9,71 @@
  * ---------------------------------------------------------------
  */
 
-export interface ReadUserDto {
-  /**
-   * 用户名
-   * @example "admin"
-   */
-  username: string;
-  phone?: string;
-  email?: string;
+export interface EventEntity {
+  type: "ATOM" | "COLLECTION";
+  range: string;
+  id: number;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  /** @format date-time */
+  deletedAt: string | null;
+  contentId: number | null;
+  projectId: number;
+  name: string;
+  description: string | null;
+  color: string;
 }
 
-export interface DeleteUserDto {
-  /**
-   * 用户名
-   * @example "admin"
-   */
-  username: string;
+export interface CreateEventDto {
+  range: string;
+  name: string;
+  description: string | null;
+  /** @default "#93c5fd" */
+  color: object;
+  type: object;
+  graphId?: string;
 }
 
-export interface UserLoginDto {
-  /**
-   * 用户名
-   * @example "admin"
-   */
+export interface UpdateEventDto {
+  range?: string;
+  name?: string;
+  description?: string | null;
+  /** @default "#93c5fd" */
+  color?: object;
+  type?: object;
+}
+
+export interface CreateContentDto {
+  content: string;
+}
+
+export interface EventContentEntity {
+  id: number;
+  /** @format date-time */
+  updatedAt: string;
+  eventId: number;
+  content: string;
+}
+
+export interface UpdateContentDto {
+  content?: string;
+}
+
+export interface UserEntity {
+  id: number;
   username: string;
-  /** 密码 */
-  password: string;
+  phone: string | null;
+  email: string | null;
 }
 
 export interface UserLoginRespDto {
-  /** jwt token */
   access_token: string;
 }
 
 export interface CreateUserDto {
-  /**
-   * 用户名
-   * @example "admin"
-   */
   username: string;
-  /** 密码 */
   password: string;
   phone?: string;
   email?: string;
@@ -56,74 +81,77 @@ export interface CreateUserDto {
 
 export interface CreateProjectDto {
   name: string;
-  description?: string;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  /** @format date-time */
-  deletedAt?: string;
+  description: string;
+}
+
+export interface SettingsEntity {
+  darkMode: boolean;
+}
+
+export interface LayoutEntity {
+  id: string;
+  position: number[];
+}
+
+export interface WorkspaceEntity {
+  origin: string;
+  layout: LayoutEntity[];
 }
 
 export interface ProjectEntity {
+  settings: SettingsEntity;
+  workspace: WorkspaceEntity;
   id: number;
   name: string;
-  description?: string;
+  description: string | null;
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
   updatedAt: string;
   /** @format date-time */
-  deletedAt?: string;
+  deletedAt: string | null;
+  userId: number;
 }
 
 export interface UpdateProjectDto {
   name?: string;
   description?: string;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string;
-  /** @format date-time */
-  deletedAt?: string;
 }
 
-export interface LayoutEntity {
-  id: number;
-  /**
-   * 布局位置
-   * @example [1,2,1,3]
-   */
+export interface CreateLayoutDto {
+  id: string;
   position: number[];
-  /**
-   * 布局位置ID
-   * @example "lt"
-   */
-  positionID: string;
 }
 
-export interface SetLayoutDto {
-  /**
-   * 布局位置
-   * @example [1,2,1,3]
-   */
-  position: number[];
-  /**
-   * 布局位置ID
-   * @example "lt"
-   */
-  positionID: string;
+export interface UpdateWorkspaceDto {
+  origin?: string;
+  layout?: CreateLayoutDto[];
+}
+
+export interface UpdateSettingsDto {
+  darkMode?: boolean;
 }
 
 export interface CreateCharacterDto {
   name: string;
   alias: string[];
-  description?: string;
-  start?: string;
-  end?: string;
+  description: string;
+  unit: number;
+  /** @format date-time */
+  start: string;
+  /** @format date-time */
+  end: string;
 }
 
 export type UpdateCharacterDto = object;
+
+export type CreateScenceDto = object;
+
+export type UpdateScenceDto = object;
+
+export type CreateBackdropDto = object;
+
+export type UpdateBackdropDto = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
 
@@ -263,43 +291,249 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @name AppControllerGetHello
-   * @request GET:/
-   */
-  appControllerGetHello = (params: RequestParams = {}) =>
-    this.request<void, any>({
-      path: `/`,
-      method: "GET",
-      ...params,
-    });
-
   apiDocs = {
     /**
      * No description
      *
-     * @name AppControllerGetApiDocs
+     * @name GetApiDocs
      * @request GET:/api-docs
      */
-    appControllerGetApiDocs: (params: RequestParams = {}) =>
+    getApiDocs: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api-docs`,
         method: "GET",
         ...params,
       }),
   };
+  event = {
+    /**
+     * No description
+     *
+     * @tags event
+     * @name GetEvent
+     * @request GET:/event/{id}
+     */
+    getEvent: (id: number, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name UpdateEvent
+     * @request PUT:/event/{id}
+     */
+    updateEvent: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name RemoveEvent
+     * @request DELETE:/event/{id}
+     */
+    removeEvent: (id: number, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description 获取事件的详细信息
+     *
+     * @tags event
+     * @name GetEventDetail
+     * @request GET:/event/{id}/detail
+     */
+    getEventDetail: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/${id}/detail`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * @description 根据时间范围或给定id列表获取事件，将二者的并集返回
+     *
+     * @tags event
+     * @name GetEvents
+     * @request GET:/event
+     */
+    getEvents: (
+      query?: {
+        range?: string;
+        ids?: number[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EventEntity[], any>({
+        path: `/event`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name CreateEvent
+     * @request POST:/event
+     */
+    createEvent: (data: CreateEventDto, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name GetContent
+     * @request GET:/event/{id}/content
+     */
+    getContent: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/${id}/content`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name CreateContent
+     * @request POST:/event/{id}/content
+     */
+    createContent: (id: number, data: CreateContentDto, params: RequestParams = {}) =>
+      this.request<EventContentEntity, any>({
+        path: `/event/${id}/content`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name UpdateContent
+     * @request PUT:/event/{id}/content
+     */
+    updateContent: (id: number, data: UpdateContentDto, params: RequestParams = {}) =>
+      this.request<EventContentEntity, any>({
+        path: `/event/${id}/content`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description 获取某个事件的全部todo项
+     *
+     * @tags event
+     * @name GetTodos
+     * @request GET:/event/{id}/todo
+     */
+    getTodos: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/${id}/todo`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name CreateTodo
+     * @request POST:/event/{id}/todo
+     */
+    createTodo: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/${id}/todo`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name UpdateTodo
+     * @request PUT:/event/{id}/todo
+     */
+    updateTodo: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/${id}/todo`,
+        method: "PUT",
+        ...params,
+      }),
+
+    /**
+     * @description 获取单个todo项
+     *
+     * @tags event
+     * @name GetTodo
+     * @request GET:/event/todo/{id}
+     */
+    getTodo: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/todo/${id}`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name RemoveTodo
+     * @request DELETE:/event/todo/{id}
+     */
+    removeTodo: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/event/todo/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+  };
   user = {
     /**
-     * @description Get all users
+     * No description
      *
      * @tags user
-     * @name GetAllUsers
+     * @name GetUser
      * @request GET:/user
      */
-    getAllUsers: (params: RequestParams = {}) =>
-      this.request<ReadUserDto[], any>({
+    getUser: (params: RequestParams = {}) =>
+      this.request<UserEntity, any>({
         path: `/user`,
         method: "GET",
         format: "json",
@@ -313,12 +547,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name DeleteUser
      * @request DELETE:/user
      */
-    deleteUser: (data: DeleteUserDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+    deleteUser: (params: RequestParams = {}) =>
+      this.request<UserEntity, any>({
         path: `/user`,
         method: "DELETE",
-        body: data,
-        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -326,43 +559,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name GetUser
-     * @request GET:/user/{username}
-     */
-    getUser: (username: string, params: RequestParams = {}) =>
-      this.request<ReadUserDto, any>({
-        path: `/user/${username}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 登录
-     *
-     * @tags user
      * @name Login
      * @request POST:/user/login
      */
-    login: (data: UserLoginDto, params: RequestParams = {}) =>
+    login: (params: RequestParams = {}) =>
       this.request<UserLoginRespDto, any>({
         path: `/user/login`,
         method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
 
     /**
-     * @description 注册
+     * No description
      *
      * @tags user
      * @name Register
      * @request POST:/user/register
      */
     register: (data: CreateUserDto, params: RequestParams = {}) =>
-      this.request<ReadUserDto, void>({
+      this.request<UserEntity, any>({
         path: `/user/register`,
         method: "POST",
         body: data,
@@ -373,7 +589,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   };
   project = {
     /**
-     * No description
+     * @description 创建新项目
      *
      * @tags project
      * @name CreateProject
@@ -390,109 +606,113 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description 获取项目信息
      *
      * @tags project
-     * @name ProjectControllerFindOne
-     * @request GET:/project/{id}
+     * @name GetProject
+     * @request GET:/project
      */
-    projectControllerFindOne: (id: string, params: RequestParams = {}) =>
+    getProject: (params: RequestParams = {}) =>
       this.request<ProjectEntity, any>({
-        path: `/project/${id}`,
+        path: `/project`,
         method: "GET",
         format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 更新项目信息
      *
      * @tags project
-     * @name ProjectControllerUpdate
-     * @request PATCH:/project/{id}
+     * @name UpdateProject
+     * @request PUT:/project
      */
-    projectControllerUpdate: (id: string, data: UpdateProjectDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/project/${id}`,
-        method: "PATCH",
+    updateProject: (data: UpdateProjectDto, params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
+        method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 删除项目
      *
      * @tags project
-     * @name ProjectControllerRemove
-     * @request DELETE:/project/{id}
+     * @name RemoveProject
+     * @request DELETE:/project
      */
-    projectControllerRemove: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/project/${id}`,
+    removeProject: (params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 获取工作区信息
      *
-     * @tags project/workspace
-     * @name GetLayout
-     * @request GET:/project/workspace/layout
+     * @tags project
+     * @name GetWorkspaceInfo
+     * @request GET:/project/workspace
      */
-    getLayout: (params: RequestParams = {}) =>
-      this.request<LayoutEntity, any>({
-        path: `/project/workspace/layout`,
+    getWorkspaceInfo: (params: RequestParams = {}) =>
+      this.request<WorkspaceEntity, any>({
+        path: `/project/workspace`,
         method: "GET",
         format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 更新工作区信息
      *
-     * @tags project/workspace
-     * @name SetLayout
-     * @request POST:/project/workspace/layout
+     * @tags project
+     * @name UpdateWorkspaceInfo
+     * @request PUT:/project/workspace
      */
-    setLayout: (data: SetLayoutDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/project/workspace/layout`,
-        method: "POST",
+    updateWorkspaceInfo: (data: UpdateWorkspaceDto, params: RequestParams = {}) =>
+      this.request<WorkspaceEntity, any>({
+        path: `/project/workspace`,
+        method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 获取项目设置
      *
-     * @tags project/workspace
-     * @name GetGanttOrigin
-     * @request GET:/project/workspace/gantt/origin
+     * @tags project
+     * @name GetProjectSettings
+     * @request GET:/project/settings
      */
-    getGanttOrigin: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/project/workspace/gantt/origin`,
+    getProjectSettings: (params: RequestParams = {}) =>
+      this.request<UpdateCharacterDto, any>({
+        path: `/project/settings`,
         method: "GET",
         format: "json",
         ...params,
       }),
 
     /**
-     * No description
+     * @description 更新项目设置
      *
-     * @tags project/workspace
-     * @name SetGanttOrigin
-     * @request POST:/project/workspace/gantt/origin
+     * @tags project
+     * @name UpdateProjectSettings
+     * @request PUT:/project/settings
      */
-    setGanttOrigin: (data: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/project/workspace/gantt/origin`,
-        method: "POST",
+    updateProjectSettings: (data: UpdateSettingsDto, params: RequestParams = {}) =>
+      this.request<SettingsEntity, any>({
+        path: `/project/settings`,
+        method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
   };
@@ -500,10 +720,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CharacterControllerCreate
+     * @name Create
      * @request POST:/character
      */
-    characterControllerCreate: (data: CreateCharacterDto, params: RequestParams = {}) =>
+    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/character`,
         method: "POST",
@@ -515,10 +735,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CharacterControllerFindAll
+     * @name FindAll
      * @request GET:/character
      */
-    characterControllerFindAll: (params: RequestParams = {}) =>
+    findAll: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/character`,
         method: "GET",
@@ -528,10 +748,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CharacterControllerFindOne
+     * @name FindOne
      * @request GET:/character/{id}
      */
-    characterControllerFindOne: (id: string, params: RequestParams = {}) =>
+    findOne: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/character/${id}`,
         method: "GET",
@@ -541,10 +761,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CharacterControllerUpdate
+     * @name Update
      * @request PATCH:/character/{id}
      */
-    characterControllerUpdate: (id: string, data: UpdateCharacterDto, params: RequestParams = {}) =>
+    update: (id: string, data: UpdateCharacterDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/character/${id}`,
         method: "PATCH",
@@ -556,13 +776,163 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CharacterControllerRemove
+     * @name Remove
      * @request DELETE:/character/{id}
      */
-    characterControllerRemove: (id: string, params: RequestParams = {}) =>
+    remove: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/character/${id}`,
         method: "DELETE",
+        ...params,
+      }),
+  };
+  scence = {
+    /**
+     * No description
+     *
+     * @name Create
+     * @request POST:/scence
+     */
+    create: (data: CreateScenceDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/scence`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name FindAll
+     * @request GET:/scence
+     */
+    findAll: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/scence`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name FindOne
+     * @request GET:/scence/{id}
+     */
+    findOne: (id: string, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/scence/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name Update
+     * @request PATCH:/scence/{id}
+     */
+    update: (id: string, data: UpdateScenceDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/scence/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name Remove
+     * @request DELETE:/scence/{id}
+     */
+    remove: (id: string, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/scence/${id}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+  };
+  backdrop = {
+    /**
+     * No description
+     *
+     * @name Create
+     * @request POST:/backdrop
+     */
+    create: (data: CreateBackdropDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/backdrop`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name FindAll
+     * @request GET:/backdrop
+     */
+    findAll: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/backdrop`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name FindOne
+     * @request GET:/backdrop/{id}
+     */
+    findOne: (id: string, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/backdrop/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name Update
+     * @request PATCH:/backdrop/{id}
+     */
+    update: (id: string, data: UpdateBackdropDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/backdrop/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name Remove
+     * @request DELETE:/backdrop/{id}
+     */
+    remove: (id: string, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/backdrop/${id}`,
+        method: "DELETE",
+        format: "json",
         ...params,
       }),
   };
