@@ -21,10 +21,11 @@ const handleExpand = () => {
       :key="btn.name"
     >
       <Motion
-        v-if="expand"
+        v-show="expand"
         :initial="{ translateY: '100%', opacity: 0 }"
         :animate="{ translateY: '0px', opacity: 1 }"
         :exit="{ translateY: '100%', opacity: 0 }"
+        :transition="{ duration: 0.2 }"
       >
         <component :is="btn" />
       </Motion>

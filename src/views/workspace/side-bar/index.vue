@@ -33,7 +33,7 @@ const handleClickOutside = () => {
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
       </v-btn>
       <Presence>
-        <DropArea v-if="WSStore.dragging" />
+        <DropArea v-show="WSStore.dragging" />
       </Presence>
       <div grow column justify-center w-full>
         <Handler id="gantt" name="时序图">

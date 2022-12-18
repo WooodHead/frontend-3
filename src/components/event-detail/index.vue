@@ -1,14 +1,34 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import eventQuery from '@/api/event'
+import { Motion } from '@motionone/vue'
+import api from '@/api/api'
 
 const { id } = defineProps<{ id: number }>()
 
-const { data } = useQuery({
-  ...eventQuery.id(id)._ctx.detail,
-})
+const { data, isSuccess, isLoading, isError } = $(useQuery({
+  enabled: true,
+  queryKey: ['event', id, 'detail'],
+  queryFn: () => api.event.getEventDetail(id),
+}))
 </script>
 
 <template>
-  <div></div>
+  <Motion
+    :initial="{ opacity: 0 }"
+    :animate="{ opacity: 1 }"
+    :exit="{ opacity: 0 }"
+    component-light dark:component-dark
+    absolute overflow-hidden
+    w-200px min-h-200px
+  >
+    <Status v-if="!isSuccess" :loading="isLoading" :error="isError" />
+    <div v-else full>
+      <div w-full h-2 :style="{ backgroundColor: data?.color }"></div>
+      <div p-2>
+        <div text-xl font-semibold>
+          {{ data?.name }}
+        </div>
+      </div>
+    </div>
+  </Motion>
 </template>

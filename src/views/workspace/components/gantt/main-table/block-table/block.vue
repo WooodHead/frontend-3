@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Presence } from '@motionone/vue'
 import type { UnitIDRange } from '@project-chiral/unit-system'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
@@ -14,6 +15,8 @@ const { id, range, color = '#93c5fd' } = defineProps<BlockProps>()
 
 const store = useStore()
 
+const target = ref<HTMLDivElement | null>(null)
+
 const width = $computed(() => range.length * UNIT_WIDTH)
 const offset = $computed(() => {
   const zero = store.origin?.firstChild
@@ -22,16 +25,20 @@ const offset = $computed(() => {
 })
 
 const order = 1
+
+const hover = $(useElementHover(target))
 </script>
 
 <template>
   <div
+    ref="target"
     :style="{
       left: offset && `${offset}px`,
       transform: `translateY(${order * EVENT_HEIGHT}px)`,
     }"
     absolute cursor-pointer
     transition-transform duration-100
+    z-10
   >
     <div
       v-if="false"
@@ -55,8 +62,12 @@ const order = 1
       <div
         :style="{ backgroundColor: color }"
         w-full h="80%"
-        transition hover:shadow-lg
+        transition shadow hover:shadow-lg
+        rounded
       />
     </div>
+    <Presence>
+      <EventDetail v-show="hover" :id="id" />
+    </Presence>
   </div>
 </template>

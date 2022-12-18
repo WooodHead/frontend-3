@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { Motion, Presence } from '@motionone/vue'
 import { useStore } from './store'
-import TestComponent from './testComponent.vue'
 
 const store = useStore()
 

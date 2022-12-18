@@ -68,9 +68,9 @@ export const { registerStore, useStore } = createStore('gantt', {
       return now.diff(zero)
     },
 
-    unitRange: state => {
-      const first = state.unitQueue[0]
-      const last = state.unitQueue[state.unitQueue.length - 1]
+    unitRange: ({ unitQueue }) => {
+      const first = unitQueue[0]
+      const last = unitQueue[unitQueue.length - 1]
       if (!first || !last) { return undefined }
       return UnitIDRange.fromUnitID(first, last)
     },

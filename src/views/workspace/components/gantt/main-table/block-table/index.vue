@@ -4,25 +4,26 @@ import { UnitIDRange } from '@project-chiral/unit-system'
 import { useStore } from '../../store'
 import type { BlockProps } from './block.vue'
 import Block from './block.vue'
-import eventQuery from '@/api/event'
+import api from '@/api/api'
 
 const store = useStore()
 const { subUnitRange } = $(storeToRefs(store))
 
 const client = useQueryClient()
 
-const { data: events } = $(useQuery({
+const result = useQuery({
   enabled: computed(() => subUnitRange !== undefined),
-  ...eventQuery.range(subUnitRange),
+  queryKey: ['event', 'range', subUnitRange],
+  queryFn: () => api.event.getEvents({ range: subUnitRange?.serialize() }),
   onSuccess: events => {
     // 批量请求数据后，顺便更新一下单个请求的缓存
     for (const event of events) {
-      client.setQueryData(eventQuery.id(event.id).queryKey, event)
+      client.setQueryData(['event', event.id], event)
     }
   },
-}))
+})
 
-const blockData = $computed(() => events?.map(({ id, range, color, type }) => ({
+const blockData = $computed(() => result.data.value?.map(({ id, range, color, type }) => ({
   id,
   color,
   type,

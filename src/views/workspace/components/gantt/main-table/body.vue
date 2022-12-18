@@ -12,8 +12,8 @@ const store = useStore()
     :style="{ transform: `translateY(${store.eventScrollTop}px)` }"
     row h-full
   >
-    <DashedTable />
     <UnitGroup v-for="unit in store.unitQueue" :id="unit" :key="unit.uid" />
+    <DashedTable />
     <BlockTable />
   </div>
 </template>

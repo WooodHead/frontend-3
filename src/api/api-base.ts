@@ -26,6 +26,38 @@ export interface EventEntity {
   color: string;
 }
 
+export interface GraphNodeProperty {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+export interface GraphNodeEntity {
+  identity: string;
+  labels: string[];
+  properties: GraphNodeProperty;
+}
+
+export interface EventDetailEntity {
+  type: "ATOM" | "COLLECTION";
+  range: string;
+  id: number;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  updatedAt: string;
+  /** @format date-time */
+  deletedAt: string | null;
+  contentId: number | null;
+  projectId: number;
+  name: string;
+  description: string | null;
+  color: string;
+  superEvents: EventEntity[];
+  superGraphs: GraphNodeEntity[];
+  subGraphs: GraphNodeEntity[];
+}
+
 export interface CreateEventDto {
   range: string;
   name: string;
@@ -361,9 +393,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/{id}/detail
      */
     getEventDetail: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventDetailEntity, any>({
         path: `/event/${id}/detail`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
