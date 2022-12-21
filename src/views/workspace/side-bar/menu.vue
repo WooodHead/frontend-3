@@ -6,8 +6,14 @@ const toggleDarkMode = () => {
   darkMode = !darkMode
 }
 watch($$(darkMode), () => {
-  if (darkMode) { document.documentElement.classList.add('dark') }
-  else { document.documentElement.classList.remove('dark') }
+  if (darkMode) {
+    document.documentElement.classList.add('dark')
+    document.body.setAttribute('arco-theme', 'dark')
+  }
+  else {
+    document.documentElement.classList.remove('dark')
+    document.body.setAttribute('arco-theme', 'light')
+  }
 })
 
 const menuConfig: { title: string }[] = [

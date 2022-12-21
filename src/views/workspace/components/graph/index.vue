@@ -36,7 +36,7 @@ const elements = ref([
 
 <template>
   <div full column>
-    <div component-light dark:component-dark>
+    <div card-light dark:card-dark>
       <VueFlow v-model="elements">
         <Background />
         <Controls />

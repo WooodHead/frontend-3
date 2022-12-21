@@ -6,7 +6,8 @@
   <v-btn
     variant="text"
     width="100%" height="100%"
-    rounded-0 relative overflow-hidden
+    relative
+    rounded-0 overflow-hidden p-0
   >
     <div absolute full row>
       <slot></slot>

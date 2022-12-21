@@ -11,7 +11,7 @@ const store = registerStore(id)
 
 <template>
   <div
-    component-light dark:component-dark
+    card-light dark:card-dark
     row h="!10" mt-4 overflow-hidden
   >
     <div w-8 uno-border="r gray-200">

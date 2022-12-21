@@ -13,12 +13,8 @@ import GraphIcon from '@/assets/workspace/graph.png'
 const WSStore = useWSStore()
 
 let expand = $ref(false)
-const handleExpand = () => {
-  expand = !expand
-}
-const handleClickOutside = () => {
-  expand = false
-}
+const handleExpand = () => { expand = !expand }
+const handleClickOutside = () => { expand = false }
 </script>
 
 <template>
@@ -29,9 +25,12 @@ const handleClickOutside = () => {
       column shrink-0 relative
       w-16 h-full bg-gray-100 z-50
     >
-      <v-btn rounded-0 variant="text" height="5%" @click="handleExpand">
+      <!-- <v-btn rounded-0 variant="text" height="5%" @click="handleExpand">
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
-      </v-btn>
+      </v-btn> -->
+      <AButton h="5%" rounded-0 @click="handleExpand">
+        <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
+      </AButton>
       <Presence>
         <DropArea v-show="WSStore.dragging" />
       </Presence>

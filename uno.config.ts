@@ -2,8 +2,7 @@ import { defineConfig, presetAttributify, presetIcons, presetTypography, presetU
 import presetRemToPx from '@unocss/preset-rem-to-px'
 
 export default defineConfig({
-  preflights: [
-  ],
+  preflights: [],
   rules: [],
   shortcuts: [
     {
@@ -17,8 +16,8 @@ export default defineConfig({
       'center-y': 'flex flex-col items-center',
     },
     {
-      'component-light': 'full bg-white rounded-lg shadow-lg',
-      'component-dark': 'full bg-gray-700 rounded-lg shadow-lg',
+      'card-light': 'full bg-white rounded-lg shadow-lg',
+      'card-dark': 'full bg-gray-700 rounded-lg shadow-lg',
     },
 
   ],

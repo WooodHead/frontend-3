@@ -6,8 +6,6 @@ const { editor } = defineProps<{
   editor?: Editor
 }>()
 
-const options = $ref([] as number[])
-
 // TODO 完成浮动菜单
 </script>
 
@@ -17,8 +15,8 @@ const options = $ref([] as number[])
     :tippy-options="{ duration: 100 }"
     :editor="editor"
   >
-    <div component-light column>
-      <v-btn-toggle v-model="options" multiple color="primary">
+    <div card-light row>
+      <!-- <v-btn-toggle v-model="options" multiple color="primary">
         <v-btn size="small" variant="text">
           <div class="i-radix-icons-font-bold" text-2xl></div>
         </v-btn>
@@ -27,8 +25,16 @@ const options = $ref([] as number[])
         </v-btn>
         <v-btn size="small" variant="text">
           <div class="i-radix-icons-underline" text-2xl></div>
-        </v-btn>
-      </v-btn-toggle>
+      </v-btn-toggle> -->
+      <ATag rounded-r-0 p-4 checkable color="blue">
+        <div class="i-radix-icons-font-bold" text-2xl></div>
+      </ATag>
+      <ATag rounded-0 p-4 checkable color="blue">
+        <div class="i-radix-icons-font-italic" text-2xl></div>
+      </ATag>
+      <ATag rounded-l-0 p-4 checkable color="blue">
+        <div class="i-radix-icons-underline" text-2xl></div>
+      </ATag>
     </div>
   </BubbleMenu>
 </template>

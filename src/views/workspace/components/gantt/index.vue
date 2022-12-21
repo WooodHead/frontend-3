@@ -9,7 +9,7 @@ import { registerStore } from './store'
 import type { IGanttData } from './types'
 import Tools from './tools/index.vue'
 import Status from '@/components/status.vue'
-import projectQuery from '@/api/project'
+import api from '@/api/api'
 
 interface GanttProps {
   props: ComponentProps
@@ -23,21 +23,22 @@ const store = registerStore(id)
 if (data !== undefined) { store.initWithData(data) }
 
 const { isSuccess, isLoading, isError } = $(useQuery({
-  ...projectQuery.workspace,
+  queryKey: ['workspace'],
+  queryFn: api.project.getWorkspaceInfo,
   select: ({ origin }) => origin,
   enabled: data === undefined,
   onSuccess: id => { store.init(UnitID.deserialize(id)) },
 }))
 
 onUnmounted(() => {
-  projectQuery.updateWorkspaceInfo({ origin: store.visibleUnit?.serialize() })
+  api.project.updateWorkspaceInfo({ origin: store.visibleUnit?.serialize() })
 })
 </script>
 
 <template>
   <div full column>
     <div
-      component-light dark:component-dark
+      card-light dark:card-dark
       column overflow-hidden
     >
       <ComponentHeader v-if="!store.fullMode">

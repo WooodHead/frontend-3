@@ -5,11 +5,12 @@ import { defineConfig } from 'vite'
 import Vuetify from 'vite-plugin-vuetify'
 
 import AutoImport from 'unplugin-auto-import/vite'
-
 import Components from 'unplugin-vue-components/vite'
-import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
+import { ArcoResolver, Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 
 import { viteMockServe } from 'vite-plugin-mock'
+
+import { vitePluginForArco } from '@arco-plugins/vite-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,6 +24,9 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     viteMockServe(),
+    vitePluginForArco({
+      theme: '@arco-themes/vue-project-chiral',
+    }),
     UnoCSS('./uno.config.ts'),
     Vuetify({}),
     AutoImport({
@@ -34,11 +38,17 @@ export default defineConfig({
         '@vueuse/core',
         'pinia',
       ],
+      resolvers: [
+        ArcoResolver(),
+      ],
     }),
     Components({
       dts: true,
       resolvers: [
         Vuetify3Resolver(),
+        ArcoResolver({
+          sideEffect: true,
+        }),
       ],
     }),
   ],

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Basic from './basic.vue'
 import Editor from '@/views/workspace/components/editor/index.vue'
-import type { IEvent } from '@/api/event'
+import type { EventEntity } from '@/api/api-base'
 
-const { isLoading, data, color } = defineProps<{
+const { isLoading, event, color } = defineProps<{
   isLoading?: boolean
-  data?: IEvent
+  event: EventEntity
   color?: string
 }>()
 
@@ -22,11 +22,7 @@ const handleClick = () => {
       114514
     </div>
   </Basic>
-  <v-dialog
-    v-model="dialogOpen"
-    width="75%" height="75%"
-    transition="dialog-transition"
-  >
+  <v-dialog v-model="dialogOpen" width="75%" height="75%">
     <Editor :props="{ id: '1' }" />
   </v-dialog>
 </template>

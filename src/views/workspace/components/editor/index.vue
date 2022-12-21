@@ -13,7 +13,7 @@ const { id, state, position, onClose } = $(props)
 
 <template>
   <div
-    component-light dark:component-dark
+    card-light dark:card-dark
     column overflow-hidden
   >
     <ComponentHeader>
@@ -25,12 +25,18 @@ const { id, state, position, onClose } = $(props)
       </template>
       <template #right>
         <div row space-x-2>
-          <v-btn color="error" variant="text">
+          <!-- <v-btn color="error" variant="text">
             删除
-          </v-btn>
-          <v-btn color="primary">
+          </v-btn> -->
+          <a-button type="text" status="danger">
+            删除
+          </a-button>
+          <!-- <v-btn color="primary">
             保存
-          </v-btn>
+          </v-btn> -->
+          <AButton type="primary">
+            保存
+          </AButton>
         </div>
       </template>
     </ComponentHeader>

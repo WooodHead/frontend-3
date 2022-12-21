@@ -17,7 +17,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
     :initial="{ opacity: 0 }"
     :animate="{ opacity: 1 }"
     :exit="{ opacity: 0 }"
-    component-light dark:component-dark
+    card-light dark:card-dark
     absolute overflow-hidden
     w-200px min-h-200px
   >
@@ -25,9 +25,11 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
     <div v-else full>
       <div w-full h-2 :style="{ backgroundColor: data?.color }"></div>
       <div p-2>
-        <div text-xl font-semibold>
+        <div text-xl>
           {{ data?.name }}
         </div>
+        <ADivider />
+        <div>114514</div>
       </div>
     </div>
   </Motion>

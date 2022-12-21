@@ -4,18 +4,19 @@ import WSComponent from './components/index.vue'
 import useWSStore from './store'
 import type { ILayout } from './layout'
 import { Layout } from './layout'
-import projectQuery from '@/api/project'
+import api from '@/api/api'
 
 const WSStore = useWSStore()
 
 const { isLoading } = useQuery({
-  ...projectQuery.workspace,
+  queryKey: ['workspace'],
+  queryFn: api.project.getWorkspaceInfo,
   select: ({ layout }) => layout,
   onSuccess: config => { WSStore.layout = Layout.deserialize(config as ILayout) },
 })
 
 onUnmounted(() => {
-  projectQuery.updateWorkspaceInfo({ layout: WSStore.layout.serialize() })
+  api.project.updateWorkspaceInfo({ layout: WSStore.layout.serialize() })
 })
 </script>
 

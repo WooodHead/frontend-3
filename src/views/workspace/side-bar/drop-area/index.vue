@@ -22,6 +22,7 @@ const blocks: BlockProps[] = [
     :initial="{ opacity: 0 }"
     :animate="{ opacity: 1 }"
     :exit="{ opacity: 0 }"
+    :transition="{ duration: 0.1 }"
     full
     fixed top-0 left-0
     bg="white/20" backdrop="filter blur-8"
