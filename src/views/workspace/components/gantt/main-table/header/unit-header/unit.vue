@@ -54,8 +54,7 @@ useIntersectionObserver(
       height: `${HEADER_HEIGHT / 2}px`,
     }"
     absolute center
-    bg="white dark:gray-600"
-    uno-border="r-2 b-2 gray-200"
+    uno-border="r b border-2"
     select-none z-50
   >
     {{ id.toString() }}

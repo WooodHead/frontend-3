@@ -22,7 +22,7 @@ const { x, y } = useDraggable(target, {
     column
     absolute m-auto left-0 right-0 bottom-10
     w-400px h-200px
-    z-40 bg-white shadow-lg rounded-lg
+    z-40 shadow-lg rounded-lg
   >
     <div grow w-full>
     </div>

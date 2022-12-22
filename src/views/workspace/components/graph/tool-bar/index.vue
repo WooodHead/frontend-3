@@ -3,7 +3,7 @@
 
 <template>
   <div
-    card-light dark:card-dark
+    card 
     h="!16" mt-4
   ></div>
 </template>

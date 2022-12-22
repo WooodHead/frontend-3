@@ -24,7 +24,7 @@ onUnmounted(() => {
   <div
     grow relative
     h-screen
-    bg="gray-200 dark:gray-500"
+    shadow-lg
     grid="~ cols-2 rows-2"
     gap-4 p-4
   >

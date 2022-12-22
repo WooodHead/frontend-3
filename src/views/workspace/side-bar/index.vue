@@ -23,7 +23,9 @@ const handleClickOutside = () => { expand = false }
     <div
       :class="!expand && `shadow-lg`"
       column shrink-0 relative
-      w-16 h-full bg-gray-100 z-50
+      w-16 h-full
+      bg-gray-2
+      z-50
     >
       <!-- <v-btn rounded-0 variant="text" height="5%" @click="handleExpand">
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>

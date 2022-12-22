@@ -17,7 +17,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
     :initial="{ opacity: 0 }"
     :animate="{ opacity: 1 }"
     :exit="{ opacity: 0 }"
-    card-light dark:card-dark
+    card
     absolute overflow-hidden
     w-200px min-h-200px
   >

@@ -4,7 +4,7 @@
 <template>
   <div
     center-x h-20 p-2
-    border-gray-200 border-b-2
+    uno-border="b border-2"
   >
     <v-avatar
       size="avatarSize"

@@ -38,10 +38,10 @@ const handlePointerOver = () => {
     :style="{ width: `${UNIT_WIDTH}px`, height: `${99999}px` }"
     relative column cursor-pointer
     transition-colors duration-100
-    border-gray-200 outline="2 blue-400"
+    border-border-2 outline="blue-4"
     :class="`${activate
-      ? `border-r-0 bg-blue-100 hover:bg-blue-200 outline z-10`
-      : `border-r-2 bg-gray-100 hover:bg-gray-200 outline-none`}`"
+      ? `border-r-0 bg-blue-2 hover:bg-blue-3 outline z-10`
+      : `border-r bg-gray-2 hover:bg-gray-3 outline-none`}`"
 
     @pointerdown="handlePointerDown"
     @pointerup="handlePointerUp"

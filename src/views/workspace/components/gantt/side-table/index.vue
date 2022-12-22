@@ -10,14 +10,14 @@ const store = useStore()
   <div
     column
     h-full w="30%" min-w="20%" max-w="50%"
-    bg-white rounded-l-lg shadow-lg
+    rounded-l-lg shadow-lg
     resize-x overflow-x-hidden
-    z-10
+    z-10 bg-bg-1
   >
     <div
       :style="{ height: `${HEADER_HEIGHT}px` }"
       center flex-shrink-0
-      uno-border="b-2 gray-200"
+      uno-border="b border-2"
     >
       {{ store.visibleUnit?.toString() }}
     </div>

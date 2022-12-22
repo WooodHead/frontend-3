@@ -5,7 +5,7 @@ import type { EventEntity } from '@/api/api-base'
 
 const { isLoading, event, color } = defineProps<{
   isLoading?: boolean
-  event: EventEntity
+  event?: EventEntity
   color?: string
 }>()
 
@@ -17,7 +17,7 @@ const handleClick = () => {
 
 <template>
   <Basic @click="handleClick">
-    <div bg-blue-400 shrink-0 w-8px />
+    <div bg-primary-6 shrink-0 w-8px />
     <div grow center-x p-2>
       114514
     </div>

@@ -38,7 +38,7 @@ onUnmounted(() => {
 <template>
   <div full column>
     <div
-      card-light dark:card-dark
+      card
       column overflow-hidden
     >
       <ComponentHeader v-if="!store.fullMode">

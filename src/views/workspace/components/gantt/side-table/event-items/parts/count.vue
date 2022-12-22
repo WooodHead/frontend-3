@@ -4,7 +4,7 @@ import Basic from './basic.vue'
 
 <template>
   <Basic>
-    <div center text-white w-full rounded-full bg-blue-400 m-2>
+    <div center text-white w-full rounded-full bg-primary-6 m-2>
       114
     </div>
   </Basic>

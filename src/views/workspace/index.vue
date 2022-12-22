@@ -13,7 +13,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div row h-full center>
+  <div row h-full center bg-gray-3>
     <SideBar />
     <Body />
   </div>

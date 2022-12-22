@@ -14,7 +14,7 @@ const { id, state, position, onClose } = props
 
 <template>
   <div
-    card-light dark:card-dark
+    card 
     column overflow-hidden
   >
     <ComponentHeader>

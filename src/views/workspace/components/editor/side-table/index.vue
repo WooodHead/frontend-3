@@ -3,7 +3,7 @@ const tab = $ref(0)
 </script>
 
 <template>
-  <div uno-border="r-2 gray-200" h-full>
+  <div uno-border="r border-2" h-full>
     <!-- <v-tabs v-bind="tab" color="primary" dark slider-color="primary">
       <v-tab :value="1">
         详细信息
@@ -17,13 +17,19 @@ const tab = $ref(0)
     </v-tabs> -->
     <ATabs p-2>
       <ATabPane key="1" title="信息">
-        1
+        <ACard>
+          1
+        </ACard>
       </ATabPane>
       <ATabPane key="2" title="待办">
-        2
+        <ACard>
+          2
+        </ACard>
       </ATabPane>
       <ATabPane key="3" title="关联">
-        3
+        <ACard>
+          3
+        </ACard>
       </ATabPane>
     </ATabs>
   </div>

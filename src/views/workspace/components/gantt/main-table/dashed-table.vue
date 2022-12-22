@@ -12,6 +12,6 @@ import { EVENT_HEIGHT } from '../const'
       left: `${-99999}px`,
       top: `${i * EVENT_HEIGHT}px`,
     }"
-    absolute uno-border="b-2 gray-300 dashed" pointer-events-none z-10
+    absolute uno-border="b-2 border-2 dashed" pointer-events-none z-10
   />
 </template>

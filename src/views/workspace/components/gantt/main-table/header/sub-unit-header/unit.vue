@@ -13,8 +13,8 @@ const { unit } = defineProps<{ unit: UnitID }>()
       height: `${HEADER_HEIGHT / 2}px`,
     }"
     center
-    uno-border="r-2 b-2 gray-200"
-    bg-white select-none z-10
+    uno-border="r b border-2"
+    select-none z-10
   >
     {{ unit.toUnitString() }}
   </div>

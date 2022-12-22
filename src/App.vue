@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 <template>
   <DndProvider :backend="HTML5Backend">
-    <div w-screen h-screen>
+    <div w-screen h-screen text-text-2>
       <RouterView />
     </div>
   </DndProvider>

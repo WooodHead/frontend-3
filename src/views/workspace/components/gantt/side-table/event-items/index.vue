@@ -7,7 +7,7 @@ const handleScroll = (e: UIEvent) => {
   store.eventScrollTop = -(e.currentTarget as HTMLDivElement).scrollTop
 }
 
-const ids = Array(10).fill(0).map((_, v) => `${v}`)
+const ids = Array(10).fill(0).map((_, v) => v)
 </script>
 
 <template>

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div row p-2 uno-border="b-2 gray-200" min-h-54px>
+  <div row p-2 uno-border="b border-2" min-h-54px>
     <div>
       <slot name="left"></slot>
     </div>

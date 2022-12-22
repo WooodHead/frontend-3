@@ -1,8 +1,18 @@
+import path from 'path'
 import { defineConfig, presetAttributify, presetIcons, presetTypography, presetUno } from 'unocss'
 import presetRemToPx from '@unocss/preset-rem-to-px'
+import presetTheme from 'unocss-preset-theme'
+import type { Theme } from '@unocss/preset-uno'
+import parseArcoTheme from './src/utils/parseArcoTheme'
 
-export default defineConfig({
-  preflights: [],
+const parsed = parseArcoTheme(path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'))!
+
+export default defineConfig<Theme>({
+  theme: {
+    colors: {
+      ...parsed.light.colors,
+    },
+  },
   rules: [],
   shortcuts: [
     {
@@ -16,10 +26,8 @@ export default defineConfig({
       'center-y': 'flex flex-col items-center',
     },
     {
-      'card-light': 'full bg-white rounded-lg shadow-lg',
-      'card-dark': 'full bg-gray-700 rounded-lg shadow-lg',
+      card: 'full bg-bg-1 rounded-lg shadow-lg',
     },
-
   ],
   safelist: [
     // col-start 1 到 5
@@ -40,6 +48,15 @@ export default defineConfig({
     presetIcons(),
     presetRemToPx(),
     presetTypography(),
+    presetTheme<{}>({
+      theme: {
+        dark: {
+          colors: {
+            ...parsed.dark.colors,
+          },
+        },
+      },
+    }),
     presetAttributify({
       strict: true,
       prefix: 'uno-',

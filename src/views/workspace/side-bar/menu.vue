@@ -7,12 +7,14 @@ const toggleDarkMode = () => {
 }
 watch($$(darkMode), () => {
   if (darkMode) {
-    document.documentElement.classList.add('dark')
     document.body.setAttribute('arco-theme', 'dark')
+    document.body.classList.add('dark')
+    document.body.style.colorScheme = 'dark'
   }
   else {
-    document.documentElement.classList.remove('dark')
     document.body.setAttribute('arco-theme', 'light')
+    document.body.classList.remove('dark')
+    document.body.style.colorScheme = 'light'
   }
 })
 
@@ -30,8 +32,8 @@ const menuConfig: { title: string }[] = [
     transition-transform
     :class="`${expand && `translate-x-260px`}`"
     w-200px h-full
-    bg-gray-100 backdrop="filter blur-8" shadow-lg
-    z="10"
+    bg-gray-2 shadow-lg
+    z-10
   >
     <div
       :class="`${darkMode ? `i-radix-icons-moon` : `i-radix-icons-sun`}`"
@@ -40,13 +42,21 @@ const menuConfig: { title: string }[] = [
       text-gray-500
       @click="toggleDarkMode"
     ></div>
-    <v-btn
+    <!-- <v-btn
       v-for="{ title } of menuConfig"
       :key="title" draggable="false"
       height="64px" variant="text"
       rounded-0 center font-bold text-xl
     >
       {{ title }}
-    </v-btn>
+    </v-btn> -->
+    <AButton
+      v-for="{ title } of menuConfig"
+      :key="title"
+      h-64px
+      rounded-0 center text-xl
+    >
+      {{ title }}
+    </AButton>
   </div>
 </template>
