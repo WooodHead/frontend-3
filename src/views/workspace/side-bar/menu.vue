@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { useGlobalStore } from '@/store'
+
 const { expand } = defineProps<{ expand: boolean }>()
 
+const globalStore = useGlobalStore()
+
 let darkMode = $ref(false)
+
 const toggleDarkMode = () => {
   darkMode = !darkMode
 
@@ -9,11 +14,13 @@ const toggleDarkMode = () => {
     document.body.setAttribute('arco-theme', 'dark')
     document.body.classList.add('dark')
     document.body.style.colorScheme = 'dark'
+    globalStore.darkMode = true
   }
   else {
     document.body.setAttribute('arco-theme', 'light')
     document.body.classList.remove('dark')
     document.body.style.colorScheme = 'light'
+    globalStore.darkMode = false
   }
 }
 

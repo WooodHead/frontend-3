@@ -22,7 +22,6 @@ const handleExpand = () => { expand = !expand }
         v-show="expand"
         :animate="{ translateY: '0px', opacity: 1 }"
         :exit="{ translateY: '100%', opacity: 0 }"
-        :transition="{ duration: 0.2 }"
       >
         <component :is="btn" />
       </Motion>

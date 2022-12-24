@@ -6,12 +6,20 @@ import Handler from './component-handler.vue'
 import Menu from './menu.vue'
 
 import CharactersIcon from '@/assets/workspace/character.png'
+import CharactersDarkIcon from '@/assets/workspace/character-dark.png'
 import EditorIcon from '@/assets/workspace/editor.png'
+import EditorDarkIcon from '@/assets/workspace/editor-dark.png'
 import GanttIcon from '@/assets/workspace/gantt.png'
+import GanttDarkIcon from '@/assets/workspace/gantt-dark.png'
 import GraphIcon from '@/assets/workspace/graph.png'
+import GraphDarkIcon from '@/assets/workspace/graph-dark.png'
+import { useGlobalStore } from '@/store'
 
 const WSStore = useWSStore()
 let { menuExpand } = $(storeToRefs(WSStore))
+
+const globalStore = useGlobalStore()
+const { darkMode } = $(storeToRefs(globalStore))
 
 const handleExpand = () => { menuExpand = !menuExpand }
 const handleClickOutside = () => { menuExpand = false }
@@ -38,16 +46,16 @@ const handleClickOutside = () => { menuExpand = false }
       </Presence>
       <div grow column justify-center w-full>
         <Handler id="gantt" name="时序图">
-          <img w-40px h-40px :src="GanttIcon">
+          <img w-40px h-40px :src="darkMode ? GanttDarkIcon : GanttIcon">
         </Handler>
         <Handler id="editor" name="编辑器">
-          <img w-40px h-40px :src="EditorIcon">
+          <img w-40px h-40px :src="darkMode ? EditorDarkIcon : EditorIcon">
         </Handler>
         <Handler id="graph" name="叙事图">
-          <img w-40px h-40px :src="GraphIcon">
+          <img w-40px h-40px :src="darkMode ? GraphDarkIcon : GraphIcon">
         </Handler>
         <Handler id="characters" name="角色">
-          <img w-40px h-40px :src="CharactersIcon">
+          <img w-40px h-40px :src="darkMode ? CharactersDarkIcon : CharactersIcon">
         </Handler>
       </div>
       <div center h="10%" w-full>

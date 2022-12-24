@@ -26,13 +26,13 @@ const { editor } = defineProps<{
         <v-btn size="small" variant="text">
           <div class="i-radix-icons-underline" text-2xl></div>
       </v-btn-toggle> -->
-      <ATag rounded-r-0 p-4 checkable color="blue">
+      <ATag rounded-r-0 p-4 checkable color="blue" bg-bg-2>
         <div class="i-radix-icons-font-bold" text-2xl></div>
       </ATag>
-      <ATag rounded-0 p-4 checkable color="blue">
+      <ATag rounded-0 p-4 checkable color="blue" bg-bg-2>
         <div class="i-radix-icons-font-italic" text-2xl></div>
       </ATag>
-      <ATag rounded-l-0 p-4 checkable color="blue">
+      <ATag rounded-l-0 p-4 checkable color="blue" bg-bg-2>
         <div class="i-radix-icons-underline" text-2xl></div>
       </ATag>
     </div>
