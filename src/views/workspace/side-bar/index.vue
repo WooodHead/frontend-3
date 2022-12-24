@@ -11,17 +11,17 @@ import GanttIcon from '@/assets/workspace/gantt.png'
 import GraphIcon from '@/assets/workspace/graph.png'
 
 const WSStore = useWSStore()
+let { menuExpand } = $(storeToRefs(WSStore))
 
-let expand = $ref(false)
-const handleExpand = () => { expand = !expand }
-const handleClickOutside = () => { expand = false }
+const handleExpand = () => { menuExpand = !menuExpand }
+const handleClickOutside = () => { menuExpand = false }
 </script>
 
 <template>
   <div v-click-outside="handleClickOutside" h-full>
-    <Menu :expand="expand" />
+    <Menu :expand="menuExpand" />
     <div
-      :class="!expand && `shadow-lg`"
+      :class="!menuExpand && `shadow-lg`"
       column shrink-0 relative
       w-16 h-full
       bg-gray-2

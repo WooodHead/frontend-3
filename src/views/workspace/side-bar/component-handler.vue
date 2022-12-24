@@ -22,17 +22,16 @@ watch(dragProps, ({ isDragging, dragID }) => {
 </script>
 
 <template>
-  <div
-    :ref="dragSource"
-    :class="dragProps.isDragging ? `invisible` : `visible`"
-    center
-    w-16 h-16
-    transition-transform hover:scale-125
-    cursor-pointer
-  >
-    <slot />
-    <v-tooltip right activator="parent">
-      {{ name }}
-    </v-tooltip>
-  </div>
+  <ATooltip position="right" :content="name">
+    <div
+      :ref="dragSource"
+      :class="dragProps.isDragging ? `invisible` : `visible`"
+      center
+      w-16 h-16
+      transition-transform hover:scale-125
+      cursor-pointer
+    >
+      <slot></slot>
+    </div>
+  </ATooltip>
 </template>

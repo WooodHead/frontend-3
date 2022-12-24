@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import Basic from './basic.vue'
 </script>
 
 <template>
-  <v-btn icon color="primary">
-    <div class="i-radix-icons-caret-right" text-4xl></div>
-    <v-tooltip left activator="parent">
-      跳转到下一个事件
-    </v-tooltip>
-  </v-btn>
+  <Basic tooltip="跳转到下一个事件">
+    <div class="i-radix-icons-caret-right" text-2xl></div>
+  </Basic>
 </template>

@@ -9,20 +9,17 @@ import Create from './buttons/create.vue'
 
 let expand = $ref(false)
 
-const handleExpand = () => {
-  expand = !expand
-}
+const handleExpand = () => { expand = !expand }
 </script>
 
 <template>
-  <div absolute right-4 bottom-4 center-y space-y-2>
+  <div absolute right-4 bottom-4 center-y space-y-2 p-2>
     <Presence
       v-for="btn in [NavigateNext, NavigatePrev, UnitUp, UnitDown, Search, Create]"
       :key="btn.name"
     >
       <Motion
         v-show="expand"
-        :initial="{ translateY: '100%', opacity: 0 }"
         :animate="{ translateY: '0px', opacity: 1 }"
         :exit="{ translateY: '100%', opacity: 0 }"
         :transition="{ duration: 0.2 }"
@@ -30,11 +27,14 @@ const handleExpand = () => {
         <component :is="btn" />
       </Motion>
     </Presence>
-    <v-btn icon color="primary" size="large" @click="handleExpand">
+    <!-- <v-btn icon color="primary" size="large" @click="handleExpand">
       <div
         :class="expand ? `i-radix-icons-triangle-down` : `i-radix-icons-triangle-up`"
         text-4xl
       ></div>
-    </v-btn>
+    </v-btn> -->
+    <AButton type="primary" size="large" shape="circle" @click="handleExpand">
+      <div :class="expand ? `i-radix-icons-triangle-down` : `i-radix-icons-triangle-up`" text-4xl></div>
+    </AButton>
   </div>
 </template>

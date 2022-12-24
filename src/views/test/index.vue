@@ -16,11 +16,5 @@ const handleChange = () => {
 </script>
 
 <template>
-  <v-btn color="primary" @click="handleClick">
-    添加
-  </v-btn>
-  <v-btn color="primary" @click="handleChange">
-    改变
-  </v-btn>
-  {{ first }}
+  <CreateEventModal />
 </template>

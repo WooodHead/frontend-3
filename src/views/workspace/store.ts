@@ -6,6 +6,7 @@ const useWSStore = defineStore({
   id: 'workspace',
   state: () => ({
     dragging: false,
+    menuExpand: false,
     layout: new Layout(),
   }),
   getters: {

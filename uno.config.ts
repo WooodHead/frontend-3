@@ -49,6 +49,10 @@ export default defineConfig<Theme>({
     presetRemToPx(),
     presetTypography(),
     presetTheme<{}>({
+      selectors: {
+        light: 'body',
+        dark: 'body.dark',
+      },
       theme: {
         dark: {
           colors: {

@@ -4,8 +4,7 @@ const { expand } = defineProps<{ expand: boolean }>()
 let darkMode = $ref(false)
 const toggleDarkMode = () => {
   darkMode = !darkMode
-}
-watch($$(darkMode), () => {
+
   if (darkMode) {
     document.body.setAttribute('arco-theme', 'dark')
     document.body.classList.add('dark')
@@ -16,7 +15,7 @@ watch($$(darkMode), () => {
     document.body.classList.remove('dark')
     document.body.style.colorScheme = 'light'
   }
-})
+}
 
 const menuConfig: { title: string }[] = [
   { title: '设置' },
@@ -33,7 +32,7 @@ const menuConfig: { title: string }[] = [
     :class="`${expand && `translate-x-260px`}`"
     w-200px h-full
     bg-gray-2 shadow-lg
-    z-10
+    z-20
   >
     <div
       :class="`${darkMode ? `i-radix-icons-moon` : `i-radix-icons-sun`}`"
@@ -53,8 +52,7 @@ const menuConfig: { title: string }[] = [
     <AButton
       v-for="{ title } of menuConfig"
       :key="title"
-      h-64px
-      rounded-0 center text-xl
+      center h-64px rounded-0 text-xl
     >
       {{ title }}
     </AButton>

@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import Basic from './basic.vue'
 </script>
 
 <template>
-  <v-btn icon color="primary">
-    <div class="i-radix-icons-magnifying-glass" text-3xl></div>
-    <v-tooltip left activator="parent">
-      搜索
-    </v-tooltip>
-  </v-btn>
+  <Basic tooltip="搜索">
+    <div class="i-radix-icons-magnifying-glass" text-2xl></div>
+  </Basic>
 </template>

@@ -15,7 +15,7 @@ const { editor } = defineProps<{
     :tippy-options="{ duration: 100 }"
     :editor="editor"
   >
-    <div card row>
+    <div card row border="~ border-2">
       <!-- <v-btn-toggle v-model="options" multiple color="primary">
         <v-btn size="small" variant="text">
           <div class="i-radix-icons-font-bold" text-2xl></div>

@@ -47,9 +47,12 @@ onUnmounted(() => {
         <template #middle>
         </template>
         <template #right>
-          <v-btn color="primary">
+          <!-- <v-btn color="primary">
             保存并关闭
-          </v-btn>
+          </v-btn> -->
+          <AButton type="primary">
+            保存并关闭
+          </AButton>
         </template>
       </ComponentHeader>
       <div relative row h-0 grow>

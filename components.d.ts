@@ -7,13 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Card: typeof import('./src/components/card.vue')['default']
+    AtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
+    CollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
+    CreateEventModal: typeof import('./src/components/create-event-modal/index.vue')['default']
     EventDetail: typeof import('./src/components/event-detail/index.vue')['default']
-    EventInfo: typeof import('./src/components/event-info.vue')['default']
-    Message: typeof import('./src/components/message/index.vue')['default']
-    PageCard: typeof import('./src/components/page-card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Status: typeof import('./src/components/status.vue')['default']
