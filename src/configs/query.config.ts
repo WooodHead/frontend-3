@@ -1,4 +1,4 @@
-import type { QueryClientConfig } from '@tanstack/query-core'
+import type { QueryClientConfig } from '@tanstack/vue-query'
 
 const config: QueryClientConfig = {
   defaultOptions: {
