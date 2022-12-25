@@ -19,19 +19,26 @@ const { props, data } = defineProps<GanttProps>()
 const { id, state, position, onClose } = $(props)
 
 const store = registerStore(id)
+const { visibleUnit } = $(storeToRefs(store))
 
 if (data !== undefined) { store.initWithData(data) }
 
 const { isSuccess, isLoading, isError } = $(useQuery({
+  enabled: computed(() => data === undefined),
   queryKey: ['workspace'],
-  queryFn: api.project.getWorkspaceInfo,
+  queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ origin }) => origin,
-  enabled: data === undefined,
-  onSuccess: id => { store.init(UnitID.deserialize(id)) },
+  onSuccess: id => {
+    if (!id) { store.init(UnitID.fromDayjs(new Date(), 'month')) }
+    else { store.init(UnitID.deserialize(id)) }
+  },
 }))
 
-onUnmounted(() => {
-  api.project.updateWorkspaceInfo({ origin: store.visibleUnit?.serialize() })
+// TODO 考虑修改为页面关闭和组件卸载时触发
+watch($$(visibleUnit), visibleUnit => {
+  if (visibleUnit) {
+    api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
+  }
 })
 </script>
 

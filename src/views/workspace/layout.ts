@@ -84,6 +84,21 @@ export class Layout {
     status: LayoutStatus
   }[] = []
 
+  constructor(components?: { id: string; position: IPosition }[]) {
+    if (components) {
+      this._components = components.map(({ id, position }) => ({
+        id, position, status: new LayoutStatus(position),
+      }))
+    }
+  }
+
+  static default() {
+    return new Layout([
+      { id: 'editor', position: [1, 2, 1, 3] },
+      { id: 'gantt', position: [2, 3, 1, 3] },
+    ])
+  }
+
   static deserialize(data: ILayout) {
     const layout = new Layout()
     layout._components = data.map(({ id, position }) => ({

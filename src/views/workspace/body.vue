@@ -1,27 +1,54 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
+import type { AxiosError } from 'axios'
+import { Message } from '@arco-design/web-vue'
 import WSComponent from './components/index.vue'
 import useWSStore from './store'
 import type { ILayout } from './layout'
 import { Layout } from './layout'
 import api from '@/api/api'
+import Status from '@/components/status.vue'
 
 const WSStore = useWSStore()
+const { layout } = $(storeToRefs(WSStore))
 
-const { isLoading } = useQuery({
-  queryKey: ['workspace'],
-  queryFn: api.project.getWorkspaceInfo,
+const { isSuccess, isLoading, isError } = useQuery({
+  queryKey: ['project', 'workspace'],
+  retry: false,
+  queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ layout }) => layout,
-  onSuccess: config => { WSStore.layout = Layout.deserialize(config as ILayout) },
+  onSuccess: config => {
+    if (!config || config.length === 0) {
+      WSStore.layout = Layout.default()
+    }
+    else {
+      WSStore.layout = Layout.deserialize(config as ILayout)
+    }
+  },
+  onError: ({ response }: AxiosError) => {
+    if (response) {
+      const { status, statusText } = response
+      // 404 时使用默认布局
+      if (status === 404) { WSStore.layout = Layout.default() }
+      else { Message.error(`工作台启动失败：${statusText}`) }
+    }
+    else {
+      Message.error('工作台启动失败：网络错误')
+    }
+  },
 })
 
-onUnmounted(() => {
-  api.project.updateWorkspaceInfo({ layout: WSStore.layout.serialize() })
-})
+watch($$(layout), layout => {
+  api.project.updateWorkspaceInfo({ layout: layout.serialize() })
+}, { deep: true })
 </script>
 
 <template>
+  <div v-if="!isSuccess" grow h-screen center>
+    <Status card w="1/2" h="1/2" :loading="isLoading" :error="isError" />
+  </div>
   <div
+    v-else
     grow relative
     h-screen
     shadow-lg

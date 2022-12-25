@@ -13,7 +13,7 @@ const { id, state, position, onClose } = $(props)
 
 <template>
   <div
-    card 
+    card
     column overflow-hidden
   >
     <ComponentHeader>
@@ -21,7 +21,11 @@ const { id, state, position, onClose } = $(props)
         {{ }}
       </template>
       <template #middle>
-        {{ }}
+        <ASelect>
+          <AOption>
+            1
+          </AOption>
+        </ASelect>
       </template>
       <template #right>
         <div row space-x-2>
