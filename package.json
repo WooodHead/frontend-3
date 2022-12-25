@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ./src --fix"
+    "lint": "eslint ./src --fix",
+    "update": "source update-api.sh"
   },
   "packageManager": "pnpm@7.19.0",
   "dependencies": {
