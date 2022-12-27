@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Node } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core'
 
 interface EventNodeProps {
-  node: Node
+  node: NodeProps
 }
 
 const { node } = defineProps<EventNodeProps>()
