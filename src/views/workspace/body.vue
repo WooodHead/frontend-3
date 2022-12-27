@@ -14,7 +14,7 @@ const { layout } = $(storeToRefs(WSStore))
 
 const { isSuccess, isLoading, isError } = useQuery({
   queryKey: ['project', 'workspace'],
-  retry: false,
+  retry: (_count, { response }) => response?.status !== 404,
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ layout }) => layout,
   onSuccess: config => {
@@ -38,9 +38,11 @@ const { isSuccess, isLoading, isError } = useQuery({
   },
 })
 
-watch($$(layout), layout => {
-  api.project.updateWorkspaceInfo({ layout: layout.serialize() })
-}, { deep: true })
+watch(
+  () => layout.serialize(),
+  layout => {
+    api.project.updateWorkspaceInfo({ layout })
+  }, { deep: true })
 </script>
 
 <template>

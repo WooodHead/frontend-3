@@ -21,11 +21,7 @@ const { id, state, position, onClose } = $(props)
         {{ }}
       </template>
       <template #middle>
-        <ASelect>
-          <AOption>
-            1
-          </AOption>
-        </ASelect>
+        <ATreeSelect />
       </template>
       <template #right>
         <div row space-x-2>

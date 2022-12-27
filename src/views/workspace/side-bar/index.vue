@@ -38,7 +38,7 @@ const handleClickOutside = () => { menuExpand = false }
       <!-- <v-btn rounded-0 variant="text" height="5%" @click="handleExpand">
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
       </v-btn> -->
-      <AButton h="5%" rounded-0 @click="handleExpand">
+      <AButton h-40px rounded-0 @click="handleExpand">
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
       </AButton>
       <Presence>

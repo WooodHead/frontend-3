@@ -116,23 +116,7 @@ export interface CreateProjectDto {
   description: string;
 }
 
-export interface SettingsEntity {
-  darkMode: boolean;
-}
-
-export interface LayoutEntity {
-  id: string;
-  position: number[];
-}
-
-export interface WorkspaceEntity {
-  origin: string;
-  layout: LayoutEntity[];
-}
-
 export interface ProjectEntity {
-  settings: SettingsEntity;
-  workspace: WorkspaceEntity;
   id: number;
   name: string;
   description: string | null;
@@ -150,6 +134,18 @@ export interface UpdateProjectDto {
   description?: string;
 }
 
+export interface LayoutEntity {
+  id: string;
+  position: number[];
+}
+
+export interface WorkspaceEntity {
+  id: number;
+  origin: string;
+  layout: LayoutEntity[];
+  projectId: number;
+}
+
 export interface CreateLayoutDto {
   id: string;
   position: number[];
@@ -158,6 +154,10 @@ export interface CreateLayoutDto {
 export interface UpdateWorkspaceDto {
   origin?: string;
   layout?: CreateLayoutDto[];
+}
+
+export interface SettingsEntity {
+  darkMode: boolean;
 }
 
 export interface UpdateSettingsDto {
@@ -725,7 +725,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/project/settings
      */
     getProjectSettings: (params: RequestParams = {}) =>
-      this.request<UpdateCharacterDto, any>({
+      this.request<SettingsEntity, any>({
         path: `/project/settings`,
         method: "GET",
         format: "json",
@@ -757,11 +757,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/character
      */
     create: (data: CreateCharacterDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/character`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -772,9 +773,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/character
      */
     findAll: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/character`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -785,9 +787,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/character/{id}
      */
     findOne: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/character/${id}`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -798,11 +801,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/character/{id}
      */
     update: (id: string, data: UpdateCharacterDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/character/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -813,9 +817,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/character/{id}
      */
     remove: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/character/${id}`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
   };

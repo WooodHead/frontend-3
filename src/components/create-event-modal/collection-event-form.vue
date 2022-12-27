@@ -22,20 +22,10 @@ defineExpose({ validate })
     </AFormItem>
     <!-- TODO 自定义FormItem，支持可视化选择子图 -->
     <AFormItem field="graphIds" label="子关系图" required>
-      <ASelect
+      <ATreeSelect
         v-model:model-value="model.graphIds"
         multiple allow-clear allow-search
-      >
-        <AOption value="1">
-          1
-        </AOption>
-        <AOption value="2">
-          2
-        </AOption>
-        <AOption value="3">
-          3
-        </AOption>
-      </ASelect>
+      />
     </AFormItem>
   </AForm>
 </template>

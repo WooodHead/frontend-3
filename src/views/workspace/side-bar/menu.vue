@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import api from '@/api/api'
 import { useGlobalStore } from '@/store'
 
 const { expand } = defineProps<{ expand: boolean }>()
 
 const globalStore = useGlobalStore()
-
-let darkMode = $ref(false)
+let { darkMode } = $(storeToRefs(globalStore))
 
 const toggleDarkMode = () => {
   darkMode = !darkMode
@@ -14,15 +14,21 @@ const toggleDarkMode = () => {
     document.body.setAttribute('arco-theme', 'dark')
     document.body.classList.add('dark')
     document.body.style.colorScheme = 'dark'
-    globalStore.darkMode = true
   }
   else {
     document.body.setAttribute('arco-theme', 'light')
     document.body.classList.remove('dark')
     document.body.style.colorScheme = 'light'
-    globalStore.darkMode = false
   }
 }
+
+onBeforeMount(async () => {
+  const { darkMode } = await api.project.getProjectSettings()
+  if (darkMode) { toggleDarkMode() }
+})
+watch($$(darkMode), darkMode => {
+  api.project.updateProjectSettings({ darkMode })
+})
 
 const menuConfig: { title: string }[] = [
   { title: '设置' },

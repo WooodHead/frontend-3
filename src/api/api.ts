@@ -1,9 +1,7 @@
 import { Api } from './api-base'
 
-const BASE_URL: string = import.meta.env.VITE_BASE_URL
-
-const api = new Api({
-  baseURL: BASE_URL,
+export const api = new Api({
+  baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 api.instance.interceptors.request.use(req => {
