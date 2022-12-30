@@ -3,7 +3,7 @@ const tab = $ref(0)
 </script>
 
 <template>
-  <div uno-border="r border-2" h-full>
+  <div border="r border-2" h-full>
     <!-- <v-tabs v-bind="tab" color="primary" dark slider-color="primary">
       <v-tab :value="1">
         详细信息

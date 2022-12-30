@@ -21,13 +21,13 @@ const { data } = useQuery({
   <div
     :style="{ height: `${EVENT_HEIGHT}px` }"
     w-full
-    uno-border="b border-2"
+    border="b border-2"
     grid="~ cols-16"
   >
-    <div col-span-8 uno-border="r border-2">
+    <div col-span-8 border="r border-2">
       <Info :event="data" />
     </div>
-    <div col-span-5 uno-border="r border-2">
+    <div col-span-5 border="r border-2">
       <Time :start="UnitID.fromDayjs('2022-09', 'month')" :end="UnitID.fromDayjs('2022-10', 'month')" />
     </div>
     <div col-span-3>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls, MiniMap } from '@vue-flow/additional-components'
+import { useVueFlow } from '@vue-flow/core'
 import type { SimulationLinkDatum, SimulationNodeDatum } from 'd3-force'
 import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3-force'
+import Sector from './sector.vue'
 
 const { onNodeDrag } = $(useVueFlow())
 
@@ -105,11 +105,35 @@ onNodeDrag(({ node }) => {
 
 <template>
   <div w-screen h-screen center bg-gray-2>
-    <div w="3/4" h="3/4" bg-white shadow-lg rounded-lg>
-      <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init>
+    <!-- <div class="selection" bg-blue-2 hover:bg-red-2></div> -->
+    <svg :width="400" :height="400">
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="0" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="45" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="90" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="135" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="180" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="225" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="270" :sector-angle="45" />
+      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="315" :sector-angle="45" />
+    </svg>
+    <!-- <div w="3/4" h="3/4" bg-white shadow-lg rounded-lg>
+
+      <VueFlow
+        v-model:nodes="nodes"
+        v-model:edges="edges"
+        fit-view-on-init
+      >
         <MiniMap />
         <Controls />
       </VueFlow>
-    </div>
+    </div> -->
   </div>
 </template>
+
+<style scoped>
+.selection {
+  width: 200px;
+  height: 200px;
+  clip-path: path('M 200 0 A 200 200 0 0 1 0 200 L 0 100 A 100 100 0 0 0 100 0 Z');
+}
+</style>

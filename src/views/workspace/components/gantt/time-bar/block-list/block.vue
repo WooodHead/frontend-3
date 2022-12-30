@@ -42,7 +42,7 @@ const handleClick = () => {
   <div
     ref="target"
     :style="{ transform: `translateX(${baseOffset}px)` }"
-    h-full absolute uno-border="r gray-200"
+    h-full absolute border="r gray-200"
   >
     <v-btn
       :width="BLOCK_WIDTH" height="100%"

@@ -111,9 +111,25 @@ export interface CreateUserDto {
   email?: string;
 }
 
+export interface CreateLayoutDto {
+  id: string;
+  position: number[];
+}
+
+export interface CreateWorkspaceDto {
+  origin: string;
+  layout: CreateLayoutDto[];
+}
+
+export interface CreateSettingsDto {
+  darkMode: boolean;
+}
+
 export interface CreateProjectDto {
   name: string;
   description: string;
+  workspace: CreateWorkspaceDto;
+  settings: CreateSettingsDto;
 }
 
 export interface ProjectEntity {
@@ -144,11 +160,6 @@ export interface WorkspaceEntity {
   origin: string;
   layout: LayoutEntity[];
   projectId: number;
-}
-
-export interface CreateLayoutDto {
-  id: string;
-  position: number[];
 }
 
 export interface UpdateWorkspaceDto {

@@ -10,7 +10,7 @@ watchEffect(() => {
 
 <template>
   <div
-    uno-border="2 border-2" w-64px h-64px center
+    border="2 border-2" w-64px h-64px center
   >
     {{ a }} {{ b }}
   </div>

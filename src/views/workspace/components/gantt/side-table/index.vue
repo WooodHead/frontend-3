@@ -17,7 +17,7 @@ const store = useStore()
     <div
       :style="{ height: `${HEADER_HEIGHT}px` }"
       center flex-shrink-0
-      uno-border="b border-2"
+      border="b border-2"
     >
       {{ store.visibleUnit?.toString() }}
     </div>
