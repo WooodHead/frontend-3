@@ -54,9 +54,6 @@ watch($$(visibleUnit), visibleUnit => {
         <template #middle>
         </template>
         <template #right>
-          <!-- <v-btn color="primary">
-            保存并关闭
-          </v-btn> -->
           <AButton type="primary">
             保存并关闭
           </AButton>

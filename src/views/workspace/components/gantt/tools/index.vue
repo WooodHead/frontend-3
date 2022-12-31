@@ -26,12 +26,6 @@ const handleExpand = () => { expand = !expand }
         <component :is="btn" />
       </Motion>
     </Presence>
-    <!-- <v-btn icon color="primary" size="large" @click="handleExpand">
-      <div
-        :class="expand ? `i-radix-icons-triangle-down` : `i-radix-icons-triangle-up`"
-        text-4xl
-      ></div>
-    </v-btn> -->
     <AButton type="primary" size="large" shape="circle" @click="handleExpand">
       <div :class="expand ? `i-radix-icons-triangle-down` : `i-radix-icons-triangle-up`" text-4xl></div>
     </AButton>

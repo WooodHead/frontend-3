@@ -16,16 +16,6 @@ const { editor } = defineProps<{
     :editor="editor"
   >
     <div card row border="~ border-2">
-      <!-- <v-btn-toggle v-model="options" multiple color="primary">
-        <v-btn size="small" variant="text">
-          <div class="i-radix-icons-font-bold" text-2xl></div>
-        </v-btn>
-        <v-btn size="small" variant="text">
-          <div class="i-radix-icons-font-italic" text-2xl></div>
-        </v-btn>
-        <v-btn size="small" variant="text">
-          <div class="i-radix-icons-underline" text-2xl></div>
-      </v-btn-toggle> -->
       <ATag rounded-r-0 p-4 checkable color="blue" bg-bg-2>
         <div class="i-radix-icons-font-bold" text-2xl></div>
       </ATag>

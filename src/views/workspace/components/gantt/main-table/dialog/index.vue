@@ -27,12 +27,6 @@ const { x, y } = useDraggable(target, {
     <div grow w-full>
     </div>
     <div row w-full>
-      <!-- <v-btn block variant="text" color="primary">
-        取消
-      </v-btn>
-      <v-btn block variant="text" color="primary">
-        完成
-      </v-btn> -->
       <AButton long type="text">
         取消
       </AButton>

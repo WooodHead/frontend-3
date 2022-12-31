@@ -29,7 +29,6 @@ const { empty, loading, error } = defineProps<{
       </div>
     </div>
     <div v-else-if="loading" center full>
-      <!-- <v-progress-circular size="large" indeterminate color="primary" /> -->
       <ASpin :size="64" />
     </div>
   </div>

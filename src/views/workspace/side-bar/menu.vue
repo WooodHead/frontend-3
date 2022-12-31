@@ -54,14 +54,6 @@ const menuConfig: { title: string }[] = [
       text-gray-500
       @click="toggleDarkMode"
     ></div>
-    <!-- <v-btn
-      v-for="{ title } of menuConfig"
-      :key="title" draggable="false"
-      height="64px" variant="text"
-      rounded-0 center font-bold text-xl
-    >
-      {{ title }}
-    </v-btn> -->
     <AButton
       v-for="{ title } of menuConfig"
       :key="title"

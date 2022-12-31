@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { useDrag } from 'vue3-dnd'
 import useWSStore from '../store'
+import { useGlobalStore } from '@/store'
 
-const { id, name } = defineProps<{ id: string; name: string }>()
+const { id, name, icon, darkIcon, size = 40 } = defineProps<{
+  id: string
+  name: string
+  icon: string
+  darkIcon: string
+  size?: number
+}>()
 
 const WSStore = useWSStore()
+const globalStore = useGlobalStore()
+const { darkMode } = $(storeToRefs(globalStore))
 
 const [dragProps, dragSource] = useDrag({
   type: 'component-handler',
@@ -31,7 +40,13 @@ watch(dragProps, ({ isDragging, dragID }) => {
       transition-transform hover:scale-125
       cursor-pointer
     >
-      <slot></slot>
+      <img
+        :style="{
+          width: `${size}px`,
+          height: `${size}px`,
+        }"
+        :src="darkMode ? darkIcon : icon"
+      >
     </div>
   </ATooltip>
 </template>

@@ -35,9 +35,6 @@ const handleClickOutside = () => { menuExpand = false }
       bg-gray-2
       z-50
     >
-      <!-- <v-btn rounded-0 variant="text" height="5%" @click="handleExpand">
-        <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
-      </v-btn> -->
       <AButton h-40px rounded-0 @click="handleExpand">
         <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
       </AButton>
@@ -45,23 +42,15 @@ const handleClickOutside = () => { menuExpand = false }
         <DropArea v-show="WSStore.dragging" />
       </Presence>
       <div grow column justify-center w-full>
-        <Handler id="gantt" name="时序图">
-          <img w-40px h-40px :src="darkMode ? GanttDarkIcon : GanttIcon">
-        </Handler>
-        <Handler id="editor" name="编辑器">
-          <img w-40px h-40px :src="darkMode ? EditorDarkIcon : EditorIcon">
-        </Handler>
-        <Handler id="graph" name="关系图">
-          <img w-40px h-40px :src="darkMode ? GraphDarkIcon : GraphIcon">
-        </Handler>
-        <Handler id="characters" name="角色">
-          <img w-40px h-40px :src="darkMode ? CharactersDarkIcon : CharactersIcon">
-        </Handler>
+        <Handler id="gantt" name="时序图" :icon="GanttIcon" :dark-icon="GanttDarkIcon" />
+        <Handler id="editor" name="编辑器" :icon="EditorIcon" :dark-icon="EditorDarkIcon" />
+        <Handler id="graph" name="关系图" :icon="GraphIcon" :dark-icon="GraphDarkIcon" />
+        <Handler id="characters" name="角色" :icon="CharactersIcon" :dark-icon="CharactersDarkIcon" />
       </div>
       <div center h="10%" w-full>
-        <v-btn flat icon color="#d1d5db">
-          <div w-30px h-30px text-gray-100 i-radix-icons-person></div>
-        </v-btn>
+        <AButton shape="circle" type="secondary">
+          <div w-30px h-30px m-1 i-radix-icons-person></div>
+        </AButton>
       </div>
     </div>
   </div>
