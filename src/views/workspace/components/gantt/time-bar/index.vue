@@ -14,7 +14,7 @@ const store = registerStore(id)
     <div w-8 border="r border-2">
       <AButton type="text" h="!full" rounded-0>
         <template #icon>
-          <div class="i-radix-icons-caret-left" text="2xl gray-600"></div>
+          <div class="i-radix-icons-caret-left" text-2xl></div>
         </template>
       </AButton>
     </div>
@@ -24,7 +24,7 @@ const store = registerStore(id)
     <div w-8 border="l border-2">
       <AButton type="text" h="!full" rounded-0>
         <template #icon>
-          <div class="i-radix-icons-caret-right" text="2xl gray-600"></div>
+          <div class="i-radix-icons-caret-right" text-2xl></div>
         </template>
       </AButton>
     </div>

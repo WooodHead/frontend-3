@@ -15,11 +15,11 @@ const { lock } = $(storeToRefs(store))
     h-full w="30%" min-w="20%" max-w="50%"
     rounded-l-lg shadow-lg
     resize-x overflow-x-hidden
-    z-10 bg-bg-1
+    z-10 bg-bg-2
   >
     <div
       :style="{ height: `${HEADER_HEIGHT}px` }"
-      column shrink-0 p-2
+      column shrink-0 p-2 bg-bg-3
       border="b border-2"
     >
       <div grow center>

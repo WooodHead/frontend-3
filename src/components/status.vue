@@ -11,7 +11,7 @@ const { empty, loading, error } = defineProps<{
     <div v-if="empty" center column full>
       <div
         class="i-radix-icons-info-circled"
-        text-gray-400
+        text-gray-4
         w-80px h-80px mb-4
       ></div>
       <div text="2xl center" font-semibold>
@@ -21,8 +21,9 @@ const { empty, loading, error } = defineProps<{
     <div v-else-if="error" center column full>
       <div
         class="i-radix-icons-cross-circled"
-        text-red-400
-        w-80px h-80px mb-4
+        text-red-4
+        w-80px h-80px
+        mb-4
       ></div>
       <div text="2xl center" font-semibold>
         哦！出现问题了

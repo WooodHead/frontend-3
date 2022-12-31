@@ -6,12 +6,8 @@
     center-x h-20 p-2
     border="b border-2"
   >
-    <v-avatar
-      size="avatarSize"
-    >
-      <div class="i-radix-icons-sun"></div>
-    </v-avatar>
-    <div grow center text-lg font-semibold>
+    <AAvatar>路人</AAvatar>
+    <div grow center font-semibold>
       路人甲
     </div>
   </div>

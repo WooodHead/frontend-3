@@ -2,8 +2,5 @@
 </script>
 
 <template>
-  <div
-    card 
-    h="!16" mt-4
-  ></div>
+  <div card h-54px mt-4></div>
 </template>

@@ -4,7 +4,7 @@ import type { IPosition, IPositionState } from '../layout'
 import Gantt from './gantt/index.vue'
 import Editor from './editor/index.vue'
 import Graph from './graph/index.vue'
-import Characters from './characters/index.vue'
+import Design from './design/index.vue'
 
 export interface ComponentProps {
   id: string // 组件的名称
@@ -31,6 +31,6 @@ const { position, id, state, onClose } = $(props)
     <Gantt v-if="id === 'gantt'" :props="props" />
     <Editor v-else-if="id === 'editor'" :props="props" />
     <Graph v-else-if="id === 'graph'" :props="props" />
-    <Characters v-else-if="id === 'characters'" :props="props" />
+    <Design v-else-if="id === 'design'" :props="props" />
   </div>
 </template>

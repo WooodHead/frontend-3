@@ -51,7 +51,7 @@ const menuConfig: { title: string }[] = [
       :class="`${darkMode ? `i-radix-icons-moon` : `i-radix-icons-sun`}`"
       w-32px h-32px
       absolute top-6 right-6 cursor-pointer
-      text-gray-500
+      text-gray-5
       @click="toggleDarkMode"
     ></div>
     <AButton

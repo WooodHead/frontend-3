@@ -2,7 +2,6 @@
 import type { ComponentProps } from '../index.vue'
 import SideTable from './side-table/index.vue'
 import Body from './body/index.vue'
-import ComponentHeader from '@/components/component-header.vue'
 
 interface CharacterProps {
   props: ComponentProps
@@ -14,7 +13,7 @@ const { id, state, position, onClose } = props
 
 <template>
   <div
-    card 
+    card
     column overflow-hidden
   >
     <ComponentHeader>
@@ -22,7 +21,17 @@ const { id, state, position, onClose } = props
         {{ }}
       </template>
       <template #middle>
-        {{}}
+        <ARadioGroup default-value="1" row type="button">
+          <ARadio value="1" grow center>
+            角色
+          </ARadio>
+          <ARadio value="2" grow center>
+            场景
+          </ARadio>
+          <ARadio value="3" grow center>
+            元设定
+          </ARadio>
+        </ARadioGroup>
       </template>
       <template #right>
         <div row space-x-2>

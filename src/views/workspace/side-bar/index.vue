@@ -5,21 +5,17 @@ import DropArea from './drop-area/index.vue'
 import Handler from './component-handler.vue'
 import Menu from './menu.vue'
 
-import CharactersIcon from '@/assets/workspace/character.png'
-import CharactersDarkIcon from '@/assets/workspace/character-dark.png'
+import DesignIcon from '@/assets/workspace/design.png'
+import DesignDarkIcon from '@/assets/workspace/design-dark.png'
 import EditorIcon from '@/assets/workspace/editor.png'
 import EditorDarkIcon from '@/assets/workspace/editor-dark.png'
 import GanttIcon from '@/assets/workspace/gantt.png'
 import GanttDarkIcon from '@/assets/workspace/gantt-dark.png'
 import GraphIcon from '@/assets/workspace/graph.png'
 import GraphDarkIcon from '@/assets/workspace/graph-dark.png'
-import { useGlobalStore } from '@/store'
 
 const WSStore = useWSStore()
 let { menuExpand } = $(storeToRefs(WSStore))
-
-const globalStore = useGlobalStore()
-const { darkMode } = $(storeToRefs(globalStore))
 
 const handleExpand = () => { menuExpand = !menuExpand }
 const handleClickOutside = () => { menuExpand = false }
@@ -36,7 +32,7 @@ const handleClickOutside = () => { menuExpand = false }
       z-50
     >
       <AButton h-40px rounded-0 @click="handleExpand">
-        <div class="i-radix-icons-hamburger-menu" text="2xl gray-500"></div>
+        <div class="i-radix-icons-hamburger-menu" text="2xl gray-6"></div>
       </AButton>
       <Presence>
         <DropArea v-show="WSStore.dragging" />
@@ -45,7 +41,7 @@ const handleClickOutside = () => { menuExpand = false }
         <Handler id="gantt" name="时序图" :icon="GanttIcon" :dark-icon="GanttDarkIcon" />
         <Handler id="editor" name="编辑器" :icon="EditorIcon" :dark-icon="EditorDarkIcon" />
         <Handler id="graph" name="关系图" :icon="GraphIcon" :dark-icon="GraphDarkIcon" />
-        <Handler id="characters" name="角色" :icon="CharactersIcon" :dark-icon="CharactersDarkIcon" />
+        <Handler id="design" name="设定" :icon="DesignIcon" :dark-icon="DesignDarkIcon" />
       </div>
       <div center h="10%" w-full>
         <AButton shape="circle" type="secondary">
