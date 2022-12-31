@@ -10,6 +10,8 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     dragging: false, // 当前视图是否正在被拖拽
 
+    lock: false, // 是否锁定可见事件列表，当事件不在视区内时也不会被移除
+
     eventScrollTop: 0, // 侧边栏滚动距离，用于与主视图同步
 
     origin: undefined as (UnitID | undefined), // 当前视图的原点单位

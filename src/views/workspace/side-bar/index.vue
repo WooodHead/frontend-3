@@ -51,7 +51,7 @@ const handleClickOutside = () => { menuExpand = false }
         <Handler id="editor" name="编辑器">
           <img w-40px h-40px :src="darkMode ? EditorDarkIcon : EditorIcon">
         </Handler>
-        <Handler id="graph" name="叙事图">
+        <Handler id="graph" name="关系图">
           <img w-40px h-40px :src="darkMode ? GraphDarkIcon : GraphIcon">
         </Handler>
         <Handler id="characters" name="角色">
