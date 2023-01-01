@@ -11,7 +11,7 @@ const store = registerStore(id)
 
 <template>
   <div card row h-10 mt-4 overflow-hidden>
-    <div w-8 border="r border-2">
+    <div w-8>
       <AButton type="text" h="!full" rounded-0>
         <template #icon>
           <div i-radix-icons-caret-left text-2xl></div>
@@ -21,7 +21,7 @@ const store = registerStore(id)
     <div grow shrink-0 overflow-x-hidden>
       <BlockList />
     </div>
-    <div w-8 border="l border-2">
+    <div w-8>
       <AButton type="text" h="!full" rounded-0>
         <template #icon>
           <div i-radix-icons-caret-right text-2xl></div>

@@ -28,7 +28,7 @@ const { lock } = $(storeToRefs(store))
       <AButton
         title="锁定事件列表"
         long h="40%"
-        :type="lock ? `primary` : `secondary`"
+        :type="lock ? `primary` : `outline`"
         @click="lock = !lock"
       >
         <div v-if="lock" i-radix-icons-lock-closed></div>

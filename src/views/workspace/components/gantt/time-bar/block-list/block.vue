@@ -42,9 +42,9 @@ const handleClick = () => {
   <div
     ref="target"
     :style="{ transform: `translateX(${baseOffset}px)` }"
-    h-full absolute border="r border-2"
+    absolute h-full border="r border-2"
   >
-    <v-btn
+    <!-- <v-btn
       :width="BLOCK_WIDTH" height="100%"
       text-xs rounded-0
       :variant="`${active ? `tonal` : `text`}`"
@@ -52,6 +52,17 @@ const handleClick = () => {
       @click="handleClick"
     >
       {{ id.toBriefString() }}
-    </v-btn>
+    </v-btn> -->
+    <AButton
+      :style="{
+        width: `${BLOCK_WIDTH}px`,
+        height: '100%',
+      }"
+      text-xs rounded-0
+      :type="active ? `primary` : `text`"
+      @click="handleClick"
+    >
+      {{ id.toBriefString() }}
+    </AButton>
   </div>
 </template>

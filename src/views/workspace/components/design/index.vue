@@ -36,12 +36,12 @@ const { id, state, position, onClose } = props
       <template #right>
         <div row space-x-2>
           <AButtonGroup type="outline">
-            <AButton>
+            <AButton title="查找">
               <template #icon>
                 <div i-radix-icons-magnifying-glass text-2xl />
               </template>
             </AButton>
-            <AButton>
+            <AButton title="筛选">
               <template #icon>
                 <div i-radix-icons-mixer-horizontal text-2xl />
               </template>

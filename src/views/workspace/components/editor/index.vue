@@ -25,11 +25,10 @@ const { id, state, position, onClose } = $(props)
       </template>
       <template #right>
         <div row space-x-2>
-          <a-button type="text" status="danger">
-            删除
-          </a-button>
-          <AButton type="primary">
-            保存
+          <AButton type="outline" title="历史记录">
+            <template #icon>
+              <div i-radix-icons-counter-clockwise-clock text-lg />
+            </template>
           </AButton>
         </div>
       </template>
