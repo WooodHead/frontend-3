@@ -3,6 +3,7 @@ import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import type { ComponentProps } from '../index.vue'
+import { IPositionState } from '../../layout'
 import EventNode from './event-node/index.vue'
 import ToolBar from './tool-bar/index.vue'
 
@@ -15,7 +16,7 @@ const { id, state, position, onClose } = $(props)
 
 let nodes = $ref<Node[]>([])
 const edges = $ref<Edge[]>([])
-const { nodes: graphNodes, addEdges, onConnectStart, onConnectEnd, onConnect, addSelectedNodes, removeSelectedNodes } = $(useVueFlow())
+const { nodes: graphNodes, onConnectStart, onConnectEnd, addSelectedNodes, removeSelectedNodes, fitView } = $(useVueFlow())
 // useForceLayout()
 
 onMounted(() => {
@@ -43,6 +44,8 @@ onConnectEnd(() => {
   connectingNodeId = undefined
   removeSelectedNodes(graphNodes.filter(({ id }) => id === connectingNodeId))
 })
+
+watch(() => props.position, () => { fitView() })
 </script>
 
 <template>
@@ -62,7 +65,7 @@ onConnectEnd(() => {
         </template>
         <Background />
         <Controls />
-        <MiniMap />
+        <MiniMap v-if="state !== IPositionState.Corner && state !== IPositionState.Vertical" />
       </VueFlow>
     </div>
     <ToolBar />

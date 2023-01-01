@@ -25,16 +25,15 @@ const { lock } = $(storeToRefs(store))
       <div grow center>
         {{ store.visibleUnit?.toString() }}
       </div>
-      <ATooltip position="right" content="锁定事件">
-        <AButton
-          long h="40%"
-          :type="lock ? `primary` : `secondary`"
-          @click="lock = !lock"
-        >
-          <div v-if="lock" class="i-radix-icons-lock-closed"></div>
-          <div v-else class="i-radix-icons-lock-open-1"></div>
-        </AButton>
-      </ATooltip>
+      <AButton
+        title="锁定事件列表"
+        long h="40%"
+        :type="lock ? `primary` : `secondary`"
+        @click="lock = !lock"
+      >
+        <div v-if="lock" i-radix-icons-lock-closed></div>
+        <div v-else i-radix-icons-lock-open-1></div>
+      </AButton>
     </div>
     <EventItems />
   </div>

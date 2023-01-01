@@ -10,7 +10,7 @@ const { empty, loading, error } = defineProps<{
   <div full>
     <div v-if="empty" center column full>
       <div
-        class="i-radix-icons-info-circled"
+        i-radix-icons-info-circled
         text-gray-4
         w-80px h-80px mb-4
       ></div>
@@ -20,7 +20,7 @@ const { empty, loading, error } = defineProps<{
     </div>
     <div v-else-if="error" center column full>
       <div
-        class="i-radix-icons-cross-circled"
+        i-radix-icons-cross-circled
         text-red-4
         w-80px h-80px
         mb-4

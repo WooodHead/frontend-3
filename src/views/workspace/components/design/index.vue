@@ -29,13 +29,24 @@ const { id, state, position, onClose } = props
             场景
           </ARadio>
           <ARadio value="3" grow center>
-            元设定
+            世界观
           </ARadio>
         </ARadioGroup>
       </template>
       <template #right>
         <div row space-x-2>
-          {{ }}
+          <AButtonGroup type="outline">
+            <AButton>
+              <template #icon>
+                <div i-radix-icons-magnifying-glass text-2xl />
+              </template>
+            </AButton>
+            <AButton>
+              <template #icon>
+                <div i-radix-icons-mixer-horizontal text-2xl />
+              </template>
+            </AButton>
+          </AButtonGroup>
         </div>
       </template>
     </ComponentHeader>

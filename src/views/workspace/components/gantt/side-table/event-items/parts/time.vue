@@ -11,7 +11,7 @@ const { start, end } = defineProps<{ start?: UnitID; end?: UnitID }>()
       <!-- <div center text-sm px-2 overflow-hidden whitespace-pre-wrap>
       {{ start && end && `${start.toBriefString()} ~ ${end.toBriefString()}` }}
     </div> -->
-      <div class="i-radix-icons-timer" text="2xl gray-4"></div>
+      <div i-radix-icons-timer text="2xl gray-4"></div>
       <!-- TODO 当尺寸过小时显示图标，否则显示时间文字 -->
     </div>
   </Basic>

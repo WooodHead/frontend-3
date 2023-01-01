@@ -4,6 +4,6 @@ import Basic from './basic.vue'
 
 <template>
   <Basic tooltip="新建">
-    <div class="i-radix-icons-plus" text-2xl></div>
+    <div i-radix-icons-plus text-2xl></div>
   </Basic>
 </template>

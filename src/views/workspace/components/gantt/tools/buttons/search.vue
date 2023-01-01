@@ -4,6 +4,6 @@ import Basic from './basic.vue'
 
 <template>
   <Basic tooltip="搜索">
-    <div class="i-radix-icons-magnifying-glass" text-2xl></div>
+    <div i-radix-icons-magnifying-glass text-2xl></div>
   </Basic>
 </template>

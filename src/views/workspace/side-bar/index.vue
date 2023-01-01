@@ -32,7 +32,7 @@ const handleClickOutside = () => { menuExpand = false }
       z-50
     >
       <AButton h-40px rounded-0 @click="handleExpand">
-        <div class="i-radix-icons-hamburger-menu" text="2xl gray-6"></div>
+        <div i-radix-icons-hamburger-menu text="2xl gray-6"></div>
       </AButton>
       <Presence>
         <DropArea v-show="WSStore.dragging" />
@@ -45,7 +45,7 @@ const handleClickOutside = () => { menuExpand = false }
       </div>
       <div center h="10%" w-full>
         <AButton shape="circle" type="secondary">
-          <div w-30px h-30px m-1 i-radix-icons-person></div>
+          <div w-30px h-30px i-radix-icons-avatar></div>
         </AButton>
       </div>
     </div>
