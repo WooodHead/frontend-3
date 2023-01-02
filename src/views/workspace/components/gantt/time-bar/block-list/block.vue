@@ -16,8 +16,12 @@ const ganttStore = useGanttStore()
 const target = ref<HTMLElement | null>(null)
 const viewPortRef = toRef(store, 'viewPort')
 
-const baseOffset = $computed(() => ganttStore.unitOffset(id) * BLOCK_WIDTH)
+const offset = $computed(() => ganttStore.unitOffset(id) * BLOCK_WIDTH)
 const active = $computed(() => ganttStore.visibleUnit?.isSame(id) ?? false)
+
+watchEffect(() => {
+  if (active) { store.offset = -offset }
+})
 
 useIntersectionObserver(
   target,
@@ -29,7 +33,6 @@ useIntersectionObserver(
   },
   {
     root: viewPortRef,
-    // threshold: [0, 1],
   },
 )
 
@@ -41,24 +44,12 @@ const handleClick = () => {
 <template>
   <div
     ref="target"
-    :style="{ transform: `translateX(${baseOffset}px)` }"
+    :style="{ transform: `translateX(${offset}px)` }"
     absolute h-full border="r border-2"
   >
-    <!-- <v-btn
-      :width="BLOCK_WIDTH" height="100%"
-      text-xs rounded-0
-      :variant="`${active ? `tonal` : `text`}`"
-      :color="`${active && `primary`}`"
-      @click="handleClick"
-    >
-      {{ id.toBriefString() }}
-    </v-btn> -->
     <AButton
-      :style="{
-        width: `${BLOCK_WIDTH}px`,
-        height: '100%',
-      }"
-      text-xs rounded-0
+      :style="{ width: `${BLOCK_WIDTH}px` }"
+      h-full text-xs rounded-0
       :type="active ? `primary` : `text`"
       @click="handleClick"
     >

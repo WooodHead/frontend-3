@@ -10,7 +10,7 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     dragging: false, // 当前视图是否正在被拖拽
 
-    lock: false, // 是否锁定可见事件列表，当事件不在视区内时也不会被移除
+    lock: false, // 是否锁定可见事件列表，锁定时当事件不在视区内时也不会被移除
 
     eventScrollTop: 0, // 侧边栏滚动距离，用于与主视图同步
 
@@ -19,9 +19,9 @@ export const { registerStore, useStore } = createStore('gantt', {
     viewPort: null as (HTMLDivElement | null), // 当前视区的 DOM
     viewPortWidth: 0, // 当前视区的宽度
 
-    unitQueue: [] as UnitID[], // 单位队列，用于渲染
+    unitQueue: [] as UnitID[], // 当前已加载的单位队列，用于渲染
 
-    visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位可见时，可见面积更大的被认为是可见单位）
+    visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
 
     _offset: 0, // 主视图的偏移量
     offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
@@ -142,12 +142,21 @@ export const { registerStore, useStore } = createStore('gantt', {
       const end = this.unitQueue[this.unitQueue.length - 1]
 
       if (unit.isBetween(start, end, '[]')) {
-        const offset = this.unitOffset(unit)
-        this.offset.value = offset
+        this.offset.value = -this.subUnitOffset(unit) * UNIT_WIDTH
       }
       else {
         this.init(unit)
       }
+    },
+
+    navigateToPrev() {
+      const prev = this.visibleUnit?.prev
+      if (prev) { this.navigateTo(prev) }
+    },
+
+    navigateToNext() {
+      const next = this.visibleUnit?.next
+      if (next) { this.navigateTo(next) }
     },
   },
 })
