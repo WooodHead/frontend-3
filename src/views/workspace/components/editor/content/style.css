@@ -9,11 +9,7 @@
     height: 0;
 }
 
-.ProseMirror p {
-    font-size: 18px;
-}
-
 .ProseMirror h1 {
-    font-size: 28px;
+    /* font-size: 28px; */
     font-weight: bold;
 }

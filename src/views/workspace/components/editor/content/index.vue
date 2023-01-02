@@ -9,12 +9,12 @@ const editor = useEditor({
   extensions: [
     StarterKit,
     Placeholder.configure({
-      placeholder: 'Waiting for some content...',
+      placeholder: '在这里写下事件梗概……',
     }),
   ],
   editorProps: {
     attributes: {
-      class: 'prose outline-none',
+      class: 'outline-none',
     },
   },
 })
@@ -24,7 +24,7 @@ const editor = useEditor({
   <div grow p-4 overflow-y-scroll>
     <div column h-full>
       <BubbleMenu :editor="editor" />
-      <EditorContent grow :editor="editor" />
+      <EditorContent grow prose :editor="editor" />
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import type { ComponentProps } from '../index.vue'
 import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
+import EditorStatus from './components/editor-status.vue'
 
 interface EditorProps {
   props: ComponentProps
@@ -38,8 +39,8 @@ const { id, state, position, onClose } = $(props)
       <Content />
     </div>
     <ComponentFooter>
-      <template #left>
-        {{ }}
+      <template #right>
+        <EditorStatus />
       </template>
     </ComponentFooter>
   </div>
