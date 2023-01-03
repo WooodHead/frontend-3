@@ -15,9 +15,6 @@ export interface ComponentProps {
 
 const props = defineProps<ComponentProps>()
 const { position, id, state, onClose } = $(props)
-
-// TODO 为什么数组解构后失去响应性
-// const [colStart, colEnd, rowStart, rowEnd] = $(props.position)
 </script>
 
 <template>

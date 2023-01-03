@@ -3,8 +3,8 @@ import { useStore } from '../../store'
 import Item from './item.vue'
 
 const store = useStore()
-const handleScroll = (e: UIEvent) => {
-  store.eventScrollTop = -(e.currentTarget as HTMLDivElement).scrollTop
+const handleScroll = ({ currentTarget }: UIEvent) => {
+  store.eventScrollTop = -(currentTarget as HTMLDivElement).scrollTop
 }
 
 const ids = Array(10).fill(0).map((_, v) => v)

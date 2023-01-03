@@ -5,6 +5,10 @@ import NotFound from '@/views/not-found.vue'
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/project/1',
+  },
+  {
     path: '/project/:id',
     name: 'Workspace',
     component: Workspace,
