@@ -13,10 +13,7 @@ const { id, state, position, onClose } = $(props)
 </script>
 
 <template>
-  <div
-    card
-    column overflow-hidden
-  >
+  <div card column overflow-hidden>
     <ComponentHeader>
       <template #left>
         {{ }}

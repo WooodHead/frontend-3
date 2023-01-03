@@ -21,7 +21,7 @@ const editor = useEditor({
 </script>
 
 <template>
-  <div grow p-4 overflow-y-scroll>
+  <div grow p-4 overflow-y-auto>
     <div column h-full>
       <BubbleMenu :editor="editor" />
       <EditorContent grow prose :editor="editor" />

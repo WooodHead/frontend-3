@@ -13,6 +13,7 @@ const { unit } = defineProps<{ unit: UnitID }>()
       height: `${HEADER_HEIGHT / 2}px`,
     }"
     center
+    bg-bg-2
     border="r b border-2"
     select-none z-10
   >

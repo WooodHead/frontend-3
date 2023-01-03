@@ -35,30 +35,18 @@ const { isSuccess, isLoading, isError } = $(useQuery({
 }))
 
 // TODO 考虑修改为页面关闭和组件卸载时触发
-watch($$(visibleUnit), visibleUnit => {
-  if (visibleUnit) {
-    api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
-  }
-})
+watch(
+  () => visibleUnit,
+  visibleUnit => {
+    if (visibleUnit) {
+      api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
+    }
+  })
 </script>
 
 <template>
   <div full column>
-    <div
-      card
-      column overflow-hidden
-    >
-      <ComponentHeader v-if="!store.fullMode">
-        <template #left>
-        </template>
-        <template #middle>
-        </template>
-        <template #right>
-          <AButton type="primary">
-            保存并关闭
-          </AButton>
-        </template>
-      </ComponentHeader>
+    <div card column overflow-hidden>
       <div relative row h-0 grow>
         <SideTable />
         <MainTable v-if="isSuccess" />

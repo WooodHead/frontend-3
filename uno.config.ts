@@ -3,6 +3,7 @@ import { defineConfig, presetAttributify, presetIcons, presetTypography, presetU
 import presetRemToPx from '@unocss/preset-rem-to-px'
 import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
+import { presetScrollbar } from 'unocss-preset-scrollbar'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
 const parsed = parseArcoTheme(path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'))!
@@ -48,6 +49,7 @@ export default defineConfig<Theme>({
     presetIcons(),
     presetRemToPx(),
     presetTypography(),
+    presetScrollbar({}),
     presetTheme<{}>({
       selectors: {
         light: 'body',

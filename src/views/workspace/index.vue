@@ -12,7 +12,7 @@ onUnmounted(() => {
   sessionStorage.removeItem('project-id')
 })
 
-const open = $ref(true)
+const open = $ref(false)
 </script>
 
 <template>

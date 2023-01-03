@@ -5,7 +5,7 @@ import Item from './item.vue'
 <template>
   <div
     w="25%" border="r border-2"
-    column overflow-y-scroll
+    column overflow-y-auto
   >
     <Item />
     <Item />

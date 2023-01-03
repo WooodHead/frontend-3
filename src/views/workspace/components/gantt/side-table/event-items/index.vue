@@ -13,7 +13,7 @@ const ids = Array(10).fill(0).map((_, v) => v)
 <template>
   <div
     h-full
-    overflow-y-scroll overflow-x-hidden
+    overflow-y-auto overflow-x-hidden
     @scroll="handleScroll"
   >
     <Item v-for="id in ids" :id="id" :key="id" />

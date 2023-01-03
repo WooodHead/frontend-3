@@ -54,6 +54,7 @@ useIntersectionObserver(
       height: `${HEADER_HEIGHT / 2}px`,
     }"
     absolute center
+    bg-bg-2
     border="r b border-2"
     select-none z-50
   >
