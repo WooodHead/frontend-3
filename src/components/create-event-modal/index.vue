@@ -7,8 +7,14 @@ import CollectionEventForm from './collection-event-form.vue'
 import type { CreateEventDto } from '@/api/api-base'
 import api from '@/api/api'
 
-const { init } = defineProps<{
+const { visible, init } = defineProps<{
+  visible?: boolean
   init?: string[] | UnitIDRange
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:visible', visible: boolean): void
+  (e: 'before-ok'): Promise<boolean | void>
 }>()
 
 const type = $computed(() => {
@@ -46,8 +52,9 @@ const handleBeforeOk = async () => {
 
 <template>
   <AModal
-    :visible="true"
+    :visible="visible"
     :title="title"
+    @update:visible="v => emit('update:visible', v)"
     @before-ok="handleBeforeOk"
   >
     <AtomEventForm v-if="type === 'atom'" ref="formRef" />

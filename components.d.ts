@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
     CreateEventModal: typeof import('./src/components/create-event-modal/index.vue')['default']
     EventDetail: typeof import('./src/components/event-detail/index.vue')['default']
+    RangePicker: typeof import('./src/components/pickers/range-picker.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Status: typeof import('./src/components/status.vue')['default']

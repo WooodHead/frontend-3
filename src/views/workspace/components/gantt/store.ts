@@ -19,15 +19,23 @@ export const { registerStore, useStore } = createStore('gantt', {
     viewPort: null as (HTMLDivElement | null), // 当前视区的 DOM
     viewPortWidth: 0, // 当前视区的宽度
 
-    unitQueue: [] as UnitID[], // 当前已加载的单位队列，用于渲染
+    units: [] as UnitID[], // 当前已加载的单位队列，用于渲染
 
     visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
+
+    visibleEvents: [] as [UnitID, string][], // 当前视图的可见事件队列，有序
 
     _offset: 0, // 主视图的偏移量
     offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
     offsetLowerBound: undefined as (number | undefined), // 主视图的偏移量下限
+
+    selectedRange: [] as UnitID[], // 当前选中的时间范围
+    selectedEvents: [] as string[], // 当前选中的事件
   }),
   getters: {
+    unit: state => state.origin?.unit.toString(),
+    subUnit: state => state.origin?.unit.lower?.toString(),
+
     offset: state => computed({
       get: () => state._offset,
       set: value => {
@@ -70,16 +78,18 @@ export const { registerStore, useStore } = createStore('gantt', {
       return now.diff(zero)
     },
 
-    unitRange: ({ unitQueue }) => {
+    // 当前已加载的单位范围
+    unitRange: ({ units: unitQueue }) => {
       const first = unitQueue[0]
       const last = unitQueue[unitQueue.length - 1]
       if (!first || !last) { return undefined }
       return UnitIDRange.fromUnitID(first, last)
     },
 
+    // 当前已加载的子单位范围
     subUnitRange: state => {
-      const first = state.unitQueue[0]
-      const last = state.unitQueue[state.unitQueue.length - 1]
+      const first = state.units[0]
+      const last = state.units[state.units.length - 1]
       if (!first || !last) { return undefined }
       return UnitIDRange.fromUnitID(first.firstChild, last.lastChild)
     },
@@ -88,14 +98,14 @@ export const { registerStore, useStore } = createStore('gantt', {
     _reset() {
       this.origin = undefined
       this.eventScrollTop = 0
-      this.unitQueue = []
+      this.units = []
       this._offset = -1
     },
 
     init(_origin: UnitID) {
       this._reset()
       this.origin = _origin
-      this.unitQueue = [_origin]
+      this.units = [_origin]
       this.loadLeft(4)
       this.loadRight(4)
     },
@@ -112,34 +122,34 @@ export const { registerStore, useStore } = createStore('gantt', {
 
       this.origin = start
 
-      this.unitQueue = range.ids
+      this.units = range.ids
     },
 
     loadLeft(count = 1) {
-      const first = this.unitQueue[0]
+      const first = this.units[0]
       const prevs = Array(count).fill(0).map((_, i) => first.sub(count - i))
-      this.unitQueue.unshift(...prevs)
-      if (this.unitQueue.length > 20) { this.removeRight(count) }
+      this.units.unshift(...prevs)
+      if (this.units.length > 20) { this.removeRight(count) }
     },
 
     loadRight(count = 1) {
-      const last = this.unitQueue[this.unitQueue.length - 1]
+      const last = this.units[this.units.length - 1]
       const nexts = Array(count).fill(0).map((_, i) => last.add(i + 1))
-      this.unitQueue.push(...nexts)
-      if (this.unitQueue.length > 20) { this.removeLeft(count) }
+      this.units.push(...nexts)
+      if (this.units.length > 20) { this.removeLeft(count) }
     },
 
     removeLeft(count = 1) {
-      this.unitQueue.splice(0, count)
+      this.units.splice(0, count)
     },
 
     removeRight(count = 1) {
-      this.unitQueue.splice(this.unitQueue.length - count)
+      this.units.splice(this.units.length - count)
     },
 
     navigateTo(unit: UnitID) {
-      const start = this.unitQueue[0]
-      const end = this.unitQueue[this.unitQueue.length - 1]
+      const start = this.units[0]
+      const end = this.units[this.units.length - 1]
 
       if (unit.isBetween(start, end, '[]')) {
         this.offset.value = -this.subUnitOffset(unit) * UNIT_WIDTH

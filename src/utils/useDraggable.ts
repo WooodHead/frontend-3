@@ -14,7 +14,7 @@ export interface UseDraggableOptions {
 
 const useDraggable = (
   target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
-  { onMove, onEnd, minDistance = 0 }: UseDraggableOptions = {},
+  { onMove, onEnd, minDistance = 5 }: UseDraggableOptions = {},
 ) => {
   let start = $ref<Position>()
   let delta = $ref<Position>({ x: 0, y: 0 })

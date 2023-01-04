@@ -13,7 +13,7 @@ const active = ref('info')
       <ATabPane key="todo" title="待办" />
       <ATabPane key="relation" title="关联" />
     </ATabs>
-    <div space-y-4 h-0 grow overflow-y-auto p-2>
+    <div space-y-2 h-0 grow overflow-y-auto p-2>
       <Info v-if="active === 'info'" />
       <Todo v-else-if="active === 'todo'" />
       <Relation v-else-if="active === 'relation'" />

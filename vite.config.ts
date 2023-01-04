@@ -43,7 +43,6 @@ export default defineConfig({
       ],
     }),
     Components({
-      dts: true,
       resolvers: [
         Vuetify3Resolver(),
         ArcoResolver({

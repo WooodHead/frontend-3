@@ -3,7 +3,7 @@ import { UnitID } from '@project-chiral/unit-system'
 import { useStore } from '../../../store'
 import Unit from './unit.vue'
 
-const { unitQueue } = $(useStore())
+const { units: unitQueue } = $(useStore())
 </script>
 
 <template>

@@ -13,7 +13,7 @@ const { lock } = $(storeToRefs(store))
   <div
     column
     h-full w="30%" min-w="20%" max-w="50%"
-    rounded-l-lg shadow-lg
+    rounded-l-lg shadow-lg border="r-1 border-2"
     resize-x overflow-x-hidden
     z-10 bg-bg-2
   >

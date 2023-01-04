@@ -8,7 +8,7 @@ const store = useStore()
 
 <template>
   <div
-    v-for="id in store.unitQueue"
+    v-for="id in store.units"
     :key="id.uid"
     :style="{
       left: `${store.subUnitOffset(id) * UNIT_WIDTH}px`,

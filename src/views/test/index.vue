@@ -3,7 +3,7 @@ import type { Edge, Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { SimulationLinkDatum, SimulationNodeDatum } from 'd3-force'
 import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3-force'
-import Sector from './sector.vue'
+import type { RangePickerValue } from '@/components/pickers/range-picker.vue'
 
 const { onNodeDrag } = $(useVueFlow())
 
@@ -101,39 +101,45 @@ onNodeDrag(({ node }) => {
 
   sim.alpha(1).restart()
 })
+
+const model = $ref({
+  range: {
+    unit: 'month',
+    range: [new Date(), new Date()],
+  } as RangePickerValue,
+})
+
+watchEffect(() => {
+  console.log(model.range)
+})
+
+const handleSubmit = (v: any) => {
+  console.log(v)
+}
 </script>
 
 <template>
   <div w-screen h-screen center bg-gray-2>
-    <!-- <div class="selection" bg-blue-2 hover:bg-red-2></div> -->
-    <svg :width="400" :height="400">
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="0" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="45" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="90" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="135" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="180" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="225" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="270" :sector-angle="45" />
-      <Sector :inner-radius="150" :outer-radius="200" :offset-angle="315" :sector-angle="45" />
-    </svg>
-    <!-- <div w="3/4" h="3/4" bg-white shadow-lg rounded-lg>
-
-      <VueFlow
-        v-model:nodes="nodes"
-        v-model:edges="edges"
-        fit-view-on-init
-      >
-        <MiniMap />
-        <Controls />
-      </VueFlow>
-    </div> -->
+    <div card center w="75%" h="75%">
+      <div w="75%">
+        <!-- <AForm :model="model" @submit="handleSubmit">
+          <AFormItem field="range" label="范围" required>
+            <RangePicker v-model="model.range" />
+          </AFormItem>
+          <AFormItem label="正确示例">
+            <ARangePicker allow-clear />
+          </AFormItem>
+          <AFormItem field="name" label="name" required>
+            <AInput />
+          </AFormItem>
+          <AFormItem>
+            <AButton html-type="submit" type="primary">
+              Submit
+            </AButton>
+          </AFormItem>
+        </AForm> -->
+        <CreateEventModal />
+      </div>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.selection {
-  width: 200px;
-  height: 200px;
-  clip-path: path('M 200 0 A 200 200 0 0 1 0 200 L 0 100 A 100 100 0 0 0 100 0 Z');
-}
-</style>
