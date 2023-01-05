@@ -15,25 +15,32 @@ module.exports = {
       'off',
     ],
     // 有时会把 div 给封闭，没有必要
-    'vue/html-self-closing': ['error', {
-      html: {
-        void: 'never',
-        normal: 'any',
-        component: 'always',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'never',
+          normal: 'any',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
       },
-      svg: 'always',
-      math: 'always',
-    }],
+    ],
     // unocss 属性大多数时候需要多个属性写在一行
     'vue/max-attributes-per-line': [
       'off',
     ],
-    // 使用 reactivity transform 时，不用担心此问题
+    // 使用 reactivity transform 时不用担心此问题
     'vue/no-setup-props-destructure': [
       'off',
     ],
-    // 有时需要使用 index.vue 作为名称
+    // 很多时候需要使用 index.vue 作为名称
     'vue/multi-word-component-names': [
+      'off',
+    ],
+    // 模板中使用as时必须加括号，否则代码着色会出问题
+    'vue/no-extra-parens': [
       'off',
     ],
     'quotes': [
@@ -55,6 +62,9 @@ module.exports = {
       },
     ],
     'no-console': [
+      'warn',
+    ],
+    'prefer-const': [
       'warn',
     ],
 

@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { Motion } from '@motionone/vue'
 import api from '@/api/api'
+import { fadeInOut } from '@/utils/animation'
 
 const { id } = defineProps<{ id: number }>()
 
@@ -14,9 +15,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
 
 <template>
   <Motion
-    :initial="{ opacity: 0 }"
-    :animate="{ opacity: 1 }"
-    :exit="{ opacity: 0 }"
+    v-bind="fadeInOut"
     card
     absolute overflow-hidden
     w-200px min-h-200px

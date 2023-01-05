@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Motion, Presence } from '@motionone/vue'
 import Editor from './editor/index.vue'
-
+import { fadeInOut } from '@/utils/animation'
 import GanttIcon from '@/assets/workspace/gantt.png'
 
 const { modelValue } = defineProps<{
@@ -36,7 +36,7 @@ const emit = defineEmits<{
         <AButton shape="circle" w="64px!" h="64px!" />
       </div>
       <Presence>
-        <Motion full>
+        <Motion v-bind="fadeInOut" full>
           <component :is="Editor" :props="{ id: '1' }" />
         </Motion>
       </Presence>

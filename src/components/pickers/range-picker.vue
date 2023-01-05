@@ -79,7 +79,6 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
       type="button"
       rounded-b-0 w-full justify-between
       :disabled="mergedDisabled"
-      :error="mergedError"
       :size="mergedSize"
       :model-value="modelValue?.unit"
       @update:model-value="handleUnitChange"

@@ -1,4 +1,4 @@
-source .env.production
+source .env.development
 
 API_PATH=src/api
 

@@ -7,6 +7,8 @@ import UnitDown from './buttons/unit-down.vue'
 import Search from './buttons/search.vue'
 import Create from './buttons/create.vue'
 
+import { fadeInOutY } from '@/utils/animation'
+
 let expand = $ref(false)
 
 const handleExpand = () => { expand = !expand }
@@ -18,11 +20,7 @@ const handleExpand = () => { expand = !expand }
       v-for="btn in [NavigateNext, NavigatePrev, UnitUp, UnitDown, Search, Create]"
       :key="btn.name"
     >
-      <Motion
-        v-show="expand"
-        :animate="{ translateY: '0px', opacity: 1 }"
-        :exit="{ translateY: '100%', opacity: 0 }"
-      >
+      <Motion v-if="expand" v-bind="fadeInOutY">
         <component :is="btn" />
       </Motion>
     </Presence>

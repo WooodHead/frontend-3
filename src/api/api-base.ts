@@ -26,18 +26,6 @@ export interface EventEntity {
   color: string;
 }
 
-export interface GraphNodeProperty {
-  id: string;
-  name: string;
-  description?: string;
-}
-
-export interface GraphNodeEntity {
-  identity: string;
-  labels: string[];
-  properties: GraphNodeProperty;
-}
-
 export interface EventDetailEntity {
   type: "ATOM" | "COLLECTION";
   range: string;
@@ -54,27 +42,25 @@ export interface EventDetailEntity {
   description: string | null;
   color: string;
   superEvents: EventEntity[];
-  superGraphs: GraphNodeEntity[];
-  subGraphs: GraphNodeEntity[];
+  subEvents: EventEntity[];
 }
 
 export interface CreateEventDto {
+  type: "ATOM" | "COLLECTION";
   range: string;
   name: string;
   description: string | null;
   /** @default "#93c5fd" */
-  color: object;
-  type: object;
-  graphId?: string;
+  color?: string;
 }
 
 export interface UpdateEventDto {
+  type?: "ATOM" | "COLLECTION";
   range?: string;
   name?: string;
   description?: string | null;
   /** @default "#93c5fd" */
-  color?: object;
-  type?: object;
+  color?: string;
 }
 
 export interface CreateContentDto {

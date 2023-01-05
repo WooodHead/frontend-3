@@ -2,7 +2,8 @@
 import { useStore } from '../store'
 import Header from './header/index.vue'
 import Body from './body.vue'
-import Dialog from './dialog/index.vue'
+import EventSelect from './dialog/event-select.vue'
+import UnitSelect from './dialog/unit-select.vue'
 import useDraggable from '@/utils/useDraggable'
 
 const store = useStore()
@@ -38,6 +39,12 @@ const handleWheel = (e: WheelEvent) => {
       </div>
     </div>
   </div>
-  <Dialog type="unit" />
-  <Dialog type="event" />
+  <div
+    fixed m-auto left-0 right-0 bottom-10
+    column items-center
+    z-100 space-y-4
+  >
+    <EventSelect />
+    <UnitSelect />
+  </div>
 </template>

@@ -67,7 +67,7 @@ const hover = $(useElementHover(target))
       />
     </div>
     <Presence>
-      <EventDetail v-show="hover" :id="id" />
+      <EventDetail v-if="hover" :id="id" />
     </Presence>
   </div>
 </template>

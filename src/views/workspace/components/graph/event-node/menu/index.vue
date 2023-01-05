@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Motion } from '@motionone/vue'
 import Sector from './sector.vue'
+import { fadeInOut } from '@/utils/animation'
+
 const { names, innerRadius, outerRadius, isConnecting } = defineProps<{
   names: string[]
   innerRadius: number
@@ -35,12 +37,7 @@ const sectors = $computed(() => names.map((name, index) => ({
 </script>
 
 <template>
-  <Motion
-    absolute
-    :initial="{ opacity: 1 }"
-    :animate="{ opacity: 1 }"
-    :exit="{ opacity: 0 }"
-  >
+  <Motion absolute v-bind="fadeInOut">
     <svg :width="outerRadius * 2" :height="outerRadius * 2">
       <Sector
         v-for="sector in sectors"

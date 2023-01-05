@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UnitIDRange } from '@project-chiral/unit-system'
 import { useMutation } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
+import { RangePickerValue } from '../pickers/range-picker.vue'
 import AtomEventForm from './atom-event-form.vue'
 import CollectionEventForm from './collection-event-form.vue'
 import type { CreateEventDto } from '@/api/api-base'
@@ -9,7 +9,7 @@ import api from '@/api/api'
 
 const { visible, init } = defineProps<{
   visible?: boolean
-  init?: string[] | UnitIDRange
+  init?: RangePickerValue | string[]
 }>()
 
 const emit = defineEmits<{
@@ -52,13 +52,22 @@ const handleBeforeOk = async () => {
 
 <template>
   <AModal
+    unmount-on-close
     :visible="visible"
     :title="title"
-    @update:visible="v => emit('update:visible', v)"
+    @update:visible="$emit('update:visible', $event)"
     @before-ok="handleBeforeOk"
   >
-    <AtomEventForm v-if="type === 'atom'" ref="formRef" />
-    <CollectionEventForm v-else-if="type === 'collection'" ref="formRef" />
+    <AtomEventForm
+      v-if="type === 'atom'"
+      ref="formRef"
+      :init="(init as RangePickerValue)"
+    />
+    <CollectionEventForm
+      v-else-if="type === 'collection'"
+      ref="formRef"
+      :init="(init as string[])"
+    />
     <ATabs v-else lazy-load destroy-on-hide>
       <ATabPane :key="1" title="创建集合事件">
         <CollectionEventForm ref="formRef" />

@@ -12,7 +12,7 @@ export interface UseDraggableOptions {
   onEnd?: (position: Position, event: PointerEvent) => void
 }
 
-const useDraggable = (
+export const useDraggable = (
   target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
   { onMove, onEnd, minDistance = 5 }: UseDraggableOptions = {},
 ) => {

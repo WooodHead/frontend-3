@@ -43,6 +43,7 @@ export default defineConfig({
       ],
     }),
     Components({
+      directoryAsNamespace: true,
       resolvers: [
         Vuetify3Resolver(),
         ArcoResolver({

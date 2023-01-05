@@ -22,7 +22,7 @@ const { node, isConnecting } = defineProps<{
   >
     <Presence>
       <Menu
-        v-show="isConnecting"
+        v-if="isConnecting"
         :is-connecting="isConnecting"
         :inner-radius="90"
         :outer-radius="130"
