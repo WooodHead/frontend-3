@@ -43,9 +43,7 @@ const { mutateAsync } = useMutation({
 
 const handleBeforeOk = async () => {
   const data = await formRef!.validate()
-  console.log(data)
-
-  // await mutateAsync(data)
+  await mutateAsync(data)
   return true
 }
 </script>

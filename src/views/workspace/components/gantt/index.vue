@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { UnitID } from '@project-chiral/unit-system'
-import type { ComponentProps } from '../index.vue'
+import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import MainTable from './main-table/index.vue'
 import TimeBar from './time-bar/index.vue'
@@ -12,14 +12,17 @@ import Status from '@/components/status.vue'
 import api from '@/api/api'
 
 interface GanttProps {
-  props: ComponentProps
+  status: ComponentStatus
   data?: IGanttData
 }
-const { props, data } = defineProps<GanttProps>()
-const { id, state, position, onClose } = $(props)
+const { status, data } = defineProps<GanttProps>()
 
-const store = registerStore(id)
+const store = registerStore(status.position)
 const { visibleUnit } = $(storeToRefs(store))
+
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 
 if (data !== undefined) { store.initWithData(data) }
 
@@ -56,6 +59,6 @@ watch(
         <Tools />
       </div>
     </div>
-    <TimeBar v-if="store.fullMode" :id="id" />
+    <TimeBar v-if="store.fullMode" :id="status.id" />
   </div>
 </template>

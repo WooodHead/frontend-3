@@ -23,6 +23,6 @@ const handleClick = () => {
     </div>
   </Basic>
   <v-dialog v-model="dialogOpen" width="75%" height="75%">
-    <Editor :props="{ id: '1' }" />
+    <Editor :status="{ id: '1' }" />
   </v-dialog>
 </template>

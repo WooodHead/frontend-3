@@ -3,9 +3,10 @@ import { Motion, Presence } from '@motionone/vue'
 import { useDraggable } from '@/utils/useDraggable'
 import { fadeInOut } from '@/utils/animation'
 
-const { show, ready } = defineProps<{
+const { show, ready, okText } = defineProps<{
   show?: boolean
   ready?: boolean
+  okText?: string
 }>()
 
 const emit = defineEmits<{
@@ -54,7 +55,7 @@ watch(
           取消
         </AButton>
         <AButton :disabled="!ready" long type="text" @click="$emit('ok')">
-          完成
+          {{ okText ?? '完成' }}
         </AButton>
       </div>
     </Motion>

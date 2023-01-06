@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { CreateEventDto } from '@/api/api-base'
+import type { FormRef } from '@/utils/types'
 
 const { init } = defineProps<{
   init?: string[]
 }>()
+
+const formRef = $ref<FormRef>()
 
 const model = $ref({
   name: '',
@@ -12,6 +15,9 @@ const model = $ref({
 })
 
 const validate = async (): Promise<CreateEventDto> => {
+  const error = await formRef?.validate()
+  if (error) { return Promise.reject(error) }
+
   return Promise.reject(new Error('114514'))
   // return {
   //   ...model,
@@ -23,7 +29,7 @@ defineExpose({ validate })
 </script>
 
 <template>
-  <AForm :model="model">
+  <AForm ref="formRef" :model="model">
     <AFormItem
       field="name"
       label="事件名称"

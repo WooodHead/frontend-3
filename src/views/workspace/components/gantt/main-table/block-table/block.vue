@@ -24,7 +24,7 @@ const offset = $computed(() => {
   return range.start.diff(zero) * UNIT_WIDTH
 })
 
-const order = 1
+const order = 0
 
 const hover = $(useElementHover(target))
 </script>
@@ -32,6 +32,7 @@ const hover = $(useElementHover(target))
 <template>
   <div
     ref="target"
+    name="eventblock"
     :style="{
       left: offset && `${offset}px`,
       transform: `translateY(${order * EVENT_HEIGHT}px)`,

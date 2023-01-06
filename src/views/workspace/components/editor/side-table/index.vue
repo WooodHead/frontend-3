@@ -7,13 +7,18 @@ const active = ref('info')
 </script>
 
 <template>
-  <div border="r border-2" h-full w="1/3" column>
+  <div
+    column
+    border="r border-2"
+    h-full min-w="1/3" max-w="1/2"
+    resize-x overflow-x-hidden
+  >
     <ATabs v-model:active-key="active" hide-content>
       <ATabPane key="info" title="信息" />
       <ATabPane key="todo" title="待办" />
       <ATabPane key="relation" title="关联" />
     </ATabs>
-    <div space-y-2 h-0 grow overflow-y-auto p-2>
+    <div grow h-0 overflow-y-auto p-2 space-y-2>
       <Info v-if="active === 'info'" />
       <Todo v-else-if="active === 'todo'" />
       <Relation v-else-if="active === 'relation'" />

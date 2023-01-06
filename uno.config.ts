@@ -3,7 +3,6 @@ import { defineConfig, presetAttributify, presetIcons, presetTypography, presetU
 import presetRemToPx from '@unocss/preset-rem-to-px'
 import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
-import { presetScrollbar } from 'unocss-preset-scrollbar'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
 const parsed = parseArcoTheme(path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'))!
@@ -18,6 +17,7 @@ export default defineConfig<Theme>({
   shortcuts: [
     {
       full: 'w-full h-full',
+      fullscreen: 'w-screen h-screen',
     },
     {
       'column': 'flex flex-col',
@@ -49,7 +49,7 @@ export default defineConfig<Theme>({
     presetIcons(),
     presetRemToPx(),
     presetTypography(),
-    presetScrollbar({}),
+    // presetScrollbar({}), // scrollbar相关的属性兼容性有点差
     presetTheme<{}>({
       selectors: {
         light: 'body',

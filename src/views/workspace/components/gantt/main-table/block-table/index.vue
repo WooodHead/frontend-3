@@ -40,6 +40,10 @@ const blockData = $computed(() => eventData?.map(({ id, range, color, type }) =>
   type,
   range: UnitIDRange.deserialize(range),
 }) as BlockProps))
+
+watchEffect(() => {
+  console.log(blockData)
+})
 </script>
 
 <template>

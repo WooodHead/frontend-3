@@ -9,8 +9,8 @@ import type { DefineStoreOptions, StateTree, StoreDefinition, _GettersTree } fro
 export const createStore = <Id extends string, S extends StateTree = {}, G extends _GettersTree<S> = {}, A = {}>
   (baseID: Id, options: Omit<DefineStoreOptions<Id, S, G, A>, 'id'>) => {
   return {
-    registerStore: (id: string) => {
-      const useStore = defineStore(`${baseID}_${id}`, options)
+    registerStore: (distinct: any) => {
+      const useStore = defineStore(`${baseID}_${distinct}`, options)
 
       provide(`store_${baseID}`, useStore)
       onUnmounted(() => {

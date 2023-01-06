@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import type { ComponentProps } from '../index.vue'
+import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import Body from './body/index.vue'
+import { registerStore } from './store'
 
 interface CharacterProps {
-  props: ComponentProps
+  status: ComponentStatus
 }
 
-const { props } = defineProps<CharacterProps>()
-const { id, state, position, onClose } = props
+const { status } = defineProps<CharacterProps>()
+
+const store = registerStore(status.position)
+
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 </script>
 
 <template>

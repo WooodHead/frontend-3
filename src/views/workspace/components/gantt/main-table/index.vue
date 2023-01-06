@@ -40,8 +40,8 @@ const handleWheel = (e: WheelEvent) => {
     </div>
   </div>
   <div
+    center-y
     fixed m-auto left-0 right-0 bottom-10
-    column items-center
     z-100 space-y-4
   >
     <EventSelect />

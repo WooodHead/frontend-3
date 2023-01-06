@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import type { ComponentProps } from '../index.vue'
+import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
 import EditorStatus from './components/editor-status.vue'
+import { registerStore } from './store'
 
 interface EditorProps {
-  props: ComponentProps
+  status: ComponentStatus
 }
 
-const { props } = defineProps<EditorProps>()
-const { id, state, position, onClose } = $(props)
+const { status } = defineProps<EditorProps>()
+
+const store = registerStore(status.position)
+
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 </script>
 
 <template>

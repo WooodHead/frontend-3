@@ -1,11 +1,14 @@
 import type { UnitID } from '@project-chiral/unit-system'
 import { UnitIDRange } from '@project-chiral/unit-system'
+import type { ComponentStatus } from '../type'
 import { UNIT_WIDTH } from './const'
 import type { IGanttData } from './types'
 import createStore from '@/utils/createStore'
 
 export const { registerStore, useStore } = createStore('gantt', {
   state: () => ({
+    status: { id: 'default' } as (ComponentStatus | undefined),
+
     fullMode: true, // 完全模式
 
     dragging: false, // 当前视图是否正在被拖拽

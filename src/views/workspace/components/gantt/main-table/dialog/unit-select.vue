@@ -14,6 +14,7 @@ const value = $computed<RangePickerValue>(() => ({
   unit: subUnit as IUnit,
   range: selectedRange.map(v => v.date.toDate()),
 }))
+// 当日期没选择完全时始终是undefined，避免传入不完整数据
 const init = $computed(() => value.range.length === 2 ? value : undefined)
 
 const handleCancel = () => {
@@ -22,12 +23,16 @@ const handleCancel = () => {
 const handleOk = () => {
   visible = true
 }
+const handleBeforeOk = () => {
+  selectedRange = []
+}
 </script>
 
 <template>
   <Basic
     :show="selectedRange.length > 0"
     :ready="selectedRange.length === 2"
+    ok-text="创建原子事件"
     @cancel="handleCancel"
     @ok="handleOk"
   >
@@ -36,6 +41,6 @@ const handleOk = () => {
   <CreateEventModal
     v-model:visible="visible"
     :init="init"
-    @before-ok="handleCancel"
+    @before-ok="handleBeforeOk"
   />
 </template>

@@ -18,7 +18,6 @@ const model = $ref({
     unit: 'date',
     range: [new Date(), new Date()],
   },
-  type: 'ATOM',
 })
 
 const validate = async (): Promise<CreateEventDto> => {

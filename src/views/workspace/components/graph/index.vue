@@ -2,17 +2,23 @@
 import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
-import type { ComponentProps } from '../index.vue'
+import type { ComponentStatus } from '../type'
 import { IPositionState } from '../../layout'
 import EventNode from './event-node/index.vue'
 import ToolBar from './tool-bar/index.vue'
+import { registerStore } from './store'
 
 interface GraphProps {
-  props: ComponentProps
+  status: ComponentStatus
 }
 
-const { props } = defineProps<GraphProps>()
-const { id, state, position, onClose } = $(props)
+const { status } = defineProps<GraphProps>()
+
+const store = registerStore(status.position)
+
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 
 let nodes = $ref<Node[]>([])
 const edges = $ref<Edge[]>([])
@@ -45,7 +51,9 @@ onConnectEnd(() => {
   removeSelectedNodes(graphNodes.filter(({ id }) => id === connectingNodeId))
 })
 
-watch(() => props.position, () => { fitView() })
+watch(() => status.position, () => { fitView() })
+
+const showMiniMap = $computed(() => ![IPositionState.Corner, IPositionState.Vertical].includes(status.state ?? -1))
 </script>
 
 <template>
@@ -65,7 +73,7 @@ watch(() => props.position, () => { fitView() })
         </template>
         <Background />
         <Controls />
-        <MiniMap v-if="state !== IPositionState.Corner && state !== IPositionState.Vertical" />
+        <MiniMap v-if="showMiniMap" />
       </VueFlow>
     </div>
     <ToolBar />
