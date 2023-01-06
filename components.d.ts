@@ -7,9 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
-    Basic: typeof import('./src/components/create-event-modal/basic.vue')['default']
-    CollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
     CreateEventModal: typeof import('./src/components/create-event-modal/index.vue')['default']
@@ -18,7 +15,6 @@ declare module '@vue/runtime-core' {
     CreateEventModalCollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     EventDetail: typeof import('./src/components/event-detail/index.vue')['default']
     PickersRangePicker: typeof import('./src/components/pickers/range-picker.vue')['default']
-    RangePicker: typeof import('./src/components/pickers/range-picker.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Status: typeof import('./src/components/status.vue')['default']
