@@ -16,23 +16,16 @@ const { layout } = $(storeToRefs(WSStore))
 
 const { isSuccess, isLoading, isError } = useQuery({
   queryKey: ['project', 'workspace'],
-  retry: (_count, { response }) => response?.status !== 404,
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ layout }) => layout,
   onSuccess: config => {
-    if (!config || config.length === 0) {
-      WSStore.layout = Layout.default()
-    }
-    else {
-      WSStore.layout = Layout.deserialize(config as ILayout)
-    }
+    WSStore.layout = config
+      ? Layout.deserialize(config as ILayout)
+      : Layout.default()
   },
   onError: ({ response }: AxiosError) => {
     if (response) {
-      const { status, statusText } = response
-      // 404 时使用默认布局
-      if (status === 404) { WSStore.layout = Layout.default() }
-      else { Message.error(`工作台启动失败：${statusText}`) }
+      Message.error(`工作台启动失败：${response.statusText}`)
     }
     else {
       Message.error('工作台启动失败：网络错误')

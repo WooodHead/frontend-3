@@ -24,6 +24,7 @@ export interface EventEntity {
   name: string;
   description: string | null;
   color: string;
+  serial: number;
 }
 
 export interface EventDetailEntity {
@@ -41,8 +42,10 @@ export interface EventDetailEntity {
   name: string;
   description: string | null;
   color: string;
+  serial: number;
   superEvents: EventEntity[];
   subEvents: EventEntity[];
+  brief?: string;
 }
 
 export interface CreateEventDto {
@@ -63,15 +66,15 @@ export interface UpdateEventDto {
   color?: string;
 }
 
-export interface CreateContentDto {
-  content: string;
-}
-
 export interface EventContentEntity {
   id: number;
   /** @format date-time */
   updatedAt: string;
   eventId: number;
+  content: string;
+}
+
+export interface CreateContentDto {
   content: string;
 }
 
@@ -129,6 +132,7 @@ export interface ProjectEntity {
   /** @format date-time */
   deletedAt: string | null;
   userId: number;
+  serial: number;
 }
 
 export interface UpdateProjectDto {
@@ -444,9 +448,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/{id}/content
      */
     getContent: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventContentEntity, any>({
         path: `/event/${id}/content`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
