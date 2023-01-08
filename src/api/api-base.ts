@@ -13,6 +13,10 @@ export interface EventEntity {
   type: "ATOM" | "COLLECTION";
   range: string;
   id: number;
+  name: string;
+  description: string | null;
+  color: string;
+  serial: number;
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
@@ -21,16 +25,16 @@ export interface EventEntity {
   deletedAt: string | null;
   contentId: number | null;
   projectId: number;
-  name: string;
-  description: string | null;
-  color: string;
-  serial: number;
 }
 
 export interface EventDetailEntity {
   type: "ATOM" | "COLLECTION";
   range: string;
   id: number;
+  name: string;
+  description: string | null;
+  color: string;
+  serial: number;
   /** @format date-time */
   createdAt: string;
   /** @format date-time */
@@ -39,10 +43,6 @@ export interface EventDetailEntity {
   deletedAt: string | null;
   contentId: number | null;
   projectId: number;
-  name: string;
-  description: string | null;
-  color: string;
-  serial: number;
   superEvents: EventEntity[];
   subEvents: EventEntity[];
   brief?: string;
@@ -74,10 +74,6 @@ export interface EventContentEntity {
   content: string;
 }
 
-export interface CreateContentDto {
-  content: string;
-}
-
 export interface UpdateContentDto {
   content?: string;
 }
@@ -100,25 +96,9 @@ export interface CreateUserDto {
   email?: string;
 }
 
-export interface CreateLayoutDto {
-  id: string;
-  position: number[];
-}
-
-export interface CreateWorkspaceDto {
-  origin: string;
-  layout: CreateLayoutDto[];
-}
-
-export interface CreateSettingsDto {
-  darkMode: boolean;
-}
-
 export interface CreateProjectDto {
   name: string;
   description: string;
-  workspace: CreateWorkspaceDto;
-  settings: CreateSettingsDto;
 }
 
 export interface ProjectEntity {
@@ -140,24 +120,21 @@ export interface UpdateProjectDto {
   description?: string;
 }
 
-export interface LayoutEntity {
-  id: string;
-  position: number[];
-}
-
 export interface WorkspaceEntity {
   id: number;
-  origin: string;
-  layout: LayoutEntity[];
+  origin: string | null;
+  layout: object[] | null;
   projectId: number;
 }
 
 export interface UpdateWorkspaceDto {
   origin?: string;
-  layout?: CreateLayoutDto[];
+  layout?: object[];
 }
 
 export interface SettingsEntity {
+  id: number;
+  projectId: number;
   darkMode: boolean;
 }
 
@@ -451,23 +428,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<EventContentEntity, any>({
         path: `/event/${id}/content`,
         method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name CreateContent
-     * @request POST:/event/{id}/content
-     */
-    createContent: (id: number, data: CreateContentDto, params: RequestParams = {}) =>
-      this.request<EventContentEntity, any>({
-        path: `/event/${id}/content`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),

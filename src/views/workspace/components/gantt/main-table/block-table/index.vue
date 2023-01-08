@@ -23,7 +23,7 @@ const client = useQueryClient()
 
 const { data: eventData } = $(useQuery({
   // enabled: computed(() => subUnitRange !== undefined),
-  enabled: false,
+  enabled: true,
   queryKey: computed(() => ['event', { range: subUnitRange?.serialize() }]),
   queryFn: () => api.event.getEvents({ range: subUnitRange?.serialize() }),
   onSuccess: events => {

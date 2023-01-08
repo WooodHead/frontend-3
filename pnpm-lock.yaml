@@ -8,7 +8,7 @@ specifiers:
   '@iconify-json/radix-icons': ^1.1.8
   '@lukemorales/query-key-factory': ^1.0.3
   '@motionone/vue': ^10.15.3
-  '@project-chiral/unit-system': ^1.0.5
+  '@project-chiral/unit-system': latest
   '@tanstack/vue-query': ^4.20.5
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209
   '@tiptap/extension-placeholder': 2.0.0-beta.209
@@ -37,6 +37,7 @@ specifiers:
   eslint-plugin-unused-imports: ^2.0.0
   eslint-plugin-vue: ^9.8.0
   less: ^4.1.3
+  lru_map: ^0.4.1
   mockjs: ^1.1.0
   motion: ^10.15.3
   pinia: ^2.0.28
@@ -68,7 +69,7 @@ dependencies:
   '@arco-themes/vue-project-chiral': 0.0.2_2a2jl4wjq7s5pnljfp5xjrgg4a
   '@lukemorales/query-key-factory': 1.0.3
   '@motionone/vue': 10.15.3
-  '@project-chiral/unit-system': 1.0.5
+  '@project-chiral/unit-system': 1.1.1
   '@tanstack/vue-query': 4.20.5_vue@3.2.45
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_vde3gi7hrsabw5pj6bw7jls3ai
   '@tiptap/extension-placeholder': 2.0.0-beta.209_nv3r55gosyqqywjqk2ljir6ei4
@@ -81,6 +82,7 @@ dependencies:
   '@vueuse/shared': 9.9.0_vue@3.2.45
   axios: 1.2.1
   d3-force: 3.0.0
+  lru_map: 0.4.1
   motion: 10.15.3
   pinia: 2.0.28_prq2uz4lho2pwp6irk4cfkrxwu
   prosemirror-commands: 1.5.0
@@ -634,8 +636,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@project-chiral/unit-system/1.0.5:
-    resolution: {integrity: sha512-K6rkNhmaWfmkJluzvvskuxsgF+ByuQSatJPbRdaYMS8f2R2jsroMNbwjtBbZ/+SKmcKVGQ/GrrkWOaa623VizQ==}
+  /@project-chiral/unit-system/1.1.1:
+    resolution: {integrity: sha512-d9qw25BRBBnZ4uNbGLqw7aE29r8SHY6opIPu1A5rMLdYnf5G6B5NuWgo7yvhR0rgqR73FTBjR/scJNwiIaa9jw==}
     dependencies:
       dayjs: 1.11.7
       object-hash: 3.0.0
@@ -3503,6 +3505,10 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /lru_map/0.4.1:
+    resolution: {integrity: sha512-I+lBvqMMFfqaV8CJCISjI3wbjmwVu/VyOoU7+qtu9d7ioW5klMgsTTiUOUp+DJvfTTzKXoPbyC6YfgkNcyPSOg==}
+    dev: false
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}

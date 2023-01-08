@@ -9,7 +9,7 @@ const { id } = defineProps<{
 
 const store = useStore()
 const offset = $computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
-const subUnits = id.children
+const subUnits = $computed(() => id.children)
 </script>
 
 <template>

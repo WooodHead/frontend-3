@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Presence } from '@motionone/vue'
 import type { UnitIDRange } from '@project-chiral/unit-system'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
@@ -12,10 +11,26 @@ export interface BlockProps {
 }
 
 const { id, range, color = '#93c5fd' } = defineProps<BlockProps>()
+const start = $computed(() => range.start)
 
 const store = useStore()
+const { viewPort } = storeToRefs(store)
 
 const target = ref<HTMLDivElement | null>(null)
+useIntersectionObserver(
+  target,
+  ([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      store.visibleEvents.insert(start, id)
+    }
+    else {
+      store.visibleEvents.remove(start)
+    }
+  },
+  {
+    root: viewPort,
+  },
+)
 
 const width = $computed(() => range.length * UNIT_WIDTH)
 const offset = $computed(() => {
@@ -24,7 +39,7 @@ const offset = $computed(() => {
   return range.start.diff(zero) * UNIT_WIDTH
 })
 
-const order = 0
+const order = $computed(() => store.visibleEvents.order(start))
 
 const hover = $(useElementHover(target))
 </script>
@@ -67,8 +82,6 @@ const hover = $(useElementHover(target))
         rounded
       />
     </div>
-    <Presence>
-      <EventDetail v-if="hover" :id="id" />
-    </Presence>
+    <EventDetail v-if="hover" :id="id" />
   </div>
 </template>

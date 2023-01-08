@@ -26,7 +26,7 @@ const handleWheel = (e: WheelEvent) => {
 
 <template>
   <div grow>
-    <div ref="viewPort" relative>
+    <div ref="viewPort" relative h-99999px>
       <div
         ref="tableRef"
         :style="{ transform: `translateX(${offset + x}px)` }"

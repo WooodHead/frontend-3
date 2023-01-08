@@ -18,3 +18,20 @@ export const fadeInOutY = {
   animate: { translateY: '0px', opacity: 1 },
   exit: { translateY: '100%', opacity: 0 },
 }
+
+export const combine = (...animations: {
+  initial?: any
+  animate?: any
+  exit?: any
+}[]) => {
+  return animations.reduce(
+    (acc, animation) => {
+      return {
+        initial: { ...acc.initial, ...animation.initial },
+        animate: { ...acc.animate, ...animation.animate },
+        exit: { ...acc.exit, ...animation.exit },
+      }
+    },
+    { initial: {}, animate: {}, exit: {} },
+  )
+}

@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { UnitID } from '@project-chiral/unit-system'
 import { useQuery } from '@tanstack/vue-query'
+import { Motion, Presence } from '@motionone/vue'
 import { EVENT_HEIGHT } from '../../const'
 import Info from './parts/info.vue'
-import Time from './parts/time.vue'
-import Count from './parts/count.vue'
 import api from '@/api/api'
 
 const { id } = defineProps<{ id: number }>()
 const { data } = useQuery({
-  enabled: false,
+  enabled: true,
   queryKey: ['event', id],
   queryFn: () => api.event.getEvent(id),
 })
@@ -18,13 +16,15 @@ const { data } = useQuery({
 </script>
 
 <template>
-  <div
-    :style="{ height: `${EVENT_HEIGHT}px` }"
-    w-full
-    border="b border-2"
-    grid="~ cols-16"
-  >
-    <div col-span-8 border="r border-2">
+  <Presence>
+    <Motion
+      :initial="{ height: 0 }"
+      :animate="{ height: `${EVENT_HEIGHT}px` }"
+      :exit="{ height: 0 }"
+      w-full
+      border="b border-2"
+    >
+      <!-- <div col-span-8 border="r border-2">
       <Info :event="data" />
     </div>
     <div col-span-5 border="r border-2">
@@ -32,6 +32,8 @@ const { data } = useQuery({
     </div>
     <div col-span-3>
       <Count />
-    </div>
-  </div>
+    </div> -->
+      <Info :data="data" />
+    </Motion>
+  </Presence>
 </template>

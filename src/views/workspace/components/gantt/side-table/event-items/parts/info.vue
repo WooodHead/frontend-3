@@ -3,23 +3,21 @@ import Basic from './basic.vue'
 import Editor from '@/views/workspace/components/editor/index.vue'
 import type { EventEntity } from '@/api/api-base'
 
-const { isLoading, event, color } = defineProps<{
+const { isLoading, data, color } = defineProps<{
   isLoading?: boolean
-  event?: EventEntity
+  data?: EventEntity
   color?: string
 }>()
 
 let dialogOpen = $ref(false)
-const handleClick = () => {
-  dialogOpen = true
-}
+const handleClick = () => { dialogOpen = true }
 </script>
 
 <template>
   <Basic @click="handleClick">
-    <div bg-primary-6 shrink-0 w-8px />
+    <div bg-primary-6 shrink-0 w-4px />
     <div grow center-x p-2>
-      114514
+      {{ data?.name }}
     </div>
   </Basic>
   <v-dialog v-model="dialogOpen" width="75%" height="75%">

@@ -4,6 +4,7 @@ import type { ComponentStatus } from '../type'
 import { UNIT_WIDTH } from './const'
 import type { IGanttData } from './types'
 import createStore from '@/utils/createStore'
+import { OrderedArray, UnitIDComparor } from '@/utils/ordered-array'
 
 export const { registerStore, useStore } = createStore('gantt', {
   state: () => ({
@@ -26,7 +27,7 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
 
-    visibleEvents: [] as [UnitID, string][], // 当前视图的可见事件队列，有序
+    visibleEvents: new OrderedArray<number, UnitID>(UnitIDComparor), // 当前视图的可见事件队列，有序
 
     _offset: 0, // 主视图的偏移量
     offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
