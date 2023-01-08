@@ -4,7 +4,7 @@ import { Message } from '@arco-design/web-vue'
 import { RangePickerValue } from '../pickers/range-picker.vue'
 import AtomEventForm from './atom-event-form.vue'
 import CollectionEventForm from './collection-event-form.vue'
-import type { CreateEventDto } from '@/api/api-base'
+import type { CreateEventDto, EventEntity } from '@/api/api-base'
 import api from '@/api/api'
 
 const { visible, init } = defineProps<{
@@ -14,7 +14,7 @@ const { visible, init } = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'before-ok'): Promise<boolean | void>
+  (e: 'ok', data: EventEntity): void | Promise<void>
 }>()
 
 const type = $computed(() => {
@@ -37,13 +37,14 @@ const { mutateAsync } = useMutation({
     Message.success('创建事件成功')
   },
   onError: e => {
-    Message.error(`${e}`)
+    Message.error(`创建事件失败：${e}`)
   },
 })
 
 const handleBeforeOk = async () => {
   const data = await formRef!.validate()
-  await mutateAsync(data)
+  const event = await mutateAsync(data)
+  emit('ok', event)
   return true
 }
 </script>

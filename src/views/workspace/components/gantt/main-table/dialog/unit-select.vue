@@ -4,9 +4,10 @@ import { useStore } from '../../store'
 import Basic from './basic.vue'
 import type { RangePickerValue } from '@/components/pickers/range-picker.vue'
 import RangePicker from '@/components/pickers/range-picker.vue'
+import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-let { subUnit, selectedRange } = $(storeToRefs(store))
+let { subUnit, selectedRange, visibleEvents } = $(storeToRefs(store))
 
 let visible = $ref(false)
 
@@ -20,10 +21,10 @@ const init = $computed(() => value.range.length === 2 ? value : undefined)
 const handleCancel = () => {
   selectedRange = []
 }
-const handleOk = () => {
+const handleCreating = () => {
   visible = true
 }
-const handleBeforeOk = () => {
+const handleCreated = (data: EventEntity) => {
   selectedRange = []
 }
 </script>
@@ -34,13 +35,13 @@ const handleBeforeOk = () => {
     :ready="selectedRange.length === 2"
     ok-text="创建原子事件"
     @cancel="handleCancel"
-    @ok="handleOk"
+    @ok="handleCreating"
   >
     <RangePicker :model-value="value" readonly />
   </Basic>
   <CreateEventModal
     v-model:visible="visible"
     :init="init"
-    @before-ok="handleBeforeOk"
+    @ok="handleCreated"
   />
 </template>
