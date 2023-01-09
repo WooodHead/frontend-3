@@ -1,12 +1,24 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import { HEADER_HEIGHT } from '../const'
 import { useStore } from '../store'
 import EventItems from './event-items/index.vue'
+import api from '@/api/api'
 
 const store = useStore()
 const { lock } = $(storeToRefs(store))
 
-// TODO 完成事件列表锁
+useQuery({
+  queryKey: ['project', 'workspace'],
+  queryFn: () => api.project.getWorkspaceInfo(),
+  select: ({ lock }) => lock,
+  onSuccess: lock => { store.lock = lock },
+})
+
+watch(
+  () => lock,
+  lock => { api.project.updateWorkspaceInfo({ lock }) },
+)
 </script>
 
 <template>

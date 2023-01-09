@@ -8,11 +8,10 @@ import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-const { unitRange, subUnitRange } = $(storeToRefs(store))
+const { unitRange } = $(storeToRefs(store))
 
 const client = useQueryClient()
 
-// TODO 可以考虑优化事件请求的缓存
 const ranges = $computed(() => unitRange?.ids.map(range => range.childrenRange))
 const results = useQueries({
   queries: computed(() => ranges?.map(range => ({
@@ -27,10 +26,14 @@ const results = useQueries({
   })) ?? []),
 })
 
-const eventData = $computed(() => results
-  .map(({ data }) => data)
-  .flat()
-  .filter(v => v !== undefined) as EventEntity[])
+const eventData = $computed(() => {
+  const events = results
+    .map(({ data }) => data)
+    .flat()
+    .filter(v => v !== undefined) as EventEntity[]
+
+  return [...new Map(events.map(e => [e.id, e])).values()]
+})
 
 // const { data: eventData } = $(useQuery({
 //   // enabled: computed(() => subUnitRange !== undefined),

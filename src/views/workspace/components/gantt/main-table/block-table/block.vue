@@ -15,16 +15,22 @@ const start = $computed(() => range.start)
 
 const store = useStore()
 const { viewPort } = storeToRefs(store)
-const { visibleUnit } = $(storeToRefs(store))
+const { visibleUnit, lock } = $(storeToRefs(store))
 
+let visible = $ref(false)
 const target = ref<HTMLDivElement | null>(null)
 useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
+    // 不管是否锁定都记录isIntersecting，用于解锁时及时更新状态
+    visible = isIntersecting
+
     if (isIntersecting) {
+      // TODO 列表锁现在是只增不减，是否要改成不增不减
+      if (lock && store.visibleEvents.contains(start)) { return }
       store.visibleEvents.insert(start, id)
     }
-    else {
+    else if (!lock) {
       store.visibleEvents.remove(start)
     }
   },
@@ -32,6 +38,9 @@ useIntersectionObserver(
     root: viewPort,
   },
 )
+whenever(() => !lock, () => {
+  if (!visible) { store.visibleEvents.remove(start) }
+})
 
 const width = $computed(() => range.length * UNIT_WIDTH)
 const offset = $computed(() => {
@@ -86,6 +95,6 @@ const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range)
         rounded
       />
     </div>
-    <EventDetail v-show="hover" :id="id" :enabled="loadDetail" />
+    <EventDetail :id="id" :show="hover" :enabled="loadDetail" />
   </div>
 </template>

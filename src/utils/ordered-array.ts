@@ -47,6 +47,10 @@ export class OrderedArray<T, K> {
     this._data = []
   }
 
+  contains(key: K) {
+    return this.order(key) >= 0
+  }
+
   get keys() {
     return this._data.map(([k]) => k)
   }

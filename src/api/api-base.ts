@@ -125,11 +125,13 @@ export interface WorkspaceEntity {
   origin: string | null;
   layout: object[] | null;
   projectId: number;
+  lock: boolean;
 }
 
 export interface UpdateWorkspaceDto {
   origin?: string;
   layout?: object[];
+  lock?: boolean;
 }
 
 export interface SettingsEntity {

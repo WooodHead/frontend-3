@@ -28,12 +28,15 @@ if (data !== undefined) { store.initWithData(data) }
 
 const { isSuccess, isLoading, isError } = $(useQuery({
   enabled: computed(() => data === undefined),
-  queryKey: ['workspace'],
+  queryKey: ['project', 'workspace'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ origin }) => origin,
   onSuccess: id => {
     if (!id) { store.init(UnitID.fromDayjs(new Date(), 'month')) }
     else { store.init(UnitID.deserialize(id)) }
+  },
+  onError: () => {
+    store.init(UnitID.fromDayjs(new Date(), 'month'))
   },
 }))
 

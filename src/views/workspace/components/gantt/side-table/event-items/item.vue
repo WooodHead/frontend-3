@@ -8,7 +8,7 @@ import api from '@/api/api'
 const { id } = defineProps<{ id: number }>()
 const { data } = useQuery({
   enabled: true,
-  queryKey: ['event', id],
+  queryKey: computed(() => ['event', id]),
   queryFn: () => api.event.getEvent(id),
 })
 
