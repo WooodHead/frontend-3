@@ -69,7 +69,7 @@ dependencies:
   '@arco-themes/vue-project-chiral': 0.0.2_2a2jl4wjq7s5pnljfp5xjrgg4a
   '@lukemorales/query-key-factory': 1.0.3
   '@motionone/vue': 10.15.3
-  '@project-chiral/unit-system': 1.1.1
+  '@project-chiral/unit-system': 1.2.0
   '@tanstack/vue-query': 4.20.5_vue@3.2.45
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_vde3gi7hrsabw5pj6bw7jls3ai
   '@tiptap/extension-placeholder': 2.0.0-beta.209_nv3r55gosyqqywjqk2ljir6ei4
@@ -636,8 +636,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@project-chiral/unit-system/1.1.1:
-    resolution: {integrity: sha512-d9qw25BRBBnZ4uNbGLqw7aE29r8SHY6opIPu1A5rMLdYnf5G6B5NuWgo7yvhR0rgqR73FTBjR/scJNwiIaa9jw==}
+  /@project-chiral/unit-system/1.2.0:
+    resolution: {integrity: sha512-Rmf+7NDN8q80N+gkcALNvyS9zILAtE3sJ15joPb2cTTjKaSWQncZLEm1hJqrN+rJuqCRr9A5Ew7TH1XjFsxW6Q==}
     dependencies:
       dayjs: 1.11.7
       object-hash: 3.0.0

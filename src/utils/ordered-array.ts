@@ -43,6 +43,10 @@ export class OrderedArray<T, K> {
     return this._data.findIndex(([k]) => this._comparor(k, key) === 0)
   }
 
+  clear() {
+    this._data = []
+  }
+
   get keys() {
     return this._data.map(([k]) => k)
   }

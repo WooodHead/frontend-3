@@ -5,10 +5,10 @@ import { UnitIDRange } from '@project-chiral/unit-system'
 import api from '@/api/api'
 import { fadeInOut } from '@/utils/animation'
 
-const { id } = defineProps<{ id: number }>()
+const { id, enabled = true } = defineProps<{ id: number; enabled?: boolean }>()
 
 const { data, isSuccess, isLoading, isError } = $(useQuery({
-  enabled: true,
+  enabled: computed(() => enabled),
   queryKey: ['event', id, 'detail'],
   queryFn: () => api.event.getEventDetail(id),
   select: data => ({
@@ -24,9 +24,15 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
       v-bind="fadeInOut"
       absolute overflow-hidden
     >
-      <ACard full shadow-lg :title="data?.name">
+      <ACard
+        :title="data?.name"
+        full shadow-lg max-h-400px overflow-y-auto
+        @wheel.stop
+      >
         <Status v-if="!isSuccess" :loading="isLoading" :error="isError" />
-        <div v-else></div>
+        <div v-else>
+          {{ data }}
+        </div>
       </ACard>
     </Motion>
   </Presence>

@@ -16,6 +16,7 @@ const ids = $computed(() => store.visibleEvents.data)
     overflow-y-auto overflow-x-hidden
     @scroll="handleScroll"
   >
+    <!-- TODO 列表动画 -->
     <Item v-for="id in ids" :id="id" :key="id" />
   </div>
 </template>

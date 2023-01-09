@@ -103,6 +103,7 @@ export const { registerStore, useStore } = createStore('gantt', {
       this.origin = undefined
       this.eventScrollTop = 0
       this.units = []
+      this.visibleEvents.clear()
       this._offset = -1
     },
 

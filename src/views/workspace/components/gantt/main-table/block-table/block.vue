@@ -15,6 +15,7 @@ const start = $computed(() => range.start)
 
 const store = useStore()
 const { viewPort } = storeToRefs(store)
+const { visibleUnit } = $(storeToRefs(store))
 
 const target = ref<HTMLDivElement | null>(null)
 useIntersectionObserver(
@@ -42,6 +43,9 @@ const offset = $computed(() => {
 const order = $computed(() => store.visibleEvents.order(start))
 
 const hover = $(useElementHover(target))
+
+// 预加载当前可见区域内的event detail
+const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range))
 </script>
 
 <template>
@@ -54,7 +58,7 @@ const hover = $(useElementHover(target))
     }"
     absolute cursor-pointer
     transition-transform duration-100
-    z-10
+    z-10 hover:z-100
   >
     <div
       v-if="false"
@@ -82,6 +86,6 @@ const hover = $(useElementHover(target))
         rounded
       />
     </div>
-    <EventDetail v-if="hover" :id="id" />
+    <EventDetail v-show="hover" :id="id" :enabled="loadDetail" />
   </div>
 </template>

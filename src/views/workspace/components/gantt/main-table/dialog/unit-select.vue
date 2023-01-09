@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { IUnit } from '@project-chiral/unit-system'
+import { UnitIDRange } from '@project-chiral/unit-system'
+import { useQueryClient } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import Basic from './basic.vue'
 import type { RangePickerValue } from '@/components/pickers/range-picker.vue'
@@ -7,7 +9,7 @@ import RangePicker from '@/components/pickers/range-picker.vue'
 import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-let { subUnit, selectedRange, visibleEvents } = $(storeToRefs(store))
+let { subUnit, selectedRange } = $(storeToRefs(store))
 
 let visible = $ref(false)
 
@@ -24,8 +26,12 @@ const handleCancel = () => {
 const handleCreating = () => {
   visible = true
 }
-const handleCreated = (data: EventEntity) => {
+const client = useQueryClient()
+const handleCreated = ({ range }: EventEntity) => {
   selectedRange = []
+  // 创建事件的时间起点处所处的单位范围的缓存失效
+  const startRange = UnitIDRange.deserialize(range).start.range
+  client.invalidateQueries(['event', { range: startRange.serialize() }])
 }
 </script>
 
