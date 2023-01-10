@@ -8,10 +8,14 @@ const { node, isConnecting } = defineProps<{
   node: NodeProps
   isConnecting: boolean
 }>()
+
+const target = ref<HTMLElement | null>(null)
+const hover = useElementHover(target)
 </script>
 
 <template>
   <div
+    ref="target"
     card
     relative center
     w-120px h-120px

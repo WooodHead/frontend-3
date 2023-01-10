@@ -21,11 +21,8 @@ watch(() => status, status => {
 <template>
   <div card column overflow-hidden>
     <ComponentHeader>
-      <template #left>
-        {{ }}
-      </template>
       <template #middle>
-        <ATreeSelect />
+        <ATreeSelect w-full />
       </template>
       <template #right>
         <div row space-x-2>

@@ -32,7 +32,7 @@ const handleWheel = (e: WheelEvent) => {
         :style="{ transform: `translateX(${offset + x}px)` }"
         :transition="!isDragging && `transform`"
         column absolute h-full
-        @wheel="handleWheel"
+        @wheel.passive="handleWheel"
       >
         <Header />
         <Body />

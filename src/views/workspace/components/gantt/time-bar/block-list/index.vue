@@ -8,9 +8,12 @@ const store = useStore()
 const ganttStore = useGanttStore()
 
 // 当 origin 变化时，自动更新
-ganttStore.$subscribe((_mutation, state) => {
-  if (state.origin) { store.init(state.origin) }
-})
+watch(
+  () => ganttStore.origin,
+  origin => {
+    if (origin) { store.init(origin) }
+  },
+)
 
 const handleWheel = (e: WheelEvent) => {
   store.offset += -Math.sign(e.deltaY) * (1 * BLOCK_WIDTH)
@@ -23,7 +26,7 @@ const handleWheel = (e: WheelEvent) => {
     :style="{ transform: `translateX(${store.offset}px)` }"
     relative full
     transition-transform
-    @wheel="handleWheel"
+    @wheel.passive="handleWheel"
   >
     <Block
       v-for="(unit, i) in store.blockQueue"
