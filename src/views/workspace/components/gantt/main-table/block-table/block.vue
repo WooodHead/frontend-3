@@ -11,7 +11,6 @@ export interface BlockProps {
 }
 
 const { id, range, color = '#93c5fd' } = defineProps<BlockProps>()
-const start = $toRef(range, 'start')
 
 const store = useStore()
 const { viewPort } = storeToRefs(store)
@@ -27,11 +26,11 @@ useIntersectionObserver(
 
     if (isIntersecting) {
       // TODO 列表锁现在是只增不减，是否要改成不增不减
-      if (lock && store.visibleEvents.contains(start, { eventId: id })) { return }
-      store.visibleEvents.insert(start, { eventId: id })
+      if (lock && store.visibleEvents.contains(range, { eventId: id })) { return }
+      store.visibleEvents.insert(range, { eventId: id })
     }
     else if (!lock) {
-      store.visibleEvents.remove(start)
+      store.visibleEvents.remove(range)
     }
   },
   {
@@ -39,7 +38,7 @@ useIntersectionObserver(
   },
 )
 whenever(() => !lock, () => {
-  if (!visible) { store.visibleEvents.remove(start) }
+  if (!visible) { store.visibleEvents.remove(range) }
 })
 
 const width = $computed(() => range.length * UNIT_WIDTH)
@@ -49,7 +48,7 @@ const offset = $computed(() => {
   return range.start.diff(zero) * UNIT_WIDTH
 })
 
-const order = $computed(() => store.visibleEvents.order(start, { eventId: id }))
+const order = $computed(() => store.visibleEvents.order(range, { eventId: id }))
 
 const hover = $(useElementHover(target))
 

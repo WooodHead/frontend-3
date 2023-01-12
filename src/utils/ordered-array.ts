@@ -1,4 +1,4 @@
-import type { UnitID } from '@project-chiral/unit-id'
+import type { UnitID, UnitIDRange } from '@project-chiral/unit-id'
 
 export class OrderedArray<T extends Record<string, any>, K> {
   _data: [K, T][]
@@ -74,6 +74,24 @@ export const UnitIDComparor = (a: UnitID, b: UnitID) => {
     return -1
   }
   else if (a.isAfter(b)) {
+    return 1
+  }
+  else {
+    return 0
+  }
+}
+
+export const UnitIDRangeComparor = (a: UnitIDRange, b: UnitIDRange) => {
+  if (a.start.isBefore(b.start)) {
+    return -1
+  }
+  else if (a.start.isAfter(b.start)) {
+    return 1
+  }
+  else if (a.end.isBefore(b.end)) {
+    return -1
+  }
+  else if (a.end.isAfter(b.end)) {
     return 1
   }
   else {
