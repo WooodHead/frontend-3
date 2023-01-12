@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { Unit, UnitIDRange } from '@project-chiral/unit-system'
-import RangePicker from '../pickers/range-picker.vue'
-import type { RangePickerValue } from '../pickers/range-picker.vue'
+import { Unit, UnitIDRange } from '@project-chiral/unit-id'
+import type { UnitRangePickerValue } from '../pickers/unit-range-picker.vue'
 import type { FormRef } from '@/utils/types'
 import type { CreateEventDto } from '@/api/api-base'
 
 const { init } = defineProps<{
-  init?: RangePickerValue
+  init?: UnitRangePickerValue
 }>()
 
 const formRef = $ref<FormRef>()
@@ -54,7 +53,7 @@ defineExpose({ validate })
       label="时间范围"
       :rules="[{ required: true, message: '请选择事件的时间范围' }]"
     >
-      <RangePicker v-model="model.range" />
+      <UnitRangePicker v-model="model.range" />
     </AFormItem>
   </AForm>
 </template>

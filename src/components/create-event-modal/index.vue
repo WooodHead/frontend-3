@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
-import { RangePickerValue } from '../pickers/range-picker.vue'
+import { UnitRangePickerValue } from '../pickers/unit-range-picker.vue'
 import AtomEventForm from './atom-event-form.vue'
 import CollectionEventForm from './collection-event-form.vue'
 import type { CreateEventDto, EventEntity } from '@/api/api-base'
@@ -9,7 +9,7 @@ import api from '@/api/api'
 
 const { visible, init } = defineProps<{
   visible?: boolean
-  init?: RangePickerValue | string[]
+  init?: UnitRangePickerValue | string[]
 }>()
 
 const emit = defineEmits<{
@@ -60,7 +60,7 @@ const handleBeforeOk = async () => {
     <AtomEventForm
       v-if="type === 'atom'"
       ref="formRef"
-      :init="(init as RangePickerValue)"
+      :init="(init as UnitRangePickerValue)"
     />
     <CollectionEventForm
       v-else-if="type === 'collection'"

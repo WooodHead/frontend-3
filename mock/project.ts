@@ -1,5 +1,5 @@
 import type { MockMethod } from 'vite-plugin-mock'
-import { UnitID } from '@project-chiral/unit-system'
+import { UnitID } from '@project-chiral/unit-id'
 
 export default [
   {

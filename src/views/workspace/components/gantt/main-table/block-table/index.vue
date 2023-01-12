@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueries, useQueryClient } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-system'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
 import type { BlockProps } from './block.vue'
 import Block from './block.vue'
@@ -8,7 +8,7 @@ import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-const { unitRange } = $(storeToRefs(store))
+const { unit, unitRange } = $(storeToRefs(store))
 
 const client = useQueryClient()
 
@@ -17,6 +17,7 @@ const results = useQueries({
   queries: computed(() => ranges?.map(range => ({
     queryKey: ['event', { range: range?.serialize() }],
     queryFn: () => api.event.getEvents({ range: range?.serialize() }),
+    keepPreviousData: false,
     onSuccess: (events: EventEntity[]) => {
       // 批量请求数据后，顺序更新一下单个请求的缓存
       for (const event of events) {
@@ -35,23 +36,12 @@ const eventData = $computed(() => {
   return [...new Map(events.map(e => [e.id, e])).values()]
 })
 
-// const { data: eventData } = $(useQuery({
-//   // enabled: computed(() => subUnitRange !== undefined),
-//   enabled: true,
-//   queryKey: computed(() => ['event', { range: subUnitRange?.serialize() }]),
-//   queryFn: () => api.event.getEvents({ range: subUnitRange?.serialize() }),
-//   onSuccess: events => {
-//     // 批量请求数据后，顺便更新一下单个请求的缓存
-//     for (const event of events) {
-//       client.setQueryData(['event', event.id], event)
-//     }
-//   },
-// }))
-
+// TODO 更改单位层级时，需要重新计算
 const blockData = $computed(() => eventData?.map(({ range, ...rest }) => ({
   ...rest,
   range: UnitIDRange.deserialize(range),
-}) as BlockProps))
+}) as BlockProps),
+)
 </script>
 
 <template>

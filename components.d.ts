@@ -7,16 +7,18 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
+    Basic: typeof import('./src/components/create-event-modal/basic.vue')['default']
+    CollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
     CreateEventModal: typeof import('./src/components/create-event-modal/index.vue')['default']
-    CreateEventModalAtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
-    CreateEventModalBasic: typeof import('./src/components/create-event-modal/basic.vue')['default']
-    CreateEventModalCollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
-    EventDetail: typeof import('./src/components/event-detail/index.vue')['default']
-    PickersRangePicker: typeof import('./src/components/pickers/range-picker.vue')['default']
+    EventDetailCard: typeof import('./src/components/event-detail-card/index.vue')['default']
+    EventSelector: typeof import('./src/components/event-selector/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Status: typeof import('./src/components/status.vue')['default']
+    UnitRangePicker: typeof import('./src/components/pickers/unit-range-picker.vue')['default']
+    UnitTimePicker: typeof import('./src/components/pickers/unit-time-picker.vue')['default']
   }
 }

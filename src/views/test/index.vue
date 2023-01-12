@@ -3,7 +3,7 @@ import type { Edge, Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { SimulationLinkDatum, SimulationNodeDatum } from 'd3-force'
 import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3-force'
-import type { RangePickerValue } from '@/components/pickers/range-picker.vue'
+import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.vue'
 
 const { onNodeDrag } = $(useVueFlow())
 
@@ -103,42 +103,18 @@ onNodeDrag(({ node }) => {
 })
 
 const model = $ref({
-  range: {
+  time: {
     unit: 'month',
-    range: [new Date(), new Date()],
-  } as RangePickerValue,
+    time: new Date(),
+  } as UnitTimePickerValue,
 })
-
-watchEffect(() => {
-  console.log(model.range)
-})
-
-const handleSubmit = (v: any) => {
-  console.log(v)
-}
 </script>
 
 <template>
   <div w-screen h-screen center bg-gray-2>
     <div card center w="75%" h="75%">
       <div w="75%">
-        <!-- <AForm :model="model" @submit="handleSubmit">
-          <AFormItem field="range" label="范围" required>
-            <RangePicker v-model="model.range" />
-          </AFormItem>
-          <AFormItem label="正确示例">
-            <ARangePicker allow-clear />
-          </AFormItem>
-          <AFormItem field="name" label="name" required>
-            <AInput />
-          </AFormItem>
-          <AFormItem>
-            <AButton html-type="submit" type="primary">
-              Submit
-            </AButton>
-          </AFormItem>
-        </AForm> -->
-        <CreateEventModal />
+        <TimePicker v-model="model.time" />
       </div>
     </div>
   </div>

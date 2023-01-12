@@ -2,13 +2,13 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antfu/eslint-config': ^0.31.1
-  '@arco-design/web-vue': ^2.41.0
+  '@arco-design/web-vue': ^2.41.1
   '@arco-plugins/vite-vue': ^1.4.2
   '@arco-themes/vue-project-chiral': ^0.0.2
   '@iconify-json/radix-icons': ^1.1.8
   '@lukemorales/query-key-factory': ^1.0.3
   '@motionone/vue': ^10.15.3
-  '@project-chiral/unit-system': latest
+  '@project-chiral/unit-id': ^0.1.0
   '@tanstack/vue-query': ^4.20.5
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209
   '@tiptap/extension-placeholder': 2.0.0-beta.209
@@ -65,11 +65,11 @@ specifiers:
   vuetify: ^3.0.6
 
 dependencies:
-  '@arco-design/web-vue': 2.41.0_vue@3.2.45
-  '@arco-themes/vue-project-chiral': 0.0.2_2a2jl4wjq7s5pnljfp5xjrgg4a
+  '@arco-design/web-vue': 2.41.1_vue@3.2.45
+  '@arco-themes/vue-project-chiral': 0.0.2_fnpc5w6lffop6l266qwpj3liim
   '@lukemorales/query-key-factory': 1.0.3
   '@motionone/vue': 10.15.3
-  '@project-chiral/unit-system': 1.2.0
+  '@project-chiral/unit-id': 0.1.0
   '@tanstack/vue-query': 4.20.5_vue@3.2.45
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_vde3gi7hrsabw5pj6bw7jls3ai
   '@tiptap/extension-placeholder': 2.0.0-beta.209_nv3r55gosyqqywjqk2ljir6ei4
@@ -250,8 +250,8 @@ packages:
       color: 3.2.1
     dev: false
 
-  /@arco-design/web-vue/2.41.0_vue@3.2.45:
-    resolution: {integrity: sha512-g3hurEQsdK1LIxYoHc3wvCMdajet1W2y8khSbtSYdjeFaa3B00aaYkworysANLUMLeAg/TEOvDbF+YupxNfuHA==}
+  /@arco-design/web-vue/2.41.1_vue@3.2.45:
+    resolution: {integrity: sha512-Srs/VyjLToWprdy9+DAIjAtgbGdWuGFYg543RjahqbNPL4zrny6YOmGktzhwtENYlpBpXxZ1GnJ6D9sHqY6BnQ==}
     peerDependencies:
       vue: ^3.1.0
     dependencies:
@@ -279,12 +279,12 @@ packages:
       - supports-color
     dev: true
 
-  /@arco-themes/vue-project-chiral/0.0.2_2a2jl4wjq7s5pnljfp5xjrgg4a:
+  /@arco-themes/vue-project-chiral/0.0.2_fnpc5w6lffop6l266qwpj3liim:
     resolution: {integrity: sha512-K+yXPMFLAFORbVfktPVuhQ4QJ6PW9TGJxQSHTXEPdrO9E6zwOmIossRAcSR4CyWR/3nqxVXxuDK+knzjl+5Uwg==}
     peerDependencies:
       '@arco-design/web-vue': ^2.40.0
     dependencies:
-      '@arco-design/web-vue': 2.41.0_vue@3.2.45
+      '@arco-design/web-vue': 2.41.1_vue@3.2.45
     dev: false
 
   /@babel/code-frame/7.18.6:
@@ -636,8 +636,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@project-chiral/unit-system/1.2.0:
-    resolution: {integrity: sha512-Rmf+7NDN8q80N+gkcALNvyS9zILAtE3sJ15joPb2cTTjKaSWQncZLEm1hJqrN+rJuqCRr9A5Ew7TH1XjFsxW6Q==}
+  /@project-chiral/unit-id/0.1.0:
+    resolution: {integrity: sha512-WVtPRmzRE4tYA7R8UFa2/Wp7pgdPVCPs/S5NiLZg8SZf8NUBpVrE7tlhK/Gu6spJ8752IcMCf1xiKJbN3aYYlA==}
     dependencies:
       dayjs: 1.11.7
       object-hash: 3.0.0

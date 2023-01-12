@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UnitIDRange } from '@project-chiral/unit-system'
+import type { UnitIDRange } from '@project-chiral/unit-id'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 
@@ -11,7 +11,7 @@ export interface BlockProps {
 }
 
 const { id, range, color = '#93c5fd' } = defineProps<BlockProps>()
-const start = $computed(() => range.start)
+const start = $toRef(range, 'start')
 
 const store = useStore()
 const { viewPort } = storeToRefs(store)
@@ -27,8 +27,8 @@ useIntersectionObserver(
 
     if (isIntersecting) {
       // TODO 列表锁现在是只增不减，是否要改成不增不减
-      if (lock && store.visibleEvents.contains(start)) { return }
-      store.visibleEvents.insert(start, id)
+      if (lock && store.visibleEvents.contains(start, { eventId: id })) { return }
+      store.visibleEvents.insert(start, { eventId: id })
     }
     else if (!lock) {
       store.visibleEvents.remove(start)
@@ -49,7 +49,7 @@ const offset = $computed(() => {
   return range.start.diff(zero) * UNIT_WIDTH
 })
 
-const order = $computed(() => store.visibleEvents.order(start))
+const order = $computed(() => store.visibleEvents.order(start, { eventId: id }))
 
 const hover = $(useElementHover(target))
 
@@ -95,6 +95,6 @@ const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range)
         rounded
       />
     </div>
-    <EventDetail :id="id" :show="hover" :enabled="loadDetail" />
+    <EventDetailCard :id="id" :show="hover" :enabled="loadDetail" />
   </div>
 </template>

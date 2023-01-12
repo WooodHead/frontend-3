@@ -1,4 +1,4 @@
-import { UnitIDRange } from '@project-chiral/unit-system'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import type { MockMethod } from 'vite-plugin-mock'
 import type { EventDetailEntity, EventEntity } from '../src/api/api-base'
 

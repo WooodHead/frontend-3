@@ -27,7 +27,8 @@ export default defineConfig<Theme>({
       'center-y': 'flex flex-col items-center',
     },
     {
-      card: 'full bg-bg-1 rounded-lg shadow-lg',
+      'card': 'full bg-bg-1 rounded-lg shadow-lg',
+      'card-border': 'card border-1 border-border-2',
     },
   ],
   safelist: [

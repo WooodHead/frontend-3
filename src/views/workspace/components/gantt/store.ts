@@ -1,5 +1,5 @@
-import type { UnitID } from '@project-chiral/unit-system'
-import { UnitIDRange } from '@project-chiral/unit-system'
+import type { UnitID } from '@project-chiral/unit-id'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import type { ComponentStatus } from '../type'
 import { UNIT_WIDTH } from './const'
 import type { IGanttData } from './types'
@@ -27,7 +27,7 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
 
-    visibleEvents: new OrderedArray<number, UnitID>(UnitIDComparor), // 当前视图的可见事件队列，有序
+    visibleEvents: new OrderedArray<{ eventId: number }, UnitID>(UnitIDComparor), // 当前视图的可见事件队列，有序
 
     _offset: 0, // 主视图的偏移量
     offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
@@ -152,15 +152,19 @@ export const { registerStore, useStore } = createStore('gantt', {
       this.units.splice(this.units.length - count)
     },
 
-    navigateTo(unit: UnitID) {
+    navigateTo(id: UnitID) {
       const start = this.units[0]
       const end = this.units[this.units.length - 1]
 
-      if (unit.isBetween(start, end, '[]')) {
-        this.offset.value = -this.subUnitOffset(unit) * UNIT_WIDTH
+      if (
+        this.unit
+        && id.unit.isSame(this.unit)
+        && id.isBetween(start, end, '[]')
+      ) {
+        this.offset.value = -this.subUnitOffset(id) * UNIT_WIDTH
       }
       else {
-        this.init(unit)
+        this.init(id)
       }
     },
 

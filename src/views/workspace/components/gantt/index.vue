@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitID } from '@project-chiral/unit-system'
+import { UnitID } from '@project-chiral/unit-id'
 import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import MainTable from './main-table/index.vue'

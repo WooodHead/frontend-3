@@ -1,6 +1,6 @@
-import type { UnitID } from '@project-chiral/unit-system'
+import type { UnitID } from '@project-chiral/unit-id'
 
-export class OrderedArray<T, K> {
+export class OrderedArray<T extends Record<string, any>, K> {
   _data: [K, T][]
   _comparor: (a: K, b: K) => number
 
@@ -32,23 +32,32 @@ export class OrderedArray<T, K> {
     this._data.splice(lowerBound, 0, [key, data])
   }
 
-  remove(key: K) {
-    const index = this.order(key)
+  remove(key: K, data?: Partial<T>) {
+    const index = this.order(key, data)
     if (index >= 0) {
       this._data.splice(index, 1)
     }
   }
 
-  order(key: K) {
-    return this._data.findIndex(([k]) => this._comparor(k, key) === 0)
+  order(key: K, data?: Partial<T>) {
+    return this._data.findIndex(([k, v]) => {
+      if (this._comparor(k, key) !== 0) { return false }
+      if (!data) { return true }
+      else {
+        for (const [key, value] of Object.entries(data)) {
+          if (v[key] !== value) { return false }
+        }
+        return true
+      }
+    })
   }
 
   clear() {
     this._data = []
   }
 
-  contains(key: K) {
-    return this.order(key) >= 0
+  contains(key: K, data?: Partial<T>) {
+    return this.order(key, data) >= 0
   }
 
   get keys() {

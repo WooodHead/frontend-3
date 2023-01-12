@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-system'
+import type { UnitID } from '@project-chiral/unit-id'
 import { UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UnitID } from '@project-chiral/unit-system'
+import { UnitID } from '@project-chiral/unit-id'
 import { useStore } from '../../../store'
 import Unit from './unit.vue'
 

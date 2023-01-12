@@ -1,31 +1,25 @@
 <script setup lang="ts">
-import type { IUnit } from '@project-chiral/unit-system'
-import { UnitIDRange } from '@project-chiral/unit-system'
+import type { IUnit } from '@project-chiral/unit-id'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import Basic from './basic.vue'
-import type { RangePickerValue } from '@/components/pickers/range-picker.vue'
-import RangePicker from '@/components/pickers/range-picker.vue'
+
 import type { EventEntity } from '@/api/api-base'
+import type { UnitRangePickerValue } from '@/components/pickers/unit-range-picker.vue'
 
 const store = useStore()
 let { subUnit, selectedRange } = $(storeToRefs(store))
 
-let visible = $ref(false)
+const visible = $ref(false)
 
-const value = $computed<RangePickerValue>(() => ({
+const value = $computed<UnitRangePickerValue>(() => ({
   unit: subUnit as IUnit,
-  range: selectedRange.map(v => v.date.toDate()),
+  range: selectedRange.map(v => v.toDate()),
 }))
 // 当日期没选择完全时始终是undefined，避免传入不完整数据
 const init = $computed(() => value.range.length === 2 ? value : undefined)
 
-const handleCancel = () => {
-  selectedRange = []
-}
-const handleCreating = () => {
-  visible = true
-}
 const client = useQueryClient()
 const handleCreated = ({ range }: EventEntity) => {
   selectedRange = []
@@ -40,10 +34,10 @@ const handleCreated = ({ range }: EventEntity) => {
     :show="selectedRange.length > 0"
     :ready="selectedRange.length === 2"
     ok-text="创建原子事件"
-    @cancel="handleCancel"
-    @ok="handleCreating"
+    @cancel="selectedRange = []"
+    @ok="visible = true"
   >
-    <RangePicker :model-value="value" readonly />
+    <UnitRangePicker :model-value="value" readonly />
   </Basic>
   <CreateEventModal
     v-model:visible="visible"

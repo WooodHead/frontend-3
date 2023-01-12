@@ -6,7 +6,6 @@ import Vuetify from 'vite-plugin-vuetify'
 
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ArcoResolver, Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 
 import { viteMockServe } from 'vite-plugin-mock'
 
@@ -39,16 +38,12 @@ export default defineConfig({
         'pinia',
       ],
       resolvers: [
-        ArcoResolver(),
+        // ArcoResolver(),
       ],
     }),
     Components({
-      directoryAsNamespace: true,
-      resolvers: [
-        Vuetify3Resolver(),
-        ArcoResolver({
-          sideEffect: true,
-        }),
+      exclude: [
+        /basic\.vue$/,
       ],
     }),
   ],

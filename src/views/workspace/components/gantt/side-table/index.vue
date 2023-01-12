@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
+import { UnitID } from '@project-chiral/unit-id'
 import { HEADER_HEIGHT } from '../const'
 import { useStore } from '../store'
 import EventItems from './event-items/index.vue'
 import api from '@/api/api'
+import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.vue'
 
 const store = useStore()
-const { lock } = $(storeToRefs(store))
+const { lock, unit, visibleUnit } = $(storeToRefs(store))
+
+const fixed = $ref(false)
 
 useQuery({
   queryKey: ['project', 'workspace'],
@@ -19,6 +23,17 @@ watch(
   () => lock,
   lock => { api.project.updateWorkspaceInfo({ lock }) },
 )
+
+const value = $computed(() => {
+  if (!unit || !visibleUnit) { return undefined }
+  return {
+    unit,
+    time: visibleUnit.toDate(),
+  }
+})
+const handleTimeChange = (value: UnitTimePickerValue) => {
+  store.navigateTo(UnitID.fromDayjs(value.time, value.unit))
+}
 </script>
 
 <template>
@@ -33,10 +48,21 @@ watch(
       :style="{ height: `${HEADER_HEIGHT}px` }"
       column shrink-0 p-2 bg-bg-3
       border="b border-2"
+      space-y-2
     >
-      <div grow center>
-        {{ store.visibleUnit?.toString() }}
-      </div>
+      <ATrigger trigger="click">
+        <AButton>
+          {{ store.visibleUnit?.toString() }}
+        </AButton>
+        <template #content>
+          <div card-border p-2>
+            <UnitTimePicker
+              :model-value="value"
+              @update:model-value="handleTimeChange"
+            />
+          </div>
+        </template>
+      </ATrigger>
       <AButton
         title="锁定事件列表"
         long h="40%"

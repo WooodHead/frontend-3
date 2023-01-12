@@ -1,4 +1,4 @@
-import type { UnitID } from '@project-chiral/unit-system'
+import type { UnitID } from '@project-chiral/unit-id'
 
 export interface IGanttData {
   id: string

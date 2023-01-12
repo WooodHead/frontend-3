@@ -42,9 +42,9 @@ watch(
       v-bind="fadeInOut"
       ref="target"
       :style="{ transform: `translate(${position.x + x}px, ${position.y + y}px)` }"
-      card
+      card-border
       column relative
-      w-400px h-auto border="1 border-2"
+      w-400px h-auto
       cursor-move
     >
       <div grow w-full center p-2>

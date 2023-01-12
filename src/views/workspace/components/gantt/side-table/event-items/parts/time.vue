@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-system'
+import type { UnitID } from '@project-chiral/unit-id'
 import Basic from './basic.vue'
 
 const { start, end } = defineProps<{ start?: UnitID; end?: UnitID }>()

@@ -2,21 +2,21 @@
 import { useFormItem } from '@arco-design/web-vue'
 import type { CalendarValue } from '@arco-design/web-vue/es/date-picker/interface'
 import type { TimePickerProps } from '@arco-design/web-vue/es/time-picker/interface'
-import type { IUnit } from '@project-chiral/unit-system'
+import type { IUnit } from '@project-chiral/unit-id'
 
-export interface RangePickerValue {
+export interface UnitRangePickerValue {
   unit: IUnit
   range: Date[]
 }
 
 const { modelValue, disabled = false, readonly = false } = defineProps<{
-  modelValue?: RangePickerValue
+  modelValue?: UnitRangePickerValue
   disabled?: boolean
   readonly?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: RangePickerValue): void
+  (e: 'update:modelValue', value: UnitRangePickerValue): void
 }>()
 
 const { mergedDisabled, mergedError, mergedSize } = $(useFormItem({
@@ -61,14 +61,15 @@ const rangePickerConfig = $computed(() => {
 const handleUnitChange = (unit: string | number | boolean) => {
   emit('update:modelValue', {
     unit: unit as IUnit,
-    range: modelValue?.range || [new Date(), new Date()],
+    range: modelValue?.range ?? [],
   })
 }
 
 const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => {
+  if (!modelValue?.unit) { return }
   emit('update:modelValue', {
     range: range as [Date, Date],
-    unit: modelValue?.unit || 'date',
+    unit: modelValue.unit,
   })
 }
 </script>
@@ -116,11 +117,11 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
       :size="mergedSize"
       :model-value="modelValue?.range"
       :exchange-time="false"
+      :allow-clear="false"
       :mode="rangePickerConfig.mode"
       :show-time="rangePickerConfig.showTime"
       :time-picker-props="rangePickerConfig.timePickerProps"
       @update:model-value="handleRangeChange"
-      @clear="$emit('update:modelValue', undefined)"
     />
   </div>
 </template>

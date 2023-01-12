@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { Motion, Presence } from '@motionone/vue'
-import { UnitIDRange } from '@project-chiral/unit-system'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import api from '@/api/api'
 import { fadeInOut } from '@/utils/animation'
 
