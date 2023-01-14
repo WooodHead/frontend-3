@@ -1,54 +1,46 @@
 import type { RouteRecordRaw } from 'vue-router'
-import Main from '@/views/main.vue'
-import Workspace from '@/views/workspace/index.vue'
-import Test from '@/views/test/index.vue'
-import NotFound from '@/views/not-found.vue'
-import Settings from '@/views/settings/index.vue'
-import Help from '@/views/help/index.vue'
-import About from '@/views/about/index.vue'
-import User from '@/views/user/index.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Main',
-    component: Main,
+    component: () => import('@/views/main/index.vue'),
   },
   {
     path: '/project/:id',
     name: 'Workspace',
-    component: Workspace,
+    component: () => import('@/views/workspace/index.vue'),
     children: [
       {
         path: 'settings',
         name: 'Settings',
-        component: Settings,
+        component: () => import('@/views/settings/index.vue'),
       },
       {
         path: 'help',
         name: 'Help',
-        component: Help,
+        component: () => import('@/views/help/index.vue'),
       },
       {
         path: 'about',
         name: 'About',
-        component: About,
+        component: () => import('@/views/about/index.vue'),
       },
     ],
   },
   {
     path: '/user/:id',
     name: 'User',
-    component: User,
+    component: () => import('@/views/user/index.vue'),
   },
   {
     path: '/test',
     name: 'Test',
-    component: Test,
+    component: () => import('@/views/test/index.vue'),
   },
   {
     path: '/:catchAll(.*)',
-    component: NotFound,
+    component: () => import('@/views/not-found.vue'),
   },
 ]
 
