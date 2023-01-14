@@ -10,7 +10,7 @@ const active = ref('info')
   <div
     column
     border="r border-2"
-    h-full min-w="1/3" max-w="1/2"
+    h-full min-w-1-3 max-w-1-2
     resize-x overflow-x-hidden
   >
     <ATabs v-model:active-key="active" hide-content>

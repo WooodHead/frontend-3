@@ -13,7 +13,21 @@ export default defineConfig<Theme>({
       ...parsed.light.colors,
     },
   },
-  rules: [],
+  rules: [
+    // 为了attributeify的兼容性而做出的必要的调整
+    [/^w-(\d+)per$/, ([, percentage]) => ({ width: `${percentage}%` })],
+    [/^min-w-(\d+)per$/, ([, percentage]) => ({ minWidth: `${percentage}%` })],
+    [/^max-w-(\d+)per$/, ([, percentage]) => ({ maxWidth: `${percentage}%` })],
+    [/^h-(\d+)per$/, ([, percentage]) => ({ height: `${percentage}%` })],
+    [/^min-h-(\d+)per$/, ([, percentage]) => ({ minHeight: `${percentage}%` })],
+    [/^max-h-(\d+)per$/, ([, percentage]) => ({ maxHeight: `${percentage}%` })],
+    [/w-(\d+)-(\d+)$/, ([, a, b]) => ({ width: `${parseInt(a) / parseInt(b) * 100}%` })],
+    [/min-w-(\d+)-(\d+)$/, ([, a, b]) => ({ minWidth: `${parseInt(a) / parseInt(b) * 100}%` })],
+    [/max-w-(\d+)-(\d+)$/, ([, a, b]) => ({ maxWidth: `${parseInt(a) / parseInt(b) * 100}%` })],
+    [/h-(\d+)-(\d+)$/, ([, a, b]) => ({ height: `${parseInt(a) / parseInt(b) * 100}%` })],
+    [/min-h-(\d+)-(\d+)$/, ([, a, b]) => ({ minHeight: `${parseInt(a) / parseInt(b) * 100}%` })],
+    [/max-h-(\d+)-(\d+)$/, ([, a, b]) => ({ maxHeight: `${parseInt(a) / parseInt(b) * 100}%` })],
+  ],
   shortcuts: [
     {
       full: 'w-full h-full',

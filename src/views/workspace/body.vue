@@ -43,7 +43,7 @@ watch(
 <template>
   <Presence>
     <div v-if="!isSuccess" fullscreen grow center>
-      <Status card w="1/2" h="1/2" :loading="isLoading" :error="isError" />
+      <Status card w-1-2 h-1-2 :loading="isLoading" :error="isError" />
     </div>
     <Motion
       v-else

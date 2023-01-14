@@ -89,7 +89,7 @@ const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range)
     >
       <div
         :style="{ backgroundColor: color }"
-        w-full h="80%"
+        w-full h-80per
         transition shadow hover:shadow-lg
         rounded
       />

@@ -1,16 +1,27 @@
 <script setup lang="ts">
 const { tooltip } = defineProps<{ tooltip: string }>()
 
+let visible = $ref(false)
+
 const emit = defineEmits<{
   (e: 'click', ev: MouseEvent): void
 }>()
+
+const handleClick = (ev: MouseEvent) => {
+  visible = false
+  emit('click', ev)
+}
 </script>
 
 <template>
-  <ATooltip position="left" :content="tooltip">
+  <ATooltip
+    v-model:popup-visible="visible"
+    position="left"
+    :content="tooltip"
+  >
     <AButton
       shape="circle" type="primary" size="large"
-      @click="$emit('click', $event)"
+      @click="handleClick"
     >
       <slot></slot>
     </AButton>

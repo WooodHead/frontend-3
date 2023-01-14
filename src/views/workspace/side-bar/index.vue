@@ -2,7 +2,7 @@
 import { Presence } from '@motionone/vue'
 import useWSStore from '../store'
 import DropArea from './drop-area/index.vue'
-import Handler from './component-handler.vue'
+import Handler from './handler.vue'
 import Menu from './menu.vue'
 
 import DesignIcon from '@/assets/workspace/design.png'
@@ -17,7 +17,6 @@ import GraphDarkIcon from '@/assets/workspace/graph-dark.png'
 const WSStore = useWSStore()
 let { menuExpand } = $(storeToRefs(WSStore))
 
-const handleExpand = () => { menuExpand = !menuExpand }
 const handleClickOutside = () => { menuExpand = false }
 </script>
 
@@ -31,7 +30,10 @@ const handleClickOutside = () => { menuExpand = false }
       bg-gray-2
       z-50
     >
-      <AButton h-40px rounded-0 @click="handleExpand">
+      <AButton
+        h-40px rounded-0
+        @click="menuExpand = !menuExpand"
+      >
         <div i-radix-icons-hamburger-menu text="2xl gray-6"></div>
       </AButton>
       <Presence>
@@ -43,7 +45,7 @@ const handleClickOutside = () => { menuExpand = false }
         <Handler id="graph" name="关系图" :icon="GraphIcon" :dark-icon="GraphDarkIcon" />
         <Handler id="design" name="设定" :icon="DesignIcon" :dark-icon="DesignDarkIcon" />
       </div>
-      <div center h="10%" w-full>
+      <div center h-10per w-full>
         <AButton shape="circle" type="secondary">
           <div w-30px h-30px i-radix-icons-avatar></div>
         </AButton>

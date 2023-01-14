@@ -39,7 +39,7 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
 <template>
   <div
     column
-    h-full w="30%" min-w="20%" max-w="50%"
+    h-full w-30per min-w-20per max-w-50per
     rounded-l-lg shadow-lg border="r-1 border-2"
     resize-x overflow-x-hidden
     z-10 bg-bg-2
@@ -52,7 +52,7 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
     >
       <ATrigger trigger="click">
         <AButton>
-          {{ store.visibleUnit?.toString() }}
+          {{ store.visibleUnit?.toBriefString() }}
         </AButton>
         <template #content>
           <div card-border p-2>
@@ -65,7 +65,7 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
       </ATrigger>
       <AButton
         title="锁定事件列表"
-        long h="40%"
+        long h-40per
         :type="lock ? `primary` : `outline`"
         @click="lock = !lock"
       >

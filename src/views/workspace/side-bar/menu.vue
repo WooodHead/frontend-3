@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import useWSStore from '../store'
 import api from '@/api/api'
 import { useGlobalStore } from '@/store'
 
-const { expand } = defineProps<{ expand: boolean }>()
+const router = useRouter()
+
+const WSStore = useWSStore()
+const { menuExpand } = $(storeToRefs(WSStore))
 
 const globalStore = useGlobalStore()
 let { darkMode } = $(storeToRefs(globalStore))
@@ -26,14 +30,17 @@ onBeforeMount(async () => {
   const { darkMode } = await api.project.getProjectSettings()
   if (darkMode) { toggleDarkMode() }
 })
-watch($$(darkMode), darkMode => {
-  api.project.updateProjectSettings({ darkMode })
-})
+watch(
+  () => darkMode,
+  darkMode => {
+    api.project.updateProjectSettings({ darkMode })
+  },
+)
 
-const menuConfig: { title: string }[] = [
-  { title: '设置' },
-  { title: '帮助' },
-  { title: '关于' },
+const menuConfig: { title: string; name: string }[] = [
+  { title: '设置', name: 'Settings' },
+  { title: '帮助', name: 'Help' },
+  { title: '关于', name: 'About' },
 ]
 </script>
 
@@ -42,7 +49,7 @@ const menuConfig: { title: string }[] = [
     column justify-center
     fixed left="-200px"
     transition-transform
-    :class="`${expand && `translate-x-260px`}`"
+    :translate-x="menuExpand ? '260px' : '0'"
     w-200px h-full
     bg-gray-2 shadow-lg
     z-20
@@ -55,9 +62,10 @@ const menuConfig: { title: string }[] = [
       @click="toggleDarkMode"
     ></div>
     <AButton
-      v-for="{ title } of menuConfig"
+      v-for="{ title, name } of menuConfig"
       :key="title"
       center h-64px rounded-0 text-xl
+      @click="router.push({ name })"
     >
       {{ title }}
     </AButton>

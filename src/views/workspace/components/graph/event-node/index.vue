@@ -33,8 +33,8 @@ const hover = useElementHover(target)
         :names="[
           '顺承',
           '导致',
-          '间接导致',
-          '反常',
+          '影响',
+          '共指',
         ]"
       />
     </Presence>

@@ -37,10 +37,12 @@ const eventData = $computed(() => {
 })
 
 // TODO 更改单位层级时，需要重新计算
-const blockData = $computed(() => eventData?.map(({ range, ...rest }) => ({
-  ...rest,
-  range: UnitIDRange.deserialize(range),
-}) as BlockProps),
+const blockData = $computed(() =>
+  eventData?.map(({ range, ...rest }) => ({
+    ...rest,
+    range: UnitIDRange.deserialize(range),
+  }) as BlockProps)
+    .filter(({ range }) => range.unit.toString() === store.subUnit),
 )
 </script>
 

@@ -25,10 +25,6 @@ const { mergedDisabled, mergedError, mergedSize } = $(useFormItem({
 
 const { mode, showTime, timePickerProps } = $(usePickerConfig(unit))
 
-watchEffect(() => {
-  console.log(mode)
-})
-
 const handleUnitChange = (unit: string | number | boolean) => {
   emit('update:modelValue', {
     unit: unit as IUnit,

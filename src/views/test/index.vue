@@ -112,7 +112,7 @@ const model = $ref({
 
 <template>
   <div w-screen h-screen center bg-gray-2>
-    <div card center w="75%" h="75%">
+    <div card center w-3-4 h-3-4>
       <div w="75%">
         <TimePicker v-model="model.time" />
       </div>
