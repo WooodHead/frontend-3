@@ -48,7 +48,6 @@ watch(
     <Motion
       v-else
       v-bind="fadeInOut"
-      :transition="{ duration: 1 }"
       relative
       fullscreen grow
       grid="~ cols-2 rows-2"

@@ -24,7 +24,7 @@ const handleNextClick = () => {
 
 <template>
   <div card row h-10 mt-4 overflow-hidden>
-    <AButton type="text" h="!full" rounded-0 @click="handlePrevClick">
+    <AButton type="text" h-full rounded-0 @click="handlePrevClick">
       <template #icon>
         <div i-radix-icons-caret-left text-2xl></div>
       </template>
@@ -32,7 +32,7 @@ const handleNextClick = () => {
     <div ref="viewPortRef" grow shrink-0 overflow-x-hidden>
       <BlockList />
     </div>
-    <AButton type="text" important-h-full rounded-0 @click="handleNextClick">
+    <AButton type="text" h-full rounded-0 @click="handleNextClick">
       <template #icon>
         <div i-radix-icons-caret-right text-2xl></div>
       </template>

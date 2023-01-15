@@ -10,20 +10,18 @@ import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.
 const store = useStore()
 const { lock, unit, visibleUnit } = $(storeToRefs(store))
 
-const fixed = $ref(false)
-
 useQuery({
   queryKey: ['project', 'workspace'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ lock }) => lock,
   onSuccess: lock => { store.lock = lock },
 })
-
 watch(
   () => lock,
   lock => { api.project.updateWorkspaceInfo({ lock }) },
 )
 
+let visible = $ref(false)
 const value = $computed(() => {
   if (!unit || !visibleUnit) { return undefined }
   return {
@@ -32,6 +30,7 @@ const value = $computed(() => {
   }
 })
 const handleTimeChange = (value: UnitTimePickerValue) => {
+  visible = false
   store.navigateTo(UnitID.fromDayjs(value.time, value.unit))
 }
 </script>
@@ -39,7 +38,7 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
 <template>
   <div
     column
-    h-full w-30per min-w-20per max-w-50per
+    h-full min-w-20per max-w-50per
     rounded-l-lg shadow-lg border="r-1 border-2"
     resize-x overflow-x-hidden
     z-10 bg-bg-2
@@ -50,7 +49,7 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
       border="b border-2"
       space-y-2
     >
-      <ATrigger trigger="click">
+      <ATrigger v-model:popup-visible="visible" trigger="click">
         <AButton>
           {{ store.visibleUnit?.toBriefString() }}
         </AButton>

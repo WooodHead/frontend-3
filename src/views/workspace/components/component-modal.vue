@@ -17,23 +17,23 @@ const emit = defineEmits<{
   <VDialog
     width="75%" height="75%"
     :model-value="modelValue"
-    @update:model-value="(v: boolean) => $emit('update:modelValue', v)"
+    @update:model-value="$emit('update:modelValue', $event)"
   >
     <div row full space-x-4>
       <div column justify-center space-y-8>
-        <AButton shape="circle" w="64px!" h="64px!" status="danger">
+        <AButton shape="circle" w-64px h-64px status="danger">
           <template #icon>
             <div i-radix-icons-cross-2 text-8></div>
           </template>
         </AButton>
-        <AButton shape="circle" w="64px!" h="64px!">
+        <AButton shape="circle" w-64px h-64px>
           <template #icon>
             <img w-32px h-32px :src="GanttIcon">
           </template>
         </AButton>
-        <AButton shape="circle" w="64px!" h="64px!" />
-        <AButton shape="circle" w="64px!" h="64px!" />
-        <AButton shape="circle" w="64px!" h="64px!" />
+        <AButton shape="circle" w-64px h-64px />
+        <AButton shape="circle" w-64px h-64px />
+        <AButton shape="circle" w-64px h-64px />
       </div>
       <Presence>
         <Motion v-bind="fadeInOut" full>

@@ -22,7 +22,7 @@ const handleClickOutside = () => { menuExpand = false }
 
 <template>
   <div v-click-outside="handleClickOutside" h-full>
-    <Menu :expand="menuExpand" />
+    <Menu />
     <div
       :class="!menuExpand && `shadow-lg`"
       column shrink-0 relative
