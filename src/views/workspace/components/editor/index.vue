@@ -13,9 +13,13 @@ const { status } = defineProps<EditorProps>()
 
 const store = registerStore(status.position)
 
-watch(() => status, status => {
-  store.status = status
-}, { deep: true })
+watch(
+  () => status,
+  status => {
+    store.status = status
+  },
+  { deep: true },
+)
 </script>
 
 <template>

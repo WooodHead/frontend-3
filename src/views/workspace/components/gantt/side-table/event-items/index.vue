@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useStore } from '../../store'
-import Item from './item.vue'
 
 const store = useStore()
 const handleScroll = ({ currentTarget }: UIEvent) => {
@@ -17,6 +16,7 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     @scroll="handleScroll"
   >
     <!-- TODO 列表动画 -->
-    <Item v-for="id in ids" :id="id" :key="id" />
+    <!-- <Item v-for="id in ids" :id="id" :key="id" /> -->
+    <EventDetailItem v-for="id in ids" :id="id" :key="id" />
   </div>
 </template>

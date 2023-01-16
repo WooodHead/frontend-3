@@ -114,7 +114,7 @@ const model = $ref({
   <div w-screen h-screen center bg-gray-2>
     <div card center w-3-4 h-3-4>
       <div w="75%">
-        <TimePicker v-model="model.time" />
+        <EventDetailCard :id="1" />
       </div>
     </div>
   </div>

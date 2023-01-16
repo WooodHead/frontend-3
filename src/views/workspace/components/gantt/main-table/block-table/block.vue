@@ -47,7 +47,6 @@ const offset = $computed(() => {
   if (!zero) { return undefined }
   return range.start.diff(zero) * UNIT_WIDTH
 })
-
 const order = $computed(() => store.visibleEvents.order(range, { eventId: id }))
 
 const hover = $(useElementHover(target))
@@ -92,6 +91,8 @@ const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range)
         w-full h-80per
         transition shadow hover:shadow-lg
         rounded
+        hover:filter-brightness-80
+        active:filter-brightness-60
       />
     </div>
     <EventDetailCard :id="id" :show="hover" :enabled="loadDetail" />
