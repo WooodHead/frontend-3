@@ -5,6 +5,7 @@ const config: QueryClientConfig = {
     queries: {
       retry: 2,
       refetchOnWindowFocus: false,
+      suspense: true,
     },
   },
 }

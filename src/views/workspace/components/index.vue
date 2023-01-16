@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import type { IPosition, IPositionState } from '../layout'
-import Gantt from './gantt/index.vue'
-import Editor from './editor/index.vue'
-import Graph from './graph/index.vue'
-import Design from './design/index.vue'
+// import Gantt from './gantt/index.vue'
+// import Editor from './editor/index.vue'
+// import Graph from './graph/index.vue'
+// import Design from './design/index.vue'
+
+const Gantt = defineAsyncComponent(() => import('./gantt/index.vue'))
+const Editor = defineAsyncComponent(() => import('./editor/index.vue'))
+const Graph = defineAsyncComponent(() => import('./graph/index.vue'))
+const Design = defineAsyncComponent(() => import('./design/index.vue'))
 
 const status = defineProps<{
   id: string // 组件的id，同一个组件的不同id会导致独立的内部状态

@@ -8,13 +8,12 @@ import useWSStore from './store'
 import type { ILayout } from './layout'
 import { Layout } from './layout'
 import api from '@/api/api'
-import Status from '@/components/status.vue'
 import { fadeInOut } from '@/utils/animation'
 
 const WSStore = useWSStore()
 const { layout } = $(storeToRefs(WSStore))
 
-const { isSuccess, isLoading, isError } = useQuery({
+const { suspense } = useQuery({
   queryKey: ['project', 'workspace'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ layout }) => layout,
@@ -33,6 +32,8 @@ const { isSuccess, isLoading, isError } = useQuery({
   },
 })
 
+await suspense()
+
 watch(
   () => layout.serialize(),
   layout => { api.project.updateWorkspaceInfo({ layout }) },
@@ -42,11 +43,7 @@ watch(
 
 <template>
   <Presence>
-    <div v-if="!isSuccess" fullscreen grow center>
-      <Status card w-1-2 h-1-2 :loading="isLoading" :error="isError" />
-    </div>
     <Motion
-      v-else
       v-bind="fadeInOut"
       relative
       fullscreen grow

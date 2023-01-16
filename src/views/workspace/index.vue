@@ -15,7 +15,14 @@ onUnmounted(() => {
 <template>
   <div row h-full center bg-gray-3>
     <SideBar />
-    <Body />
+    <Suspense>
+      <Body />
+      <template #fallback>
+        <div fullscreen grow center>
+          <Status card w-1-2 h-1-2 loading />
+        </div>
+      </template>
+    </Suspense>
   </div>
-  <router-view />
+  <RouterView />
 </template>

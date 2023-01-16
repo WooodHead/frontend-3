@@ -26,7 +26,7 @@ watch(() => status, status => {
 
 if (data !== undefined) { store.initWithData(data) }
 
-const { isSuccess, isLoading, isError } = $(useQuery({
+const { isSuccess, isLoading, isError, suspense } = $(useQuery({
   enabled: computed(() => data === undefined),
   queryKey: ['project', 'workspace'],
   queryFn: () => api.project.getWorkspaceInfo(),
@@ -39,6 +39,8 @@ const { isSuccess, isLoading, isError } = $(useQuery({
     store.init(UnitID.fromDayjs(new Date(), 'month'))
   },
 }))
+
+await suspense()
 
 // TODO 考虑修改为页面关闭和组件卸载时触发
 watch(
