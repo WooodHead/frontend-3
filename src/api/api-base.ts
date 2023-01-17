@@ -357,10 +357,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name RemoveEvent
      * @request DELETE:/event/{id}
      */
-    removeEvent: (id: number, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
+    removeEvent: (
+      id: number,
+      query: {
+        cascade: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EventEntity[], any>({
         path: `/event/${id}`,
         method: "DELETE",
+        query: query,
         format: "json",
         ...params,
       }),

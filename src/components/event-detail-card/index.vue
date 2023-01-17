@@ -27,12 +27,13 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
 
 <template>
   <Presence>
-    <Motion
-      v-if="show"
-      v-bind="fadeInOut"
-      absolute
-    >
-      <Status v-if="!isSuccess" w-300px h-400px card :loading="isLoading" :error="isError" />
+    <Motion v-if="show" v-bind="fadeInOut">
+      <Status
+        v-if="!isSuccess"
+        w-300px h-400px card
+        :loading="isLoading"
+        :error="isError"
+      />
       <ACard
         v-else
         card
@@ -65,17 +66,21 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
           </ADescriptionsItem>
         </ADescriptions>
         <ADivider />
+        <h4>事件简介</h4>
+        {{ data?.description }}
+        <ADivider />
         <h4>父事件</h4>
         <div border="~ border-2" grid="~ cols-2" gap-0 max-h-200px overflow-y-auto>
-          <EventDetailItem :id="id" border="0 b r border-2" />
+          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" />
         </div>
         <h4>子事件</h4>
         <div border="~ border-2" grid="~ cols-2" gap-0 max-h-200px overflow-y-auto>
-          <EventDetailItem :id="id" border="0 b r border-2" />
+          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" />
         </div>
-        <ADivider />
-        <h4>事件简介</h4>
-        {{ data?.description }}
       </ACard>
     </Motion>
   </Presence>

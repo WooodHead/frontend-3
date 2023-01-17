@@ -13,8 +13,7 @@ const { lock, unit, visibleUnit } = $(storeToRefs(store))
 useQuery({
   queryKey: ['project', 'workspace'],
   queryFn: () => api.project.getWorkspaceInfo(),
-  select: ({ lock }) => lock,
-  onSuccess: lock => { store.lock = lock },
+  onSuccess: ({ lock }) => { store.lock = lock },
 })
 watch(
   () => lock,

@@ -2,6 +2,7 @@
 import { useStore } from '../../store'
 
 const store = useStore()
+
 const handleScroll = ({ currentTarget }: UIEvent) => {
   store.eventScrollTop = -(currentTarget as HTMLDivElement).scrollTop
 }
@@ -16,7 +17,10 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     @scroll="handleScroll"
   >
     <!-- TODO 列表动画 -->
-    <!-- <Item v-for="id in ids" :id="id" :key="id" /> -->
-    <EventDetailItem v-for="id in ids" :id="id" :key="id" />
+    <EventDetailItem
+      v-for="id in ids"
+      :id="id" :key="id"
+      border="0 b border-2"
+    />
   </div>
 </template>

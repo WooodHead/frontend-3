@@ -39,6 +39,19 @@ export class OrderedArray<T extends Record<string, any>, K> {
     }
   }
 
+  removeByData(data: Partial<T>) {
+    const indexes: number[] = []
+    for (const [i, [, d]] of this._data.entries()) {
+      for (const [key, value] of Object.entries(data)) {
+        if (d[key] !== value) { continue }
+      }
+      indexes.push(i)
+    }
+    for (const i of indexes) {
+      this._data.splice(i, 1)
+    }
+  }
+
   order(key: K, data?: Partial<T>) {
     return this._data.findIndex(([k, v]) => {
       if (this._comparor(k, key) !== 0) { return false }
