@@ -4,6 +4,7 @@ import { UnitID } from '@project-chiral/unit-id'
 import { HEADER_HEIGHT } from '../const'
 import { useStore } from '../store'
 import EventItems from './event-items/index.vue'
+import HistoryModal from './history-modal/index.vue'
 import api from '@/api/api'
 import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.vue'
 
@@ -20,18 +21,20 @@ watch(
   lock => { api.project.updateWorkspaceInfo({ lock }) },
 )
 
-let visible = $ref(false)
-const value = $computed(() => {
+let timePickerVisible = $ref(false)
+const timePickerValue = $computed(() => {
   if (!unit || !visibleUnit) { return undefined }
   return {
     unit,
     time: visibleUnit.toDate(),
   }
 })
-const handleTimeChange = (value: UnitTimePickerValue) => {
-  visible = false
-  store.navigateTo(UnitID.fromDayjs(value.time, value.unit))
+const handleTimeChange = ({ time, unit }: UnitTimePickerValue) => {
+  timePickerVisible = false
+  store.navigateTo(UnitID.fromDayjs(time, unit))
 }
+
+const historyVisible = $ref(false)
 </script>
 
 <template>
@@ -48,28 +51,42 @@ const handleTimeChange = (value: UnitTimePickerValue) => {
       border="b border-2"
       space-y-2
     >
-      <ATrigger v-model:popup-visible="visible" trigger="click">
+      <ATrigger v-model:popup-visible="timePickerVisible" trigger="click" :popup-translate="[0, 8]">
         <AButton>
           {{ store.visibleUnit?.toBriefString() }}
         </AButton>
         <template #content>
           <div card-border p-2>
             <UnitTimePicker
-              :model-value="value"
+              :model-value="timePickerValue"
               @update:model-value="handleTimeChange"
             />
           </div>
         </template>
       </ATrigger>
-      <AButton
-        title="锁定事件列表"
-        long h-40per
-        :type="lock ? `primary` : `outline`"
-        @click="lock = !lock"
-      >
-        <div v-if="lock" i-radix-icons-lock-closed></div>
-        <div v-else i-radix-icons-lock-open-1></div>
-      </AButton>
+      <div row h-40per space-x-1>
+        <AButton
+          title="锁定事件列表"
+          long h-full
+          :type="lock ? `primary` : `outline`"
+          @click="lock = !lock"
+        >
+          <div v-if="lock" i-radix-icons-lock-closed></div>
+          <div v-else i-radix-icons-lock-open-1></div>
+        </AButton>
+        <HistoryModal>
+          <AButton
+            title="操作历史记录"
+            type="outline"
+            h-full
+            @click="historyVisible = true"
+          >
+            <template #icon>
+              <div i-radix-icons-counter-clockwise-clock />
+            </template>
+          </AButton>
+        </HistoryModal>
+      </div>
     </div>
     <EventItems />
   </div>

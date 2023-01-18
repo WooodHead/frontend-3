@@ -37,7 +37,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
       <ACard
         v-else
         card
-        w-300px max-h-400px
+        max-w-300px max-h-400px
         overflow-y-auto
         prose text-sm
         @wheel.stop
@@ -70,13 +70,13 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
         {{ data?.description }}
         <ADivider />
         <h4>父事件</h4>
-        <div border="~ border-2" grid="~ cols-2" gap-0 max-h-200px overflow-y-auto>
+        <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
           <EventDetailItem :id="id" />
           <EventDetailItem :id="id" />
           <EventDetailItem :id="id" />
         </div>
         <h4>子事件</h4>
-        <div border="~ border-2" grid="~ cols-2" gap-0 max-h-200px overflow-y-auto>
+        <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
           <EventDetailItem :id="id" />
           <EventDetailItem :id="id" />
           <EventDetailItem :id="id" />

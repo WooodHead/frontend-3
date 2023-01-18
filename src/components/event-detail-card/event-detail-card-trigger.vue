@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { id, show = true, enabled = true, trigger = 'click' } = defineProps<{
+const { id, show = true, enabled, trigger = 'click' } = defineProps<{
   id: number
   show?: boolean
   enabled?: boolean
@@ -8,7 +8,11 @@ const { id, show = true, enabled = true, trigger = 'click' } = defineProps<{
 </script>
 
 <template>
-  <ATrigger :trigger="trigger" click-outside-to-close>
+  <ATrigger
+    :trigger="trigger"
+    click-outside-to-close
+    update-at-scroll
+  >
     <slot></slot>
     <template #content>
       <EventDetailCard :id="id" :show="show" :enabled="enabled" />
