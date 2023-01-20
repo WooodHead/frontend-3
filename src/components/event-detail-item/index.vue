@@ -24,7 +24,9 @@ const { data } = useQuery({
     type="text" long p-0 m-0
     rounded-0
   >
-    <div bg-primary-6 shrink-0 h-full w-4px />
+    <div center min-w-20px shrink-0 p-2>
+      <div bg-primary-6 shrink-0 w-12px h-12px rounded-sm />
+    </div>
     <div grow column text-xs p-1 whitespace-nowrap overflow-hidden>
       {{ data?.name }} <br>
       <div text-text-3 text-ellipsis>

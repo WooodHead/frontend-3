@@ -38,13 +38,26 @@ const historyVisible = $ref(false)
 </script>
 
 <template>
-  <div
+  <!-- <div
     column
     h-full min-w-20per max-w-50per nim-w-30per
     rounded-l-lg shadow-lg border="r-1 border-2"
     resize-x overflow-x-hidden
     z-10 bg-bg-2
   >
+
+  </div> -->
+  <AResizeBox
+    :directions="['right']"
+    column
+    h-full min-w-20per max-w-50per
+    :style="{ width: '30%' }"
+    rounded-l-lg shadow-lg
+    z-10 bg-bg-2
+  >
+    <template #resize-trigger>
+      <div h-full w-4px bg-border-1 hover:bg-blue-4 active:bg-blue-6></div>
+    </template>
     <div
       :style="{ height: `${HEADER_HEIGHT}px` }"
       column shrink-0 p-2 bg-bg-3
@@ -89,5 +102,5 @@ const historyVisible = $ref(false)
       </div>
     </div>
     <EventItems />
-  </div>
+  </AResizeBox>
 </template>

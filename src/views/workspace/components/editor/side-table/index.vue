@@ -7,12 +7,23 @@ const active = ref('info')
 </script>
 
 <template>
-  <div
+  <!-- <div
     column
     border="r border-2"
     h-full min-w-1-3 max-w-1-2
     resize-x overflow-x-hidden
   >
+  </div> -->
+
+  <AResizeBox
+    column
+    border="r border-2"
+    h-full min-w-30per max-w-50per
+    :style="{ width: '40%' }"
+  >
+    <template #resize-trigger>
+      <div h-full w-4px bg-border-1 hover:bg-blue-4 active:bg-blue-6></div>
+    </template>
     <ATabs v-model:active-key="active" hide-content>
       <ATabPane key="info" title="信息" />
       <ATabPane key="todo" title="待办" />
@@ -23,5 +34,5 @@ const active = ref('info')
       <Todo v-else-if="active === 'todo'" />
       <Relation v-else-if="active === 'relation'" />
     </div>
-  </div>
+  </AResizeBox>
 </template>
