@@ -40,7 +40,7 @@ const historyVisible = $ref(false)
 <template>
   <div
     column
-    h-full min-w-20per max-w-50per
+    h-full min-w-20per max-w-50per nim-w-30per
     rounded-l-lg shadow-lg border="r-1 border-2"
     resize-x overflow-x-hidden
     z-10 bg-bg-2

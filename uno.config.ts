@@ -15,7 +15,7 @@ export default defineConfig<Theme>({
   },
   // 全局important
   preprocess: p => {
-    if (p.includes('!') || p.includes('important')) { return p }
+    if (p.includes('!') || p.includes('important') || p.includes('nim')) { return p }
     return `!${p}`
   },
   rules: [
@@ -50,6 +50,8 @@ export default defineConfig<Theme>({
       'card': 'full bg-bg-1 rounded-lg shadow-lg',
       'card-border': 'card border-1 border-border-2',
     },
+    // 取消默认!important
+    [/^nim-(.+)$/, ([, p]) => p],
   ],
   safelist: [
     // col-start 1 到 5
