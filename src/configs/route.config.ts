@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Main',
+    name: 'main',
     component: () => import('@/views/main/index.vue'),
   },
   {
@@ -14,29 +14,29 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'settings',
-        name: 'Settings',
-        component: () => import('@/views/settings/index.vue'),
+        name: 'ws-settings',
+        component: () => import('@/views/workspace/views/settings/index.vue'),
       },
       {
         path: 'help',
-        name: 'Help',
-        component: () => import('@/views/help/index.vue'),
+        name: 'ws-help',
+        component: () => import('@/views/workspace/views/help/index.vue'),
       },
       {
         path: 'about',
-        name: 'About',
-        component: () => import('@/views/about/index.vue'),
+        name: 'ws-about',
+        component: () => import('@/views/workspace/views/about/index.vue'),
+      },
+      {
+        path: 'user',
+        name: 'ws-user',
+        component: () => import('@/views/workspace/views/user/index.vue'),
       },
     ],
   },
   {
-    path: '/user/:id',
-    name: 'User',
-    component: () => import('@/views/user/index.vue'),
-  },
-  {
     path: '/test',
-    name: 'Test',
+    name: 'test',
     component: () => import('@/views/test/index.vue'),
   },
   {

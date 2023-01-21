@@ -21,11 +21,11 @@ const expand = $ref(false)
       </Motion>
     </Presence>
     <AButton
+      shadow-lg shadow-gray-4
       type="primary" size="large" shape="circle"
       @click="expand = !expand"
     >
-      <div v-if="expand" i-radix-icons-triangle-down text-4xl></div>
-      <div v-else i-radix-icons-triangle-up text-4xl></div>
+      <div :class="expand ? 'i-radix-icons-triangle-down' : 'i-radix-icons-triangle-up'" text-4xl></div>
     </AButton>
   </div>
 </template>

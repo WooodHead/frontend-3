@@ -14,6 +14,8 @@ import GanttDarkIcon from '@/assets/workspace/gantt-dark.png'
 import GraphIcon from '@/assets/workspace/graph.png'
 import GraphDarkIcon from '@/assets/workspace/graph-dark.png'
 
+const router = useRouter()
+
 const WSStore = useWSStore()
 let { menuExpand } = $(storeToRefs(WSStore))
 
@@ -46,7 +48,11 @@ const handleClickOutside = () => { menuExpand = false }
         <Handler id="design" name="设定" :icon="DesignIcon" :dark-icon="DesignDarkIcon" />
       </div>
       <div center h-10per w-full>
-        <AButton shape="circle" type="secondary">
+        <AButton
+          shape="circle"
+          type="secondary"
+          @click="router.push({ name: 'ws-user' })"
+        >
           <div w-30px h-30px i-radix-icons-avatar></div>
         </AButton>
       </div>

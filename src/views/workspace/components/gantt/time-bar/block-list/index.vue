@@ -13,6 +13,7 @@ watch(
   origin => {
     if (origin) { store.init(origin) }
   },
+  { immediate: true },
 )
 
 const handleWheel = (e: WheelEvent) => {

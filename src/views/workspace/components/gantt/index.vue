@@ -28,7 +28,7 @@ if (data !== undefined) { store.initWithData(data) }
 
 const { isSuccess, isLoading, isError, suspense } = $(useQuery({
   enabled: computed(() => data === undefined),
-  queryKey: ['project', 'workspace'],
+  queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ origin }) => origin,
   onSuccess: id => {
@@ -58,9 +58,7 @@ watch(
       <div relative row h-0 grow>
         <SideTable />
         <MainTable v-if="isSuccess" />
-        <div v-else grow>
-          <Status :error="isError" :loading="isLoading" />
-        </div>
+        <Status v-else grow :error="isError" :loading="isLoading" />
         <Tools />
       </div>
     </div>

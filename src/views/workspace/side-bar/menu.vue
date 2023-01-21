@@ -38,9 +38,9 @@ watch(
 )
 
 const menuConfig: { title: string; name: string }[] = [
-  { title: '设置', name: 'Settings' },
-  { title: '帮助', name: 'Help' },
-  { title: '关于', name: 'About' },
+  { title: '设置', name: 'ws-settings' },
+  { title: '帮助', name: 'ws-help' },
+  { title: '关于', name: 'ws-about' },
 ]
 </script>
 

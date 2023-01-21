@@ -11,6 +11,7 @@
     <ADescriptions
       :column="1"
       :data="[
+        { label: '序号', value: '1' },
         { label: '名称', value: '测试事件' },
         { label: '类型', value: '集合事件' },
       ]"

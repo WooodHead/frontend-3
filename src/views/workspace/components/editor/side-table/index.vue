@@ -1,28 +1,20 @@
 <script setup lang="ts">
 import Info from './info.vue'
-import Todo from './todo.vue'
+import Todo from './todo/index.vue'
 import Relation from './relation.vue'
 
 const active = ref('info')
 </script>
 
 <template>
-  <!-- <div
-    column
-    border="r border-2"
-    h-full min-w-1-3 max-w-1-2
-    resize-x overflow-x-hidden
-  >
-  </div> -->
-
   <AResizeBox
+    :directions="['right']"
     column
-    border="r border-2"
     h-full min-w-30per max-w-50per
     :style="{ width: '40%' }"
   >
     <template #resize-trigger>
-      <div h-full w-4px bg-border-1 hover:bg-blue-4 active:bg-blue-6></div>
+      <div w-4px h-full bg="border-1 hover:blue-4 active:blue-6"></div>
     </template>
     <ATabs v-model:active-key="active" hide-content>
       <ATabPane key="info" title="信息" />

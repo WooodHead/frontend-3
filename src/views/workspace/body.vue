@@ -14,7 +14,7 @@ const WSStore = useWSStore()
 const { layout } = $(storeToRefs(WSStore))
 
 const { suspense } = useQuery({
-  queryKey: ['project', 'workspace'],
+  queryKey: ['project', 'workspace', 'layout'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ layout }) => layout,
   onSuccess: config => {

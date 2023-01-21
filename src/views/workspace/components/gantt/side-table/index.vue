@@ -12,7 +12,7 @@ const store = useStore()
 const { lock, unit, visibleUnit } = $(storeToRefs(store))
 
 useQuery({
-  queryKey: ['project', 'workspace'],
+  queryKey: ['project', 'workspace', 'lock'],
   queryFn: () => api.project.getWorkspaceInfo(),
   onSuccess: ({ lock }) => { store.lock = lock },
 })
@@ -38,15 +38,6 @@ const historyVisible = $ref(false)
 </script>
 
 <template>
-  <!-- <div
-    column
-    h-full min-w-20per max-w-50per nim-w-30per
-    rounded-l-lg shadow-lg border="r-1 border-2"
-    resize-x overflow-x-hidden
-    z-10 bg-bg-2
-  >
-
-  </div> -->
   <AResizeBox
     :directions="['right']"
     column
@@ -56,7 +47,7 @@ const historyVisible = $ref(false)
     z-10 bg-bg-2
   >
     <template #resize-trigger>
-      <div h-full w-4px bg-border-1 hover:bg-blue-4 active:bg-blue-6></div>
+      <div w-4px h-full bg="border-1 hover:blue-4 active:blue-6"></div>
     </template>
     <div
       :style="{ height: `${HEADER_HEIGHT}px` }"
@@ -64,7 +55,11 @@ const historyVisible = $ref(false)
       border="b border-2"
       space-y-2
     >
-      <ATrigger v-model:popup-visible="timePickerVisible" trigger="click" :popup-translate="[0, 8]">
+      <ATrigger
+        v-model:popup-visible="timePickerVisible"
+        trigger="click"
+        :popup-translate="[0, 8]"
+      >
         <AButton>
           {{ store.visibleUnit?.toBriefString() }}
         </AButton>

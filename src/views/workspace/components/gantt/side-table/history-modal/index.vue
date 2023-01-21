@@ -10,7 +10,7 @@
   >
     <slot></slot>
     <template #content>
-      <AList>
+      <AList my-4>
         <AListItem>
           1
         </AListItem>
@@ -18,3 +18,9 @@
     </template>
   </APopover>
 </template>
+
+<style scoped>
+.arco-popover-popup-content{
+  padding: 12px !important;
+}
+</style>
