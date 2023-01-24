@@ -50,6 +50,9 @@ export default defineConfig<Theme>({
       'card': 'full bg-bg-1 rounded-lg shadow-lg',
       'card-border': 'card border-1 border-border-2',
     },
+    {
+      ellipsis: 'overflow-hidden text-ellipsis whitespace-nowrap',
+    },
     // 取消默认!important
     [/^nim-(.+)$/, ([, p]) => p],
   ],

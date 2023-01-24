@@ -4,6 +4,7 @@ import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
 import EditorStatus from './components/editor-status.vue'
 import { registerStore } from './store'
+import emitter from '@/utils/emitter'
 
 interface EditorProps {
   status: ComponentStatus
@@ -20,13 +21,19 @@ watch(
   },
   { deep: true },
 )
+
+emitter.on('event-select', ({ eventId }) => {
+  store.eventId = eventId
+})
+
+const searchText = $ref('')
 </script>
 
 <template>
   <div card column overflow-hidden>
     <ComponentHeader>
       <template #middle>
-        <ATreeSelect w-full />
+        <EventSelector v-model="searchText" />
       </template>
       <template #right>
         <div row space-x-2>

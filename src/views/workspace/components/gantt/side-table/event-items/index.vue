@@ -13,14 +13,16 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
 <template>
   <div
     h-full
-    overflow-y-auto overflow-x-hidden
+    overflow-y-auto
     @scroll="handleScroll"
   >
     <!-- TODO 列表动画 -->
     <EventDetailItem
       v-for="id in ids"
-      :id="id" :key="id"
+      :id="id"
+      :key="id"
       border="0 b border-2"
+      event-select
     />
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Selector from '../component/selector/index.vue'
 </script>
 
 <template>
@@ -7,10 +8,10 @@
       <APagination :total="200" simple />
     </div>
     <div grow center-y>
-      <ATreeSelect allow-search />
+      <Selector />
     </div>
     <div center-y>
-      <AButtonGroup type="outline">
+      <!-- <AButtonGroup type="outline">
         <AButton title="返回">
           <template #icon>
             <div i-radix-icons-caret-left text-2xl />
@@ -26,7 +27,12 @@
             <div i-radix-icons-caret-right text-2xl />
           </template>
         </AButton>
-      </AButtonGroup>
+      </AButtonGroup> -->
+      <AButton type="outline" title="历史记录">
+        <template #icon>
+          <div i-radix-icons-counter-clockwise-clock text-lg />
+        </template>
+      </AButton>
     </div>
   </div>
 </template>

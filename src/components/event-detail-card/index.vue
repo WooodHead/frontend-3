@@ -71,15 +71,11 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
         <ADivider />
         <h4>父事件</h4>
         <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
-          <EventDetailItem :id="id" />
-          <EventDetailItem :id="id" />
-          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" event-select />
         </div>
         <h4>子事件</h4>
         <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
-          <EventDetailItem :id="id" />
-          <EventDetailItem :id="id" />
-          <EventDetailItem :id="id" />
+          <EventDetailItem :id="id" event-select />
         </div>
       </ACard>
     </Motion>

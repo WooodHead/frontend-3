@@ -22,7 +22,12 @@ export interface EventEntity {
   /** @format date-time */
   updatedAt: string;
   /** @format date-time */
-  deletedAt: string | null;
+  deleted: string | null;
+  unit: number;
+  /** @format date-time */
+  start: string;
+  /** @format date-time */
+  end: string;
   contentId: number | null;
   projectId: number;
 }
@@ -40,7 +45,12 @@ export interface EventDetailEntity {
   /** @format date-time */
   updatedAt: string;
   /** @format date-time */
-  deletedAt: string | null;
+  deleted: string | null;
+  unit: number;
+  /** @format date-time */
+  start: string;
+  /** @format date-time */
+  end: string;
   contentId: number | null;
   projectId: number;
   superEvents: EventEntity[];
@@ -53,8 +63,7 @@ export interface CreateEventDto {
   range: string;
   name: string;
   description: string | null;
-  /** @default "#93c5fd" */
-  color?: string;
+  color: string;
 }
 
 export interface UpdateEventDto {
@@ -62,7 +71,6 @@ export interface UpdateEventDto {
   range?: string;
   name?: string;
   description?: string | null;
-  /** @default "#93c5fd" */
   color?: string;
 }
 
@@ -70,12 +78,30 @@ export interface EventContentEntity {
   id: number;
   /** @format date-time */
   updatedAt: string;
-  eventId: number;
   content: string;
+  eventId: number;
 }
 
 export interface UpdateContentDto {
   content?: string;
+}
+
+export interface EventTodoEntity {
+  id: number;
+  title: string;
+  color: string | null;
+  checked: boolean;
+  eventId: number | null;
+}
+
+export interface CreateTodoDto {
+  title: string;
+  color: string | null;
+}
+
+export interface UpdateTodoDto {
+  color?: string;
+  checked?: boolean;
 }
 
 export interface UserEntity {
@@ -83,6 +109,7 @@ export interface UserEntity {
   username: string;
   phone: string | null;
   email: string | null;
+  avatar: string | null;
 }
 
 export interface UserLoginRespDto {
@@ -103,6 +130,7 @@ export interface CreateProjectDto {
 
 export interface ProjectEntity {
   id: number;
+  serial: number;
   name: string;
   description: string | null;
   /** @format date-time */
@@ -110,9 +138,7 @@ export interface ProjectEntity {
   /** @format date-time */
   updatedAt: string;
   /** @format date-time */
-  deletedAt: string | null;
-  userId: number;
-  serial: number;
+  deleted: string | null;
 }
 
 export interface UpdateProjectDto {
@@ -124,8 +150,8 @@ export interface WorkspaceEntity {
   id: number;
   origin: string | null;
   layout: object[] | null;
-  projectId: number;
   lock: boolean;
+  projectId: number;
 }
 
 export interface UpdateWorkspaceDto {
@@ -145,9 +171,12 @@ export interface UpdateSettingsDto {
 }
 
 export interface CreateCharacterDto {
+  range: string;
   name: string;
   alias: string[];
   description: string;
+  /** @format date-time */
+  deleted: string | null;
   unit: number;
   /** @format date-time */
   start: string;
@@ -157,13 +186,13 @@ export interface CreateCharacterDto {
 
 export type UpdateCharacterDto = object;
 
-export type CreateScenceDto = object;
+export type CreateSceneDto = object;
 
-export type UpdateScenceDto = object;
+export type UpdateSceneDto = object;
 
-export type CreateBackdropDto = object;
+export type CreateWorldviewDto = object;
 
-export type UpdateBackdropDto = object;
+export type UpdateWorldviewDto = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
 
@@ -430,6 +459,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
+     * @name SearchEventName
+     * @request GET:/event/search/name
+     */
+    searchEventName: (
+      query: {
+        text: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EventEntity[], any>({
+        path: `/event/search/name`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name GetEventBySerial
+     * @request GET:/event/serial
+     */
+    getEventBySerial: (serial: number, params: RequestParams = {}) =>
+      this.request<UpdateCharacterDto, any>({
+        path: `/event/serial`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
      * @name GetContent
      * @request GET:/event/{id}/content
      */
@@ -459,6 +524,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * No description
+     *
+     * @tags event
+     * @name SearchContent
+     * @request GET:/event/search/content
+     */
+    searchContent: (
+      query: {
+        text: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EventEntity[], any>({
+        path: `/event/search/content`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description 获取某个事件的全部todo项
      *
      * @tags event
@@ -466,9 +552,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/{id}/todo
      */
     getTodos: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventTodoEntity[], any>({
         path: `/event/${id}/todo`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -479,10 +566,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CreateTodo
      * @request POST:/event/{id}/todo
      */
-    createTodo: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+    createTodo: (id: number, data: CreateTodoDto, params: RequestParams = {}) =>
+      this.request<EventTodoEntity, any>({
         path: `/event/${id}/todo`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -493,10 +583,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UpdateTodo
      * @request PUT:/event/{id}/todo
      */
-    updateTodo: (id: number, params: RequestParams = {}) =>
+    updateTodo: (id: number, data: UpdateTodoDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/event/${id}/todo`,
         method: "PUT",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -508,9 +600,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/todo/{id}
      */
     getTodo: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventTodoEntity, any>({
         path: `/event/todo/${id}`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -795,16 +888,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  scence = {
+  scene = {
     /**
      * No description
      *
      * @name Create
-     * @request POST:/scence
+     * @request POST:/scene
      */
-    create: (data: CreateScenceDto, params: RequestParams = {}) =>
+    create: (data: CreateSceneDto, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/scence`,
+        path: `/scene`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -816,11 +909,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name FindAll
-     * @request GET:/scence
+     * @request GET:/scene
      */
     findAll: (params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/scence`,
+        path: `/scene`,
         method: "GET",
         format: "json",
         ...params,
@@ -830,11 +923,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name FindOne
-     * @request GET:/scence/{id}
+     * @request GET:/scene/{id}
      */
     findOne: (id: string, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/scence/${id}`,
+        path: `/scene/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -844,11 +937,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name Update
-     * @request PATCH:/scence/{id}
+     * @request PATCH:/scene/{id}
      */
-    update: (id: string, data: UpdateScenceDto, params: RequestParams = {}) =>
+    update: (id: string, data: UpdateSceneDto, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/scence/${id}`,
+        path: `/scene/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
@@ -860,26 +953,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name Remove
-     * @request DELETE:/scence/{id}
+     * @request DELETE:/scene/{id}
      */
     remove: (id: string, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/scence/${id}`,
+        path: `/scene/${id}`,
         method: "DELETE",
         format: "json",
         ...params,
       }),
   };
-  backdrop = {
+  worldview = {
     /**
      * No description
      *
      * @name Create
-     * @request POST:/backdrop
+     * @request POST:/worldview
      */
-    create: (data: CreateBackdropDto, params: RequestParams = {}) =>
+    create: (data: CreateWorldviewDto, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/backdrop`,
+        path: `/worldview`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -891,11 +984,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name FindAll
-     * @request GET:/backdrop
+     * @request GET:/worldview
      */
     findAll: (params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/backdrop`,
+        path: `/worldview`,
         method: "GET",
         format: "json",
         ...params,
@@ -905,11 +998,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name FindOne
-     * @request GET:/backdrop/{id}
+     * @request GET:/worldview/{id}
      */
     findOne: (id: string, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/backdrop/${id}`,
+        path: `/worldview/${id}`,
         method: "GET",
         format: "json",
         ...params,
@@ -919,11 +1012,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name Update
-     * @request PATCH:/backdrop/{id}
+     * @request PATCH:/worldview/{id}
      */
-    update: (id: string, data: UpdateBackdropDto, params: RequestParams = {}) =>
+    update: (id: string, data: UpdateWorldviewDto, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/backdrop/${id}`,
+        path: `/worldview/${id}`,
         method: "PATCH",
         body: data,
         type: ContentType.Json,
@@ -935,11 +1028,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name Remove
-     * @request DELETE:/backdrop/{id}
+     * @request DELETE:/worldview/{id}
      */
     remove: (id: string, params: RequestParams = {}) =>
       this.request<string, any>({
-        path: `/backdrop/${id}`,
+        path: `/worldview/${id}`,
         method: "DELETE",
         format: "json",
         ...params,
