@@ -2,34 +2,34 @@
 import { useStore } from '../../store'
 import Basic from './basic.vue'
 
-const model = $ref({})
 const store = useStore()
-let { selectedEvents } = $(storeToRefs(store))
+const { selectedEvents } = $(storeToRefs(store))
 
-let visible = $ref(false)
+const visible = $ref(false)
 
-const handleCancel = () => {
-  selectedEvents = []
-}
-const handleOk = () => {
-  visible = true
-}
-const handleBeforeOk = () => {
-
-}
+const init = $computed(() => Array.from(selectedEvents))
 </script>
 
 <template>
   <Basic
-    :show="selectedEvents.length > 0"
+    :show="selectedEvents.size > 0"
+    ready
     ok-text="创建集合事件"
-    @cancel="handleCancel"
-    @ok="handleOk"
+    @cancel="selectedEvents.clear()"
+    @ok="visible = true"
   >
-    <AForm :model="model">
-      <AFormItem>
-        1
-      </AFormItem>
-    </AForm>
+    <div border="~ border-2" gap-0 w-full max-h-400px overflow-y-auto>
+      <EventDetailItem
+        v-for="id in selectedEvents"
+        :id="id"
+        :key="id"
+        event-select
+      />
+    </div>
   </Basic>
+  <CreateEventModal
+    v-model:visible="visible"
+    :init="init"
+    @ok="selectedEvents.clear()"
+  />
 </template>

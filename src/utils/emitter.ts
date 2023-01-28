@@ -1,8 +1,9 @@
 import mitt from 'mitt'
+import type { EventEntity } from '@/api/api-base'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type CustomEvents = {
-  'event-select': { eventId: number }
+  'event-select': { event: EventEntity }
 }
 
 const emitter = mitt<CustomEvents>()

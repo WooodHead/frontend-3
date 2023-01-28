@@ -4,7 +4,6 @@ import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
 import EditorStatus from './components/editor-status.vue'
 import { registerStore } from './store'
-import emitter from '@/utils/emitter'
 
 interface EditorProps {
   status: ComponentStatus
@@ -12,19 +11,13 @@ interface EditorProps {
 
 const { status } = defineProps<EditorProps>()
 
-const store = registerStore(status.position)
+const store = registerStore(`${status.position}`)
 
 watch(
   () => status,
-  status => {
-    store.status = status
-  },
+  status => { store.status = status },
   { deep: true },
 )
-
-emitter.on('event-select', ({ eventId }) => {
-  store.eventId = eventId
-})
 
 const searchText = $ref('')
 </script>

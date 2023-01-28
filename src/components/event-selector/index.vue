@@ -3,48 +3,71 @@ import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 
-const { userSearch = true, graphSearch = true, modelValue } = defineProps<{
+const { userSearch = true, graphSearch = true, modelValue, multiple = false } = defineProps<{
   userSearch?: boolean
   graphSearch?: boolean
-  modelValue: string
+  modelValue?: string
+  multiple?: boolean
 }>()
+
+// 非受控状态下的值
+let _modelValue = $ref('')
+const computedModelValue = $computed(() => modelValue || _modelValue)
 
 const emit = defineEmits<{
   (e: 'update:model-value', value: string): void
   (e: 'select', event: EventEntity): void | Promise<void>
 }>()
 
-const { data: searchContent, isLoading: contentLoading } = useQuery({
-  queryKey: computed(() => ['event', 'search', 'content', modelValue]),
+const { data: searchContent, isError: contentError } = useQuery({
+  enabled: computed(() => computedModelValue.length > 0),
+  queryKey: computed(() => ['event', 'search', 'content', computedModelValue]),
   cacheTime: 0,
-  queryFn: () => api.event.searchContent({ text: modelValue }),
+  queryFn: () => api.event.searchContent({ text: computedModelValue }),
 })
-const { data: searchName, isLoading: nameLoading } = useQuery({
-  queryKey: computed(() => ['event', 'search', 'name', modelValue]),
+const { data: searchName, isError: nameError } = useQuery({
+  enabled: computed(() => computedModelValue.length > 0),
+  queryKey: computed(() => ['event', 'search', 'name', computedModelValue]),
   cacheTime: 0,
-  queryFn: () => api.event.searchEventName({ text: modelValue }),
+  queryFn: () => api.event.searchEventName({ text: computedModelValue }),
 })
 
 const handleItemClick = (event: EventEntity) => {
   emit('select', event)
-  emit('update:model-value', `${event.serial}. ${event.name}`)
+
+  const newName = `${event.serial}. ${event.name}`
+  _modelValue = newName
+  emit('update:model-value', newName)
 }
+
+const handleSearch = (value: string) => {
+  _modelValue = value
+  emit('update:model-value', value)
+}
+
+const handleClear = () => {
+  _modelValue = ''
+  emit('update:model-value', '')
+}
+
+// TODO multiple
 </script>
 
 <template>
   <div w-full row space-x-1>
     <ASelect
-      :model-value="modelValue"
-      :allow-search="{ retainInputValue: false }"
+      :model-value="computedModelValue"
+      allow-search
       allow-clear
-      :loading="contentLoading || nameLoading"
+      :multiple="multiple"
+      :error="contentError || nameError"
       unmount-on-close
       :search-delay="500"
       :filter-option="false"
-      @search="$emit('update:model-value', $event)"
-      @clear="$emit('update:model-value', '')"
+      @search="handleSearch"
+      @clear="handleClear"
     >
-      <AOptgroup :label="`事件名称中包含 “${modelValue}” 的事件`">
+      <AOptgroup :label="`事件名称中包含 “${computedModelValue}” 的事件`">
         <AOption
           v-for="{ id } of searchName"
           :key="id"
@@ -55,15 +78,15 @@ const handleItemClick = (event: EventEntity) => {
             event-select
             @click="handleItemClick"
           >
-            <template #extra>
-              <div text="xs text-2">
-                测试
+            <template #extra="{ event }">
+              <div text="xs text-2" mb-1>
+                {{ event?.description }}
               </div>
             </template>
           </EventDetailItem>
         </AOption>
       </AOptgroup>
-      <AOptgroup :label="`事件描述中包含 “${modelValue}” 的事件`">
+      <AOptgroup :label="`事件描述中包含 “${computedModelValue}” 的事件`">
         <AOption
           v-for="{ id } of searchContent"
           :key="id"
@@ -74,9 +97,9 @@ const handleItemClick = (event: EventEntity) => {
             event-select
             @click="handleItemClick"
           >
-            <template #extra>
-              <div text="xs text-2">
-                测试
+            <template #extra="{ event }">
+              <div text="xs text-2" mb-1>
+                {{ event?.description }}
               </div>
             </template>
           </EventDetailItem>

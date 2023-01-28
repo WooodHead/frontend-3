@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/vue-query'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 import type { EventEntity } from '@/api/api-base'
+import reverseColor from '@/utils/reverseColor'
 
 export interface BlockProps {
   id: number
@@ -20,13 +21,31 @@ const { visibleUnit, lock } = $(storeToRefs(store))
 
 const client = useQueryClient()
 
-let visible = $ref(false)
+const ctrl = $(useKeyModifier('Control'))
+const meta = $(useKeyModifier('Meta'))
+const select = $computed(() => ctrl || meta || false)
+let active = $ref(false)
+const handleSelectClick = () => {
+  if (!select) { return }
+  active = !active
+  if (active) { store.selectedEvents.add(id) }
+  else { store.selectedEvents.delete(id) }
+}
+watch(
+  () => store.selectedEvents,
+  events => {
+    active = events.has(id)
+  },
+  { deep: true },
+)
+
+let blockVisible = $ref(false)
 const target = ref<HTMLDivElement | null>(null)
 useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     // 不管是否锁定都记录isIntersecting，用于解锁时及时更新状态
-    visible = isIntersecting
+    blockVisible = isIntersecting
 
     if (isIntersecting) {
       // TODO 列表锁现在是只增不减，是否要改成不增不减
@@ -44,7 +63,7 @@ useIntersectionObserver(
 whenever(
   () => !lock,
   () => {
-    if (!visible) { store.visibleEvents.remove(range) }
+    if (!blockVisible) { store.visibleEvents.remove(range) }
   },
 )
 
@@ -56,9 +75,6 @@ const offset = $computed(() => {
 })
 const order = $computed(() => store.visibleEvents.order(range, { eventId: id }))
 
-// 预加载当前可见区域内的event detail
-const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range))
-
 // 删除事件时更新事件时间跨度内所有事件列表缓存
 const handleDelete = (range: UnitIDRange, ids: number[]) => {
   store.visibleEvents.remove(range, { eventId: ids[0] })
@@ -66,19 +82,21 @@ const handleDelete = (range: UnitIDRange, ids: number[]) => {
   for (const id of range.ids) {
     client.setQueryData<EventEntity[]>(
       ['event', { range: id.range.serialize() }],
-      events => {
-        return events?.filter(event => event.id !== ids[0])
-      })
+      events => events?.filter(event => event.id !== ids[0]),
+    )
   }
 
   for (const id of ids) {
     client.invalidateQueries(['event', id])
   }
 }
+
+// 预加载当前可见区域内的event detail
+const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range))
 </script>
 
 <template>
-  <EventDetailCardTrigger :id="id" :enabled="loadDetail">
+  <EventDetailCardTrigger :id="id" :load="loadDetail" :disabled="select">
     <EventContextMenu :id="id" @delete="handleDelete">
       <div
         ref="target"
@@ -111,12 +129,17 @@ const handleDelete = (range: UnitIDRange, ids: number[]) => {
           center
         >
           <div
-            :style="{ backgroundColor: color }"
+            :style="{
+              backgroundColor: color,
+              outlineColor: reverseColor(color),
+            }"
             w-full h-80per
             transition shadow hover:shadow-lg
             rounded
+            :outline="active ? '2px solid' : 'none'"
             hover:filter-brightness-80
             active:filter-brightness-60
+            @click="handleSelectClick"
           />
         </div>
       </div>

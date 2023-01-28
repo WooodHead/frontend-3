@@ -8,7 +8,7 @@ import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-const { unit, unitRange } = $(storeToRefs(store))
+const { unitRange } = $(storeToRefs(store))
 
 const client = useQueryClient()
 
@@ -17,7 +17,6 @@ const results = useQueries({
   queries: computed(() => ranges?.map(range => ({
     queryKey: ['event', { range: range?.serialize() }],
     queryFn: () => api.event.getEvents({ range: range?.serialize() }),
-    keepPreviousData: false,
     onSuccess: (events: EventEntity[]) => {
       // 批量请求数据后，顺序更新一下单个请求的缓存
       for (const event of events) {
@@ -27,6 +26,7 @@ const results = useQueries({
   })) ?? []),
 })
 
+// TODO 事件时间跨度包含多个单位时将会出现重复，需要去重
 const eventData = $computed(() => {
   const events = results
     .map(({ data }) => data)

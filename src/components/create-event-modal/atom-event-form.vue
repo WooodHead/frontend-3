@@ -17,6 +17,7 @@ const model = $ref({
     unit: 'date',
     range: [new Date(), new Date()],
   },
+  color: '#93c5fd',
 })
 
 const validate = async (): Promise<CreateEventDto> => {

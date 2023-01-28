@@ -25,6 +25,7 @@ const editor = $(useEditor({
       class: 'outline-none',
     },
   },
+  // TODO 当前的实时保存策略是消抖保存，考虑更换其他更好的策略
   onUpdate: useDebounceFn(({ editor }: EditorEvents['update']) => {
     if (!store.eventId) { return }
     api.event.updateContent(store.eventId, {

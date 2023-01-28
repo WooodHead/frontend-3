@@ -21,7 +21,6 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
       v-for="id in ids"
       :id="id"
       :key="id"
-      border="0 b border-2"
       event-select
     />
   </div>

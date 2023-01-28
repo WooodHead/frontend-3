@@ -65,6 +65,15 @@ export class OrderedArray<T extends Record<string, any>, K> {
     })
   }
 
+  orderByData(data: Partial<T>) {
+    return this._data.findIndex(([, v]) => {
+      for (const [key, value] of Object.entries(data)) {
+        if (v[key] !== value) { return false }
+      }
+      return true
+    })
+  }
+
   clear() {
     this._data = []
   }

@@ -5,14 +5,14 @@ import { UnitIDRange } from '@project-chiral/unit-id'
 import api from '@/api/api'
 import { fadeInOut } from '@/utils/animation'
 
-const { id, show = true, enabled = true } = defineProps<{
+const { id, show = true, load = true } = defineProps<{
   id: number
   show?: boolean
-  enabled?: boolean
+  load?: boolean
 }>()
 
 const { data, isSuccess, isLoading, isError } = $(useQuery({
-  enabled: computed(() => enabled),
+  enabled: computed(() => load),
   queryKey: computed(() => ['event', id, 'detail']),
   queryFn: () => api.event.getEventDetail(id),
   select: data => ({

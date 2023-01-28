@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import { UnitRangePickerValue } from '../pickers/unit-range-picker.vue'
 import AtomEventForm from './atom-event-form.vue'
 import CollectionEventForm from './collection-event-form.vue'
@@ -9,12 +10,13 @@ import api from '@/api/api'
 
 const { visible, init } = defineProps<{
   visible?: boolean
-  init?: UnitRangePickerValue | string[]
+  init?: UnitRangePickerValue | number[]
 }>()
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'ok', data: EventEntity): void | Promise<void>
+  (e: 'beforeOk', data: EventEntity): void | Promise<void>
+  (e: 'ok'): void
 }>()
 
 const type = $computed(() => {
@@ -41,10 +43,21 @@ const { mutateAsync } = useMutation({
   },
 })
 
+const client = useQueryClient()
 const handleBeforeOk = async () => {
   const data = await formRef!.validate()
   const event = await mutateAsync(data)
-  emit('ok', event)
+
+  const range = UnitIDRange.deserialize(event.range)
+  for (const id of range.ids) {
+    client.setQueryData<EventEntity[]>(
+      ['event', { range: id.range.serialize() }],
+      events => [...events ?? [], event],
+    )
+  }
+  client.setQueryData(['event', event.id], event)
+
+  emit('beforeOk', event)
   return true
 }
 </script>
@@ -56,6 +69,7 @@ const handleBeforeOk = async () => {
     :title="title"
     @update:visible="$emit('update:visible', $event)"
     @before-ok="handleBeforeOk"
+    @ok="$emit('ok')"
   >
     <AtomEventForm
       v-if="type === 'atom'"
@@ -65,7 +79,7 @@ const handleBeforeOk = async () => {
     <CollectionEventForm
       v-else-if="type === 'collection'"
       ref="formRef"
-      :init="(init as string[])"
+      :init="(init as number[])"
     />
     <ATabs v-else lazy-load destroy-on-hide>
       <ATabPane :key="1" title="创建集合事件">

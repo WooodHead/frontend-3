@@ -10,7 +10,7 @@ interface CharacterProps {
 
 const { status } = defineProps<CharacterProps>()
 
-const store = registerStore(status.position)
+const store = registerStore(`${status.position}`)
 
 watch(() => status, status => {
   store.status = status

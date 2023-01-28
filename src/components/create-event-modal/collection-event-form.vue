@@ -3,7 +3,7 @@ import type { CreateEventDto } from '@/api/api-base'
 import type { FormRef } from '@/utils/types'
 
 const { init } = defineProps<{
-  init?: string[]
+  init?: number[]
 }>()
 
 const formRef = $ref<FormRef>()
@@ -11,7 +11,7 @@ const formRef = $ref<FormRef>()
 const model = $ref({
   name: '',
   description: '',
-  graphIds: [] as string[],
+  subIds: init ?? [],
 })
 
 const validate = async (): Promise<CreateEventDto> => {
@@ -42,12 +42,12 @@ defineExpose({ validate })
     </AFormItem>
     <!-- TODO 自定义FormItem，支持可视化选择子图 -->
     <AFormItem
-      field="graphIds"
+      field="subIds"
       label="子事件"
       :rules="[{ required: true, message: '请选择当前事件的子事件' }]"
     >
       <ATreeSelect
-        v-model="model.graphIds"
+        v-model="model.subIds"
         multiple allow-clear allow-search
       />
     </AFormItem>

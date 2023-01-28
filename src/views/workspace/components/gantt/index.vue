@@ -17,7 +17,7 @@ interface GanttProps {
 }
 const { status, data } = defineProps<GanttProps>()
 
-const store = registerStore(status.position)
+const store = registerStore(`${status.position}`)
 const { visibleUnit } = $(storeToRefs(store))
 
 watch(() => status, status => {
