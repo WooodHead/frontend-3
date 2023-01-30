@@ -64,14 +64,15 @@ const handleClear = () => {
       unmount-on-close
       :search-delay="500"
       :filter-option="false"
+      :show-extra-options="false"
       @search="handleSearch"
       @clear="handleClear"
     >
-      <AOptgroup :label="`事件名称中包含 “${computedModelValue}” 的事件`">
-        <AOption
-          v-for="{ id } of searchName"
-          :key="id"
-        >
+      <AOptgroup
+        v-if="searchName?.length ?? 0 > 0"
+        :label="`事件名称中包含 “${computedModelValue}” 的事件`"
+      >
+        <AOption v-for="{ id } of searchName" :key="id">
           <EventDetailItem
             :id="id"
             :button="false"
@@ -86,11 +87,11 @@ const handleClear = () => {
           </EventDetailItem>
         </AOption>
       </AOptgroup>
-      <AOptgroup :label="`事件描述中包含 “${computedModelValue}” 的事件`">
-        <AOption
-          v-for="{ id } of searchContent"
-          :key="id"
-        >
+      <AOptgroup
+        v-if="searchContent?.length ?? 0 > 0"
+        :label="`事件描述中包含 “${computedModelValue}” 的事件`"
+      >
+        <AOption v-for="{ id } of searchContent" :key="id">
           <EventDetailItem
             :id="id"
             :button="false"

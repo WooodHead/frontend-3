@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div row p-2 border="t border-2" min-h-20px>
+  <div row px-2 py-1 border="t border-2" h-25px>
     <div grow row justify-start>
       <slot name="left"></slot>
     </div>

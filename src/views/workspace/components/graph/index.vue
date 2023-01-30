@@ -14,7 +14,7 @@ interface GraphProps {
 
 const { status } = defineProps<GraphProps>()
 
-const store = registerStore(`${status.position}`)
+const store = registerStore(`${status.id}_${status.position ?? ''}`)
 
 watch(() => status, status => {
   store.status = status

@@ -584,11 +584,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/event/{id}/todo
      */
     updateTodo: (id: number, data: UpdateTodoDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventTodoEntity, any>({
         path: `/event/${id}/todo`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -615,9 +616,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/event/todo/{id}
      */
     removeTodo: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<EventTodoEntity, any>({
         path: `/event/todo/${id}`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
   };

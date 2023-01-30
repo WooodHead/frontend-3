@@ -1,9 +1,16 @@
 <script setup lang="ts">
-const { checked = false } = defineProps<{
+import { Motion, Presence } from '@motionone/vue'
+import { fadeInOut } from '@/utils/animation'
+
+const { id, checked = false, deleteLoading = false } = defineProps<{
+  id: number
+  title: string
   checked?: boolean
+  deleteLoading?: boolean
 }>()
 const emit = defineEmits<{
-  (e: 'click'): void
+  (e: 'click', id: number): void
+  (e: 'delete', id: number): void
 }>()
 
 const target = ref<HTMLDivElement | null>(null)
@@ -12,12 +19,43 @@ const hover = useElementHover(target)
 
 <template>
   <div
-    border="~ border-2 hover:primary-4"
-    w-full h-48px rounded-sm shadow-none
-    p-2
-    :filter="checked ? 'grayscale' : 'none'"
+    ref="target"
+    relative
     center-x
+    transition-colors
+    border="~ border-2 hover:primary-4"
+    hover:text-primary-4
+    w-full h-48px
+    :filter="checked ? 'grayscale' : 'none'"
+    p-1 mb-1 cursor-pointer
+    rounded-sm shadow-none
+    @click="$emit('click', id)"
   >
-    <div rounded-full :border="`~ ${hover ? 'primary-4' : 'border-2'}`" p-1></div>
+    <div h-full w-20per center>
+      <div :class="checked ? `i-radix-icons-check-circled` : `i-radix-icons-circle`"></div>
+    </div>
+    <div grow h-full center-x p-1 ellipsis>
+      {{ title }}
+    </div>
+    <Presence>
+      <Motion
+        v-if="hover"
+        v-bind="fadeInOut"
+        center
+        absolute right-0
+        w-50px h-full
+        bg-bg-1
+      >
+        <AButton
+          :loading="deleteLoading"
+          status="danger"
+          @click.stop="$emit('delete', id)"
+        >
+          <template #icon>
+            <div i-radix-icons-trash></div>
+          </template>
+        </AButton>
+      </Motion>
+    </Presence>
   </div>
 </template>

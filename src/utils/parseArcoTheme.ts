@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
 import css from 'css'
 
 const parseColorVariables = (rule: css.Rule, init: Record<string, any> = {}) => {
@@ -72,7 +72,11 @@ const combine = (vars: Record<string, any>, theme: Record<string, any>) => {
   return result
 }
 
-export const parseArcoTheme = (filePath: string) => {
+export const parseArcoTheme = (filePath: string, savePath?: string) => {
+  if (savePath && existsSync(savePath)) {
+    return JSON.parse(readFileSync(savePath).toString())
+  }
+
   const rawCSS = readFileSync(filePath).toString()
 
   const { stylesheet } = css.parse(rawCSS)
@@ -89,7 +93,7 @@ export const parseArcoTheme = (filePath: string) => {
   const lightColors = parseColorVariables(lightColorRule)
   const darkColors = parseColorVariables(darkColorRule)
 
-  return {
+  const result = {
     light: {
       colors: { ...combine(lightColors, lightTheme) },
     },
@@ -97,6 +101,12 @@ export const parseArcoTheme = (filePath: string) => {
       colors: { ...combine(darkColors, darkTheme) },
     },
   }
+
+  if (savePath) {
+    writeFileSync(savePath, JSON.stringify(result))
+  }
+
+  return result
 }
 
 export default parseArcoTheme

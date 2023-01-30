@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type { Editor } from '@tiptap/vue-3'
-import { BubbleMenu } from '@tiptap/vue-3'
+import { BubbleMenu, Editor } from '@tiptap/vue-3'
+import { useStore } from '../store'
 
-const { editor } = defineProps<{
-  editor?: Editor
-}>()
-
+const store = useStore()
+const { editor } = $(storeToRefs(store))
 // TODO 完成浮动菜单
 </script>
 
@@ -13,7 +11,7 @@ const { editor } = defineProps<{
   <BubbleMenu
     v-if="editor"
     :tippy-options="{ duration: 100 }"
-    :editor="editor"
+    :editor="(editor as Editor)"
   >
     <div card row border="~ border-2">
       <ATag rounded-r-0 p-4 checkable color="blue" bg-bg-2>

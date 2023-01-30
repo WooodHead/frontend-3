@@ -1,4 +1,5 @@
 import type { ComponentStatus } from '../type'
+import { editor } from './tiptap'
 import createStore from '@/utils/createStore'
 import emitter from '@/utils/emitter'
 
@@ -8,6 +9,7 @@ export const { registerStore, useStore } = createStore(
     state: () => ({
       status: { id: 'default' } as (ComponentStatus | undefined),
       eventId: undefined as (number | undefined),
+      editor,
     }),
   },
   store => {

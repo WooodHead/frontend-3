@@ -17,7 +17,7 @@ interface GanttProps {
 }
 const { status, data } = defineProps<GanttProps>()
 
-const store = registerStore(`${status.position}`)
+const store = registerStore(`${status.id}_${status.position ?? ''}`)
 const { visibleUnit } = $(storeToRefs(store))
 
 watch(() => status, status => {
@@ -62,6 +62,6 @@ watch(
         <Tools />
       </div>
     </div>
-    <TimeBar v-if="store.fullMode" :id="status.id" />
+    <TimeBar v-if="store.fullMode" :id="`${status.id}_${status.position ?? ''}`" />
   </div>
 </template>

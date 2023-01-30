@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Info from './info.vue'
+import Info from './info/index.vue'
 import Todo from './todo/index.vue'
 import Relation from './relation.vue'
 
@@ -9,8 +9,7 @@ const active = ref('info')
 <template>
   <AResizeBox
     :directions="['right']"
-    column
-    h-full min-w-30per max-w-50per
+    nim-column h-full min-w-20per
     :style="{ width: '40%' }"
   >
     <template #resize-trigger>
@@ -21,10 +20,10 @@ const active = ref('info')
       <ATabPane key="todo" title="待办" />
       <ATabPane key="relation" title="关联" />
     </ATabs>
-    <div grow h-0 overflow-y-auto p-2 space-y-2>
-      <Info v-if="active === 'info'" />
-      <Todo v-else-if="active === 'todo'" />
-      <Relation v-else-if="active === 'relation'" />
+    <div grow h-0 overflow-y-auto p-2>
+      <Info v-show="active === 'info'" />
+      <Todo v-show="active === 'todo'" />
+      <Relation v-show="active === 'relation'" />
     </div>
   </AResizeBox>
 </template>

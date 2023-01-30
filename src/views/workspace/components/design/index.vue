@@ -10,7 +10,7 @@ interface CharacterProps {
 
 const { status } = defineProps<CharacterProps>()
 
-const store = registerStore(`${status.position}`)
+const store = registerStore(`${status.id}_${status.position ?? ''}`)
 
 watch(() => status, status => {
   store.status = status
@@ -18,23 +18,17 @@ watch(() => status, status => {
 </script>
 
 <template>
-  <div
-    card
-    column overflow-hidden
-  >
+  <div card column overflow-hidden>
     <ComponentHeader>
-      <template #left>
-        {{ }}
-      </template>
       <template #middle>
-        <ARadioGroup default-value="1" row type="button">
-          <ARadio value="1" grow center>
+        <ARadioGroup default-value="character" row type="button">
+          <ARadio value="character" grow center>
             角色
           </ARadio>
-          <ARadio value="2" grow center>
+          <ARadio value="scene" grow center>
             场景
           </ARadio>
-          <ARadio value="3" grow center>
+          <ARadio value="worldview" grow center>
             世界观
           </ARadio>
         </ARadioGroup>

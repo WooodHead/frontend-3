@@ -34,6 +34,7 @@ const validate = async (): Promise<CreateEventDto> => {
     type: 'ATOM',
   }
 }
+
 defineExpose({ validate })
 </script>
 

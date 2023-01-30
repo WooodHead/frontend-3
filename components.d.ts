@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
+    CharaSelector: typeof import('./src/components/chara-selector/index.vue')['default']
     CollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']

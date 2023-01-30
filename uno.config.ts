@@ -5,7 +5,10 @@ import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
-const parsed = parseArcoTheme(path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'))!
+const parsed = parseArcoTheme(
+  path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'),
+  path.join(__dirname, 'src/utils/arco-theme.json'),
+)!
 
 export default defineConfig<Theme>({
   theme: {

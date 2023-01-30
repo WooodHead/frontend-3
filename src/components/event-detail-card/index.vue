@@ -51,7 +51,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
             >
           </div>
         </template>
-        <ACardMeta :title="`${data?.serial}: ${data?.name}`" />
+        <ACardMeta :title="`${data?.serial}. ${data?.name}`" />
         <div text-xs text-gray-6 mt-2>
           创建于 {{ `${data?.createdAt.toLocaleDateString()} ${data?.createdAt.toLocaleTimeString()}` }}
           <br>
@@ -70,11 +70,13 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
         {{ data?.description }}
         <ADivider />
         <h4>父事件</h4>
-        <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
+        <div border="~ border-2" max-h-200px overflow-y-auto rounded>
+          <EventDetailItem :id="id" event-select />
           <EventDetailItem :id="id" event-select />
         </div>
         <h4>子事件</h4>
-        <div border="~ border-2" gap-0 max-h-200px overflow-y-auto>
+        <div border="~ border-2" max-h-200px overflow-y-auto rounded>
+          <EventDetailItem :id="id" event-select />
           <EventDetailItem :id="id" event-select />
         </div>
       </ACard>

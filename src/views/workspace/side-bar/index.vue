@@ -26,11 +26,10 @@ const handleClickOutside = () => { menuExpand = false }
   <div v-click-outside="handleClickOutside" h-full>
     <Menu />
     <div
-      :class="!menuExpand && `shadow-lg`"
+      :shadow="menuExpand ? 'none' : 'lg'"
       column shrink-0 relative
       w-16 h-full
-      bg-gray-2
-      z-50
+      bg-gray-2 z-50
     >
       <AButton
         h-40px rounded-0

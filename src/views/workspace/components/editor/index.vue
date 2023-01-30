@@ -2,7 +2,6 @@
 import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
-import EditorStatus from './components/editor-status.vue'
 import { registerStore } from './store'
 
 interface EditorProps {
@@ -11,7 +10,8 @@ interface EditorProps {
 
 const { status } = defineProps<EditorProps>()
 
-const store = registerStore(`${status.position}`)
+const store = registerStore(`${status.id}_${status.position ?? ''}`)
+const { editor, eventId } = $(storeToRefs(store))
 
 watch(
   () => status,
@@ -39,12 +39,14 @@ const searchText = $ref('')
       </template>
     </ComponentHeader>
     <div row h-0 grow>
-      <SideTable />
+      <SideTable v-if="eventId !== undefined" />
       <Content />
     </div>
     <ComponentFooter>
       <template #right>
-        <EditorStatus />
+        <div v-if="eventId" text="xs text-3">
+          {{ editor.storage.characterCount.characters() }} 字
+        </div>
       </template>
     </ComponentFooter>
   </div>

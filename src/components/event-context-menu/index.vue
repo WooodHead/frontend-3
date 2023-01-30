@@ -31,7 +31,7 @@ const handleDeleteOk = async () => {
 </script>
 
 <template>
-  <ATrigger trigger="contextMenu" align-point click-outside-to-close>
+  <ATrigger trigger="contextMenu" align-point>
     <slot></slot>
     <template #content>
       <div absolute card-border w-100px h-auto>

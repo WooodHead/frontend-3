@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import './style.css'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
 import type { EditorEvents } from '@tiptap/vue-3'
-import { EditorContent, useEditor } from '@tiptap/vue-3'
+import { Editor, EditorContent } from '@tiptap/vue-3'
 import { useQuery } from '@tanstack/vue-query'
 import type { AxiosError } from 'axios'
 import { Message } from '@arco-design/web-vue'
@@ -12,35 +10,31 @@ import BubbleMenu from './bubble-menu.vue'
 import api from '@/api/api'
 
 const store = useStore()
+const { editor } = $(storeToRefs(store))
 
-const editor = $(useEditor({
-  extensions: [
-    StarterKit,
-    Placeholder.configure({
-      placeholder: '在这里写下事件梗概……',
-    }),
-  ],
-  editorProps: {
-    attributes: {
-      class: 'outline-none',
-    },
-  },
-  // TODO 当前的实时保存策略是消抖保存，考虑更换其他更好的策略
-  onUpdate: useDebounceFn(({ editor }: EditorEvents['update']) => {
-    if (!store.eventId) { return }
-    api.event.updateContent(store.eventId, {
-      content: editor.getHTML(),
-    }).catch((e: AxiosError) => {
-      Message.error(`保存失败：${e.message}`)
-    })
-  }, 1000),
-}))
+// 自上次保存后是否有修改，无则无需重复保存
+let saved = $ref(true)
+editor.on('update', () => { saved = false })
+const handleEditorSave = (editor: Editor) => {
+  if (!store.eventId || saved) { return }
+  api.event.updateContent(store.eventId, {
+    content: editor.getHTML(),
+  }).then(() => {
+    saved = true
+  }).catch((e: AxiosError) => {
+    Message.error(`保存失败：${e.message}`)
+  })
+}
+// 输入后1秒或失去焦点时保存
+editor.on('update', useDebounceFn(({ editor }: EditorEvents['update']) => handleEditorSave(editor as Editor), 1000))
+editor.on('blur', ({ editor }: EditorEvents['blur']) => handleEditorSave(editor as Editor))
+
 const { isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => store.eventId !== undefined),
   queryKey: computed(() => ['event', store.eventId, 'content']),
   queryFn: () => api.event.getContent(store.eventId!),
   onSuccess: ({ content }) => {
-    editor?.commands.setContent(content)
+    editor.commands.setContent(content)
   },
   onError: (e: AxiosError) => {
     Message.error(`获取内容失败：${e.message}`)
@@ -59,8 +53,8 @@ const { isSuccess, isLoading, isError } = useQuery({
         >
       </div>
       <div column p-4>
-        <BubbleMenu :editor="editor" />
-        <EditorContent grow prose :editor="editor" />
+        <BubbleMenu />
+        <EditorContent grow prose :editor="(editor as Editor)" />
       </div>
     </div>
     <Status
