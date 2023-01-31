@@ -52,6 +52,7 @@ specifiers:
   prosemirror-keymap: ^1.2.0
   prosemirror-schema-list: ^1.2.2
   react-dnd-html5-backend: ^16.0.1
+  tippy.js: ^6.3.7
   ts-node: ^10.9.1
   typescript: ^4.9.4
   unocss: ^0.46.5
@@ -100,6 +101,7 @@ dependencies:
   prosemirror-keymap: 1.2.0
   prosemirror-schema-list: 1.2.2
   react-dnd-html5-backend: 16.0.1
+  tippy.js: 6.3.7
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
   vue3-dnd: 2.0.2_vue@3.2.45

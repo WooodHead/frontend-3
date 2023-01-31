@@ -5,3 +5,12 @@
 # 异步组件 v-for
 
 意外的将一个列表渲染项组件变为了异步组件，发现在加载时将不会按照列表顺序渲染，而是哪个列表项先渲染完就排在前面。
+
+# tanstack query默认的stale time为0
+
+因此在不更改全局stale time的前提下是不会应用缓存的，每一次都会重新请求，只有当stale time大于0时才可能真正获得缓存带来的好处。
+
+这一点在文档的第一页中就有写，然而却一直没有注意过，这告诉我们看文档的重要性。
+# useQuery对在setQueryData后不会触发onSuccess
+
+因此如果使用了setQueryData来更新缓存，则对数据的处理步骤不应该放在onSuccess里，而应该直接监听data。

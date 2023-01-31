@@ -14,12 +14,13 @@ const WSStore = useWSStore()
 const { layout } = $(storeToRefs(WSStore))
 
 const { suspense } = useQuery({
+  staleTime: 0,
   queryKey: ['project', 'workspace', 'layout'],
   queryFn: () => api.project.getWorkspaceInfo(),
-  select: ({ layout }) => layout,
+  select: ({ layout }) => layout as ILayout,
   onSuccess: config => {
     WSStore.layout = config
-      ? Layout.deserialize(config as ILayout)
+      ? Layout.deserialize(config)
       : Layout.default()
   },
   onError: ({ response }: AxiosError) => {

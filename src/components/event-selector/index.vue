@@ -21,14 +21,14 @@ const emit = defineEmits<{
 
 const { data: searchContent, isError: contentError } = useQuery({
   enabled: computed(() => computedModelValue.length > 0),
+  cacheTime: 0, // 用户搜索字符串没必要缓存
   queryKey: computed(() => ['event', 'search', 'content', computedModelValue]),
-  cacheTime: 0,
   queryFn: () => api.event.searchContent({ text: computedModelValue }),
 })
 const { data: searchName, isError: nameError } = useQuery({
   enabled: computed(() => computedModelValue.length > 0),
-  queryKey: computed(() => ['event', 'search', 'name', computedModelValue]),
   cacheTime: 0,
+  queryKey: computed(() => ['event', 'search', 'name', computedModelValue]),
   queryFn: () => api.event.searchEventName({ text: computedModelValue }),
 })
 

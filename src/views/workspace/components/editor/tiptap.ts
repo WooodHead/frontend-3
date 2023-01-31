@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
 import Mention from '@tiptap/extension-mention'
+import suggestion from './components/mention'
 
 export const editor = new Editor({
   extensions: [
@@ -17,6 +18,7 @@ export const editor = new Editor({
     CharacterCount,
     Mention.configure({
       renderLabel: () => '114514',
+      suggestion,
     }),
   ],
   editorProps: {

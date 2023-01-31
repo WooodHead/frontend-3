@@ -28,6 +28,7 @@ if (data !== undefined) { store.initWithData(data) }
 
 const { isSuccess, isLoading, isError, suspense } = $(useQuery({
   enabled: computed(() => data === undefined),
+  staleTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ origin }) => origin,
@@ -42,14 +43,14 @@ const { isSuccess, isLoading, isError, suspense } = $(useQuery({
 
 await suspense()
 
-// TODO 考虑修改为页面关闭和组件卸载时触发
-watch(
+watchDebounced(
   () => visibleUnit,
   visibleUnit => {
-    if (visibleUnit) {
-      api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
-    }
-  })
+    if (!visibleUnit) { return }
+    api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
+  },
+  { debounce: 100 },
+)
 </script>
 
 <template>

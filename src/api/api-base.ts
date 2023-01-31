@@ -171,20 +171,26 @@ export interface UpdateSettingsDto {
 }
 
 export interface CreateCharacterDto {
-  range: string;
+  range?: string;
   name: string;
   alias: string[];
-  description: string;
-  /** @format date-time */
-  deleted: string | null;
-  unit: number;
-  /** @format date-time */
-  start: string;
-  /** @format date-time */
-  end: string;
+  description: string | null;
 }
 
-export type UpdateCharacterDto = object;
+export interface CharacterEntity {
+  range?: string;
+  id: number;
+  name: string;
+  alias: string[];
+  description: string | null;
+  /** @format date-time */
+  deleted: string | null;
+  unit: number | null;
+  /** @format date-time */
+  start: string | null;
+  /** @format date-time */
+  end: string | null;
+}
 
 export type CreateSceneDto = object;
 
@@ -484,7 +490,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/serial
      */
     getEventBySerial: (serial: number, params: RequestParams = {}) =>
-      this.request<UpdateCharacterDto, any>({
+      this.request<CreateSceneDto, any>({
         path: `/event/serial`,
         method: "GET",
         format: "json",
@@ -823,7 +829,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/character
      */
     create: (data: CreateCharacterDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+      this.request<CharacterEntity, any>({
         path: `/character`,
         method: "POST",
         body: data,
@@ -835,25 +841,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name FindAll
-     * @request GET:/character
-     */
-    findAll: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/character`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name FindOne
+     * @name GetCharacter
      * @request GET:/character/{id}
      */
-    findOne: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    getCharacter: (id: number, params: RequestParams = {}) =>
+      this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "GET",
         format: "json",
@@ -863,13 +855,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Update
-     * @request PATCH:/character/{id}
+     * @name UpdateCharacter
+     * @request PUT:/character/{id}
      */
-    update: (id: string, data: UpdateCharacterDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+    updateCharacter: (id: number, data: CreateCharacterDto, params: RequestParams = {}) =>
+      this.request<CharacterEntity, any>({
         path: `/character/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -879,11 +871,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Remove
+     * @name RemoveCharacter
      * @request DELETE:/character/{id}
      */
-    remove: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    removeCharacter: (id: number, params: RequestParams = {}) =>
+      this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "DELETE",
         format: "json",
