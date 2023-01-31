@@ -46,10 +46,15 @@ const handleClickOutside = () => { menuExpand = false }
         <Handler id="graph" name="关系图" :icon="GraphIcon" :dark-icon="GraphDarkIcon" />
         <Handler id="design" name="设定" :icon="DesignIcon" :dark-icon="DesignDarkIcon" />
       </div>
-      <div center h-10per w-full>
+      <div center-y space-y-2 mb-4 w-full>
         <AButton
           shape="circle"
-          type="secondary"
+          @click="router.push({ name: 'ws-user' })"
+        >
+          <div w-30px h-30px i-radix-icons-magnifying-glass></div>
+        </AButton>
+        <AButton
+          shape="circle"
           @click="router.push({ name: 'ws-user' })"
         >
           <div w-30px h-30px i-radix-icons-avatar></div>

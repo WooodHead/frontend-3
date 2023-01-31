@@ -18,15 +18,15 @@ watch(
   status => { store.status = status },
   { deep: true },
 )
-
-const searchText = $ref('')
 </script>
 
 <template>
   <div card column overflow-hidden>
     <ComponentHeader>
       <template #middle>
-        <EventSelector v-model="searchText" />
+        <div row gap-2>
+          <EventSelector event-select />
+        </div>
       </template>
       <template #right>
         <div row space-x-2>

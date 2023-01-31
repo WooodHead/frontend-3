@@ -26,12 +26,10 @@ const { data } = $(useQuery({
 const range = $computed(() => data && UnitIDRange.deserialize(data.range))
 
 const handleClick = async () => {
-  if (data) {
-    emit('click', data)
-
-    if (eventSelect) {
-      emitter.emit('event-select', { event: data })
-    }
+  if (!data) { return }
+  emit('click', data)
+  if (eventSelect) {
+    emitter.emit('event-select', { event: data })
   }
 }
 </script>

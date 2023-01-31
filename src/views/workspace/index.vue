@@ -24,5 +24,11 @@ onUnmounted(() => {
       </template>
     </Suspense>
   </div>
+  <AModal simple :footer="false">
+    <AInputSearch search-button />
+    <ACard>
+      1
+    </ACard>
+  </AModal>
   <RouterView />
 </template>

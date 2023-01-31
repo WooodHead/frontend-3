@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AtomEventForm: typeof import('./src/components/create-event-modal/atom-event-form.vue')['default']
     CharaSelector: typeof import('./src/components/chara-selector/index.vue')['default']
+    CharaSelectorButton: typeof import('./src/components/chara-selector/chara-selector-button.vue')['default']
     CollectionEventForm: typeof import('./src/components/create-event-modal/collection-event-form.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
@@ -18,6 +19,7 @@ declare module '@vue/runtime-core' {
     EventDetailCardTrigger: typeof import('./src/components/event-detail-card/event-detail-card-trigger.vue')['default']
     EventDetailItem: typeof import('./src/components/event-detail-item/index.vue')['default']
     EventSelector: typeof import('./src/components/event-selector/index.vue')['default']
+    EventSelectorButton: typeof import('./src/components/event-selector/event-selector-button.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Status: typeof import('./src/components/status.vue')['default']
