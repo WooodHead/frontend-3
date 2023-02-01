@@ -6,7 +6,7 @@ import { useStore } from '../store'
 import EventItems from './event-items/index.vue'
 import HistoryModal from './history-modal/index.vue'
 import api from '@/api/api'
-import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.vue'
+import type { UnitTimePickerValue } from '@/components/unit-time-picker.vue'
 
 const store = useStore()
 const { lock, unit, visibleUnit } = $(storeToRefs(store))

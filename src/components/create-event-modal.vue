@@ -2,9 +2,9 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
 import { UnitIDRange } from '@project-chiral/unit-id'
-import { UnitRangePickerValue } from '../pickers/unit-range-picker.vue'
-import AtomEventForm from './atom-event-form.vue'
-import CollectionEventForm from './collection-event-form.vue'
+import { UnitRangePickerValue } from './unit-range-picker.vue'
+import AtomEventForm from './create-event-modal/atom-event-form.vue'
+import CollectionEventForm from './create-event-modal/collection-event-form.vue'
 import type { CreateEventDto, EventEntity } from '@/api/api-base'
 import api from '@/api/api'
 
@@ -81,7 +81,7 @@ const handleBeforeOk = async () => {
       ref="formRef"
       :init="(init as number[])"
     />
-    <ATabs v-else lazy-load destroy-on-hide>
+    <ATabs v-else lazy-load>
       <ATabPane :key="1" title="创建集合事件">
         <CollectionEventForm ref="formRef" />
       </ATabPane>

@@ -66,15 +66,23 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
           </ADescriptionsItem>
         </ADescriptions>
         <ADivider />
-        <h4>事件简介</h4>
+        <h4 text-center>
+          事件简介
+        </h4>
         {{ data?.description }}
         <ADivider />
-        <h4>父事件</h4>
+        <div center-x justify-between>
+          <h4>父事件</h4>
+          <AButton>添加</AButton>
+        </div>
         <div border="~ border-2" max-h-200px overflow-y-auto rounded>
           <EventDetailItem :id="id" event-select />
           <EventDetailItem :id="id" event-select />
         </div>
-        <h4>子事件</h4>
+        <div center-x justify-between>
+          <h4>子事件</h4>
+          <AButton>添加</AButton>
+        </div>
         <div border="~ border-2" max-h-200px overflow-y-auto rounded>
           <EventDetailItem :id="id" event-select />
           <EventDetailItem :id="id" event-select />

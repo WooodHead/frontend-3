@@ -3,17 +3,21 @@ import { defineConfig, presetAttributify, presetIcons, presetTypography, presetU
 import presetRemToPx from '@unocss/preset-rem-to-px'
 import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
+import parseIcons from './src/utils/parseIcons'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
-const parsed = parseArcoTheme(
+const parsedTheme = parseArcoTheme(
   path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'),
   path.join(__dirname, 'src/utils/arco-theme.json'),
 )!
+const parsedIcons = parseIcons(
+  path.join(__dirname, 'src/assets/icons'),
+)
 
 export default defineConfig<Theme>({
   theme: {
     colors: {
-      ...parsed.light.colors,
+      ...parsedTheme.light.colors,
     },
   },
   // 全局important
@@ -75,7 +79,13 @@ export default defineConfig<Theme>({
   ],
   presets: [
     presetUno(),
-    presetIcons(),
+    presetIcons({
+      collections: {
+        custom: {
+          ...parsedIcons,
+        },
+      },
+    }),
     presetRemToPx(),
     presetTypography(),
     // presetScrollbar({}), // scrollbar相关的属性兼容性有点差
@@ -87,7 +97,7 @@ export default defineConfig<Theme>({
       theme: {
         dark: {
           colors: {
-            ...parsed.dark.colors,
+            ...parsedTheme.dark.colors,
           },
         },
       },

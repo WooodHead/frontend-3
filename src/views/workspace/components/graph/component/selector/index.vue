@@ -11,7 +11,7 @@ const text = $ref('')
     />
     <AButton title="根据角色查找" shrink-0>
       <template #icon>
-        <div i-radix-icons-avatar text-xl></div>
+        <div i-radix-icons-person text-xl></div>
       </template>
     </AButton>
   </div>

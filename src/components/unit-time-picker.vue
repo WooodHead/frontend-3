@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormItem } from '@arco-design/web-vue'
 import type { IUnit } from '@project-chiral/unit-id'
-import { usePickerConfig } from './usePickerConfig'
+import { usePickerConfig } from './unit-time-picker/usePickerConfig'
 
 export interface UnitTimePickerValue {
   unit: IUnit
@@ -47,6 +47,7 @@ const common = $computed(() => ({
   'time-picker-props': timePickerProps,
   'class': 'rounded-t-0',
   'allow-clear': false,
+  readonly,
 }))
 </script>
 

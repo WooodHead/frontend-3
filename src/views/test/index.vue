@@ -3,7 +3,7 @@ import type { Edge, Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { SimulationLinkDatum, SimulationNodeDatum } from 'd3-force'
 import { forceCenter, forceLink, forceManyBody, forceSimulation } from 'd3-force'
-import type { UnitTimePickerValue } from '@/components/pickers/unit-time-picker.vue'
+import type { UnitTimePickerValue } from '@/components/unit-time-picker.vue'
 
 const { onNodeDrag } = $(useVueFlow())
 

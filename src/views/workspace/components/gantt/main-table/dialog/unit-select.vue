@@ -3,7 +3,7 @@ import type { IUnit } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
 import Basic from './basic.vue'
 
-import type { UnitRangePickerValue } from '@/components/pickers/unit-range-picker.vue'
+import type { UnitRangePickerValue } from '@/components/unit-range-picker.vue'
 
 const store = useStore()
 const { subUnit, selectedRange } = $(storeToRefs(store))

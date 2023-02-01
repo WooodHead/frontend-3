@@ -41,8 +41,6 @@ const handleClear = () => {
   emit('update:input-value', '')
   emit('select', undefined)
 }
-
-// TODO multiple
 </script>
 
 <template>

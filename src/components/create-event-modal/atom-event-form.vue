@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Unit, UnitIDRange } from '@project-chiral/unit-id'
-import type { UnitRangePickerValue } from '../pickers/unit-range-picker.vue'
+import type { UnitRangePickerValue } from '../unit-range-picker.vue'
 import type { FormRef } from '@/utils/types'
 import type { CreateEventDto } from '@/api/api-base'
 

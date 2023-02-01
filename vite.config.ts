@@ -37,14 +37,10 @@ export default defineConfig({
         '@vueuse/core',
         'pinia',
       ],
-      resolvers: [
-        // ArcoResolver(),
-      ],
+      resolvers: [],
     }),
     Components({
-      exclude: [
-        /basic\.vue$/,
-      ],
+      deep: false,
     }),
   ],
 })
