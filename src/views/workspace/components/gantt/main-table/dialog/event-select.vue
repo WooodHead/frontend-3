@@ -19,10 +19,11 @@ const init = $computed(() => Array.from(selectedEvents))
     @ok="visible = true"
   >
     <div border="~ border-2" gap-0 w-full max-h-400px overflow-y-auto>
-      <EventDetailItem
+      <EventItem
         v-for="id in selectedEvents"
         :id="id"
         :key="id"
+        button
         event-select
       />
     </div>

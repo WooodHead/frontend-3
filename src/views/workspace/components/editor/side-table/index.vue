@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Info from './info/index.vue'
 import Todo from './todo/index.vue'
-import Relation from './relation.vue'
+import Relation from './relation/index.vue'
 
 const active = ref('info')
 </script>

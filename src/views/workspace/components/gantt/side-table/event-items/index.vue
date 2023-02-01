@@ -17,10 +17,11 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     @scroll="handleScroll"
   >
     <!-- TODO 列表动画 -->
-    <EventDetailItem
+    <EventItem
       v-for="id in ids"
       :id="id"
       :key="id"
+      button
       event-select
     />
   </div>

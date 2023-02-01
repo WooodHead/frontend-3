@@ -6,7 +6,7 @@ import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 
-const { id, height = 40, button = true, eventSelect = false } = defineProps<{
+const { id, height = 40, button = false, eventSelect = false } = defineProps<{
   id: number
   data?: EventEntity
   height?: number
@@ -15,7 +15,8 @@ const { id, height = 40, button = true, eventSelect = false } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'click', event: EventEntity): void | Promise<void>
+  (e: 'click', event: EventEntity): void
+  (e: 'hover', event: EventEntity): void
 }>()
 
 const { data } = $(useQuery({
@@ -24,6 +25,16 @@ const { data } = $(useQuery({
 }))
 
 const range = $computed(() => data && UnitIDRange.deserialize(data.range))
+
+const target = ref<HTMLDivElement | null>(null)
+const hover = useElementHover(target)
+watch(
+  hover,
+  hover => {
+    if (!hover || !data) { return }
+    emit('hover', data)
+  },
+)
 
 const handleClick = async () => {
   if (!data) { return }
@@ -35,7 +46,7 @@ const handleClick = async () => {
 </script>
 
 <template>
-  <div w-full>
+  <div ref="target" w-full>
     <component
       :is="button ? Button : 'div'"
       :style="{ height: `${height}px` }"

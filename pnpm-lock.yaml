@@ -5,6 +5,7 @@ specifiers:
   '@arco-design/web-vue': ^2.41.1
   '@arco-plugins/vite-vue': ^1.4.2
   '@arco-themes/vue-project-chiral': ^0.0.2
+  '@iconify-json/mdi': ^1.1.45
   '@iconify-json/radix-icons': ^1.1.8
   '@lukemorales/query-key-factory': ^1.0.3
   '@motionone/vue': ^10.15.3
@@ -72,6 +73,8 @@ specifiers:
 dependencies:
   '@arco-design/web-vue': 2.41.1_vue@3.2.45
   '@arco-themes/vue-project-chiral': 0.0.2_fnpc5w6lffop6l266qwpj3liim
+  '@iconify-json/mdi': 1.1.45
+  '@iconify-json/radix-icons': 1.1.8
   '@lukemorales/query-key-factory': 1.0.3
   '@motionone/vue': 10.15.3
   '@project-chiral/unit-id': 0.1.1
@@ -110,7 +113,6 @@ dependencies:
 devDependencies:
   '@antfu/eslint-config': 0.31.1_iukboom6ndih5an6iafl45j2fe
   '@arco-plugins/vite-vue': 1.4.2
-  '@iconify-json/radix-icons': 1.1.8
   '@types/css': 0.0.33
   '@types/node': 18.11.18
   '@typescript-eslint/parser': 5.48.0_iukboom6ndih5an6iafl45j2fe
@@ -483,15 +485,20 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
+  /@iconify-json/mdi/1.1.45:
+    resolution: {integrity: sha512-2f4n7qEErLi7jIabpDuaqZ/1FcAN62z0pUY9BvCxOyU6IzqCF1N3trHEF10aHdUOyFZF9YVb2DCigkZrcvnaLw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
   /@iconify-json/radix-icons/1.1.8:
     resolution: {integrity: sha512-wHzc+lu4LpVhWTDhLqS5wyCoyK3/f/wOork007hRe1tjIQA5grmUj5Q5KGTDieGgLl+3Aj/gzHQGcSZJwLnUjw==}
     dependencies:
       '@iconify/types': 2.0.0
-    dev: true
+    dev: false
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: true
 
   /@iconify/utils/2.0.9:
     resolution: {integrity: sha512-ropNqaeamoxZvXxvaTJXrI0MrqdWdDVIs/mW7/sEQbNi0aXYUGL2iuLs1da3QR163gyG63kiyTsqw2oQYamw3Q==}

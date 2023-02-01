@@ -10,7 +10,7 @@ interface EditorProps {
 
 const { status } = defineProps<EditorProps>()
 
-const store = registerStore(`${status.id}_${status.position ?? ''}`)
+const store = registerStore(status.positionId)
 const { editor, eventId } = $(storeToRefs(store))
 
 watch(

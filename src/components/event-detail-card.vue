@@ -76,16 +76,16 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
           <AButton>添加</AButton>
         </div>
         <div border="~ border-2" max-h-200px overflow-y-auto rounded>
-          <EventDetailItem :id="id" event-select />
-          <EventDetailItem :id="id" event-select />
+          <EventItem :id="id" button event-select />
+          <EventItem :id="id" button event-select />
         </div>
         <div center-x justify-between>
           <h4>子事件</h4>
           <AButton>添加</AButton>
         </div>
         <div border="~ border-2" max-h-200px overflow-y-auto rounded>
-          <EventDetailItem :id="id" event-select />
-          <EventDetailItem :id="id" event-select />
+          <EventItem :id="id" button event-select />
+          <EventItem :id="id" button event-select />
         </div>
       </ACard>
     </Motion>

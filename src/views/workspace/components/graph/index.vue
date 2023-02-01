@@ -14,11 +14,12 @@ interface GraphProps {
 
 const { status } = defineProps<GraphProps>()
 
-const store = registerStore(`${status.id}_${status.position ?? ''}`)
-
-watch(() => status, status => {
-  store.status = status
-}, { deep: true })
+const store = registerStore(status.positionId)
+watch(
+  () => status,
+  status => { store.status = status },
+  { deep: true },
+)
 
 let nodes = $ref<Node[]>([])
 const edges = $ref<Edge[]>([])
@@ -76,6 +77,6 @@ const showMiniMap = $computed(() => ![IPositionState.Corner, IPositionState.Vert
         <MiniMap v-if="showMiniMap" />
       </VueFlow>
     </div>
-    <ToolBar />
+    <ToolBar :id="status.positionId" />
   </div>
 </template>

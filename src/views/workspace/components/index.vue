@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IPosition, IPositionState } from '../layout'
+import { ComponentStatus } from './type'
 // import Gantt from './gantt/index.vue'
 // import Editor from './editor/index.vue'
 // import Graph from './graph/index.vue'
@@ -16,6 +17,7 @@ const status = defineProps<{
   state?: IPositionState // 组件所处的位置（角落，垂直，水平，全屏），用于动态调节组件显示的内容
 }>()
 const position = toRef(status, 'position')
+const componentStatus = $computed(() => new ComponentStatus(status.id, status.position, status.state))
 </script>
 
 <template>
@@ -27,9 +29,9 @@ const position = toRef(status, 'position')
       row-end-${position?.[3]}
     `"
   >
-    <Gantt v-if="id === 'gantt'" :status="status" />
-    <Editor v-else-if="id === 'editor'" :status="status" />
-    <Graph v-else-if="id === 'graph'" :status="status" />
-    <Design v-else-if="id === 'design'" :status="status" />
+    <Gantt v-if="id === 'gantt'" :status="componentStatus" />
+    <Editor v-else-if="id === 'editor'" :status="componentStatus" />
+    <Graph v-else-if="id === 'graph'" :status="componentStatus" />
+    <Design v-else-if="id === 'design'" :status="componentStatus" />
   </div>
 </template>

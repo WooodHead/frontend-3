@@ -41,8 +41,7 @@ const historyVisible = $ref(false)
 <template>
   <AResizeBox
     :directions="['right']"
-    column
-    h-full min-w-20per max-w-50per
+    column h-full
     :style="{ width: '30%' }"
     rounded-l-lg shadow-lg
     z-10 bg-bg-2

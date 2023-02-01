@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CharaItem: typeof import('./src/components/chara-item.vue')['default']
     CharaSelector: typeof import('./src/components/chara-selector.vue')['default']
     CharaSelectorButton: typeof import('./src/components/chara-selector-button.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
@@ -15,11 +16,13 @@ declare module '@vue/runtime-core' {
     EventContextMenu: typeof import('./src/components/event-context-menu.vue')['default']
     EventDetailCard: typeof import('./src/components/event-detail-card.vue')['default']
     EventDetailCardTrigger: typeof import('./src/components/event-detail-card-trigger.vue')['default']
-    EventDetailItem: typeof import('./src/components/event-detail-item.vue')['default']
+    EventDetailItem: typeof import('./src/components/event-item.vue')['default']
+    EventItem: typeof import('./src/components/event-item.vue')['default']
     EventSelector: typeof import('./src/components/event-selector.vue')['default']
     EventSelectorButton: typeof import('./src/components/event-selector-button.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SceneItem: typeof import('./src/components/scene-item.vue')['default']
     Status: typeof import('./src/components/status.vue')['default']
     UnitRangePicker: typeof import('./src/components/unit-range-picker.vue')['default']
     UnitTimePicker: typeof import('./src/components/unit-time-picker.vue')['default']
