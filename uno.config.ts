@@ -60,6 +60,8 @@ export default defineConfig<Theme>({
     {
       ellipsis: 'overflow-hidden text-ellipsis whitespace-nowrap',
     },
+    [/^square-(.+)$/, ([, p]) => `w-${p} h-${p}`],
+    [/^circle-(.+)$/, ([, p]) => `w-${p} h-${p} rounded-full`],
     // 取消默认!important
     [/^nim-(.+)$/, ([, p]) => p],
   ],

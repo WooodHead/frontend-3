@@ -43,6 +43,10 @@ module.exports = {
     'vue/no-extra-parens': [
       'off',
     ],
+    // 形如 select:event 这样的事件名称不需要驼峰
+    'vue/custom-event-name-casing': [
+      'off',
+    ],
     'quotes': [
       'error',
       'single',

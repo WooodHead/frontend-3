@@ -60,14 +60,11 @@ const handleClear = () => {
       @clear="handleClear"
       @change="$emit('select', $event)"
     >
-      <template #label="{ data: { value } }">
-        {{ `${value.serial}. ${value.name}` }}
-      </template>
       <AOptgroup
         v-if="searchName?.length ?? 0 > 0"
         :label="`事件名称中包含 “${computedInputValue}” 的事件`"
       >
-        <AOption v-for="event of searchName" :key="event.id" :value="event">
+        <AOption v-for="event of searchName" :key="event.id" :value="event" :label="`${event.serial}. ${event.name}`">
           <EventItem
             :id="event.id"
             :event-select="eventSelect"
@@ -84,7 +81,7 @@ const handleClear = () => {
         v-if="searchContent?.length ?? 0 > 0"
         :label="`事件描述中包含 “${computedInputValue}” 的事件`"
       >
-        <AOption v-for="event of searchContent" :key="event.id" :value="event">
+        <AOption v-for="event of searchContent" :key="event.id" :value="event" :label="`${event.serial}. ${event.name}`">
           <EventItem
             :id="event.id"
             :event-select="eventSelect"

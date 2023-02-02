@@ -192,9 +192,27 @@ export interface CharacterEntity {
   end: string | null;
 }
 
-export type CreateSceneDto = object;
+export interface CreateSceneDto {
+  name: string;
+  description?: string;
+}
 
-export type UpdateSceneDto = object;
+export interface SceneEntity {
+  id: number;
+  name: string;
+  alias: string[];
+  description: string | null;
+  /** @format date-time */
+  deleted: string | null;
+  superId: number | null;
+}
+
+export interface UpdateSceneDto {
+  subSceneIds?: number[];
+  superSceneId?: number;
+  name?: string;
+  description?: string;
+}
 
 export type CreateWorldviewDto = object;
 
@@ -490,7 +508,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/serial
      */
     getEventBySerial: (serial: number, params: RequestParams = {}) =>
-      this.request<CreateSceneDto, any>({
+      this.request<CreateWorldviewDto, any>({
         path: `/event/serial`,
         method: "GET",
         format: "json",
@@ -825,10 +843,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Create
+     * @name CreateCharacter
      * @request POST:/character
      */
-    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
+    createCharacter: (data: CreateCharacterDto, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character`,
         method: "POST",
@@ -881,16 +899,36 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: "json",
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @name SearchCharacterByName
+     * @request GET:/character/search/name
+     */
+    searchCharacterByName: (
+      query: {
+        text: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CharacterEntity[], any>({
+        path: `/character/search/name`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
   };
   scene = {
     /**
      * No description
      *
-     * @name Create
+     * @name CreateScene
      * @request POST:/scene
      */
-    create: (data: CreateSceneDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+    createScene: (data: CreateSceneDto, params: RequestParams = {}) =>
+      this.request<SceneEntity, any>({
         path: `/scene`,
         method: "POST",
         body: data,
@@ -902,25 +940,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name FindAll
-     * @request GET:/scene
-     */
-    findAll: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/scene`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name FindOne
+     * @name GetScene
      * @request GET:/scene/{id}
      */
-    findOne: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    getScene: (id: number, params: RequestParams = {}) =>
+      this.request<SceneEntity, any>({
         path: `/scene/${id}`,
         method: "GET",
         format: "json",
@@ -930,13 +954,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Update
-     * @request PATCH:/scene/{id}
+     * @name UpdateScene
+     * @request PUT:/scene/{id}
      */
-    update: (id: string, data: UpdateSceneDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+    updateScene: (id: number, data: UpdateSceneDto, params: RequestParams = {}) =>
+      this.request<SceneEntity, any>({
         path: `/scene/${id}`,
-        method: "PATCH",
+        method: "PUT",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -946,13 +970,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Remove
+     * @name RemoveScene
      * @request DELETE:/scene/{id}
      */
-    remove: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    removeScene: (id: number, params: RequestParams = {}) =>
+      this.request<SceneEntity, any>({
         path: `/scene/${id}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name SearchSceneByName
+     * @request GET:/scene/search/name
+     */
+    searchSceneByName: (
+      query: {
+        text: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<SceneEntity[], any>({
+        path: `/scene/search/name`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),

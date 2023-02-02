@@ -2,7 +2,5 @@
 </script>
 
 <template>
-  <AButton>
-    1
-  </AButton>
+  1
 </template>

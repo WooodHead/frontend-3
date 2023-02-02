@@ -49,9 +49,9 @@ const handleClickOutside = () => { menuExpand = false }
       <div center-y space-y-2 mb-4 w-full>
         <AButton
           shape="circle"
-          @click="router.push({ name: 'ws-user' })"
+          @click="router.push({ name: 'ws-search' })"
         >
-          <div w-30px h-30px i-radix-icons-magnifying-glass></div>
+          <div square-30px i-radix-icons-magnifying-glass></div>
         </AButton>
         <AButton
           shape="circle"

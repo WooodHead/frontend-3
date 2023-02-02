@@ -9,7 +9,7 @@ import Basic from './basic.vue'
     </Basic>
     <template #content>
       <div card-border p-2 right-2>
-        <EventSelector />
+        <Selector event placeholder="跳转到指定事件" />
       </div>
     </template>
   </ATrigger>

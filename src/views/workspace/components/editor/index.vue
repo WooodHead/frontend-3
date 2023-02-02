@@ -3,6 +3,9 @@ import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
 import { registerStore } from './store'
+import emitter from '@/utils/emitter'
+import type { EventEntity } from '@/api/api-base'
+import type { SelectorOptionValue } from '@/components/selector/value'
 
 interface EditorProps {
   status: ComponentStatus
@@ -18,6 +21,16 @@ watch(
   status => { store.status = status },
   { deep: true },
 )
+
+let event = $ref<SelectorOptionValue>()
+emitter.on('event-select', ({ event: e }) => {
+  event = { type: 'event', value: e }
+  store.eventId = e.id
+})
+const handleSelect = (event: EventEntity | undefined) => {
+  if (!event) { return }
+  emitter.emit('event-select', { event })
+}
 </script>
 
 <template>
@@ -25,7 +38,12 @@ watch(
     <ComponentHeader>
       <template #middle>
         <div row gap-2>
-          <EventSelector event-select />
+          <Selector
+            v-model="event"
+            event
+            placeholder="在这里选择要编辑的事件"
+            @select:event="handleSelect"
+          />
         </div>
       </template>
       <template #right>

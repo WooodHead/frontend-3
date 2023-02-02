@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
         name: 'ws-user',
         component: () => import('@/views/workspace/views/user/index.vue'),
       },
+      {
+        path: 'search',
+        name: 'ws-search',
+        component: () => import('@/views/workspace/views/search/index.vue'),
+      },
     ],
   },
   {

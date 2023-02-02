@@ -23,6 +23,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SceneItem: typeof import('./src/components/scene-item.vue')['default']
+    Selector: typeof import('./src/components/selector.vue')['default']
     Status: typeof import('./src/components/status.vue')['default']
     UnitRangePicker: typeof import('./src/components/unit-range-picker.vue')['default']
     UnitTimePicker: typeof import('./src/components/unit-time-picker.vue')['default']
