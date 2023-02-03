@@ -34,9 +34,9 @@ const emit = defineEmits<{
   (e: 'select:scene', scene: SceneEntity | undefined): void
 }>()
 
-// 非受控状态下的值
-let _inputValue = $ref<string>()
+let _inputValue = $ref<string>() // 非受控状态下的值
 const computedInputValue = $computed(() => inputValue || _inputValue)
+const searchValue = refDebounced($$(computedInputValue), 200) // 手动消抖
 let _modelValue = $ref<SelectorOptionValue>()
 const computedModelValue = $computed(() => modelValue || _modelValue)
 
@@ -59,12 +59,12 @@ const handleClear = () => {
 }
 
 const handleModelUpdate = (rawValue: any) => {
-  const value = rawValue as SelectorOptionValue
+  const value = rawValue as SelectorOptionValue | undefined
   _modelValue = value
   emit('select', value)
   emit('update:model-value', value)
 
-  switch (value.type) {
+  switch (value?.type) {
     case 'event':
       emit('select:event', value.value)
       break
@@ -91,10 +91,10 @@ const handleFallback = (rawValue: any): SelectOptionData => {
     <ASelect
       allow-search
       allow-clear
+      value-key="id"
       :input-value="computedInputValue"
       :model-value="computedModelValue"
       :fallback-option="handleFallback"
-      :search-delay="500"
       :filter-option="false"
       :show-extra-options="false"
       :placeholder="placeholder"
@@ -102,10 +102,10 @@ const handleFallback = (rawValue: any): SelectOptionData => {
       @update:model-value="handleModelUpdate"
       @clear="handleClear"
     >
-      <EventNameGroup v-if="event" :input-value="computedInputValue" />
-      <EventContentGroup v-if="event" :input-value="computedInputValue" />
-      <CharaNameGroup v-if="character" :input-value="computedInputValue" />
-      <SceneNameGroup v-if="scene" :input-value="computedInputValue" />
+      <EventNameGroup v-if="event" :search-value="searchValue" />
+      <EventContentGroup v-if="event" :search-value="searchValue" />
+      <CharaNameGroup v-if="character" :search-value="searchValue" />
+      <SceneNameGroup v-if="scene" :search-value="searchValue" />
     </ASelect>
   </Suspense>
 </template>

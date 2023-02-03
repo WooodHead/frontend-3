@@ -46,10 +46,7 @@ defineExpose({ validate })
       label="子事件"
       :rules="[{ required: true, message: '请选择当前事件的子事件' }]"
     >
-      <ATreeSelect
-        v-model="model.subIds"
-        multiple allow-clear allow-search
-      />
+      <Selector event />
     </AFormItem>
   </AForm>
 </template>

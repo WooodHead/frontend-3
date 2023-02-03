@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
+import { SelectorOptionValue } from './value'
 import api from '@/api/api'
 
-const { inputValue } = defineProps<{
-  inputValue?: string
+const { searchValue } = defineProps<{
+  searchValue?: string
 }>()
 
 const { data, suspense } = $(useQuery({
-  enabled: computed(() => inputValue !== undefined && inputValue.length > 0),
+  enabled: computed(() => searchValue !== undefined && searchValue.length > 0),
   cacheTime: 0,
-  queryKey: computed(() => ['character', 'search', 'name', inputValue]),
-  queryFn: () => api.scene.searchSceneByName({ text: inputValue! }),
+  queryKey: computed(() => ['character', 'search', 'name', searchValue]),
+  queryFn: () => api.scene.searchSceneByName({ text: searchValue! }),
 }))
 
 await suspense()
@@ -19,12 +20,16 @@ await suspense()
 <template>
   <AOptgroup
     v-if="data?.length ?? 0 > 0"
-    :label="`名称中包含 “${inputValue}” 的场景`"
+    :label="`名称中包含 “${searchValue}” 的场景`"
   >
     <AOption
       v-for="scene of data"
       :key="scene.id"
-      :value="{ type: 'scene', value: scene }"
+      :value="({
+        type: 'scene',
+        value: scene,
+        id: `scene_${scene.id}`,
+      } as SelectorOptionValue) "
       :label="scene.name"
     >
       <CharaItem :id="scene.id" />

@@ -21,12 +21,15 @@ editor.on('update', () => {
 })
 const handleSave = (eventId: number | undefined, content: string) => {
   if (!eventId || saved) { return }
+  store.saving = true
   api.event.updateContent(eventId, { content })
     .then(content => {
       saved = true
       client.setQueryData(['event', eventId, 'content'], content)
     }).catch((e: AxiosError) => {
       Message.error(`保存失败：${e.message}`)
+    }).finally(() => {
+      store.saving = false
     })
 }
 

@@ -14,8 +14,7 @@ interface EditorProps {
 const { status } = defineProps<EditorProps>()
 
 const store = registerStore(status.positionId)
-const { editor, eventId } = $(storeToRefs(store))
-
+const { editor, eventId, saving } = $(storeToRefs(store))
 watch(
   () => status,
   status => { store.status = status },
@@ -24,7 +23,7 @@ watch(
 
 let event = $ref<SelectorOptionValue>()
 emitter.on('event-select', ({ event: e }) => {
-  event = { type: 'event', value: e }
+  event = { type: 'event', value: e, id: `event_${e.id}` }
   store.eventId = e.id
 })
 const handleSelect = (event: EventEntity | undefined) => {
@@ -50,7 +49,7 @@ const handleSelect = (event: EventEntity | undefined) => {
         <div row space-x-2>
           <AButton type="outline" title="历史记录">
             <template #icon>
-              <div i-radix-icons-counter-clockwise-clock text-lg />
+              <div i-radix-icons-counter-clockwise-clock text-lg></div>
             </template>
           </AButton>
         </div>
@@ -62,7 +61,8 @@ const handleSelect = (event: EventEntity | undefined) => {
     </div>
     <ComponentFooter>
       <template #right>
-        <div v-if="eventId" text="xs text-3">
+        <div v-if="eventId" row gap-2 text="xs text-3">
+          <div>{{ saving ? '保存中...' : '已保存' }}</div>
           {{ editor.storage.characterCount.characters() }} 字
         </div>
       </template>

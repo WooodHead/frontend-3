@@ -214,9 +214,27 @@ export interface UpdateSceneDto {
   description?: string;
 }
 
-export type CreateWorldviewDto = object;
+export interface CreateWorldviewDto {
+  name: string;
+  description?: string;
+}
 
-export type UpdateWorldviewDto = object;
+export interface WorldviewEntity {
+  id: number;
+  name: string;
+  description: string | null;
+  content: string;
+  images: string[];
+  /** @format date-time */
+  deleted: string | null;
+  superId: number | null;
+}
+
+export interface UpdateWorldviewDto {
+  content?: string;
+  name?: string;
+  description?: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
 
@@ -508,7 +526,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/event/serial
      */
     getEventBySerial: (serial: number, params: RequestParams = {}) =>
-      this.request<CreateWorldviewDto, any>({
+      this.request<object, any>({
         path: `/event/serial`,
         method: "GET",
         format: "json",
@@ -1005,11 +1023,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Create
+     * @name CreateWorldview
      * @request POST:/worldview
      */
-    create: (data: CreateWorldviewDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+    createWorldview: (data: CreateWorldviewDto, params: RequestParams = {}) =>
+      this.request<WorldviewEntity, any>({
         path: `/worldview`,
         method: "POST",
         body: data,
@@ -1021,25 +1039,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name FindAll
-     * @request GET:/worldview
-     */
-    findAll: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/worldview`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name FindOne
+     * @name GetWorldview
      * @request GET:/worldview/{id}
      */
-    findOne: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    getWorldview: (id: number, params: RequestParams = {}) =>
+      this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "GET",
         format: "json",
@@ -1049,13 +1053,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Update
-     * @request PATCH:/worldview/{id}
+     * @name UpdateWorldview
+     * @request POST:/worldview/{id}
      */
-    update: (id: string, data: UpdateWorldviewDto, params: RequestParams = {}) =>
-      this.request<string, any>({
+    updateWorldview: (id: number, data: UpdateWorldviewDto, params: RequestParams = {}) =>
+      this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
-        method: "PATCH",
+        method: "POST",
         body: data,
         type: ContentType.Json,
         format: "json",
@@ -1065,11 +1069,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Remove
+     * @name RemoveWorldview
      * @request DELETE:/worldview/{id}
      */
-    remove: (id: string, params: RequestParams = {}) =>
-      this.request<string, any>({
+    removeWorldview: (id: number, params: RequestParams = {}) =>
+      this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "DELETE",
         format: "json",

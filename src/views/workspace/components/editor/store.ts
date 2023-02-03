@@ -10,6 +10,7 @@ export const { registerStore, useStore } = createStore(
       status: new ComponentStatus('default'),
       eventId: undefined as (number | undefined),
       editor,
+      saving: false,
     }),
   },
   store => {
