@@ -5,6 +5,11 @@ import { useStore } from '../store'
 const store = useStore()
 const { editor } = $(storeToRefs(store))
 // TODO 完成浮动菜单
+
+const commands = [
+  { icon: 'i-radix-icons-font-bold', command: () => editor.commands.toggleBold() },
+  { icon: 'i-radix-icons-font-italic', command: () => editor.commands.toggleItalic() },
+]
 </script>
 
 <template>
@@ -13,16 +18,18 @@ const { editor } = $(storeToRefs(store))
     :tippy-options="{ duration: 100 }"
     :editor="(editor as Editor)"
   >
-    <div card row border="~ border-2">
-      <ATag rounded-r-0 p-4 checkable color="blue" bg-bg-2>
-        <div i-radix-icons-font-bold text-2xl></div>
-      </ATag>
-      <ATag rounded-0 p-4 checkable color="blue" bg-bg-2>
-        <div i-radix-icons-font-italic text-2xl></div>
-      </ATag>
-      <ATag rounded-l-0 p-4 checkable color="blue" bg-bg-2>
-        <div i-radix-icons-underline text-2xl></div>
-      </ATag>
+    <div card-border row overflow-hidden>
+      <AButton
+        v-for="{ icon, command } of commands"
+        :key="icon"
+        type="text"
+        rounded-0 text-text-1
+        @click="command"
+      >
+        <template #icon>
+          <div :key="icon" :class="`${icon}`" text-xl></div>
+        </template>
+      </AButton>
     </div>
   </BubbleMenu>
 </template>

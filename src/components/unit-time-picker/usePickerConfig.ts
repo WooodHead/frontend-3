@@ -36,3 +36,5 @@ export const usePickerConfig = (unit: Ref<IUnit | undefined>) => {
     timePickerProps: props,
   })
 }
+
+export default usePickerConfig

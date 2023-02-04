@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     EventDetailCard: typeof import('./src/components/event-detail-card.vue')['default']
     EventDetailCardTrigger: typeof import('./src/components/event-detail-card-trigger.vue')['default']
     EventItem: typeof import('./src/components/event-item.vue')['default']
+    ResizeLayout: typeof import('./src/components/resize-layout.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SceneItem: typeof import('./src/components/scene-item.vue')['default']

@@ -8,26 +8,26 @@ import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
 import type { IGanttData } from './types'
 import Tools from './tools/index.vue'
-import Status from '@/components/status.vue'
 import api from '@/api/api'
 
-interface GanttProps {
+const { status, data } = defineProps<{
   status: ComponentStatus
   data?: IGanttData
-}
-const { status, data } = defineProps<GanttProps>()
+}>()
 
 const store = registerStore(status.positionId)
 const { visibleUnit } = $(storeToRefs(store))
 
-watch(() => status, status => {
-  store.status = status
-}, { deep: true })
+watch(
+  () => status,
+  status => { store.status = status },
+  { deep: true },
+)
 
-if (data !== undefined) { store.initWithData(data) }
+if (data) { store.initWithData(data) }
 
-const { isSuccess, isLoading, isError, suspense } = $(useQuery({
-  enabled: computed(() => data === undefined),
+const { suspense } = $(useQuery({
+  enabled: computed(() => !data),
   staleTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspaceInfo(),
@@ -47,7 +47,9 @@ watchDebounced(
   () => visibleUnit,
   visibleUnit => {
     if (!visibleUnit) { return }
-    api.project.updateWorkspaceInfo({ origin: visibleUnit.serialize() })
+    api.project.updateWorkspaceInfo({
+      origin: visibleUnit.serialize(),
+    })
   },
   { debounce: 100 },
 )
@@ -56,12 +58,15 @@ watchDebounced(
 <template>
   <div full column>
     <div card column overflow-hidden>
-      <div relative row h-0 grow>
-        <SideTable />
-        <MainTable v-if="isSuccess" />
-        <Status v-else grow :error="isError" :loading="isLoading" />
-        <Tools />
-      </div>
+      <ResizeLayout relative h-0 grow side-shadow>
+        <template #side>
+          <SideTable />
+        </template>
+        <template #main>
+          <MainTable />
+          <Tools />
+        </template>
+      </ResizeLayout>
     </div>
     <TimeBar v-if="store.fullMode" :id="status.positionId" />
   </div>

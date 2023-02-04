@@ -55,13 +55,24 @@ const handleSelect = (event: EventEntity | undefined) => {
         </div>
       </template>
     </ComponentHeader>
-    <div row h-0 grow>
-      <SideTable v-if="eventId !== undefined" />
-      <Content />
-    </div>
+    <ResizeLayout
+      :side-show="!!eventId"
+      h-0 grow
+    >
+      <template #side>
+        <SideTable />
+      </template>
+      <template #main>
+        <Content />
+      </template>
+    </ResizeLayout>
     <ComponentFooter>
       <template #right>
-        <div v-if="eventId" row gap-2 text="xs text-3">
+        <div
+          v-if="eventId"
+          row gap-2
+          text="xs text-3"
+        >
           <div>{{ saving ? '保存中...' : '已保存' }}</div>
           {{ editor.storage.characterCount.characters() }} 字
         </div>

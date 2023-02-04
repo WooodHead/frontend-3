@@ -40,6 +40,7 @@ export default defineConfig({
       resolvers: [],
     }),
     Components({
+      // 组件内部可能有小组件，deep会导致这些内部组件也被注册
       deep: false,
     }),
   ],

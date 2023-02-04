@@ -16,7 +16,7 @@ const { data: event } = useQuery({
     const range = UnitIDRange.deserialize(data.range)
     return {
       ...data,
-      serial: `${data.serial}`,
+      name: `${data.serial}. ${data.name}`,
       range: `${range.start} - ${range.end}`,
     }
   },
@@ -35,15 +35,14 @@ const visible = $ref(false)
       <ADescriptions
         :column="1"
         :data="event ? [
-          { label: '序号', value: `${event.serial}` },
           { label: '名称', value: event.name },
           { label: '类型', value: event.type },
           { label: '时间', value: event.range },
         ] : []"
       />
     </ACard>
-    <ACard title="简介">
-      {{ event?.description }}
+    <ACard v-if="event?.description" title="简介">
+      {{ event.description }}
     </ACard>
   </div>
 </template>

@@ -32,31 +32,29 @@ const title = $computed(() => {
 })
 
 const formRef = $ref<{ validate: () => Promise<CreateEventDto> }>()
+const client = useQueryClient()
 
 const { mutateAsync } = useMutation({
   mutationFn: (data: CreateEventDto) => api.event.createEvent(data),
-  onSuccess: () => {
+  onSuccess: event => {
     Message.success('创建事件成功')
+    const range = UnitIDRange.deserialize(event.range)
+    for (const id of range.ids) {
+      client.setQueryData<EventEntity[]>(
+        ['event', { range: id.range.serialize() }],
+        events => [...events ?? [], event],
+      )
+    }
+    client.setQueryData(['event', event.id], event)
   },
   onError: e => {
     Message.error(`创建事件失败：${e}`)
   },
 })
 
-const client = useQueryClient()
 const handleBeforeOk = async () => {
   const data = await formRef!.validate()
   const event = await mutateAsync(data)
-
-  const range = UnitIDRange.deserialize(event.range)
-  for (const id of range.ids) {
-    client.setQueryData<EventEntity[]>(
-      ['event', { range: id.range.serialize() }],
-      events => [...events ?? [], event],
-    )
-  }
-  client.setQueryData(['event', event.id], event)
-
   emit('beforeOk', event)
   return true
 }

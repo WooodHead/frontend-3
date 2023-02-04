@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { Unit, UnitIDRange } from '@project-chiral/unit-id'
 import { Message } from '@arco-design/web-vue'
 import type { AxiosError } from 'axios'
@@ -19,22 +19,25 @@ const emit = defineEmits<{
 
 const store = useStore()
 const { eventId } = $(storeToRefs(store))
+const client = useQueryClient()
 
-watchEffect(() => {
-  console.log(eventId)
-})
-
+const formRef = $ref<FormRef>()
 let model = $ref<{
   name?: string
   description?: string
   range?: UnitRangePickerValue
 }>({})
-const ref = $ref<FormRef | null>(null)
-const { isLoading } = $(useQuery({
+const { data, isLoading } = $(useQuery({
   enabled: computed(() => eventId !== undefined),
   queryKey: computed(() => ['event', eventId]),
   queryFn: () => api.event.getEvent(eventId!),
-  onSuccess: ({ name, description, unit, start, end }) => {
+}))
+watch(
+  () => data,
+  data => {
+    // TODO 第一次打开的modal里面没数据
+    if (!data) { return }
+    const { name, description, unit, start, end } = data
     model = {
       name,
       description: description ?? undefined,
@@ -43,13 +46,21 @@ const { isLoading } = $(useQuery({
         range: [new Date(start), new Date(end)],
       },
     }
-    console.log(model)
   },
-}))
+  { immediate: true },
+)
+
 const { mutateAsync } = useMutation({
   mutationFn: ({ id, dto }: { id: number; dto: UpdateEventDto }) => api.event.updateEvent(id, dto),
-  onSuccess: () => {
+  onSuccess: data => {
     Message.success('修改成功')
+    client.setQueryData(['event', data.id], data)
+    const range = UnitIDRange.deserialize(data.range)
+    // TODO 强制更新时间跨度内的所有缓存，这里应该有更好的方法
+    // TODO 更新时间跨度后，甘特图出问题
+    for (const id of range.ids) {
+      client.invalidateQueries(['event', { range: id.range.serialize() }])
+    }
   },
   onError: (e: AxiosError) => {
     Message.error(`修改失败: ${e.message}`)
@@ -57,10 +68,14 @@ const { mutateAsync } = useMutation({
 })
 
 const handleBeforeOk = async () => {
-  if (!eventId || !ref) { return false }
-  const error = await ref.validate()
+  if (!eventId || !formRef) { return false }
+  const error = await formRef.validate()
   if (error) { return false }
-  const { name, description, range: { unit, range: [start, end] } } = model as Required<typeof model>
+  const {
+    name,
+    description,
+    range: { unit, range: [start, end] },
+  } = model as Required<typeof model>
   await mutateAsync({
     id: eventId,
     dto: {
@@ -81,14 +96,14 @@ const handleBeforeOk = async () => {
     @update:visible="$emit('update:visible', $event)"
     @before-ok="handleBeforeOk"
   >
-    <AForm :ref="ref" :model="model">
-      <AFormItem label="事件名称">
+    <AForm ref="formRef" :model="model">
+      <AFormItem label="事件名称" field="name">
         <AInput v-model="model.name" />
       </AFormItem>
-      <AFormItem label="时间">
+      <AFormItem label="时间" field="range">
         <UnitRangePicker v-model="model.range" />
       </AFormItem>
-      <AFormItem label="事件简介">
+      <AFormItem label="事件简介" field="description">
         <ATextarea v-model="model.description" />
       </AFormItem>
     </AForm>

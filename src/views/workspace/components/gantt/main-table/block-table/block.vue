@@ -49,7 +49,8 @@ useIntersectionObserver(
 
     if (isIntersecting) {
       // TODO 列表锁现在是只增不减，是否要改成不增不减
-      if (lock && store.visibleEvents.contains(range, { eventId: id })) { return }
+      const visible = store.visibleEvents.contains(range, { eventId: id })
+      if (lock && visible) { return }
       store.visibleEvents.insert(range, { eventId: id })
     }
     else if (!lock) {

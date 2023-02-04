@@ -45,7 +45,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
         <template #cover>
           <div h-102px overflow-hidden>
             <img
-              :style="{ width: '100%', transform: 'translateY(-50px)' }"
+              full object-cover
               alt="dessert"
               src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp"
             >

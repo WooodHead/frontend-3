@@ -2,7 +2,6 @@
 import { Button } from '@arco-design/web-vue'
 
 const { height = 40, button = false } = defineProps<{
-  id: number
   height?: number
   button?: boolean
 }>()
@@ -20,15 +19,18 @@ watch(hover, hover => {
 </script>
 
 <template>
-  <component
-    :is="button ? Button : 'div'"
-    ref="target"
-    :style="{ height: `${height}px` }"
-    type="text"
-    row justify-center
-    w-full p-0 m-0 rounded-0
-    @click="$emit('click')"
-  >
-    <slot></slot>
-  </component>
+  <div w-full>
+    <component
+      :is="button ? Button : 'div'"
+      ref="target"
+      :style="{ height: `${height}px` }"
+      type="text"
+      row justify-center
+      w-full p-0 m-0 rounded-0
+      @click="$emit('click')"
+    >
+      <slot></slot>
+    </component>
+    <slot name="extra"></slot>
+  </div>
 </template>
