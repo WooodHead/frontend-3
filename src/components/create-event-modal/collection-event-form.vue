@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CreateEventDto } from '@/api/api-base'
+import type { CreateEventDto, EventEntity } from '@/api/api-base'
 import type { FormRef } from '@/utils/types'
 
 const { init } = defineProps<{
@@ -11,8 +11,14 @@ const formRef = $ref<FormRef>()
 const model = $ref({
   name: '',
   description: '',
-  subIds: init ?? [],
+  subIds: new Set(init ?? []),
 })
+
+// TODO collection-event-form
+const handleEventSelect = (event: EventEntity | undefined) => {
+  if (!event) { return }
+  model.subIds.add(event.id)
+}
 
 const validate = async (): Promise<CreateEventDto> => {
   const error = await formRef?.validate()
@@ -40,13 +46,15 @@ defineExpose({ validate })
     <AFormItem field="description" label="事件描述">
       <ATextarea v-model="model.description" />
     </AFormItem>
-    <!-- TODO 自定义FormItem，支持可视化选择子图 -->
     <AFormItem
       field="subIds"
       label="子事件"
       :rules="[{ required: true, message: '请选择当前事件的子事件' }]"
     >
-      <Selector event />
+      <Selector
+        event
+        @select:event="handleEventSelect"
+      />
     </AFormItem>
   </AForm>
 </template>

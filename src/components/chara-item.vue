@@ -21,14 +21,24 @@ const { data } = $(useQuery({
 }))
 
 // TODO chara-item
+
+const handleClick = () => {
+  if (!data) { return }
+  emit('click', data)
+}
+
+const handleHover = () => {
+  if (!data) { return }
+  emit('hover', data)
+}
 </script>
 
 <template>
   <Item
     :button="button"
     :height="height"
-    @click="data && $emit('click', data)"
-    @hover="data && $emit('hover', data)"
+    @click="handleClick"
+    @hover="handleHover"
   >
     <AAvatar m-2>
       {{ data?.name }}

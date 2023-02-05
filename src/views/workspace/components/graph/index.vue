@@ -4,7 +4,7 @@ import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import type { ComponentStatus } from '../type'
 import { IPositionState } from '../../layout'
-import EventNode from './event-node/index.vue'
+import EventNode from './node/event-node/index.vue'
 import ToolBar from './tool-bar/index.vue'
 import { registerStore } from './store'
 

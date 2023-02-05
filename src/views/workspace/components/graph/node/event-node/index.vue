@@ -18,7 +18,7 @@ const hover = useElementHover(target)
     ref="target"
     card
     relative center
-    w-120px h-120px
+    square-120px
     p-2 text-center
     transition-colors
     :bg=" node.selected ? `blue-2` : `gray-1`"

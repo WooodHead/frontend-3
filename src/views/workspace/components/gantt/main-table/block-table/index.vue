@@ -47,5 +47,9 @@ const blockData = $computed(() =>
 </script>
 
 <template>
-  <Block v-for="data in blockData" :key="data.id" v-bind="data" />
+  <Block
+    v-for="data in blockData"
+    :key="`${data.id}`"
+    v-bind="data"
+  />
 </template>

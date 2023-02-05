@@ -8,6 +8,7 @@ import api from '@/api/api'
 import type { UnitRangePickerValue } from '@/components/unit-range-picker.vue'
 import type { FormRef } from '@/utils/types'
 import type { UpdateEventDto } from '@/api/api-base'
+import emitter from '@/utils/emitter'
 
 const { visible } = defineProps<{
   visible: boolean
@@ -35,7 +36,6 @@ const { data, isLoading } = $(useQuery({
 watch(
   () => data,
   data => {
-    // TODO 第一次打开的modal里面没数据
     if (!data) { return }
     const { name, description, unit, start, end } = data
     model = {
@@ -51,16 +51,20 @@ watch(
 )
 
 const { mutateAsync } = useMutation({
-  mutationFn: ({ id, dto }: { id: number; dto: UpdateEventDto }) => api.event.updateEvent(id, dto),
+  mutationFn: ({ id, dto }: {
+    id: number
+    dto: UpdateEventDto
+  }) => api.event.updateEvent(id, dto),
   onSuccess: data => {
     Message.success('修改成功')
-    client.setQueryData(['event', data.id], data)
     const range = UnitIDRange.deserialize(data.range)
     // TODO 强制更新时间跨度内的所有缓存，这里应该有更好的方法
     // TODO 更新时间跨度后，甘特图出问题
+    client.setQueryData(['event', data.id], data)
     for (const id of range.ids) {
       client.invalidateQueries(['event', { range: id.range.serialize() }])
     }
+    emitter.emit('reload', { reason: { type: 'event', event: data } })
   },
   onError: (e: AxiosError) => {
     Message.error(`修改失败: ${e.message}`)

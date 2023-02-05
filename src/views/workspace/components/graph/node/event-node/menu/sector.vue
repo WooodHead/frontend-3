@@ -49,7 +49,7 @@ const handleMouseEnter = () => {
   <path
     absolute transition-colors shadow-lg
     :fill="`${active ? `blue-2` : `bg-4`}`"
-    backdrop="blur"
+    backdrop-blur
     stroke="1 gray-3"
     :d="`
     M ${innerStart.x} ${innerStart.y}
@@ -60,7 +60,8 @@ const handleMouseEnter = () => {
     @mouseenter="handleMouseEnter"
   />
   <text
-    pointer-events-none fill="text-1"
+    pointer-events-none
+    fill="text-1"
     :x="textPosition.x"
     :y="textPosition.y"
     text-anchor="middle"

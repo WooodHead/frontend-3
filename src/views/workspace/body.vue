@@ -9,6 +9,7 @@ import type { ILayout } from './layout'
 import { Layout } from './layout'
 import api from '@/api/api'
 import { fadeInOut } from '@/utils/animation'
+import emitter from '@/utils/emitter'
 
 const WSStore = useWSStore()
 const { layout } = $(storeToRefs(WSStore))
@@ -40,6 +41,14 @@ watch(
   layout => { api.project.updateWorkspaceInfo({ layout }) },
   { deep: true },
 )
+
+// TODO 简单粗暴的组件reload方式
+const version = $ref<Record<string, number>>({
+  gantt: 0,
+})
+emitter.on('reload', ({ reason: { type } }) => {
+  if (type === 'event') { version.gantt += 1 }
+})
 </script>
 
 <template>
@@ -54,7 +63,7 @@ watch(
       <WSComponent
         v-for="{ id, position, state } in WSStore.components"
         :id="id"
-        :key="id"
+        :key="`${id}_${version[id]}`"
         :position="position"
         :state="state"
       />
