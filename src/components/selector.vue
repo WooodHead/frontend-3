@@ -84,6 +84,8 @@ const handleFallback = (rawValue: any): SelectOptionData => {
     default: return { label: value.value.name, value }
   }
 }
+
+// TODO 多选
 </script>
 
 <template>

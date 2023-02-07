@@ -64,7 +64,7 @@ const { mutateAsync } = useMutation({
     for (const id of range.ids) {
       client.invalidateQueries(['event', { range: id.range.serialize() }])
     }
-    emitter.emit('reload', { reason: { type: 'event', event: data } })
+    emitter.emit('reload', { reason: { type: 'gantt', context: data } })
   },
   onError: (e: AxiosError) => {
     Message.error(`修改失败: ${e.message}`)

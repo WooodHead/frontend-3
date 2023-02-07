@@ -47,7 +47,7 @@ const version = $ref<Record<string, number>>({
   gantt: 0,
 })
 emitter.on('reload', ({ reason: { type } }) => {
-  if (type === 'event') { version.gantt += 1 }
+  if (type === 'gantt') { version.gantt += 1 }
 })
 </script>
 

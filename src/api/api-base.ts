@@ -174,7 +174,8 @@ export interface CreateCharacterDto {
   range?: string;
   name: string;
   alias: string[];
-  description: string | null;
+  description?: string;
+  avatar?: string;
 }
 
 export interface CharacterEntity {
@@ -183,6 +184,7 @@ export interface CharacterEntity {
   name: string;
   alias: string[];
   description: string | null;
+  avatar: string | null;
   /** @format date-time */
   deleted: string | null;
   unit: number | null;
