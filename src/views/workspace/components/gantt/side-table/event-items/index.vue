@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PresenceGroup } from '@motionone/vue'
 import { useStore } from '../../store'
 
 const store = useStore()
@@ -17,12 +18,14 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     @scroll="handleScroll"
   >
     <!-- TODO 列表动画 -->
-    <EventItem
-      v-for="id in ids"
-      :id="id"
-      :key="id"
-      button
-      event-select
-    />
+    <PresenceGroup>
+      <EventItem
+        v-for="id in ids"
+        :id="id"
+        :key="id"
+        button
+        event-select
+      />
+    </PresenceGroup>
   </div>
 </template>

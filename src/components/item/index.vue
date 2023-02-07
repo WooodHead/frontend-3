@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@arco-design/web-vue'
+import { Motion } from '@motionone/vue'
+import { fadeInOut } from '@/utils/animation/item'
 
 const { height = 40, button = false } = defineProps<{
   height?: number
@@ -19,11 +21,14 @@ watch(hover, hover => {
 </script>
 
 <template>
-  <div w-full>
+  <Motion
+    w-full
+    v-bind="fadeInOut(height)"
+    :transition="{ duration: 0.2 }"
+  >
     <component
       :is="button ? Button : 'div'"
       ref="target"
-      :style="{ height: `${height}px` }"
       type="text"
       row justify-center
       w-full p-0 m-0 rounded-0
@@ -32,5 +37,5 @@ watch(hover, hover => {
       <slot></slot>
     </component>
     <slot name="extra"></slot>
-  </div>
+  </Motion>
 </template>

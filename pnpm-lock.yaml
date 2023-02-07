@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  '@motionone/vue@10.15.5':
+    hash: jy2dx6rchotoflpivg4bc5h5hm
+    path: patches/@motionone__vue@10.15.5.patch
+
 specifiers:
   '@antfu/eslint-config': ^0.31.1
   '@arco-design/web-vue': ^2.42.1
@@ -76,7 +81,7 @@ dependencies:
   '@iconify-json/mdi': 1.1.45
   '@iconify-json/radix-icons': 1.1.8
   '@lukemorales/query-key-factory': 1.1.0_mc3ebmoy2jmm7hvhvejzec65by
-  '@motionone/vue': 10.15.5
+  '@motionone/vue': 10.15.5_jy2dx6rchotoflpivg4bc5h5hm
   '@project-chiral/unit-id': 0.1.1
   '@tanstack/vue-query': 4.24.4_vue@3.2.47
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_w5m3ddcszxha4fwakfbwcuuiyq
@@ -625,12 +630,13 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@motionone/vue/10.15.5:
+  /@motionone/vue/10.15.5_jy2dx6rchotoflpivg4bc5h5hm:
     resolution: {integrity: sha512-cUENrLYAolUacHvCgU+8wF9OgSlVutfWbHMLERI/bElCJ+e2YVQvG/CpGhIM5fYOOJzuvg2T2wHmLLmvJoavEw==}
     dependencies:
       '@motionone/dom': 10.15.5
       tslib: 2.5.0
     dev: false
+    patched: true
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3913,7 +3919,7 @@ packages:
       '@motionone/svelte': 10.15.5
       '@motionone/types': 10.15.1
       '@motionone/utils': 10.15.1
-      '@motionone/vue': 10.15.5
+      '@motionone/vue': 10.15.5_jy2dx6rchotoflpivg4bc5h5hm
     dev: false
 
   /mrmime/1.0.1:

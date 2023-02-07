@@ -82,5 +82,10 @@
     "vite-plugin-mock": "^2.9.6",
     "vite-plugin-vuetify": "^1.0.2",
     "vue-tsc": "^1.0.24"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@motionone/vue@10.15.5": "patches/@motionone__vue@10.15.5.patch"
+    }
   }
 }
