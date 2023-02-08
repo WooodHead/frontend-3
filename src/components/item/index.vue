@@ -3,9 +3,10 @@ import { Button } from '@arco-design/web-vue'
 import { Motion } from '@motionone/vue'
 import { fadeInOut } from '@/utils/animation/item'
 
-const { height = 40, button = false } = defineProps<{
+const { height = 40, button = false, animate } = defineProps<{
   height?: number
   button?: boolean
+  animate?: boolean | Record<string, any>
 }>()
 
 const emit = defineEmits<{
@@ -18,12 +19,18 @@ const hover = useElementHover(target)
 watch(hover, hover => {
   if (hover) { emit('hover') }
 })
+
+const animation = $computed(() => {
+  if (!animate) { return {} }
+  if (typeof animate === 'object') { return animate }
+  return fadeInOut(height)
+})
 </script>
 
 <template>
   <Motion
     w-full
-    v-bind="fadeInOut(height)"
+    v-bind="animation"
     :transition="{ duration: 0.2 }"
   >
     <component
@@ -31,7 +38,7 @@ watch(hover, hover => {
       ref="target"
       type="text"
       row justify-center
-      w-full p-0 m-0 rounded-0
+      full p-0 m-0 rounded-0
       @click="$emit('click')"
     >
       <slot></slot>

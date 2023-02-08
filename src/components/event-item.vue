@@ -6,11 +6,12 @@ import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
 
-const { id, height = 40, button = false, eventSelect = false } = defineProps<{
+const { id, height, button = false, eventSelect = false, animate } = defineProps<{
   id: number
   height?: number
   button?: boolean
   eventSelect?: boolean
+  animate?: boolean | Record<string, any>
 }>()
 
 const emit = defineEmits<{
@@ -40,6 +41,7 @@ const handleHover = () => {
 
 <template>
   <Item
+    :animate="animate"
     :button="button"
     :height="height"
     @click="handleClick"

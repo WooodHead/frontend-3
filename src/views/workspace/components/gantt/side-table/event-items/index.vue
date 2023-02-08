@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PresenceGroup } from '@motionone/vue'
+import { EVENT_HEIGHT } from '../../const'
 import { useStore } from '../../store'
 
 const store = useStore()
@@ -21,10 +22,9 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     <PresenceGroup>
       <EventItem
         v-for="id in ids"
-        :id="id"
-        :key="id"
-        button
-        event-select
+        :id="id" :key="id"
+        :height="EVENT_HEIGHT"
+        animate button event-select
       />
     </PresenceGroup>
   </div>

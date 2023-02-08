@@ -27,7 +27,7 @@ const handleAddChara = (chara: CharacterEntity | undefined) => {
       <template #content>
         <div card-border p-2>
           <Selector
-            chara
+            character
             placeholder="选择要添加的角色"
             @select:character="handleAddChara"
           />
@@ -44,6 +44,11 @@ const handleAddChara = (chara: CharacterEntity | undefined) => {
         </template>
       </AButton>
     </ATrigger>
-    <CharaBadge v-for="id of modelValue" :id="id" :key="id" />
+    <TransitionGroup>
+      <CharaBadge
+        v-for="id of modelValue"
+        :id="id" :key="id"
+      />
+    </TransitionGroup>
   </div>
 </template>

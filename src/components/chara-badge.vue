@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
+import { Motion } from '@motionone/vue'
 import api from '@/api/api'
+import { fadeInOut } from '@/utils/animation'
 
-const { id } = defineProps<{
+const { id, animate } = defineProps<{
   id: number
+  animate?: boolean | Record<string, any>
 }>()
 
 const { data } = $(useQuery({
@@ -11,11 +14,19 @@ const { data } = $(useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.getCharacter(id),
 }))
+
+const animation = $computed(() => {
+  if (!animate) { return {} }
+  if (typeof animate === 'object') { return animate }
+  return fadeInOut
+})
 </script>
 
 <template>
   <ATrigger trigger="click">
-    <div
+    <Motion
+      v-bind="animation"
+      :transition="{ duration: 0.2 }"
       center-x
       w-fit h-30px
       transition-colors
@@ -31,6 +42,6 @@ const { data } = $(useQuery({
       <div grow>
         {{ id }}
       </div>
-    </div>
+    </Motion>
   </ATrigger>
 </template>

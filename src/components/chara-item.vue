@@ -4,10 +4,11 @@ import api from '@/api/api'
 import Item from '@/components/item/index.vue'
 import type { CharacterEntity } from '@/api/api-base'
 
-const { id, height, button } = defineProps<{
+const { id, height, button, animate } = defineProps<{
   id: number
   height?: number
   button?: boolean
+  animate?: boolean | Record<string, any>
 }>()
 
 const emit = defineEmits<{
@@ -37,6 +38,7 @@ const handleHover = () => {
   <Item
     :button="button"
     :height="height"
+    :animate="animate"
     @click="handleClick"
     @hover="handleHover"
   >

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CharaBadgeList from './chara-badge-list/index.vue'
 
-const ids = $ref<number[]>([])
+const ids = $ref<number[]>([114514, 1919810])
 </script>
 
 <template>
