@@ -30,6 +30,8 @@ const handleSelect = (event: EventEntity | undefined) => {
   if (!event) { return }
   emitter.emit('event-select', { event })
 }
+
+// TODO 历史记录
 </script>
 
 <template>

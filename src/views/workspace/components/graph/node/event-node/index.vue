@@ -10,7 +10,6 @@ const { node, isConnecting } = defineProps<{
 }>()
 
 const target = ref<HTMLElement | null>(null)
-const hover = useElementHover(target)
 </script>
 
 <template>

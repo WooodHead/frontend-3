@@ -57,7 +57,7 @@ const handleClickOutside = () => { menuExpand = false }
           shape="circle"
           @click="router.push({ name: 'ws-user' })"
         >
-          <div w-30px h-30px i-radix-icons-avatar></div>
+          <div square-30px i-radix-icons-avatar></div>
         </AButton>
       </div>
     </div>

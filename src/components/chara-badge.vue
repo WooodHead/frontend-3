@@ -29,11 +29,9 @@ const animation = $computed(() => {
       :transition="{ duration: 0.2 }"
       center-x
       w-fit h-30px
-      transition-colors
-      bg="blue-5 hover:blue-6"
-      rounded-full
-      text-white pr-4px gap-2px
-      cursor-pointer
+      transition-colors bg="blue-5 hover:blue-6"
+      rounded-full pr-4px gap-2px
+      text-white cursor-pointer
     >
       <div h-full aspect-square rounded-full>
         <img v-if="data?.avatar" :src="data.avatar">

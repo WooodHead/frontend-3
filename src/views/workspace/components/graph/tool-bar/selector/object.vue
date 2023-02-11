@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { useStore } from './store'
-import type { SelectorOptionValue } from '@/components/selector/value'
 
 const store = useStore()
-
-const handleSelect = (value: SelectorOptionValue | undefined) => {
-  store.object = value
-}
+const { subject } = $(storeToRefs(store))
+watchEffect(() => {
+  console.log(subject)
+})
 </script>
 
 <template>
-  <Selector
-    event character scene
+  <ASelect
+    :disabled="!subject"
     placeholder="选择事件、角色或场景"
-    @select="handleSelect"
   />
 </template>

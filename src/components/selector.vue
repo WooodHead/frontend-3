@@ -86,28 +86,38 @@ const handleFallback = (rawValue: any): SelectOptionData => {
 }
 
 // TODO 多选
+// TODO 虚拟滚动
+// TODO 选项筛选配置
 </script>
 
 <template>
-  <Suspense>
-    <ASelect
-      allow-search
-      allow-clear
-      value-key="id"
-      :input-value="computedInputValue"
-      :model-value="computedModelValue"
-      :fallback-option="handleFallback"
-      :filter-option="false"
-      :show-extra-options="false"
-      :placeholder="placeholder"
-      @update:input-value="handleInputUpdate"
-      @update:model-value="handleModelUpdate"
-      @clear="handleClear"
-    >
-      <EventNameGroup v-if="event" :search-value="searchValue" />
-      <EventContentGroup v-if="event" :search-value="searchValue" />
-      <CharaNameGroup v-if="character" :search-value="searchValue" />
-      <SceneNameGroup v-if="scene" :search-value="searchValue" />
-    </ASelect>
-  </Suspense>
+  <div row w-full gap-1>
+    <Suspense>
+      <ASelect
+        grow
+        allow-search
+        allow-clear
+        value-key="id"
+        :input-value="computedInputValue"
+        :model-value="computedModelValue"
+        :fallback-option="handleFallback"
+        :filter-option="false"
+        :show-extra-options="false"
+        :placeholder="placeholder"
+        @update:input-value="handleInputUpdate"
+        @update:model-value="handleModelUpdate"
+        @clear="handleClear"
+      >
+        <EventNameGroup v-if="event" :search-value="searchValue" />
+        <EventContentGroup v-if="event" :search-value="searchValue" />
+        <CharaNameGroup v-if="character" :search-value="searchValue" />
+        <SceneNameGroup v-if="scene" :search-value="searchValue" />
+      </ASelect>
+    </Suspense>
+    <AButton shrink-0>
+      <template #icon>
+        <div i-radix-icons-mixer-horizontal text-lg></div>
+      </template>
+    </AButton>
+  </div>
 </template>

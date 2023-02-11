@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CharaBadge: typeof import('./src/components/chara-badge.vue')['default']
+    CharaBadgeTable: typeof import('./src/components/chara-badge-table.vue')['default']
     CharaItem: typeof import('./src/components/chara-item.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']

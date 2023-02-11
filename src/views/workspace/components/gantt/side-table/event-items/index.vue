@@ -18,7 +18,6 @@ const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventI
     overflow-y-auto
     @scroll="handleScroll"
   >
-    <!-- TODO 列表动画 -->
     <PresenceGroup>
       <EventItem
         v-for="id in ids"

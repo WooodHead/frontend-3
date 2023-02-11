@@ -33,6 +33,7 @@ specifiers:
   '@unocss/preset-typography': ^0.46.5
   '@unocss/preset-uno': ^0.49.4
   '@unocss/reset': ^0.46.5
+  '@unocss/transformer-variant-group': ^0.49.4
   '@vitejs/plugin-vue': ^3.2.0
   '@vue-flow/additional-components': ^1.3.3
   '@vue-flow/core': ^1.13.2
@@ -127,6 +128,7 @@ devDependencies:
   '@unocss/preset-typography': 0.46.5
   '@unocss/preset-uno': 0.49.4
   '@unocss/reset': 0.46.5
+  '@unocss/transformer-variant-group': 0.49.4
   '@vitejs/plugin-vue': 3.2.0_vite@3.2.5+vue@3.2.47
   '@vue/runtime-core': 3.2.47
   css: 3.0.0
@@ -1510,6 +1512,12 @@ packages:
     resolution: {integrity: sha512-xBylFf8Q0z0jzr8OoqiIstC2ZXPeniENGANOruTzXlS+DJ2uuKNrwOuXpBbMTEA2D7lmLwtbyg1PZy3mDUB3iA==}
     dependencies:
       '@unocss/core': 0.46.5
+    dev: true
+
+  /@unocss/transformer-variant-group/0.49.4:
+    resolution: {integrity: sha512-rkbXqjn305UJxVk9WDT/RHC+xJfQ3Hq2gsSiMy0r1kKYMHzsFb67xrGTOIrI1qKQj55OXu6USY8+uTla6MEfWA==}
+    dependencies:
+      '@unocss/core': 0.49.4
     dev: true
 
   /@unocss/vite/0.46.5_rollup@2.79.1+vite@3.2.5:

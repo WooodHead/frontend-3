@@ -18,11 +18,23 @@ const selStore = registerSelStore(id)
       <ObjectSelector />
     </div>
     <div center-y>
-      <AButton type="outline" title="历史记录">
-        <template #icon>
-          <div i-radix-icons-counter-clockwise-clock text-lg />
-        </template>
-      </AButton>
+      <AButtonGroup>
+        <AButton type="outline" title="返回到上一场景">
+          <template #icon>
+            <div i-radix-icons-caret-left text-xl />
+          </template>
+        </AButton>
+        <AButton type="outline" title="历史记录">
+          <template #icon>
+            <div i-radix-icons-counter-clockwise-clock text-lg />
+          </template>
+        </AButton>
+        <AButton type="outline" title="前进到下一场景">
+          <template #icon>
+            <div i-radix-icons-caret-right text-xl />
+          </template>
+        </AButton>
+      </AButtonGroup>
     </div>
   </div>
 </template>

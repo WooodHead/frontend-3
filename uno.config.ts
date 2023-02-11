@@ -3,6 +3,7 @@ import { defineConfig, presetAttributify, presetIcons, presetTypography, presetU
 import presetRemToPx from '@unocss/preset-rem-to-px'
 import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
+import transformerVariantGroup from '@unocss/transformer-variant-group'
 import parseIcons from './src/utils/parseIcons'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
@@ -25,6 +26,9 @@ export default defineConfig<Theme>({
     if (p.includes('!') || p.includes('important') || p.includes('nim')) { return p }
     return `!${p}`
   },
+  transformers: [
+    transformerVariantGroup(),
+  ],
   rules: [
     // 为了attributeify的兼容性而做出的必要的调整
     // TODO 行数太多了，缩减一下
@@ -91,7 +95,7 @@ export default defineConfig<Theme>({
     presetRemToPx(),
     presetTypography(),
     // presetScrollbar({}), // scrollbar相关的属性兼容性有点差
-    presetTheme<{}>({
+    presetTheme<Theme>({
       selectors: {
         light: 'body',
         dark: 'body.dark',

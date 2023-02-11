@@ -879,6 +879,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @name GetAllCharacters
+     * @request GET:/character
+     */
+    getAllCharacters: (params: RequestParams = {}) =>
+      this.request<CharacterEntity[], any>({
+        path: `/character`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @name GetCharacter
      * @request GET:/character/{id}
      */
