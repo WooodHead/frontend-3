@@ -11,7 +11,7 @@ const { id, show = true, load = true } = defineProps<{
   load?: boolean
 }>()
 
-const { data, isSuccess, isLoading, isError } = $(useQuery({
+const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
   queryKey: computed(() => ['event', id, 'detail']),
   queryFn: () => api.event.getEventDetail(id),
@@ -22,7 +22,7 @@ const { data, isSuccess, isLoading, isError } = $(useQuery({
     updatedAt: new Date(data.updatedAt),
     range: UnitIDRange.deserialize(data.range),
   }),
-}))
+})
 </script>
 
 <template>

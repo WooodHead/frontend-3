@@ -19,36 +19,30 @@ const emit = defineEmits<{
 }>()
 
 const store = useStore()
-const { eventId } = $(storeToRefs(store))
+const { eventId } = storeToRefs(store)
 const client = useQueryClient()
 
-const formRef = $ref<FormRef>()
-let model = $ref<{
+const formRef = ref<FormRef>()
+const model = reactive<{
   name?: string
   description?: string
   range?: UnitRangePickerValue
 }>({})
-const { data, isLoading } = $(useQuery({
-  enabled: computed(() => eventId !== undefined),
-  queryKey: computed(() => ['event', eventId]),
-  queryFn: () => api.event.getEvent(eventId!),
-}))
-watch(
-  () => data,
-  data => {
-    if (!data) { return }
-    const { name, description, unit, start, end } = data
-    model = {
-      name,
-      description: description ?? undefined,
-      range: {
-        unit: Unit.fromOrder(unit).toString(),
-        range: [new Date(start), new Date(end)],
-      },
-    }
-  },
-  { immediate: true },
-)
+const { data, isLoading } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.getEvent(eventId.value!),
+})
+watch(data, data => {
+  if (!data) { return }
+  const { name, description, unit, start, end } = data
+  model.name = name
+  model.description = description ?? undefined
+  model.range = {
+    unit: Unit.fromOrder(unit).toString(),
+    range: [new Date(start), new Date(end)],
+  }
+}, { immediate: true })
 
 const { mutateAsync } = useMutation({
   mutationFn: ({ id, dto }: {
@@ -72,8 +66,8 @@ const { mutateAsync } = useMutation({
 })
 
 const handleBeforeOk = async () => {
-  if (!eventId || !formRef) { return false }
-  const error = await formRef.validate()
+  if (!eventId.value || !formRef.value) { return false }
+  const error = await formRef.value.validate()
   if (error) { return false }
   const {
     name,
@@ -81,7 +75,7 @@ const handleBeforeOk = async () => {
     range: { unit, range: [start, end] },
   } = model as Required<typeof model>
   await mutateAsync({
-    id: eventId,
+    id: eventId.value,
     dto: {
       name,
       description,

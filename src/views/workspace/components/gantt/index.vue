@@ -16,7 +16,7 @@ const { status, data } = defineProps<{
 }>()
 
 const store = registerStore(status.positionId)
-const { visibleUnit } = $(storeToRefs(store))
+const { visibleUnit } = storeToRefs(store)
 
 watch(
   () => status,
@@ -26,7 +26,7 @@ watch(
 
 if (data) { store.initWithData(data) }
 
-const { suspense } = $(useQuery({
+const { suspense } = useQuery({
   enabled: computed(() => !data),
   staleTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
@@ -39,20 +39,16 @@ const { suspense } = $(useQuery({
   onError: () => {
     store.init(UnitID.fromDayjs(new Date(), 'month'))
   },
-}))
+})
 
 await suspense()
 
-watchDebounced(
-  () => visibleUnit,
-  visibleUnit => {
-    if (!visibleUnit) { return }
-    api.project.updateWorkspaceInfo({
-      origin: visibleUnit.serialize(),
-    })
-  },
-  { debounce: 100 },
-)
+watchDebounced(visibleUnit, visibleUnit => {
+  if (!visibleUnit) { return }
+  api.project.updateWorkspaceInfo({
+    origin: visibleUnit.serialize(),
+  })
+}, { debounce: 100 })
 </script>
 
 <template>

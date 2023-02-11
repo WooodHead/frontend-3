@@ -9,11 +9,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: number[]): void
 }>()
 
-let visible = $ref(false)
+const visible = ref(false)
 const handleAddChara = (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
   emit('update:modelValue', [...modelValue, chara.id])
-  visible = false
+  visible.value = false
 }
 </script>
 

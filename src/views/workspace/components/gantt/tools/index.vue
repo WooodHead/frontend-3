@@ -7,7 +7,7 @@ import Create from './buttons/create.vue'
 
 import { fadeInOutY } from '@/utils/animation'
 
-const expand = $ref(false)
+const expand = ref(false)
 </script>
 
 <template>

@@ -20,7 +20,7 @@ watch(hover, hover => {
   if (hover) { emit('hover') }
 })
 
-const animation = $computed(() => {
+const animation = computed(() => {
   if (!animate) { return {} }
   if (typeof animate === 'object') { return animate }
   return fadeInOut(height)

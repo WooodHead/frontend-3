@@ -13,7 +13,7 @@ const { id, name, icon, darkIcon, size = 40 } = defineProps<{
 
 const WSStore = useWSStore()
 const globalStore = useGlobalStore()
-const { darkMode } = $(storeToRefs(globalStore))
+const { darkMode } = storeToRefs(globalStore)
 
 const [dragProps, dragSource] = useDrag({
   type: 'component-handler',

@@ -13,22 +13,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div row h-full center bg-gray-3>
-    <SideBar />
-    <Suspense>
+  <Suspense>
+    <div row h-full center bg-gray-3>
+      <SideBar />
       <Body />
-      <template #fallback>
-        <div fullscreen grow center>
-          <Status card w-1-2 h-1-2 loading />
-        </div>
-      </template>
-    </Suspense>
-  </div>
-  <AModal simple :footer="false">
-    <AInputSearch search-button />
-    <ACard>
-      1
-    </ACard>
-  </AModal>
+    </div>
+    <template #fallback>
+      <div center grow fullscreen bg-gray-3>
+        <Status card w-1-2 h-1-2 loading />
+      </div>
+    </template>
+  </Suspense>
   <RouterView />
 </template>

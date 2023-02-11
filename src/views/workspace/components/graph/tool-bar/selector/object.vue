@@ -2,10 +2,7 @@
 import { useStore } from './store'
 
 const store = useStore()
-const { subject } = $(storeToRefs(store))
-watchEffect(() => {
-  console.log(subject)
-})
+const { subject } = storeToRefs(store)
 </script>
 
 <template>

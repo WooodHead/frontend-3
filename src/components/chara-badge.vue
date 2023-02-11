@@ -9,13 +9,13 @@ const { id, animate } = defineProps<{
   animate?: boolean | Record<string, any>
 }>()
 
-const { data } = $(useQuery({
+const { data } = useQuery({
   enabled: false,
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.getCharacter(id),
-}))
+})
 
-const animation = $computed(() => {
+const animation = computed(() => {
   if (!animate) { return {} }
   if (typeof animate === 'object') { return animate }
   return fadeInOut

@@ -4,7 +4,7 @@ import { useStore } from '../../store'
 import api from '@/api/api'
 
 const store = useStore()
-const { lock } = $(storeToRefs(store))
+const { lock } = storeToRefs(store)
 
 const { suspense } = useQuery({
   staleTime: 0,
@@ -15,11 +15,9 @@ const { suspense } = useQuery({
 
 await suspense()
 
-watch(
-  () => lock,
-  lock => {
-    api.project.updateWorkspaceInfo({ lock })
-  },
+watch(lock, lock => {
+  api.project.updateWorkspaceInfo({ lock })
+},
 )
 </script>
 

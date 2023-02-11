@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Basic from './basic.vue'
 
-const visible = $ref(false)
+const visible = ref(false)
 </script>
 
 <template>

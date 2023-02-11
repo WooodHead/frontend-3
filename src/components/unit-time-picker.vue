@@ -19,11 +19,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: UnitTimePickerValue): void
 }>()
 
-const { mergedDisabled, mergedError, mergedSize } = $(useFormItem({
-  disabled: $$(disabled),
-}))
+const { mergedDisabled, mergedError, mergedSize } = useFormItem({
+  disabled: computed(() => disabled),
+})
 
-const { mode, showTime, timePickerProps } = $(usePickerConfig(unit))
+const { mode, showTime, timePickerProps } = usePickerConfig(unit)
 
 const handleUnitChange = (unit: string | number | boolean) => {
   emit('update:modelValue', {
@@ -38,13 +38,13 @@ const handleTimeChange = (value: string | number | Date | undefined) => {
   })
 }
 
-const common = $computed(() => ({
+const common = computed(() => ({
   'disabled': mergedDisabled,
   'error': mergedError,
   'size': mergedSize,
   'model-value': modelValue?.time,
-  'show-time': showTime,
-  'time-picker-props': timePickerProps,
+  'show-time': showTime.value,
+  'time-picker-props': timePickerProps.value,
   'class': 'rounded-t-0',
   'allow-clear': false,
   readonly,

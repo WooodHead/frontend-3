@@ -8,13 +8,13 @@ import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 
 const store = useStore()
-const { unitRange } = $(storeToRefs(store))
+const { unitRange } = storeToRefs(store)
 
 const client = useQueryClient()
 
-const ranges = $computed(() => unitRange?.ids.map(range => range.childrenRange))
+const ranges = computed(() => unitRange.value?.ids.map(range => range.childrenRange))
 const results = useQueries({
-  queries: computed(() => ranges?.map(range => ({
+  queries: computed(() => ranges.value?.map(range => ({
     queryKey: ['event', { range: range?.serialize() }],
     queryFn: () => api.event.getEvents({ range: range?.serialize() }),
     onSuccess: (events: EventEntity[]) => {
@@ -27,7 +27,7 @@ const results = useQueries({
 })
 
 // TODO 事件时间跨度包含多个单位时将会出现重复，需要去重
-const eventData = $computed(() => {
+const eventData = computed(() => {
   const events = results
     .map(({ data }) => data)
     .flat()
@@ -37,8 +37,8 @@ const eventData = $computed(() => {
 })
 
 // TODO 更改单位层级时，需要重新计算
-const blockData = $computed(() =>
-  eventData?.map(({ range, ...rest }) => ({
+const blockData = computed(() =>
+  eventData.value?.map(({ range, ...rest }) => ({
     ...rest,
     range: UnitIDRange.deserialize(range),
   }) as BlockProps)

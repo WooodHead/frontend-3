@@ -14,21 +14,19 @@ interface EditorProps {
 const { status } = defineProps<EditorProps>()
 
 const store = registerStore(status.positionId)
-const { editor, eventId, saving } = $(storeToRefs(store))
-watch(
-  () => status,
-  status => { store.status = status },
-  { deep: true },
-)
+const { editor, eventId, saving } = storeToRefs(store)
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 
-let event = $ref<SelectorOptionValue>()
+const event = ref<SelectorOptionValue>()
 emitter.on('event-select', ({ event: e }) => {
-  event = { type: 'event', value: e, id: `event_${e.id}` }
+  event.value = { type: 'event', value: e, id: `event_${e.id}` }
   store.eventId = e.id
 })
-const handleSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
-  emitter.emit('event-select', { event })
+const handleSelect = (eventEntity: EventEntity | undefined) => {
+  if (!eventEntity) { return }
+  emitter.emit('event-select', { event: eventEntity })
 }
 
 // TODO 历史记录

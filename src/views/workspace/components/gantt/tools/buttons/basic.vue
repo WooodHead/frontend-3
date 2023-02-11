@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const { tooltip } = defineProps<{ tooltip: string }>()
 
-let visible = $ref(false)
+const visible = ref(false)
 
 const emit = defineEmits<{
   (e: 'click', ev: MouseEvent): void
 }>()
 
 const handleClick = (ev: MouseEvent) => {
-  visible = false
+  visible.value = false
   emit('click', ev)
 }
 </script>

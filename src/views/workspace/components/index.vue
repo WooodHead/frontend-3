@@ -17,7 +17,7 @@ const status = defineProps<{
   state?: IPositionState // 组件所处的位置（角落，垂直，水平，全屏），用于动态调节组件显示的内容
 }>()
 const position = toRef(status, 'position')
-const componentStatus = $computed(() => new ComponentStatus(status.id, status.position, status.state))
+const componentStatus = computed(() => new ComponentStatus(status.id, status.position, status.state))
 </script>
 
 <template>

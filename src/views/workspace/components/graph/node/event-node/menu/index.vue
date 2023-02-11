@@ -14,25 +14,25 @@ const emits = defineEmits<{
   (event: 'active', name: string): void
 }>()
 
-let activeName = $ref<string>()
+const activeName = ref<string>()
 const handleMouseEnter = (name: string) => {
   if (!isConnecting) { return }
-  activeName = name
+  activeName.value = name
   emits('active', name)
 }
 
 watch(() => isConnecting, isConnecting => {
-  if (!isConnecting) { activeName = undefined }
+  if (!isConnecting) { activeName.value = undefined }
 })
 
-const sectorAngle = $computed(() => 360 / names.length)
+const sectorAngle = computed(() => 360 / names.length)
 
-const sectors = $computed(() => names.map((name, index) => ({
+const sectors = computed(() => names.map((name, index) => ({
   name,
   innerRadius,
   outerRadius,
-  offsetAngle: sectorAngle * index,
-  sectorAngle,
+  offsetAngle: sectorAngle.value * index,
+  sectorAngle: sectorAngle.value,
 })))
 </script>
 

@@ -15,24 +15,22 @@ interface GraphProps {
 const { status } = defineProps<GraphProps>()
 
 const store = registerStore(status.positionId)
-watch(
-  () => status,
-  status => { store.status = status },
-  { deep: true },
-)
+watch(() => status, status => {
+  store.status = status
+}, { deep: true })
 
-let nodes = $ref<Node[]>([])
-const edges = $ref<Edge[]>([])
-const { nodes: graphNodes, onConnectStart, onConnectEnd, addSelectedNodes, removeSelectedNodes, fitView } = $(useVueFlow())
+const nodes = reactive<Node[]>([])
+const edges = reactive<Edge[]>([])
+const { nodes: graphNodes, onConnectStart, onConnectEnd, addSelectedNodes, removeSelectedNodes, fitView } = useVueFlow()
 // useForceLayout()
 
 onMounted(() => {
-  nodes = Array(2).fill(0).map((_, i) => ({
+  nodes.push(...Array(2).fill(0).map((_, i) => ({
     id: `${i}`,
     type: 'event',
     position: { x: i * 200, y: 0 },
     label: `Node ${i}`,
-  }))
+  })))
 
   // edges.push(...Array(19).fill(0).map((_, i) => ({
   //   id: `${i}_${i + 1}`,
@@ -42,19 +40,19 @@ onMounted(() => {
   // })))
 })
 
-let connectingNodeId = $ref<string>()
+const connectingNodeId = ref<string>()
 onConnectStart(({ nodeId }) => {
-  connectingNodeId = nodeId
-  addSelectedNodes(graphNodes.filter(({ id }) => id === nodeId))
+  connectingNodeId.value = nodeId
+  addSelectedNodes(graphNodes.value.filter(({ id }) => id === nodeId))
 })
 onConnectEnd(() => {
-  connectingNodeId = undefined
-  removeSelectedNodes(graphNodes.filter(({ id }) => id === connectingNodeId))
+  connectingNodeId.value = undefined
+  removeSelectedNodes(graphNodes.value.filter(({ id }) => id === connectingNodeId.value))
 })
 
 watch(() => status.position, () => { fitView() })
 
-const showMiniMap = $computed(() => ![IPositionState.Corner, IPositionState.Vertical].includes(status.state ?? -1))
+const showMiniMap = computed(() => ![IPositionState.Corner, IPositionState.Vertical].includes(status.state ?? -1))
 </script>
 
 <template>

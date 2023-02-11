@@ -16,21 +16,21 @@ const emit = defineEmits<{
   (e: 'hover', chara: CharacterEntity): void
 }>()
 
-const { data } = $(useQuery({
+const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.getCharacter(id),
-}))
+})
 
 // TODO chara-item
 
 const handleClick = () => {
-  if (!data) { return }
-  emit('click', data)
+  if (!data.value) { return }
+  emit('click', data.value)
 }
 
 const handleHover = () => {
-  if (!data) { return }
-  emit('hover', data)
+  if (!data.value) { return }
+  emit('hover', data.value)
 }
 </script>
 

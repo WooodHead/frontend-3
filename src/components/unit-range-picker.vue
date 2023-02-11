@@ -19,11 +19,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: UnitRangePickerValue): void
 }>()
 
-const { mergedDisabled, mergedError, mergedSize } = $(useFormItem({
-  disabled: $$(disabled),
-}))
+const { mergedDisabled, mergedError, mergedSize } = useFormItem({
+  disabled: computed(() => disabled),
+})
 
-const rangePickerConfig = $computed(() => {
+const rangePickerConfig = computed(() => {
   let showTime = false
   const props: Partial<TimePickerProps> = {}
   let mode: 'year' | 'month' | 'date' = 'date'

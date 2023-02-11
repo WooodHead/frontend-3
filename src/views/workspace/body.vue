@@ -12,7 +12,6 @@ import { fadeInOut } from '@/utils/animation'
 import emitter from '@/utils/emitter'
 
 const WSStore = useWSStore()
-const { layout } = $(storeToRefs(WSStore))
 
 const { suspense } = useQuery({
   staleTime: 0,
@@ -37,13 +36,13 @@ const { suspense } = useQuery({
 await suspense()
 
 watch(
-  () => layout.serialize(),
+  () => WSStore.layout.serialize(),
   layout => { api.project.updateWorkspaceInfo({ layout }) },
   { deep: true },
 )
 
 // TODO 简单粗暴的组件reload方式
-const version = $ref<Record<string, number>>({
+const version = reactive<Record<string, number>>({
   gantt: 0,
 })
 emitter.on('reload', ({ reason: { type } }) => {

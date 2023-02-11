@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import useWSStore from '../store'
 import api from '@/api/api'
 import { useGlobalStore } from '@/store'
@@ -6,15 +7,15 @@ import { useGlobalStore } from '@/store'
 const router = useRouter()
 
 const WSStore = useWSStore()
-const { menuExpand } = $(storeToRefs(WSStore))
+const { menuExpand } = storeToRefs(WSStore)
 
 const globalStore = useGlobalStore()
-let { darkMode } = $(storeToRefs(globalStore))
+const { darkMode } = storeToRefs(globalStore)
 
 const toggleDarkMode = () => {
-  darkMode = !darkMode
+  darkMode.value = !darkMode.value
 
-  if (darkMode) {
+  if (darkMode.value) {
     document.body.setAttribute('arco-theme', 'dark')
     document.body.classList.add('dark')
     document.body.style.colorScheme = 'dark'
@@ -26,15 +27,19 @@ const toggleDarkMode = () => {
   }
 }
 
-onBeforeMount(async () => {
-  const { darkMode } = await api.project.getProjectSettings()
-  if (darkMode) { toggleDarkMode() }
-})
-watch(
-  () => darkMode,
-  darkMode => {
-    api.project.updateProjectSettings({ darkMode })
+const { suspense } = useQuery({
+  queryKey: [],
+  queryFn: () => api.project.getProjectSettings(),
+  onSuccess: ({ darkMode }) => {
+    if (darkMode) { toggleDarkMode() }
   },
+})
+
+// await suspense()
+
+watch(darkMode, darkMode => {
+  api.project.updateProjectSettings({ darkMode })
+},
 )
 
 const menuConfig: { title: string; name: string }[] = [

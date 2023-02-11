@@ -16,11 +16,11 @@ const ganttStore = useGanttStore()
 const target = ref<HTMLElement | null>(null)
 const viewPortRef = toRef(store, 'viewPort')
 
-const offset = $computed(() => ganttStore.unitOffset(id) * BLOCK_WIDTH)
-const active = $computed(() => ganttStore.visibleUnit?.isSame(id) ?? false)
+const offset = computed(() => ganttStore.unitOffset(id) * BLOCK_WIDTH)
+const active = computed(() => ganttStore.visibleUnit?.isSame(id) ?? false)
 
 watchEffect(() => {
-  if (active) { store.offset = -offset }
+  if (active.value) { store.offset = -offset.value }
 })
 
 useIntersectionObserver(

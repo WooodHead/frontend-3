@@ -6,16 +6,16 @@ import Basic from './basic.vue'
 import type { UnitRangePickerValue } from '@/components/unit-range-picker.vue'
 
 const store = useStore()
-const { subUnit, selectedRange } = $(storeToRefs(store))
+const { subUnit, selectedRange } = storeToRefs(store)
 
-const visible = $ref(false)
+const visible = ref(false)
 
-const value = $computed<UnitRangePickerValue>(() => ({
-  unit: subUnit as IUnit,
-  range: selectedRange.map(v => v.toDate()),
+const value = computed<UnitRangePickerValue>(() => ({
+  unit: subUnit.value as IUnit,
+  range: selectedRange.value.map(v => v.toDate()),
 }))
 // 当日期没选择完全时始终是undefined，避免传入不完整数据
-const init = $computed(() => value.range.length === 2 ? value : undefined)
+const init = computed(() => value.value.range.length === 2 ? value.value : undefined)
 </script>
 
 <template>

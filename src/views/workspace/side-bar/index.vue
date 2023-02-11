@@ -17,9 +17,9 @@ import GraphDarkIcon from '@/assets/workspace/graph-dark.png'
 const router = useRouter()
 
 const WSStore = useWSStore()
-let { menuExpand } = $(storeToRefs(WSStore))
+const { menuExpand } = storeToRefs(WSStore)
 
-const handleClickOutside = () => { menuExpand = false }
+const handleClickOutside = () => { menuExpand.value = false }
 </script>
 
 <template>

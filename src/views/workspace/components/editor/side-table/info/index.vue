@@ -6,12 +6,12 @@ import InfoModal from './info-modal.vue'
 import api from '@/api/api'
 
 const store = useStore()
-const { eventId } = $(storeToRefs(store))
+const { eventId } = storeToRefs(store)
 
 const { data: event } = useQuery({
-  enabled: computed(() => eventId !== undefined),
-  queryKey: computed(() => ['event', eventId]),
-  queryFn: () => api.event.getEvent(eventId!),
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.getEvent(eventId.value!),
   select: data => {
     const range = UnitIDRange.deserialize(data.range)
     return {
@@ -22,7 +22,7 @@ const { data: event } = useQuery({
   },
 })
 
-const visible = $ref(false)
+const visible = ref(false)
 </script>
 
 <template>

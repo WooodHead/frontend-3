@@ -19,19 +19,19 @@ const emit = defineEmits<{
   (e: 'ok'): void
 }>()
 
-const type = $computed(() => {
+const type = computed(() => {
   if (init === undefined) { return 'both' }
   if (Array.isArray(init)) { return 'collection' }
   return 'atom'
 })
 
-const title = $computed(() => {
-  if (type === 'both') { return '创建事件' }
-  if (type === 'atom') { return '创建原子事件' }
+const title = computed(() => {
+  if (type.value === 'both') { return '创建事件' }
+  if (type.value === 'atom') { return '创建原子事件' }
   return '创建集合事件'
 })
 
-const formRef = $ref<{ validate: () => Promise<CreateEventDto> }>()
+const formRef = ref<{ validate: () => Promise<CreateEventDto> }>()
 const client = useQueryClient()
 
 const { mutateAsync } = useMutation({
@@ -53,7 +53,7 @@ const { mutateAsync } = useMutation({
 })
 
 const handleBeforeOk = async () => {
-  const data = await formRef!.validate()
+  const data = await formRef.value!.validate()
   const event = await mutateAsync(data)
   emit('beforeOk', event)
   return true

@@ -34,24 +34,24 @@ const emit = defineEmits<{
   (e: 'select:scene', scene: SceneEntity | undefined): void
 }>()
 
-let _inputValue = $ref<string>() // 非受控状态下的值
-const computedInputValue = $computed(() => inputValue || _inputValue)
-const searchValue = refDebounced($$(computedInputValue), 200) // 手动消抖
-let _modelValue = $ref<SelectorOptionValue>()
-const computedModelValue = $computed(() => modelValue || _modelValue)
+const _inputValue = ref<string>() // 非受控状态下的值
+const computedInputValue = computed(() => inputValue || _inputValue.value)
+const searchValue = refDebounced(computedInputValue, 200) // 手动消抖
+const _modelValue = ref<SelectorOptionValue>()
+const computedModelValue = computed(() => modelValue || _modelValue.value)
 
 onErrorCaptured<AxiosError>(err => {
   Message.error(err.message)
 })
 
 const handleInputUpdate = (value: string) => {
-  _inputValue = value
+  _inputValue.value = value
   emit('update:input-value', value)
 }
 
 const handleClear = () => {
-  _inputValue = undefined
-  _modelValue = undefined
+  _inputValue.value = undefined
+  _modelValue.value = undefined
 
   emit('update:input-value', undefined)
   emit('update:model-value', undefined)
@@ -60,7 +60,7 @@ const handleClear = () => {
 
 const handleModelUpdate = (rawValue: any) => {
   const value = rawValue as SelectorOptionValue | undefined
-  _modelValue = value
+  _modelValue.value = value
   emit('select', value)
   emit('update:model-value', value)
 

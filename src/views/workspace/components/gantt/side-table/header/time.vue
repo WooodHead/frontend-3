@@ -4,18 +4,18 @@ import { useStore } from '../../store'
 import type { UnitTimePickerValue } from '@/components/unit-time-picker.vue'
 
 const store = useStore()
-const { unit, visibleUnit } = $(storeToRefs(store))
+const { unit, visibleUnit } = storeToRefs(store)
 
-let timePickerVisible = $ref(false)
-const timePickerValue = $computed(() => {
-  if (!unit || !visibleUnit) { return undefined }
+const timePickerVisible = ref(false)
+const timePickerValue = computed(() => {
+  if (!unit.value || !visibleUnit.value) { return undefined }
   return {
-    unit,
-    time: visibleUnit.toDate(),
+    unit: unit.value,
+    time: visibleUnit.value?.toDate(),
   }
 })
 const handleTimeChange = ({ time, unit }: UnitTimePickerValue) => {
-  timePickerVisible = false
+  timePickerVisible.value = false
   store.navigateTo(UnitID.fromDayjs(time, unit))
 }
 </script>
@@ -27,7 +27,7 @@ const handleTimeChange = ({ time, unit }: UnitTimePickerValue) => {
     :popup-translate="[0, 8]"
   >
     <AButton>
-      {{ store.visibleUnit?.toBriefString() }}
+      {{ visibleUnit?.toBriefString() }}
     </AButton>
     <template #content>
       <div card-border p-2>

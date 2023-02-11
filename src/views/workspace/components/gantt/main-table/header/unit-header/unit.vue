@@ -10,7 +10,7 @@ const { id, left, right } = defineProps<{
 }>()
 
 const store = useStore()
-const offset = $computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
+const offset = computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
 const { viewPort } = storeToRefs(store)
 
 const target = ref<HTMLElement | null>(null)

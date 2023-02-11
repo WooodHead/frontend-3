@@ -16,45 +16,55 @@ export const useDraggable = (
   target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
   { onMove, onEnd, minDistance = 5 }: UseDraggableOptions = {},
 ) => {
-  let start = $ref<Position>()
-  let delta = $ref<Position>({ x: 0, y: 0 })
-  let isDragging = $ref(false)
+  const start = ref<Position>()
+  const delta = ref<Position>({ x: 0, y: 0 })
+  const isDragging = ref(false)
 
   const handleStart = (e: PointerEvent) => {
     e.preventDefault()
-    start = { x: e.clientX, y: e.clientY }
+    start.value = { x: e.clientX, y: e.clientY }
   }
 
   const handleMove = (e: PointerEvent) => {
-    if (!start) { return }
-    const { x, y } = start
+    if (!start.value) { return }
+    const { x, y } = start.value
     const nowDelta = { x: e.clientX - x, y: e.clientY - y }
 
-    if (isDragging) { delta = nowDelta }
+    if (isDragging.value) { delta.value = nowDelta }
     // 拖动距离过短时不触发拖动
     else if (Math.abs(nowDelta.x) >= minDistance) {
-      isDragging = true
-      delta = nowDelta
+      isDragging.value = true
+      delta.value = nowDelta
     }
 
-    onMove?.(delta, e)
+    onMove?.(delta.value, e)
   }
 
   const handleEnd = (e: PointerEvent) => {
-    if (onEnd && delta) { onEnd(delta, e) }
+    if (onEnd) { onEnd(delta.value, e) }
 
-    start = undefined
-    isDragging = false
-    delta = { x: 0, y: 0 }
+    start.value = undefined
+    isDragging.value = false
+    delta.value = { x: 0, y: 0 }
   }
 
   useEventListener(target, 'pointerdown', handleStart, true)
-  useEventListener(document, 'pointermove', handleMove, true)
   useEventListener(document, 'pointerup', handleEnd, true)
 
+  const cleanup = ref<(() => void)>()
+  watch(start, start => {
+    if (start) {
+      cleanup.value = useEventListener(document, 'pointermove', handleMove, true)
+    }
+    else {
+      cleanup.value?.()
+      cleanup.value = undefined
+    }
+  })
+
   return {
-    ...toRefs($$(delta)),
-    isDragging: $$(isDragging),
+    ...toRefs(delta),
+    isDragging,
   }
 }
 export default useDraggable

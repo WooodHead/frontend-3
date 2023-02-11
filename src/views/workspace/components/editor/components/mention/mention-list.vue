@@ -5,12 +5,9 @@ const { suggestion } = defineProps<{
   suggestion: SuggestionProps<any>
 }>()
 
-watch(
-  () => suggestion,
-  suggestion => {
-    suggestion.command({ id: suggestion.text })
-  },
-)
+watch(() => suggestion, suggestion => {
+  suggestion.command({ id: suggestion.text })
+})
 
 const handleKeyDown = (props: SuggestionKeyDownProps) => {
   console.log(props)

@@ -17,43 +17,39 @@ const { id, range, color } = defineProps<BlockProps>()
 
 const store = useStore()
 const { viewPort } = storeToRefs(store)
-const { visibleUnit, lock } = $(storeToRefs(store))
+const { visibleUnit, lock } = storeToRefs(store)
 
 const client = useQueryClient()
 
-const ctrl = $(useKeyModifier('Control'))
-const meta = $(useKeyModifier('Meta'))
-const select = $computed(() => ctrl || meta || false)
-let active = $ref(false)
+const ctrl = useKeyModifier('Control')
+const meta = useKeyModifier('Meta')
+const select = computed(() => ctrl.value || meta.value || false)
+const active = ref(false)
 const handleSelectClick = () => {
   if (!select) { return }
-  active = !active
-  if (active) { store.selectedEvents.add(id) }
+  active.value = !active.value
+  if (active.value) { store.selectedEvents.add(id) }
   else { store.selectedEvents.delete(id) }
 }
-watch(
-  () => store.selectedEvents,
-  events => {
-    active = events.has(id)
-  },
-  { deep: true },
-)
+watch(() => store.selectedEvents, events => {
+  active.value = events.has(id)
+}, { deep: true })
 
-let blockVisible = $ref(false)
+const blockVisible = ref(false)
 const target = ref<HTMLDivElement | null>(null)
 useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     // 不管是否锁定都记录isIntersecting，用于解锁时及时更新状态
-    blockVisible = isIntersecting
+    blockVisible.value = isIntersecting
 
     if (isIntersecting) {
       // TODO 列表锁现在是只增不减，是否要改成不增不减
       const visible = store.visibleEvents.contains(range, { eventId: id })
-      if (lock && visible) { return }
+      if (lock.value && visible) { return }
       store.visibleEvents.insert(range, { eventId: id })
     }
-    else if (!lock) {
+    else if (!lock.value) {
       store.visibleEvents.remove(range)
     }
   },
@@ -62,19 +58,19 @@ useIntersectionObserver(
   },
 )
 whenever(
-  () => !lock,
+  () => !lock.value,
   () => {
-    if (!blockVisible) { store.visibleEvents.remove(range) }
+    if (!blockVisible.value) { store.visibleEvents.remove(range) }
   },
 )
 
-const width = $computed(() => range.length * UNIT_WIDTH)
-const offset = $computed(() => {
+const width = computed(() => range.length * UNIT_WIDTH)
+const offset = computed(() => {
   const zero = store.origin?.firstChild
   if (!zero) { return undefined }
   return range.start.diff(zero) * UNIT_WIDTH
 })
-const order = $computed(() => store.visibleEvents.order(range, { eventId: id }))
+const order = computed(() => store.visibleEvents.order(range, { eventId: id }))
 
 // 删除事件时更新事件时间跨度内所有事件列表缓存
 const handleDelete = (range: UnitIDRange, ids: number[]) => {
@@ -93,7 +89,7 @@ const handleDelete = (range: UnitIDRange, ids: number[]) => {
 }
 
 // 预加载当前可见区域内的event detail
-const loadDetail = $computed(() => visibleUnit?.childrenRange.isIntersect(range))
+const loadDetail = computed(() => visibleUnit.value?.childrenRange.isIntersect(range))
 </script>
 
 <template>

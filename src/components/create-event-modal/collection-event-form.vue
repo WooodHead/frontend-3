@@ -6,9 +6,9 @@ const { init } = defineProps<{
   init?: number[]
 }>()
 
-const formRef = $ref<FormRef>()
+const formRef = ref<FormRef>()
 
-const model = $ref({
+const model = ref({
   name: '',
   description: '',
   subIds: new Set(init ?? []),
@@ -17,11 +17,11 @@ const model = $ref({
 // TODO collection-event-form
 const handleEventSelect = (event: EventEntity | undefined) => {
   if (!event) { return }
-  model.subIds.add(event.id)
+  model.value.subIds.add(event.id)
 }
 
 const validate = async (): Promise<CreateEventDto> => {
-  const error = await formRef?.validate()
+  const error = await formRef.value?.validate()
   if (error) { return Promise.reject(error) }
 
   return Promise.reject(new Error('114514'))

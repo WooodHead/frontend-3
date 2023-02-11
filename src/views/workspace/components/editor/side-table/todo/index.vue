@@ -8,33 +8,30 @@ import api from '@/api/api'
 import type { EventTodoEntity } from '@/api/api-base'
 
 const store = useStore()
-const { eventId } = $(storeToRefs(store))
+const { eventId } = storeToRefs(store)
 const client = useQueryClient()
 
-const checkedTodo = $ref(new Map<number, string>())
-const unCheckedTodo = $ref(new Map<number, string>())
+const checkedTodo = reactive(new Map<number, string>())
+const unCheckedTodo = reactive(new Map<number, string>())
 
-const { data: todos, isSuccess, isLoading, isError } = $(useQuery({
-  enabled: computed(() => eventId !== undefined),
+const { data: todos, isSuccess, isLoading, isError } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
   staleTime: Infinity,
-  queryKey: computed(() => ['event', eventId, 'todo']),
-  queryFn: () => api.event.getTodos(eventId!),
+  queryKey: computed(() => ['event', eventId.value, 'todo']),
+  queryFn: () => api.event.getTodos(eventId.value!),
   onError: (e: AxiosError) => {
     Message.error(`获取待办事项失败：${e.message}`)
   },
-}))
+})
 
-watch(
-  () => todos,
-  todos => {
-    if (!todos) { return }
-    checkedTodo.clear()
-    unCheckedTodo.clear()
-    for (const { checked, id, title } of todos) {
-      (checked ? checkedTodo : unCheckedTodo).set(id, title)
-    }
-  },
-)
+watch(todos, todos => {
+  if (!todos) { return }
+  checkedTodo.clear()
+  unCheckedTodo.clear()
+  for (const { checked, id, title } of todos) {
+    (checked ? checkedTodo : unCheckedTodo).set(id, title)
+  }
+})
 
 const handleCheckedItemClick = (id: number) => {
   // TODO 改为乐观更新
@@ -57,14 +54,14 @@ const handleUnCheckedItemClick = (id: number) => {
     })
 }
 
-let addVisible = $ref(false)
+const addVisible = ref(false)
 const { mutate: createTodo, isLoading: createLoading } = useMutation({
   mutationFn: ({ title, color }: { title: string; color: string }) =>
-    api.event.createTodo(eventId!, { title, color }),
+    api.event.createTodo(eventId.value!, { title, color }),
   onSuccess: todo => {
-    addVisible = false
+    addVisible.value = false
     client.setQueryData<EventTodoEntity[]>(
-      ['event', eventId, 'todo'],
+      ['event', eventId.value, 'todo'],
       todos => [...todos ?? [], todo],
     )
   },
@@ -73,7 +70,7 @@ const { mutate: createTodo, isLoading: createLoading } = useMutation({
   },
 })
 const handleAdd = (title: string) => {
-  if (!eventId) { return }
+  if (!eventId.value) { return }
   createTodo({ title, color: '#000000' })
 }
 
@@ -81,7 +78,7 @@ const { mutate: deleteTodo, isLoading: deleteLoading } = useMutation({
   mutationFn: ({ id }: { id: number }) => api.event.removeTodo(id),
   onSuccess: ({ id }) => {
     client.setQueryData<EventTodoEntity[]>(
-      ['event', eventId, 'todo'],
+      ['event', eventId.value, 'todo'],
       todos => todos?.filter(todo => todo.id !== id),
     )
   },
@@ -90,7 +87,7 @@ const { mutate: deleteTodo, isLoading: deleteLoading } = useMutation({
   },
 })
 const handleDelete = (id: number) => {
-  if (!eventId) { return }
+  if (!eventId.value) { return }
   deleteTodo({ id })
 }
 </script>

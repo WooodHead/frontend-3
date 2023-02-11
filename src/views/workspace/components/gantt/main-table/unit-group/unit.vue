@@ -8,59 +8,57 @@ const { id } = defineProps<{
 }> ()
 
 const store = useStore()
-const { selectedRange } = $(storeToRefs(store))
+const { selectedRange } = storeToRefs(store)
 
-let active = $ref(false)
+const active = ref(false)
 const { pause, resume } = watchPausable(
-  () => selectedRange,
+  selectedRange,
   range => {
     if (range.some(_id => _id.isSame(id))) { return }
-    active = false
+    active.value = false
   },
   { deep: true },
 )
 // 当单元格处于非激活状态时，没必要监听selectedRange
-whenever(() => !active, () => pause(), { immediate: true })
-watch(
-  () => active,
-  active => {
-    if (active) {
-      resume()
+whenever(() => !active.value, () => pause(), { immediate: true })
+watch(active, active => {
+  if (active) {
+    resume()
 
-      if (selectedRange.length === 0) {
-        selectedRange.push(id)
-      }
-      else if (selectedRange.length === 1) {
-        const [start] = selectedRange
-        if (id.isBefore(start)) { selectedRange.unshift(id) }
-        else if (id.isAfter(start)) { selectedRange.push(id) }
-      }
-      else {
-        // 当新id在已选范围内时，优先变动右边界
-        const [start] = selectedRange
-        if (id.isBefore(start)) { selectedRange[0] = id }
-        else { selectedRange[1] = id }
-      }
+    if (selectedRange.value.length === 0) {
+      selectedRange.value.push(id)
+    }
+    else if (selectedRange.value.length === 1) {
+      const [start] = selectedRange.value
+      if (id.isBefore(start)) { selectedRange.value.unshift(id) }
+      else if (id.isAfter(start)) { selectedRange.value.push(id) }
     }
     else {
-      const index = selectedRange.findIndex(_id => _id.isSame(id))
-      if (index !== -1) { selectedRange.splice(index, 1) }
+      // 当新id在已选范围内时，优先变动右边界
+      const [start] = selectedRange.value
+      if (id.isBefore(start)) { selectedRange.value[0] = id }
+      else { selectedRange.value[1] = id }
     }
-  },
+  }
+  else {
+    const index = selectedRange.value.findIndex(_id => _id.isSame(id))
+    if (index !== -1) { selectedRange.value.splice(index, 1) }
+  }
+},
 )
 
 // 在鼠标点击到抬起的过程中，是否发生过拖拽
 // 当没有发生过时，认为是点击事件，从而改变激活状态
-let isDragging = $ref(false)
-let isClicking = $ref(false)
+const isDragging = ref(false)
+const isClicking = ref(false)
 const handlePointerDown = ({ button }: PointerEvent) => {
   if (button !== 0) { return }
-  isClicking = true
+  isClicking.value = true
   const stop = watch(
     () => store.dragging,
     dragging => {
       if (!dragging) { return }
-      isDragging = true
+      isDragging.value = true
       stop()
     },
     { immediate: true },
@@ -69,9 +67,9 @@ const handlePointerDown = ({ button }: PointerEvent) => {
 
 const handlePointerUp = ({ button }: PointerEvent) => {
   if (button !== 0) { return }
-  if (!isDragging && isClicking) { active = !active }
-  isDragging = false
-  isClicking = false
+  if (!isDragging.value && isClicking.value) { active.value = !active }
+  isDragging.value = false
+  isClicking.value = false
 }
 </script>
 

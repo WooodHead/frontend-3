@@ -2,7 +2,7 @@
 import { useStore } from './store'
 
 const store = useStore()
-const { subject } = $(storeToRefs(store))
+const { subject } = storeToRefs(store)
 </script>
 
 <template>

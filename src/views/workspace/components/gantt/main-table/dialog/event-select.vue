@@ -3,11 +3,11 @@ import { useStore } from '../../store'
 import Basic from './basic.vue'
 
 const store = useStore()
-const { selectedEvents } = $(storeToRefs(store))
+const { selectedEvents } = storeToRefs(store)
 
-const visible = $ref(false)
+const visible = ref(false)
 
-const init = $computed(() => Array.from(selectedEvents))
+const init = computed(() => Array.from(selectedEvents.value))
 </script>
 
 <template>
@@ -24,7 +24,6 @@ const init = $computed(() => Array.from(selectedEvents))
         :id="id"
         :key="id"
         button
-        event-select
       />
     </div>
   </Basic>

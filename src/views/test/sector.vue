@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
-
 const { innerRadius = 0, outerRadius, offsetAngle = 0, sectorAngle } = defineProps<{
   innerRadius?: number
   outerRadius: number
@@ -14,9 +12,7 @@ const emit = defineEmits<{
 
 const toRadians = (angle: number) => (angle * Math.PI) / 180
 
-const ref = $ref<HTMLDivElement>()
-
-const innerStart = $computed(() => ({
+const innerStart = computed(() => ({
   x: outerRadius + innerRadius * Math.sin(toRadians(offsetAngle)),
   y: outerRadius - innerRadius * Math.cos(toRadians(offsetAngle)),
 }))
@@ -25,36 +21,30 @@ const outerStart = {
   y: outerRadius - outerRadius * Math.cos(toRadians(offsetAngle)),
 }
 
-const outerEnd = $computed(() => ({
+const outerEnd = computed(() => ({
   x: outerRadius + outerRadius * Math.sin(toRadians(sectorAngle + offsetAngle)),
   y: outerRadius - outerRadius * Math.cos(toRadians(sectorAngle + offsetAngle)),
 }))
 
-const innerEnd = $computed(() => ({
+const innerEnd = computed(() => ({
   x: outerRadius + innerRadius * Math.sin(toRadians(sectorAngle + offsetAngle)),
   y: outerRadius - innerRadius * Math.cos(toRadians(sectorAngle + offsetAngle)),
 }))
 
-const textAngle = $computed(() => sectorAngle / 2 + offsetAngle)
+const textAngle = computed(() => sectorAngle / 2 + offsetAngle)
 
-const textPosition = $computed(() => ({
-  x: outerRadius + (outerRadius + innerRadius) / 2 * Math.sin(toRadians(textAngle)),
-  y: outerRadius - (outerRadius + innerRadius) / 2 * Math.cos(toRadians(textAngle)),
+const textPosition = computed(() => ({
+  x: outerRadius + (outerRadius + innerRadius) / 2 * Math.sin(toRadians(textAngle.value)),
+  y: outerRadius - (outerRadius + innerRadius) / 2 * Math.cos(toRadians(textAngle.value)),
 }))
 
-const style: CSSProperties = {
-  width: `${outerRadius * 2}px`,
-  height: `${outerRadius * 2}px`,
-  clipPath: `path('M ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 0 1 ${innerEnd.x} ${innerEnd.y} L ${outerEnd.x} ${outerEnd.y} A ${outerRadius} ${outerRadius} 0 0 0 ${outerStart.x} ${outerStart.y} Z')`,
-}
-
 const handleMouseEnter = () => {
-  console.log('fuck')
+  console.log('')
+  // TODO sector选择
 }
 </script>
 
 <template>
-  <!-- <div ref="ref" absolute transition-colors bg-blue-2 hover:bg-red-2 :style="style" @pointerenter="$emit('pointerover')"></div> -->
   <path
     fill-blue-2 hover:fill-red-2 transition-colors
     :d="`M ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 0 1 ${innerEnd.x} ${innerEnd.y} L ${outerEnd.x} ${outerEnd.y} A ${outerRadius} ${outerRadius} 0 0 0 ${outerStart.x} ${outerStart.y} Z`"

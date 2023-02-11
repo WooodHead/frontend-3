@@ -9,7 +9,7 @@ const handleScroll = ({ currentTarget }: UIEvent) => {
   store.eventScrollTop = -(currentTarget as HTMLDivElement).scrollTop
 }
 
-const ids = $computed(() => store.visibleEvents.data.map(({ eventId }) => eventId))
+const ids = computed(() => store.visibleEvents.data.map(({ eventId }) => eventId))
 </script>
 
 <template>

@@ -8,9 +8,9 @@ const { init } = defineProps<{
   init?: UnitRangePickerValue
 }>()
 
-const formRef = $ref<FormRef>()
+const formRef = ref<FormRef>()
 
-const model = $ref({
+const model = ref({
   name: '',
   description: '',
   range: init ?? {
@@ -21,10 +21,10 @@ const model = $ref({
 })
 
 const validate = async (): Promise<CreateEventDto> => {
-  const error = await formRef?.validate()
+  const error = await formRef.value!.validate()
   if (error) { return Promise.reject(error) }
 
-  const { range: { unit, range: [start, end] }, ...rest } = model
+  const { range: { unit, range: [start, end] }, ...rest } = model.value
 
   const range = UnitIDRange.fromDayjs(start, end, Unit.fromUnit(unit))
 

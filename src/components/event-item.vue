@@ -19,23 +19,23 @@ const emit = defineEmits<{
   (e: 'hover', event: EventEntity): void
 }>()
 
-const { data } = $(useQuery({
+const { data } = useQuery({
   queryKey: computed(() => ['event', id]),
   queryFn: () => api.event.getEvent(id),
-}))
-const range = $computed(() => data && UnitIDRange.deserialize(data.range))
+})
+const range = computed(() => data.value && UnitIDRange.deserialize(data.value.range))
 
 const handleClick = async () => {
-  if (!data) { return }
-  emit('click', data)
+  if (!data.value) { return }
+  emit('click', data.value)
   if (eventSelect) {
-    emitter.emit('event-select', { event: data })
+    emitter.emit('event-select', { event: data.value })
   }
 }
 
 const handleHover = () => {
-  if (!data) { return }
-  emit('hover', data)
+  if (!data.value) { return }
+  emit('hover', data.value)
 }
 </script>
 

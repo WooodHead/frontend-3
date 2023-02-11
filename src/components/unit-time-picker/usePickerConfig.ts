@@ -30,11 +30,11 @@ export const usePickerConfig = (unit: Ref<IUnit | undefined>) => {
       break
   }
 
-  return $$({
+  return {
     mode,
     showTime,
     timePickerProps: props,
-  })
+  }
 }
 
 export default usePickerConfig

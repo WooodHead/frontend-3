@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const toRadians = (angle: number) => (angle * Math.PI) / 180
 
-const innerStart = $computed(() => ({
+const innerStart = computed(() => ({
   x: outerRadius + innerRadius * Math.sin(toRadians(offsetAngle)),
   y: outerRadius - innerRadius * Math.cos(toRadians(offsetAngle)),
 }))
@@ -23,21 +23,21 @@ const outerStart = {
   y: outerRadius - outerRadius * Math.cos(toRadians(offsetAngle)),
 }
 
-const outerEnd = $computed(() => ({
+const outerEnd = computed(() => ({
   x: outerRadius + outerRadius * Math.sin(toRadians(sectorAngle + offsetAngle)),
   y: outerRadius - outerRadius * Math.cos(toRadians(sectorAngle + offsetAngle)),
 }))
 
-const innerEnd = $computed(() => ({
+const innerEnd = computed(() => ({
   x: outerRadius + innerRadius * Math.sin(toRadians(sectorAngle + offsetAngle)),
   y: outerRadius - innerRadius * Math.cos(toRadians(sectorAngle + offsetAngle)),
 }))
 
-const textAngle = $computed(() => sectorAngle / 2 + offsetAngle)
+const textAngle = computed(() => sectorAngle / 2 + offsetAngle)
 
-const textPosition = $computed(() => ({
-  x: outerRadius + (outerRadius + innerRadius) / 2 * Math.sin(toRadians(textAngle)),
-  y: outerRadius - (outerRadius + innerRadius) / 2 * Math.cos(toRadians(textAngle)),
+const textPosition = computed(() => ({
+  x: outerRadius + (outerRadius + innerRadius) / 2 * Math.sin(toRadians(textAngle.value)),
+  y: outerRadius - (outerRadius + innerRadius) / 2 * Math.cos(toRadians(textAngle.value)),
 }))
 
 const handleMouseEnter = () => {

@@ -5,7 +5,7 @@ const { defaultSideWidth = '40%', sideShow = true, sideShadow } = defineProps<{
   sideShadow?: boolean
 }>()
 
-const width = $computed(() => typeof defaultSideWidth === 'number' ? `${defaultSideWidth}px` : defaultSideWidth)
+const width = computed(() => typeof defaultSideWidth === 'number' ? `${defaultSideWidth}px` : defaultSideWidth)
 </script>
 
 <template>

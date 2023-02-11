@@ -7,20 +7,19 @@ import UnitSelect from './dialog/unit-select.vue'
 import useDraggable from '@/utils/useDraggable'
 
 const store = useStore()
-let { offset } = $(store)
 const { viewPort } = storeToRefs(store)
 
 const tableRef = ref<HTMLElement | null>(null)
-const { x, isDragging } = $(useDraggable(tableRef, {
-  onEnd: ({ x }) => { offset += x },
-}))
-watch(() => isDragging, dragging => {
+const { x, isDragging } = useDraggable(tableRef, {
+  onEnd: ({ x }) => { store.offset.value += x },
+})
+watch(isDragging, dragging => {
   store.dragging = dragging
 })
 
 const handleWheel = (e: WheelEvent) => {
-  if (isDragging) { return }
-  offset -= Math.sign(e.deltaY) * 100
+  if (isDragging.value) { return }
+  store.offset.value -= Math.sign(e.deltaY) * 100
 }
 </script>
 
@@ -29,7 +28,7 @@ const handleWheel = (e: WheelEvent) => {
     <div ref="viewPort" relative h-99999px>
       <div
         ref="tableRef"
-        :style="{ transform: `translateX(${offset + x}px)` }"
+        :style="{ transform: `translateX(${store.offset.value + x}px)` }"
         :transition="!isDragging && `transform`"
         column absolute h-full
         @wheel.passive="handleWheel"

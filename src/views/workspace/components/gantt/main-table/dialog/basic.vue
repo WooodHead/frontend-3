@@ -17,22 +17,19 @@ const emit = defineEmits<{
 
 const target = ref<HTMLElement | null>(null)
 
-const position = $ref({ x: 0, y: 0 })
+const position = reactive({ x: 0, y: 0 })
 const { x, y } = useDraggable(target, {
   onEnd: ({ x, y }) => {
     position.x += x
     position.y += y
   },
 })
-watch(
-  () => show,
-  show => {
-    if (!show) {
-      position.x = 0
-      position.y = 0
-    }
-  },
-)
+watch(() => show, show => {
+  if (!show) {
+    position.x = 0
+    position.y = 0
+  }
+})
 </script>
 
 <template>

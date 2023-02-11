@@ -21,11 +21,11 @@ const { mutateAsync } = useMutation({
   },
 })
 
-let cascadeDelete = $ref(false)
+const cascadeDelete = ref(false)
 const handleDeleteOk = async () => {
-  const events = await mutateAsync({ id, cascade: cascadeDelete })
+  const events = await mutateAsync({ id, cascade: cascadeDelete.value })
   await emit('delete', UnitIDRange.deserialize(events[0].range), [id])
-  cascadeDelete = false
+  cascadeDelete.value = false
   return true
 }
 </script>
