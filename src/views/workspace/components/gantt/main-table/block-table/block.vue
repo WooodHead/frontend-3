@@ -26,7 +26,7 @@ const meta = useKeyModifier('Meta')
 const select = computed(() => ctrl.value || meta.value || false)
 const active = ref(false)
 const handleSelectClick = () => {
-  if (!select) { return }
+  if (!select.value) { return }
   active.value = !active.value
   if (active.value) { store.selectedEvents.add(id) }
   else { store.selectedEvents.delete(id) }

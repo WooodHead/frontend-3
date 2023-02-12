@@ -24,12 +24,11 @@ const { suspense } = useQuery({
       : Layout.default()
   },
   onError: ({ response }: AxiosError) => {
-    if (response) {
-      Message.error(`工作台启动失败：${response.statusText}`)
-    }
-    else {
-      Message.error('工作台启动失败：网络错误')
-    }
+    Message.error(
+      response
+        ? `工作台启动失败：${response.statusText}`
+        : '工作台启动失败：网络错误',
+    )
   },
 })
 
