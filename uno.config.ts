@@ -4,6 +4,7 @@ import presetRemToPx from '@unocss/preset-rem-to-px'
 import presetTheme from 'unocss-preset-theme'
 import type { Theme } from '@unocss/preset-uno'
 import transformerVariantGroup from '@unocss/transformer-variant-group'
+import transformerDirectives from '@unocss/transformer-directives'
 import parseIcons from './src/utils/parseIcons'
 import parseArcoTheme from './src/utils/parseArcoTheme'
 
@@ -27,6 +28,7 @@ export default defineConfig<Theme>({
     return `!${p}`
   },
   transformers: [
+    transformerDirectives(),
     transformerVariantGroup(),
   ],
   rules: [

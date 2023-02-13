@@ -58,10 +58,8 @@ watchDebounced(visibleUnit, visibleUnit => {
         <template #side>
           <SideTable />
         </template>
-        <template #main>
-          <MainTable />
-          <Tools />
-        </template>
+        <MainTable />
+        <Tools />
       </ResizeLayout>
     </div>
     <TimeBar v-if="store.fullMode" :id="status.positionId" />

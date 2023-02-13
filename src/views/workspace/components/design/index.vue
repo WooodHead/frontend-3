@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComponentStatus } from '../type'
-import SideTable from './side-table/index.vue'
 import Body from './body/index.vue'
 import { registerStore } from './store'
 
@@ -15,13 +14,15 @@ const store = registerStore(status.positionId)
 watch(() => status, status => {
   store.status = status
 }, { deep: true })
+
+const id = ref('character')
 </script>
 
 <template>
   <div card column overflow-hidden>
     <ComponentHeader>
       <template #middle>
-        <ARadioGroup default-value="character" row type="button">
+        <ARadioGroup v-model="id" row type="button">
           <ARadio value="character" grow center>
             角色
           </ARadio>
@@ -50,9 +51,6 @@ watch(() => status, status => {
         </div>
       </template>
     </ComponentHeader>
-    <div row grow>
-      <SideTable />
-      <Body />
-    </div>
+    <Body :id="id" />
   </div>
 </template>

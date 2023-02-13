@@ -62,9 +62,7 @@ const handleSelect = (eventEntity: EventEntity | undefined) => {
       <template #side>
         <SideTable />
       </template>
-      <template #main>
-        <Content />
-      </template>
+      <Content />
     </ResizeLayout>
     <ComponentFooter>
       <template #right>

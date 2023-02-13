@@ -42,7 +42,7 @@ const handleHover = () => {
     @click="handleClick"
     @hover="handleHover"
   >
-    <AAvatar m-2>
+    <AAvatar m-2 :size="32">
       {{ data?.name }}
     </AAvatar>
     <div grow column>

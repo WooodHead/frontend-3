@@ -10,6 +10,12 @@ onMounted(() => {
 onUnmounted(() => {
   sessionStorage.removeItem('project-id')
 })
+
+const router = useRouter()
+const { Ctrl_P } = useMagicKeys({ passive: false })
+whenever(Ctrl_P, () => {
+  router.push({ name: 'ws-search' })
+})
 </script>
 
 <template>
