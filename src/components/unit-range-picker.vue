@@ -3,21 +3,23 @@ import { useFormItem } from '@arco-design/web-vue'
 import type { CalendarValue } from '@arco-design/web-vue/es/date-picker/interface'
 import type { TimePickerProps } from '@arco-design/web-vue/es/time-picker/interface'
 import type { IUnit } from '@project-chiral/unit-id'
-
-export interface UnitRangePickerValue {
-  unit: IUnit
-  range: Date[]
-}
+import { UnitIDRange } from '@project-chiral/unit-id'
 
 const { modelValue, disabled = false, readonly = false } = defineProps<{
-  modelValue?: UnitRangePickerValue
+  modelValue?: UnitIDRange
   disabled?: boolean
   readonly?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: UnitRangePickerValue): void
+  (e: 'update:modelValue', value: UnitIDRange): void
 }>()
+
+const unitValue = computed(() => modelValue?.unit.toString())
+const pickerValue = computed(() => modelValue && [
+  modelValue.start.toDate(),
+  modelValue.end.toDate(),
+])
 
 const { mergedDisabled, mergedError, mergedSize } = useFormItem({
   disabled: computed(() => disabled),
@@ -28,7 +30,7 @@ const rangePickerConfig = computed(() => {
   const props: Partial<TimePickerProps> = {}
   let mode: 'year' | 'month' | 'date' = 'date'
 
-  switch (modelValue?.unit) {
+  switch (unitValue.value) {
     case 'century':
     case 'decade':
     case 'year':
@@ -59,18 +61,20 @@ const rangePickerConfig = computed(() => {
 })
 
 const handleUnitChange = (unit: string | number | boolean) => {
-  emit('update:modelValue', {
-    unit: unit as IUnit,
-    range: modelValue?.range ?? [],
-  })
+  const [start, end] = pickerValue.value ?? []
+  emit(
+    'update:modelValue',
+    UnitIDRange.fromDayjs(unit as IUnit, start, end),
+  )
 }
 
 const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => {
+  const [start, end] = range ?? []
   if (!modelValue?.unit) { return }
-  emit('update:modelValue', {
-    range: range as [Date, Date],
-    unit: modelValue.unit,
-  })
+  emit(
+    'update:modelValue',
+    UnitIDRange.fromDayjs(modelValue.unit, start, end),
+  )
 }
 </script>
 
@@ -81,7 +85,7 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
       rounded-b-0 w-full justify-between
       :disabled="mergedDisabled"
       :size="mergedSize"
-      :model-value="modelValue?.unit"
+      :model-value="unitValue"
       @update:model-value="handleUnitChange"
     >
       <ARadio value="century">
@@ -112,10 +116,10 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
     <ARangePicker
       :readonly="readonly"
       rounded-t-0
-      :disabled="mergedDisabled || modelValue?.unit === undefined"
+      :disabled="mergedDisabled || !unitValue"
       :error="mergedError"
       :size="mergedSize"
-      :model-value="modelValue?.range"
+      :model-value="pickerValue"
       :exchange-time="false"
       :allow-clear="false"
       :mode="rangePickerConfig.mode"

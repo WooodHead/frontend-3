@@ -16,7 +16,7 @@ const timePickerValue = computed(() => {
 })
 const handleTimeChange = ({ time, unit }: UnitTimePickerValue) => {
   timePickerVisible.value = false
-  store.navigateTo(UnitID.fromDayjs(time, unit))
+  store.navigateTo(UnitID.fromDayjs(unit, time))
 }
 </script>
 

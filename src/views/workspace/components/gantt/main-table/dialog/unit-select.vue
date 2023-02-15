@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import type { IUnit } from '@project-chiral/unit-id'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
 import Basic from './basic.vue'
-
-import type { UnitRangePickerValue } from '@/components/unit-range-picker.vue'
 
 const store = useStore()
 const { subUnit, selectedRange } = storeToRefs(store)
 
+watchEffect(() => {
+  console.log(selectedRange.value)
+})
+
 const visible = ref(false)
 
-const value = computed<UnitRangePickerValue>(() => ({
-  unit: subUnit.value as IUnit,
-  range: selectedRange.value.map(v => v.toDate()),
-}))
-// 当日期没选择完全时始终是undefined，避免传入不完整数据
-const init = computed(() => value.value.range.length === 2 ? value.value : undefined)
+const value = computed<UnitIDRange | undefined>(() => {
+  if (selectedRange.value.length !== 2 || !subUnit.value) { return undefined }
+  const [start, end] = selectedRange.value
+  return UnitIDRange.fromUnitID(start, end).as(subUnit.value)
+})
 </script>
 
 <template>
@@ -30,7 +31,7 @@ const init = computed(() => value.value.range.length === 2 ? value.value : undef
   </Basic>
   <CreateEventModal
     v-model:visible="visible"
-    :init="init"
+    :init="value"
     @ok="selectedRange = []"
   />
 </template>

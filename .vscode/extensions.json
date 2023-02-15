@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "vue.volar",
-    "vuetifyjs.vuetify-vscode",
     "antfu.unocss",
     "antfu.iconify",
     "dbaeumer.vscode-eslint"

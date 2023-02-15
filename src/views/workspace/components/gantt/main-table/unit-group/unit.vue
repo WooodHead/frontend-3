@@ -8,7 +8,7 @@ const { id } = defineProps<{
 }> ()
 
 const store = useStore()
-const { selectedRange } = storeToRefs(store)
+const { selectedRange, dragging } = storeToRefs(store)
 
 const active = ref(false)
 const { pause, resume } = watchPausable(
@@ -54,15 +54,11 @@ const isClicking = ref(false)
 const handlePointerDown = ({ button }: PointerEvent) => {
   if (button !== 0) { return }
   isClicking.value = true
-  const stop = watch(
-    () => store.dragging,
-    dragging => {
-      if (!dragging) { return }
-      isDragging.value = true
-      stop()
-    },
-    { immediate: true },
-  )
+  const stop = watch(dragging, dragging => {
+    if (!dragging) { return }
+    isDragging.value = true
+    stop()
+  }, { immediate: true })
 }
 
 const handlePointerUp = ({ button }: PointerEvent) => {

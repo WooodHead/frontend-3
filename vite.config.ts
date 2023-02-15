@@ -2,8 +2,6 @@ import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
-import Vuetify from 'vite-plugin-vuetify'
-
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 
@@ -27,7 +25,6 @@ export default defineConfig({
       theme: '@arco-themes/vue-project-chiral',
     }),
     UnoCSS('./uno.config.ts'),
-    Vuetify({}),
     AutoImport({
       dts: true,
       vueTemplate: true,

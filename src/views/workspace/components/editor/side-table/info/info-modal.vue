@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { Unit, UnitIDRange } from '@project-chiral/unit-id'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import { Message } from '@arco-design/web-vue'
 import type { AxiosError } from 'axios'
 import { useStore } from '../../store'
 import api from '@/api/api'
-import type { UnitRangePickerValue } from '@/components/unit-range-picker.vue'
 import type { FormRef } from '@/utils/types'
 import type { UpdateEventDto } from '@/api/api-base'
 import emitter from '@/utils/emitter'
@@ -26,7 +25,7 @@ const formRef = ref<FormRef>()
 const model = reactive<{
   name?: string
   description?: string
-  range?: UnitRangePickerValue
+  range?: UnitIDRange
 }>({})
 const { data, isLoading } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
@@ -35,13 +34,10 @@ const { data, isLoading } = useQuery({
 })
 watch(data, data => {
   if (!data) { return }
-  const { name, description, unit, start, end } = data
+  const { name, description, range } = data
   model.name = name
   model.description = description ?? undefined
-  model.range = {
-    unit: Unit.fromOrder(unit).toString(),
-    range: [new Date(start), new Date(end)],
-  }
+  model.range = UnitIDRange.deserialize(range)
 }, { immediate: true })
 
 const { mutateAsync } = useMutation({
@@ -72,14 +68,14 @@ const handleBeforeOk = async () => {
   const {
     name,
     description,
-    range: { unit, range: [start, end] },
+    range,
   } = model as Required<typeof model>
   await mutateAsync({
     id: eventId.value,
     dto: {
       name,
       description,
-      range: UnitIDRange.fromDayjs(start, end, unit).serialize(),
+      range: range.serialize(),
     },
   })
   return true

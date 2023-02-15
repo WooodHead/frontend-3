@@ -2,7 +2,6 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
 import { UnitIDRange } from '@project-chiral/unit-id'
-import { UnitRangePickerValue } from './unit-range-picker.vue'
 import AtomEventForm from './create-event-modal/atom-event-form.vue'
 import CollectionEventForm from './create-event-modal/collection-event-form.vue'
 import type { CreateEventDto, EventEntity } from '@/api/api-base'
@@ -10,12 +9,12 @@ import api from '@/api/api'
 
 const { visible, init } = defineProps<{
   visible?: boolean
-  init?: UnitRangePickerValue | number[]
+  init?: UnitIDRange | number[]
 }>()
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'beforeOk', data: EventEntity): void | Promise<void>
+  (e: 'beforeOk', data: EventEntity): void
   (e: 'ok'): void
 }>()
 
@@ -72,7 +71,7 @@ const handleBeforeOk = async () => {
     <AtomEventForm
       v-if="type === 'atom'"
       ref="formRef"
-      :init="(init as UnitRangePickerValue)"
+      :init="(init as UnitIDRange)"
     />
     <CollectionEventForm
       v-else-if="type === 'collection'"

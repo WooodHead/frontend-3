@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Unit, UnitIDRange } from '@project-chiral/unit-id'
-import type { UnitRangePickerValue } from '../unit-range-picker.vue'
+import { UnitIDRange } from '@project-chiral/unit-id'
 import type { FormRef } from '@/utils/types'
 import type { CreateEventDto } from '@/api/api-base'
 
 const { init } = defineProps<{
-  init?: UnitRangePickerValue
+  init?: UnitIDRange
 }>()
 
 const formRef = ref<FormRef>()
@@ -13,10 +12,7 @@ const formRef = ref<FormRef>()
 const model = ref({
   name: '',
   description: '',
-  range: init ?? {
-    unit: 'date',
-    range: [new Date(), new Date()],
-  },
+  range: init ?? UnitIDRange.fromDayjs('month'),
   color: '#93c5fd',
 })
 
@@ -24,10 +20,7 @@ const validate = async (): Promise<CreateEventDto> => {
   const error = await formRef.value!.validate()
   if (error) { return Promise.reject(error) }
 
-  const { range: { unit, range: [start, end] }, ...rest } = model.value
-
-  const range = UnitIDRange.fromDayjs(start, end, Unit.fromUnit(unit))
-
+  const { range, ...rest } = model.value
   return {
     ...rest,
     range: range.serialize(),

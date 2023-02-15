@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     CharaItem: typeof import('./src/components/chara-item.vue')['default']
     ComponentFooter: typeof import('./src/components/component-footer.vue')['default']
     ComponentHeader: typeof import('./src/components/component-header.vue')['default']
+    CreateCharacterModal: typeof import('./src/components/create-character-modal.vue')['default']
     CreateEventModal: typeof import('./src/components/create-event-modal.vue')['default']
     EventContextMenu: typeof import('./src/components/event-context-menu.vue')['default']
     EventDetailCard: typeof import('./src/components/event-detail-card.vue')['default']

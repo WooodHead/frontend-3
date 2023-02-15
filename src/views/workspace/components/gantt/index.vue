@@ -33,11 +33,11 @@ const { suspense } = useQuery({
   queryFn: () => api.project.getWorkspaceInfo(),
   select: ({ origin }) => origin,
   onSuccess: id => {
-    if (!id) { store.init(UnitID.fromDayjs(new Date(), 'month')) }
+    if (!id) { store.init(UnitID.fromDayjs('month')) }
     else { store.init(UnitID.deserialize(id)) }
   },
   onError: () => {
-    store.init(UnitID.fromDayjs(new Date(), 'month'))
+    store.init(UnitID.fromDayjs('month'))
   },
 })
 
