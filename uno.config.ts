@@ -6,12 +6,13 @@ import type { Theme } from '@unocss/preset-uno'
 import transformerVariantGroup from '@unocss/transformer-variant-group'
 import transformerDirectives from '@unocss/transformer-directives'
 import parseIcons from './src/utils/parseIcons'
-import parseArcoTheme from './src/utils/parseArcoTheme'
+import parseArcoTheme from './src/utils/arco-theme-parser/parseArcoTheme'
 
 const parsedTheme = parseArcoTheme(
-  path.join(__dirname, 'node_modules/@arco-themes/vue-project-chiral/theme.css'),
-  path.join(__dirname, 'src/utils/arco-theme.json'),
+  'vue-project-chiral',
+  path.join(__dirname, 'src/utils/arco-theme-parser/arco-theme.json'),
 )!
+
 const parsedIcons = parseIcons(
   path.join(__dirname, 'src/assets/icons'),
 )
@@ -19,7 +20,7 @@ const parsedIcons = parseIcons(
 export default defineConfig<Theme>({
   theme: {
     colors: {
-      ...parsedTheme.light.colors,
+      ...parsedTheme.light,
     },
   },
   // 全局important
@@ -105,7 +106,7 @@ export default defineConfig<Theme>({
       theme: {
         dark: {
           colors: {
-            ...parsedTheme.dark.colors,
+            ...parsedTheme.dark,
           },
         },
       },

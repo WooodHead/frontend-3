@@ -14,3 +14,7 @@
 # useQuery对在setQueryData后不会触发onSuccess
 
 因此如果使用了setQueryData来更新缓存，则对数据的处理步骤不应该放在onSuccess里，而应该直接监听data。
+
+# unocss-preset-theme透明度问题
+
+新版preset-theme增加了对透明度的支持，但只能实现light主题和dark主题同透明度，如果两个主题透明度不同则只会采纳dark主题设置的透明度。
