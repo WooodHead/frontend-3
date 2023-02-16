@@ -63,7 +63,7 @@ const handlePointerDown = ({ button }: PointerEvent) => {
 
 const handlePointerUp = ({ button }: PointerEvent) => {
   if (button !== 0) { return }
-  if (!isDragging.value && isClicking.value) { active.value = !active }
+  if (!isDragging.value && isClicking.value) { active.value = !active.value }
   isDragging.value = false
   isClicking.value = false
 }

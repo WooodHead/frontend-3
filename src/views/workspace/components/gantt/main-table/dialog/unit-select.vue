@@ -6,16 +6,11 @@ import Basic from './basic.vue'
 const store = useStore()
 const { subUnit, selectedRange } = storeToRefs(store)
 
-watchEffect(() => {
-  console.log(selectedRange.value)
-})
-
 const visible = ref(false)
 
 const value = computed<UnitIDRange | undefined>(() => {
-  if (selectedRange.value.length !== 2 || !subUnit.value) { return undefined }
-  const [start, end] = selectedRange.value
-  return UnitIDRange.fromUnitID(start, end).as(subUnit.value)
+  if (!subUnit.value || selectedRange.value.length === 0) { return undefined }
+  return UnitIDRange.fromUnitID(...selectedRange.value).as(subUnit.value)
 })
 </script>
 

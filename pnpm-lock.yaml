@@ -13,7 +13,7 @@ specifiers:
   '@iconify-json/mdi': ^1.1.45
   '@iconify-json/radix-icons': ^1.1.8
   '@motionone/vue': ^10.15.5
-  '@project-chiral/unit-id': ^0.2.1
+  '@project-chiral/unit-id': ^0.3.1
   '@tanstack/vue-query': ^4.24.4
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209
   '@tiptap/extension-character-count': 2.0.0-beta.209
@@ -79,7 +79,7 @@ dependencies:
   '@iconify-json/mdi': 1.1.45
   '@iconify-json/radix-icons': 1.1.8
   '@motionone/vue': 10.15.5_jy2dx6rchotoflpivg4bc5h5hm
-  '@project-chiral/unit-id': 0.2.1
+  '@project-chiral/unit-id': 0.3.1
   '@tanstack/vue-query': 4.24.4_vue@3.2.47
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_w5m3ddcszxha4fwakfbwcuuiyq
   '@tiptap/extension-character-count': 2.0.0-beta.209_hns5jzllmpwycdp7rynkguro2y
@@ -656,8 +656,8 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@project-chiral/unit-id/0.2.1:
-    resolution: {integrity: sha512-ChpEsZmPhRudiIM01K3O0E5D8kFr1UAOJRDzo0LthHcSHMv/eK2Ut1QqPfVCw4+kFVgmTXHtCMuvpxSguLQ+CA==}
+  /@project-chiral/unit-id/0.3.1:
+    resolution: {integrity: sha512-uNu4YUZODi60KWqdd2cLNciZ3rAGed0iIyVBj3glp0Mq+HqJ4HbT9DcGlwLdKpL49RLQ11TG+I0ecbt7Tl4wlA==}
     dependencies:
       dayjs: 1.11.7
       object-hash: 3.0.0

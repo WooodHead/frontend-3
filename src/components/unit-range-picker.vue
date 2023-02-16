@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useFormItem } from '@arco-design/web-vue'
 import type { CalendarValue } from '@arco-design/web-vue/es/date-picker/interface'
-import type { TimePickerProps } from '@arco-design/web-vue/es/time-picker/interface'
 import type { IUnit } from '@project-chiral/unit-id'
 import { UnitIDRange } from '@project-chiral/unit-id'
+import usePickerConfig from './unit-time-picker/usePickerConfig'
 
 const { modelValue, disabled = false, readonly = false } = defineProps<{
   modelValue?: UnitIDRange
@@ -16,49 +16,13 @@ const emit = defineEmits<{
 }>()
 
 const unitValue = computed(() => modelValue?.unit.toString())
-const pickerValue = computed(() => modelValue && [
-  modelValue.start.toDate(),
-  modelValue.end.toDate(),
-])
+const pickerValue = computed(() => modelValue && modelValue.toDate())
 
 const { mergedDisabled, mergedError, mergedSize } = useFormItem({
   disabled: computed(() => disabled),
 })
 
-const rangePickerConfig = computed(() => {
-  let showTime = false
-  const props: Partial<TimePickerProps> = {}
-  let mode: 'year' | 'month' | 'date' = 'date'
-
-  switch (unitValue.value) {
-    case 'century':
-    case 'decade':
-    case 'year':
-      mode = 'year'
-      break
-    case 'month':
-      mode = 'month'
-      break
-    case 'hour':
-      showTime = true
-      props.format = 'HH'
-      break
-    case 'minute':
-      showTime = true
-      props.format = 'HH:mm'
-      break
-    case 'second':
-      showTime = true
-      props.format = 'HH:mm:ss'
-      break
-  }
-
-  return {
-    mode,
-    showTime,
-    timePickerProps: props,
-  }
-})
+const { mode, showTime, timePickerProps } = toRefs(usePickerConfig(unitValue))
 
 const handleUnitChange = (unit: string | number | boolean) => {
   const [start, end] = pickerValue.value ?? []
@@ -122,9 +86,9 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
       :model-value="pickerValue"
       :exchange-time="false"
       :allow-clear="false"
-      :mode="rangePickerConfig.mode"
-      :show-time="rangePickerConfig.showTime"
-      :time-picker-props="rangePickerConfig.timePickerProps"
+      :mode="mode"
+      :show-time="showTime"
+      :time-picker-props="timePickerProps"
       @update:model-value="handleRangeChange"
     />
   </div>
