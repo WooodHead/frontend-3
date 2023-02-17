@@ -15,11 +15,14 @@ import '@vue-flow/core/dist/theme-default.css'
 import 'uno.css'
 
 import App from './App.vue'
+import { ClickOutside } from './utils/click-outside'
 
 const app = createApp(App)
   .use(VueQueryPlugin, { queryClientConfig })
   .use(createPinia())
   .use(router)
   .use(ArcoVue)
+
+app.directive('click-outside', ClickOutside)
 
 app.mount('#app')
