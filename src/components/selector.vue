@@ -88,6 +88,7 @@ const handleFallback = (rawValue: any): SelectOptionData => {
 // TODO 多选
 // TODO 虚拟滚动
 // TODO 选项筛选配置
+// TODO modelValue相同id的值更新后不会触发更新
 </script>
 
 <template>

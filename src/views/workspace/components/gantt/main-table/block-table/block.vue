@@ -16,8 +16,7 @@ export interface BlockProps {
 const { id, range, color } = defineProps<BlockProps>()
 
 const store = useStore()
-const { viewPort } = storeToRefs(store)
-const { visibleUnit, lock } = storeToRefs(store)
+const { viewPort, visibleUnit, lock, selectedEvents } = storeToRefs(store)
 
 const client = useQueryClient()
 
@@ -28,10 +27,10 @@ const active = ref(false)
 const handleSelectClick = () => {
   if (!select.value) { return }
   active.value = !active.value
-  if (active.value) { store.selectedEvents.add(id) }
-  else { store.selectedEvents.delete(id) }
+  if (active.value) { selectedEvents.value.add(id) }
+  else { selectedEvents.value.delete(id) }
 }
-watch(() => store.selectedEvents, events => {
+watch(() => selectedEvents.value, events => {
   active.value = events.has(id)
 }, { deep: true })
 
@@ -57,12 +56,9 @@ useIntersectionObserver(
     root: viewPort,
   },
 )
-whenever(
-  () => !lock.value,
-  () => {
-    if (!blockVisible.value) { store.visibleEvents.remove(range) }
-  },
-)
+whenever(() => !lock.value, () => {
+  if (!blockVisible.value) { store.visibleEvents.remove(range) }
+})
 
 const width = computed(() => range.length * UNIT_WIDTH)
 const offset = computed(() => {

@@ -16,9 +16,7 @@ const emit = defineEmits<{
 
 const target = ref<HTMLDivElement | null>(null)
 const hover = useElementHover(target)
-watch(hover, hover => {
-  if (hover) { emit('hover') }
-})
+whenever(hover, () => emit('hover'))
 
 const animation = computed(() => {
   if (!animate) { return {} }

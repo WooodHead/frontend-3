@@ -22,7 +22,7 @@ const { mergedDisabled, mergedError, mergedSize } = useFormItem({
   disabled: computed(() => disabled),
 })
 
-const { mode, showTime, timePickerProps } = toRefs(usePickerConfig(unitValue))
+const { mode, showTime, timePickerProps } = usePickerConfig(unitValue)
 
 const handleUnitChange = (unit: string | number | boolean) => {
   const [start, end] = pickerValue.value ?? []

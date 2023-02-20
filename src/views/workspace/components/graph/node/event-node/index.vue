@@ -29,12 +29,7 @@ const target = ref<HTMLElement | null>(null)
         :is-connecting="isConnecting"
         :inner-radius="90"
         :outer-radius="130"
-        :names="[
-          '顺承',
-          '导致',
-          '影响',
-          '共指',
-        ]"
+        :names="['顺承', '导致', '影响', '共指']"
       />
     </Presence>
     <Handle scale-200 type="target" :position="Position.Left" />

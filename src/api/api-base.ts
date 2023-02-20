@@ -464,18 +464,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 根据时间范围或给定id列表获取事件，将二者的并集返回
      *
      * @tags event
-     * @name GetEvents
-     * @request GET:/event
+     * @name GetEventsByRange
+     * @request GET:/event/range
      */
-    getEvents: (
+    getEventsByRange: (
       query?: {
         range?: string;
-        ids?: number[];
       },
       params: RequestParams = {},
     ) =>
       this.request<EventEntity[], any>({
-        path: `/event`,
+        path: `/event/range`,
         method: "GET",
         query: query,
         format: "json",
@@ -486,15 +485,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name CreateEvent
-     * @request POST:/event
+     * @name GetEventBySerial
+     * @request GET:/event/serial
      */
-    createEvent: (data: CreateEventDto, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
-        path: `/event`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
+    getEventBySerial: (serial: number, params: RequestParams = {}) =>
+      this.request<object, any>({
+        path: `/event/serial`,
+        method: "GET",
         format: "json",
         ...params,
       }),
@@ -524,13 +521,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name GetEventBySerial
-     * @request GET:/event/serial
+     * @name CreateEvent
+     * @request POST:/event
      */
-    getEventBySerial: (serial: number, params: RequestParams = {}) =>
-      this.request<object, any>({
-        path: `/event/serial`,
-        method: "GET",
+    createEvent: (data: CreateEventDto, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

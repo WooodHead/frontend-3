@@ -9,7 +9,6 @@ import type { ILayout } from './layout'
 import { Layout } from './layout'
 import api from '@/api/api'
 import { fadeInOut } from '@/utils/animation'
-import emitter from '@/utils/emitter'
 
 const WSStore = useWSStore()
 
@@ -41,12 +40,10 @@ watch(
 )
 
 // TODO 简单粗暴的组件reload方式
-const version = reactive<Record<string, number>>({
-  gantt: 0,
-})
-emitter.on('reload', ({ reason: { type } }) => {
-  if (type === 'gantt') { version.gantt += 1 }
-})
+const version = ref(0)
+// emitter.on('reload', () => {
+//   version.value += 1
+// })
 </script>
 
 <template>
@@ -61,7 +58,7 @@ emitter.on('reload', ({ reason: { type } }) => {
       <WSComponent
         v-for="{ id, position, state } in WSStore.components"
         :id="id"
-        :key="`${id}_${version[id]}`"
+        :key="`${id}_${version}`"
         :position="position"
         :state="state"
       />

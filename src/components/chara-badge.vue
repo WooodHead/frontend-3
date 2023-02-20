@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { Motion } from '@motionone/vue'
 import api from '@/api/api'
-import { fadeInOut } from '@/utils/animation'
 
-const { id, animate } = defineProps<{
+const { id, closable = false } = defineProps<{
   id: number
-  animate?: boolean | Record<string, any>
+  closable?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'close', id: number): void
 }>()
 
 const { data } = useQuery({
@@ -14,24 +16,18 @@ const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.getCharacter(id),
 })
-
-const animation = computed(() => {
-  if (!animate) { return {} }
-  if (typeof animate === 'object') { return animate }
-  return fadeInOut
-})
 </script>
 
 <template>
   <ATrigger trigger="click">
-    <Motion
-      v-bind="animation"
-      :transition="{ duration: 0.2 }"
+    <div
       center-x
-      w-fit h-30px
-      transition-colors bg="blue-5 hover:blue-6"
+      w-fit h-26px
+      transition-colors
+      bg="blue-5 hover:blue-6 active:blue-7"
       rounded-full pr-4px gap-2px
       text-white cursor-pointer
+      select-none
     >
       <div h-full aspect-square rounded-full>
         <img v-if="data?.avatar" :src="data.avatar">
@@ -40,6 +36,19 @@ const animation = computed(() => {
       <div grow>
         {{ id }}
       </div>
-    </Motion>
+      <AButton
+        v-if="closable"
+        square-20px
+        shape="circle" type="text"
+        @click.stop="$emit('close', id)"
+      >
+        <template #icon>
+          <div text-xs i-radix-icons-cross-1></div>
+        </template>
+      </AButton>
+    </div>
+    <template #content>
+      <CharaDetailCard :id="id" />
+    </template>
   </ATrigger>
 </template>

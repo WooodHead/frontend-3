@@ -6,13 +6,11 @@ import SideTable from './side-table/index.vue'
 import MainTable from './main-table/index.vue'
 import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
-import type { IGanttData } from './types'
 import Tools from './tools/index.vue'
 import api from '@/api/api'
 
-const { status, data } = defineProps<{
+const { status } = defineProps<{
   status: ComponentStatus
-  data?: IGanttData
 }>()
 
 const store = registerStore(status.positionId)
@@ -24,10 +22,7 @@ watch(
   { deep: true },
 )
 
-if (data) { store.initWithData(data) }
-
 const { suspense } = useQuery({
-  enabled: computed(() => !data),
   staleTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspaceInfo(),

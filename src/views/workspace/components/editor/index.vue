@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import Content from './content/index.vue'
@@ -6,6 +7,7 @@ import { registerStore } from './store'
 import emitter from '@/utils/emitter'
 import type { EventEntity } from '@/api/api-base'
 import type { SelectorOptionValue } from '@/components/selector/value'
+import api from '@/api/api'
 
 interface EditorProps {
   status: ComponentStatus
@@ -19,14 +21,24 @@ watch(() => status, status => {
   store.status = status
 }, { deep: true })
 
-const event = ref<SelectorOptionValue>()
-emitter.on('event-select', ({ event: e }) => {
-  event.value = { type: 'event', value: e, id: `event_${e.id}` }
-  store.eventId = e.id
+const eventOption = ref<SelectorOptionValue>()
+
+const { data } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.getEvent(eventId.value!),
 })
-const handleSelect = (eventEntity: EventEntity | undefined) => {
-  if (!eventEntity) { return }
-  emitter.emit('event-select', { event: eventEntity })
+watch(data, data => {
+  if (!data) { return }
+  eventOption.value = { type: 'event', value: data, id: `event_${data.id}` }
+}, { deep: true })
+
+emitter.on('event-select', ({ event }) => {
+  eventId.value = event.id
+})
+const handleSelect = (event: EventEntity | undefined) => {
+  if (!event) { return }
+  emitter.emit('event-select', { event })
 }
 
 // TODO 历史记录
@@ -38,7 +50,7 @@ const handleSelect = (eventEntity: EventEntity | undefined) => {
       <template #middle>
         <div row gap-2>
           <Selector
-            v-model="event"
+            v-model="eventOption"
             event
             placeholder="在这里选择要编辑的事件"
             @select:event="handleSelect"

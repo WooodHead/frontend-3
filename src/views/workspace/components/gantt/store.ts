@@ -185,5 +185,4 @@ store => {
     const range = UnitIDRange.deserialize(event.range)
     store.navigateTo(range.start.parent)
   })
-},
-)
+})

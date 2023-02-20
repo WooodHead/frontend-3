@@ -15,6 +15,9 @@ const handleAddChara = (chara: CharacterEntity | undefined) => {
   emit('update:modelValue', [...modelValue, chara.id])
   visible.value = false
 }
+const handleRemoveChara = (id: number) => {
+  emit('update:modelValue', modelValue.filter(_id => _id !== id))
+}
 </script>
 
 <template>
@@ -34,7 +37,7 @@ const handleAddChara = (chara: CharacterEntity | undefined) => {
         </div>
       </template>
       <AButton
-        h-30px w-30px
+        square-26px
         border-dashed
         shape="circle"
         type="outline"
@@ -44,11 +47,11 @@ const handleAddChara = (chara: CharacterEntity | undefined) => {
         </template>
       </AButton>
     </ATrigger>
-    <TransitionGroup>
-      <CharaBadge
-        v-for="id of modelValue"
-        :id="id" :key="id"
-      />
-    </TransitionGroup>
+    <CharaBadge
+      v-for="id of modelValue"
+      :id="id" :key="id"
+      closable
+      @close="handleRemoveChara"
+    />
   </div>
 </template>

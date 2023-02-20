@@ -10,7 +10,7 @@ const { searchValue } = defineProps<{
 const { data, suspense } = useQuery({
   enabled: computed(() => searchValue !== undefined && searchValue.length > 0),
   cacheTime: 0,
-  queryKey: computed(() => ['character', 'search', 'name', searchValue]),
+  queryKey: computed(() => ['scene', 'search', 'name', searchValue]),
   queryFn: () => api.scene.searchSceneByName({ text: searchValue! }),
 })
 

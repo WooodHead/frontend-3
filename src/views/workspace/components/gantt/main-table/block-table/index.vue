@@ -15,8 +15,8 @@ const client = useQueryClient()
 const ranges = computed(() => unitRange.value?.ids.map(range => range.childrenRange))
 const results = useQueries({
   queries: computed(() => ranges.value?.map(range => ({
-    queryKey: ['event', { range: range?.serialize() }],
-    queryFn: () => api.event.getEvents({ range: range?.serialize() }),
+    queryKey: ['event', 'range', { range: range?.serialize() }],
+    queryFn: () => api.event.getEventsByRange({ range: range?.serialize() }),
     onSuccess: (events: EventEntity[]) => {
       // 批量请求数据后，顺序更新一下单个请求的缓存
       for (const event of events) {
@@ -44,12 +44,18 @@ const blockData = computed(() =>
   }) as BlockProps)
     .filter(({ range }) => range.unit.toString() === store.subUnit),
 )
+
+const version = ref(0)
+watch(blockData, () => {
+  version.value += 1
+  store.visibleEvents.clear()
+})
 </script>
 
 <template>
   <Block
     v-for="data in blockData"
-    :key="`${data.id}`"
+    :key="`${data.id}_${version}`"
     v-bind="data"
   />
 </template>

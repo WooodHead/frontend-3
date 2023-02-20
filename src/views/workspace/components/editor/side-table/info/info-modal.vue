@@ -47,14 +47,10 @@ const { mutateAsync } = useMutation({
   }) => api.event.updateEvent(id, dto),
   onSuccess: data => {
     Message.success('修改成功')
-    const range = UnitIDRange.deserialize(data.range)
-    // TODO 强制更新时间跨度内的所有缓存，这里应该有更好的方法
     // TODO 更新时间跨度后，甘特图出问题
     client.setQueryData(['event', data.id], data)
-    for (const id of range.ids) {
-      client.invalidateQueries(['event', { range: id.range.serialize() }])
-    }
-    emitter.emit('reload', { reason: { type: 'gantt', context: data } })
+    client.invalidateQueries(['event', 'range'])
+    emitter.emit('reload', {})
   },
   onError: (e: AxiosError) => {
     Message.error(`修改失败: ${e.message}`)
