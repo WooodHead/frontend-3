@@ -2,6 +2,7 @@
 import type { ComponentStatus } from '../type'
 import Body from './body/index.vue'
 import { registerStore } from './store'
+import Tools from './tools/index.vue'
 
 interface CharacterProps {
   status: ComponentStatus
@@ -51,6 +52,9 @@ const id = ref('character')
         </div>
       </template>
     </ComponentHeader>
-    <Body :id="id" />
+    <div relative h-0 grow>
+      <Tools />
+      <Body :id="id" />
+    </div>
   </div>
 </template>

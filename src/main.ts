@@ -15,7 +15,8 @@ import '@vue-flow/core/dist/theme-default.css'
 import 'uno.css'
 
 import App from './App.vue'
-import { ClickOutside } from './utils/click-outside'
+import { ClickOutside } from './utils/directives/click-outside'
+import AutoFocus from './utils/directives/auto-focus'
 
 const app = createApp(App)
   .use(VueQueryPlugin, { queryClientConfig })
@@ -24,5 +25,6 @@ const app = createApp(App)
   .use(ArcoVue)
 
 app.directive('click-outside', ClickOutside)
+  .directive('auto-focus', AutoFocus)
 
 app.mount('#app')

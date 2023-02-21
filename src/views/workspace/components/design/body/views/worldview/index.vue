@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const key = ref()
 </script>
 
 <template>
@@ -6,7 +7,9 @@
     <template #side>
       <div h-full overflow-y-auto>
         <ATree
-          show-line
+          v-model:selected-keys="key"
+          show-line default-expand-all
+          :selectable="(_node, { isLeaf }) => isLeaf"
           :data="[
             {
               title: '1',

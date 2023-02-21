@@ -8,9 +8,7 @@ const { id } = defineProps<{
 </script>
 
 <template>
-  <div h-0 grow>
-    <CharacterView v-if="id === 'character'" />
-    <SceneView v-else-if="id === 'scene'" />
-    <WorldView v-else-if="id === 'worldview'" />
-  </div>
+  <CharacterView v-if="id === 'character'" />
+  <SceneView v-else-if="id === 'scene'" />
+  <WorldView v-else-if="id === 'worldview'" />
 </template>
