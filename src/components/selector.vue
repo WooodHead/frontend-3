@@ -32,6 +32,7 @@ const emit = defineEmits<{
   (e: 'select:event', event: EventEntity | undefined): void
   (e: 'select:character', character: CharacterEntity | undefined): void
   (e: 'select:scene', scene: SceneEntity | undefined): void
+  (e: 'clear'): void
 }>()
 
 const _inputValue = ref<string>() // 非受控状态下的值
@@ -56,6 +57,7 @@ const handleClear = () => {
   emit('update:input-value', undefined)
   emit('update:model-value', undefined)
   emit('select', undefined)
+  emit('clear')
 }
 
 const handleModelUpdate = (rawValue: any) => {

@@ -20,15 +20,15 @@ const hover = useElementHover(target)
 <template>
   <div
     ref="target"
-    relative
-    center-x
+    relative center-x
+    overflow-hidden
     transition-colors
-    border="~ border-2 hover:primary-4"
-    hover:text-primary-4
+    border="~ border-2 hover:primary-light-4"
+    hover="text-primary-light-4"
     w-full h-48px
     :filter="checked ? 'grayscale' : 'none'"
     p-1 mb-1 cursor-pointer
-    rounded-sm shadow-none
+    rounded shadow-none
     @click="$emit('click', id)"
   >
     <div h-full w-20per center>
@@ -43,8 +43,7 @@ const hover = useElementHover(target)
         v-bind="fadeInOut"
         center
         absolute right-0
-        w-50px h-full
-        bg-bg-1
+        w-50px h-full bg-bg-1
       >
         <AButton
           :loading="deleteLoading"

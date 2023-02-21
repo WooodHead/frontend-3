@@ -45,7 +45,6 @@ const common = computed(() => ({
   'model-value': modelValue?.time,
   'show-time': showTime.value,
   'time-picker-props': timePickerProps.value,
-  'class': 'rounded-t-0',
   'allow-clear': false,
   readonly,
 }))
@@ -90,16 +89,19 @@ const common = computed(() => ({
     <AYearPicker
       v-if="mode === 'year'"
       v-bind="common"
+      rounded-t-0
       @update:model-value="handleTimeChange"
     />
     <AMonthPicker
       v-else-if="mode === 'month'"
       v-bind="common"
+      rounded-t-0
       @update:model-value="handleTimeChange"
     />
     <ADatePicker
       v-else
       v-bind="common"
+      rounded-t-0
       @update:model-value="handleTimeChange"
     />
   </div>

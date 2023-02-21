@@ -54,6 +54,7 @@ const handleSelect = (event: EventEntity | undefined) => {
             event
             placeholder="在这里选择要编辑的事件"
             @select:event="handleSelect"
+            @clear="eventId = undefined"
           />
         </div>
       </template>

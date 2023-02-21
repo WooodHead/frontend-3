@@ -17,7 +17,7 @@ watch(unCheckedTodo, todos => {
   todoDot.value = todos.size !== 0
 }, { immediate: true })
 
-const { data: todos, isSuccess, isLoading, isError } = useQuery({
+const { data: todos, isSuccess } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value, 'todo']),
   queryFn: () => api.event.getTodos(eventId.value!),
@@ -138,5 +138,4 @@ const handleDelete = (id: number) => {
       />
     </div>
   </div>
-  <Status v-else :loading="isLoading" :error="isError" />
 </template>

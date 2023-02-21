@@ -21,7 +21,7 @@ const expand = ref(false)
       </Motion>
     </Presence>
     <AButton
-      shadow-lg shadow-gray-4
+      shadow-lg
       type="primary" size="large" shape="circle"
       @click="expand = !expand"
     >
