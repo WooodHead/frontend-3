@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const show = ref(false)
-const ids = ref([114514, 1919810])
+const ids = ref({
+  resolved: [114514],
+  unresolved: ['1919810'],
+})
 </script>
 
 <template>

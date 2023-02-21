@@ -11,6 +11,9 @@ export const { registerStore, useStore } = createStore(
       eventId: undefined as (number | undefined),
       editor,
       saving: false,
+      // 关联和待办是否有小红点
+      relationDot: false,
+      todoDot: false,
     }),
   },
   store => {

@@ -8,15 +8,17 @@ import api from '@/api/api'
 import type { EventTodoEntity } from '@/api/api-base'
 
 const store = useStore()
-const { eventId } = storeToRefs(store)
+const { eventId, todoDot } = storeToRefs(store)
 const client = useQueryClient()
 
 const checkedTodo = reactive(new Map<number, string>())
 const unCheckedTodo = reactive(new Map<number, string>())
+watch(unCheckedTodo, todos => {
+  todoDot.value = todos.size !== 0
+}, { immediate: true })
 
 const { data: todos, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
-  staleTime: Infinity,
   queryKey: computed(() => ['event', eventId.value, 'todo']),
   queryFn: () => api.event.getTodos(eventId.value!),
   onError: (e: AxiosError) => {

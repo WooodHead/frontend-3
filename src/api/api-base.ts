@@ -186,7 +186,7 @@ export interface UpdateSettingsDto {
 
 export interface CreateCharacterDto {
   name: string;
-  alias: string[];
+  alias?: string[];
   description?: string;
   avatar?: string;
   /**

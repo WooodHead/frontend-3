@@ -4,9 +4,8 @@ import Basic from './index.vue'
 import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
 
-const { id, closable = false } = defineProps<{
+const { id } = defineProps<{
   id: number
-  closable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -24,10 +23,16 @@ const { data } = useQuery({
       : undefined,
   }),
 })
+
+const visible = ref(false)
 </script>
 
 <template>
-  <Basic :closable="closable" @close="$emit('close', id)">
+  <Basic
+    v-model:popup-visible="visible"
+    resolved
+    @close="$emit('close', id)"
+  >
     <template #avatar>
       <img v-if="data?.avatar" :src="data.avatar">
       <div v-else i-radix-icons-question-mark-circled full></div>

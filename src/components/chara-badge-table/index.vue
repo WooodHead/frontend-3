@@ -1,20 +1,29 @@
 <script setup lang="ts">
-const { closable } = defineProps<{
-  closable?: boolean
+const { resolved = false, popupVisible } = defineProps<{
+  resolved?: boolean
+  popupVisible: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'close'): void
+  (e: 'update:popup-visible', visible: boolean): void
 }>()
 </script>
 
 <template>
-  <ATrigger trigger="click">
+  <ATrigger
+    :popup-visible="popupVisible"
+    trigger="click"
+    :popup-translate="[0, 8]"
+    @update:popup-visible="$emit('update:popup-visible', $event)"
+  >
     <div
       center-x
       w-fit h-26px
       transition-colors
-      bg="blue-5 hover:blue-6 active:blue-7"
+      :bg="resolved
+        ? 'blue-5 hover:blue-6 active:blue-7'
+        : 'gray-5 hover:gray-6 active:gray-7'"
       rounded-full pr-4px gap-2px
       text-white cursor-pointer
       select-none
@@ -26,7 +35,6 @@ const emit = defineEmits<{
         <slot></slot>
       </div>
       <AButton
-        v-if="closable"
         square-20px
         shape="circle" type="text"
         @click.stop="$emit('close')"

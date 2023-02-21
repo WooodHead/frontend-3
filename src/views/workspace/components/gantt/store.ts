@@ -182,7 +182,7 @@ export const { registerStore, useStore } = createStore('gantt', {
 },
 store => {
   emitter.on('event-select', async ({ event }) => {
-    const range = UnitIDRange.deserialize(event.range)
+    const range = UnitIDRange.fromDayjs(event.unit, event.start, event.end)
     store.navigateTo(range.start.parent)
   })
 })
