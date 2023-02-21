@@ -23,7 +23,7 @@ const validate = async (): Promise<CreateEventDto> => {
   const { range, ...rest } = model.value
   return {
     ...rest,
-    range: range.serialize(),
+    ...range.toJSON(),
     type: 'ATOM',
   }
 }

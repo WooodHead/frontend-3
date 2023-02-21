@@ -3,7 +3,6 @@ import { useQueryClient } from '@tanstack/vue-query'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 import type { UnitIDRange } from '@/utils/unit-id'
-import type { EventEntity } from '@/api/api-base'
 import reverseColor from '@/utils/reverseColor'
 
 export interface BlockProps {
@@ -69,19 +68,14 @@ const offset = computed(() => {
 const order = computed(() => store.visibleEvents.order(range, { eventId: id }))
 
 // 删除事件时更新事件时间跨度内所有事件列表缓存
-const handleDelete = (range: UnitIDRange, ids: number[]) => {
+const handleDelete = (ids: number[]) => {
   store.visibleEvents.remove(range, { eventId: ids[0] })
-
-  for (const id of range.ids) {
-    client.setQueryData<EventEntity[]>(
-      ['event', { range: id.range.serialize() }],
-      events => events?.filter(event => event.id !== ids[0]),
-    )
-  }
 
   for (const id of ids) {
     client.invalidateQueries(['event', id])
   }
+
+  client.invalidateQueries(['event', 'range'])
 }
 
 // 预加载当前可见区域内的event detail
