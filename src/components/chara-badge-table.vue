@@ -26,6 +26,7 @@ const handleRemoveChara = (id: number) => {
       v-model:popup-visible="visible"
       trigger="click"
       unmount-on-close
+      :popup-translate="[0, 8]"
     >
       <template #content>
         <div card-border p-2>

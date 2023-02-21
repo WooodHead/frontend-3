@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import { Message } from '@arco-design/web-vue'
 import type { AxiosError } from 'axios'
 import { useStore } from '../../store'
+import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
 import type { FormRef } from '@/utils/types'
 import type { UpdateEventDto } from '@/api/api-base'
@@ -30,21 +30,25 @@ const model = reactive<{
 const { data, isLoading } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value]),
-  queryFn: () => api.event.getEvent(eventId.value!),
+  queryFn: () => api.event.get(eventId.value!),
+  select: data => ({
+    ...data,
+    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
+  }),
 })
 watch(data, data => {
   if (!data) { return }
   const { name, description, range } = data
   model.name = name
   model.description = description ?? undefined
-  model.range = UnitIDRange.deserialize(range)
+  model.range = range
 }, { immediate: true })
 
 const { mutateAsync } = useMutation({
   mutationFn: ({ id, dto }: {
     id: number
     dto: UpdateEventDto
-  }) => api.event.updateEvent(id, dto),
+  }) => api.event.update(id, dto),
   onSuccess: data => {
     Message.success('修改成功')
     // TODO 更新时间跨度后，甘特图出问题
@@ -71,7 +75,7 @@ const handleBeforeOk = async () => {
     dto: {
       name,
       description,
-      range: range.serialize(),
+      ...range.toJSON(),
     },
   })
   return true

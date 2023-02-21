@@ -9,16 +9,15 @@ const { lock } = storeToRefs(store)
 const { suspense } = useQuery({
   staleTime: 0,
   queryKey: ['project', 'workspace', 'lock'],
-  queryFn: () => api.project.getWorkspaceInfo(),
+  queryFn: () => api.project.getWorkspace(),
   onSuccess: ({ lock }) => { store.lock = lock },
 })
 
 await suspense()
 
 watch(lock, lock => {
-  api.project.updateWorkspaceInfo({ lock })
-},
-)
+  api.project.updateWorkspace({ lock })
+})
 </script>
 
 <template>

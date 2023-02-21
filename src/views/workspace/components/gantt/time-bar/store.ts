@@ -1,4 +1,4 @@
-import type { UnitID } from '@project-chiral/unit-id'
+import type { UnitID } from '@/utils/unit-id'
 import createStore from '@/utils/createStore'
 
 export const { registerStore, useStore } = createStore('gantt/time-bar', {

@@ -18,7 +18,7 @@ const emit = defineEmits<{
 
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.getCharacter(id),
+  queryFn: () => api.character.get(id),
 })
 
 // TODO chara-item

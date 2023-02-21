@@ -11,7 +11,7 @@ const { data, suspense } = useQuery({
   enabled: computed(() => searchValue !== undefined && searchValue.length > 0),
   cacheTime: 0,
   queryKey: computed(() => ['character', 'search', 'name', searchValue]),
-  queryFn: () => api.character.searchCharacterByName({ text: searchValue! }),
+  queryFn: () => api.character.searchByName({ text: searchValue! }),
 })
 
 await suspense()

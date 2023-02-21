@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { UnitID } from '@project-chiral/unit-id'
 import { useStore } from '../../../store'
 import Unit from './unit.vue'
+import { UnitID } from '@/utils/unit-id'
 
 const store = useStore()
 const { units } = storeToRefs(store)

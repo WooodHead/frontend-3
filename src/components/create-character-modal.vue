@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
+import { Message } from '@arco-design/web-vue'
+import type { AxiosError } from 'axios'
+import { UnitIDRange } from '@/utils/unit-id'
 import type { CharacterEntity, CreateCharacterDto } from '@/api/api-base'
 import type { FormRef } from '@/utils/types'
 import api from '@/api/api'
@@ -19,15 +21,23 @@ const emit = defineEmits<{
 const { data } = useQuery({
   enabled: computed(() => !!id),
   queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.getCharacter(id!),
+  queryFn: () => api.character.get(id!),
   select: data => ({
     ...data,
-    range: data?.range ? UnitIDRange.deserialize(data.range) : undefined,
+    range: (data.unit && data.start && data.end)
+      ? UnitIDRange.fromDayjs(data.unit, data.start, data.end)
+      : undefined,
   }),
 })
 
 const { mutateAsync } = useMutation({
-  mutationFn: ({ data }: { data: CreateCharacterDto }) => api.character.createCharacter(data),
+  mutationFn: ({ data }: { data: CreateCharacterDto }) => api.character.create(data),
+  onSuccess: () => {
+    Message.success('角色创建成功')
+  },
+  onError: ({ message }: AxiosError) => {
+    Message.error(`角色创建失败: ${message}`)
+  },
 })
 
 const formRef = ref<FormRef>()

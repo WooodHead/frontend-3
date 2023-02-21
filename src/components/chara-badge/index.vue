@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
-
-const { id, closable = false } = defineProps<{
-  id: number
+const { closable } = defineProps<{
   closable?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', id: number): void
+  (e: 'close'): void
 }>()
-
-const { data } = useQuery({
-  enabled: false,
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
-})
 </script>
 
 <template>
@@ -30,17 +20,16 @@ const { data } = useQuery({
       select-none
     >
       <div h-full aspect-square rounded-full>
-        <img v-if="data?.avatar" :src="data.avatar">
-        <div v-else i-radix-icons-question-mark-circled full></div>
+        <slot name="avatar"></slot>
       </div>
       <div grow>
-        {{ id }}
+        <slot></slot>
       </div>
       <AButton
         v-if="closable"
         square-20px
         shape="circle" type="text"
-        @click.stop="$emit('close', id)"
+        @click.stop="$emit('close')"
       >
         <template #icon>
           <div text-xs i-radix-icons-cross-1></div>
@@ -48,7 +37,7 @@ const { data } = useQuery({
       </AButton>
     </div>
     <template #content>
-      <CharaDetailCard :id="id" />
+      <slot name="popover"></slot>
     </template>
   </ATrigger>
 </template>

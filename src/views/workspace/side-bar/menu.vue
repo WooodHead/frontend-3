@@ -29,7 +29,7 @@ const toggleDarkMode = () => {
 
 const { suspense } = useQuery({
   queryKey: [],
-  queryFn: () => api.project.getProjectSettings(),
+  queryFn: () => api.project.getSettings(),
   onSuccess: ({ darkMode }) => {
     if (darkMode) { toggleDarkMode() }
   },
@@ -38,7 +38,7 @@ const { suspense } = useQuery({
 // await suspense()
 
 watch(darkMode, darkMode => {
-  api.project.updateProjectSettings({ darkMode })
+  api.project.updateSettings({ darkMode })
 },
 )
 

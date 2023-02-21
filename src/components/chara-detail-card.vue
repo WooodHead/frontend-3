@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import DetailCard from './detail-card/index.vue'
 import api from '@/api/api'
 
@@ -12,11 +11,7 @@ const { id, show = true } = defineProps<{
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: false,
   queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.getCharacter(id),
-  select: data => ({
-    ...data,
-    range: data.range ? UnitIDRange.deserialize(data.range) : undefined,
-  }),
+  queryFn: () => api.character.get(id),
 })
 
 // TODO chara-detail-card

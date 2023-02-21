@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useFormItem } from '@arco-design/web-vue'
 import type { CalendarValue } from '@arco-design/web-vue/es/date-picker/interface'
-import type { IUnit } from '@project-chiral/unit-id'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import usePickerConfig from './unit-time-picker/usePickerConfig'
+import type { IUnit } from '@/utils/unit-id'
+import { UnitIDRange } from '@/utils/unit-id'
 
 const { modelValue, disabled = false, readonly = false } = defineProps<{
   modelValue?: UnitIDRange

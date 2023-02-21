@@ -13,7 +13,6 @@ specifiers:
   '@iconify-json/mdi': ^1.1.45
   '@iconify-json/radix-icons': ^1.1.8
   '@motionone/vue': ^10.15.5
-  '@project-chiral/unit-id': ^0.3.1
   '@tanstack/vue-query': ^4.24.4
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209
   '@tiptap/extension-character-count': 2.0.0-beta.209
@@ -25,6 +24,7 @@ specifiers:
   '@types/css': ^0.0.33
   '@types/d3-force': ^3.0.4
   '@types/node': ^18.11.18
+  '@types/object-hash': ^3.0.2
   '@typescript-eslint/parser': ^5.50.0
   '@unocss/preset-attributify': ^0.46.5
   '@unocss/preset-icons': ^0.46.5
@@ -43,6 +43,7 @@ specifiers:
   axios: ^1.2.1
   css: ^3.0.0
   d3-force: ^3.0.0
+  dayjs: ^1.11.7
   eslint: ^8.33.0
   eslint-plugin-unused-imports: ^2.0.0
   eslint-plugin-vue: ^9.9.0
@@ -50,6 +51,7 @@ specifiers:
   mitt: ^3.0.0
   mockjs: ^1.1.0
   motion: ^10.15.5
+  object-hash: ^3.0.0
   pinia: ^2.0.30
   prosemirror-commands: ^1.5.0
   prosemirror-dropcursor: ^1.6.1
@@ -79,7 +81,6 @@ dependencies:
   '@iconify-json/mdi': 1.1.45
   '@iconify-json/radix-icons': 1.1.8
   '@motionone/vue': 10.15.5_jy2dx6rchotoflpivg4bc5h5hm
-  '@project-chiral/unit-id': 0.3.1
   '@tanstack/vue-query': 4.24.4_vue@3.2.47
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_w5m3ddcszxha4fwakfbwcuuiyq
   '@tiptap/extension-character-count': 2.0.0-beta.209_hns5jzllmpwycdp7rynkguro2y
@@ -94,8 +95,10 @@ dependencies:
   '@vueuse/shared': 9.12.0_vue@3.2.47
   axios: 1.2.1
   d3-force: 3.0.0
+  dayjs: 1.11.7
   mitt: 3.0.0
   motion: 10.15.5
+  object-hash: 3.0.0
   pinia: 2.0.30_hmuptsblhheur2tugfgucj7gc4
   prosemirror-commands: 1.5.0
   prosemirror-dropcursor: 1.6.1
@@ -115,6 +118,7 @@ devDependencies:
   '@types/css': 0.0.33
   '@types/d3-force': 3.0.4
   '@types/node': 18.11.18
+  '@types/object-hash': 3.0.2
   '@typescript-eslint/parser': 5.50.0_4vsywjlpuriuw3tl5oq6zy5a64
   '@unocss/preset-attributify': 0.46.5
   '@unocss/preset-icons': 0.46.5
@@ -656,13 +660,6 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
-  /@project-chiral/unit-id/0.3.1:
-    resolution: {integrity: sha512-uNu4YUZODi60KWqdd2cLNciZ3rAGed0iIyVBj3glp0Mq+HqJ4HbT9DcGlwLdKpL49RLQ11TG+I0ecbt7Tl4wlA==}
-    dependencies:
-      dayjs: 1.11.7
-      object-hash: 3.0.0
-    dev: false
-
   /@react-dnd/asap/4.0.1:
     resolution: {integrity: sha512-kLy0PJDDwvwwTXxqTFNAAllPHD73AycE9ypWeln/IguoGBEbvFcPDbCV03G52bEcC5E+YgupBE0VzHGdC8SIXg==}
     dev: false
@@ -1155,6 +1152,10 @@ packages:
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
+    dev: true
+
+  /@types/object-hash/3.0.2:
+    resolution: {integrity: sha512-tfyXl1JPCf2hzIDK29gO7qGqJjThKBzg/Cn3bA68R9NmWdOx+f7k5mm4to/n43BHspCwcoUC6FU4NpUoK/h9bQ==}
     dev: true
 
   /@types/object.omit/3.0.0:

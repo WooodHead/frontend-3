@@ -26,7 +26,7 @@ const eventOption = ref<SelectorOptionValue>()
 const { data } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value]),
-  queryFn: () => api.event.getEvent(eventId.value!),
+  queryFn: () => api.event.get(eventId.value!),
 })
 watch(data, data => {
   if (!data) { return }

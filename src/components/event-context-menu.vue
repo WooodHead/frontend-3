@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import type { AxiosError } from 'axios'
 import api from '@/api/api'
 
 const { id } = defineProps<{ id: number }>()
 
 const emit = defineEmits<{
-  (event: 'delete', range: UnitIDRange, ids: number[]): void | Promise<void>
+  (event: 'delete', ids: number[]): void
 }>()
 
 const { mutateAsync } = useMutation({
-  mutationFn: ({ id, cascade }: { id: number; cascade: boolean }) => api.event.removeEvent(id, { cascade }),
+  mutationFn: ({ id, cascade }: {
+    id: number
+    cascade: boolean
+  }) => api.event.remove(id, { cascade }),
   onSuccess: () => {
     Message.success('删除成功')
   },
@@ -24,7 +26,7 @@ const { mutateAsync } = useMutation({
 const cascadeDelete = ref(false)
 const handleDeleteOk = async () => {
   const events = await mutateAsync({ id, cascade: cascadeDelete.value })
-  await emit('delete', UnitIDRange.deserialize(events[0].range), [id])
+  emit('delete', events.map(({ id }) => id))
   cascadeDelete.value = false
   return true
 }

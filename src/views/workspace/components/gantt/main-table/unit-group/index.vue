@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-id'
 import { UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 import Unit from './unit.vue'
+import type { UnitID } from '@/utils/unit-id'
 const { id } = defineProps<{
   id: UnitID
 }>()

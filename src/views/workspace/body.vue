@@ -15,7 +15,7 @@ const WSStore = useWSStore()
 const { suspense } = useQuery({
   staleTime: 0,
   queryKey: ['project', 'workspace', 'layout'],
-  queryFn: () => api.project.getWorkspaceInfo(),
+  queryFn: () => api.project.getWorkspace(),
   select: ({ layout }) => layout as ILayout,
   onSuccess: config => {
     WSStore.layout = config
@@ -35,7 +35,7 @@ await suspense()
 
 watch(
   () => WSStore.layout.serialize(),
-  layout => { api.project.updateWorkspaceInfo({ layout }) },
+  layout => { api.project.updateWorkspace({ layout }) },
   { deep: true },
 )
 

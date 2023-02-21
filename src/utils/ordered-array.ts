@@ -1,4 +1,4 @@
-import type { UnitID, UnitIDRange } from '@project-chiral/unit-id'
+import type { UnitID, UnitIDRange } from '@/utils/unit-id'
 
 export class OrderedArray<T extends Record<string, any>, K> {
   _data: [K, T][]

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { UnitIDRange } from '@project-chiral/unit-id'
 import { useQueryClient } from '@tanstack/vue-query'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
+import type { UnitIDRange } from '@/utils/unit-id'
 import type { EventEntity } from '@/api/api-base'
 import reverseColor from '@/utils/reverseColor'
 

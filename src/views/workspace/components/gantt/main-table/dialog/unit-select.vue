@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { UnitIDRange } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
 import Basic from './basic.vue'
+import { UnitIDRange } from '@/utils/unit-id'
 
 const store = useStore()
 const { subUnit, selectedRange } = storeToRefs(store)

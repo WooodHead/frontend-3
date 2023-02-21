@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import AtomEventForm from './create-event-modal/atom-event-form.vue'
 import CollectionEventForm from './create-event-modal/collection-event-form.vue'
+import { UnitIDRange } from '@/utils/unit-id'
 import type { CreateEventDto, EventEntity } from '@/api/api-base'
 import api from '@/api/api'
 
@@ -34,16 +34,10 @@ const formRef = ref<{ validate: () => Promise<CreateEventDto> }>()
 const client = useQueryClient()
 
 const { mutateAsync } = useMutation({
-  mutationFn: (data: CreateEventDto) => api.event.createEvent(data),
+  mutationFn: (data: CreateEventDto) => api.event.create(data),
   onSuccess: event => {
     Message.success('创建事件成功')
-    const range = UnitIDRange.deserialize(event.range)
-    for (const id of range.ids) {
-      client.setQueryData<EventEntity[]>(
-        ['event', { range: id.range.serialize() }],
-        events => [...events ?? [], event],
-      )
-    }
+    client.invalidateQueries(['event', 'range'])
     client.setQueryData(['event', event.id], event)
   },
   onError: e => {

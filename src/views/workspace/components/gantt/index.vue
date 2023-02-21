@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitID } from '@project-chiral/unit-id'
 import type { ComponentStatus } from '../type'
 import SideTable from './side-table/index.vue'
 import MainTable from './main-table/index.vue'
 import TimeBar from './time-bar/index.vue'
 import { registerStore } from './store'
 import Tools from './tools/index.vue'
+import { UnitID } from '@/utils/unit-id'
 import api from '@/api/api'
 
 const { status } = defineProps<{
@@ -25,7 +25,7 @@ watch(
 const { suspense } = useQuery({
   staleTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
-  queryFn: () => api.project.getWorkspaceInfo(),
+  queryFn: () => api.project.getWorkspace(),
   select: ({ origin }) => origin,
   onSuccess: id => {
     if (!id) { store.init(UnitID.fromDayjs('month')) }
@@ -40,7 +40,7 @@ await suspense()
 
 watchDebounced(visibleUnit, visibleUnit => {
   if (!visibleUnit) { return }
-  api.project.updateWorkspaceInfo({
+  api.project.updateWorkspace({
     origin: visibleUnit.serialize(),
   })
 }, { debounce: 100 })

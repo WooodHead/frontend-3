@@ -1,6 +1,6 @@
 import type { TimePickerProps } from '@arco-design/web-vue/es/time-picker/interface'
-import type { IUnit } from '@project-chiral/unit-id'
 import type { Ref } from 'vue'
+import type { IUnit } from '@/utils/unit-id'
 
 export const usePickerConfig = (unit: Ref<IUnit | undefined>) => {
   const showTime = ref(false)

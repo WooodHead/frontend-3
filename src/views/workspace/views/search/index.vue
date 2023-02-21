@@ -11,7 +11,7 @@ const router = useRouter()
       @close="router.back()"
     >
       <div center-y w-50vw prose>
-        <AInput rounded-b-0 w-full h-60px placeholder="输入想要搜索的信息">
+        <AInput v-auto-focus rounded-b-0 w-full h-60px placeholder="输入想要搜索的信息">
           <template #prefix>
             <div i-radix-icons-magnifying-glass text-xl></div>
           </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
@@ -21,10 +20,8 @@ const emit = defineEmits<{
 
 const { data } = useQuery({
   queryKey: computed(() => ['event', id]),
-  queryFn: () => api.event.getEvent(id),
+  queryFn: () => api.event.get(id),
 })
-const range = computed(() => data.value && UnitIDRange.deserialize(data.value.range))
-
 const handleClick = async () => {
   if (!data.value) { return }
   emit('click', data.value)
@@ -58,7 +55,7 @@ const handleHover = () => {
         {{ data?.serial }}. {{ data?.name }}
       </div>
       <div text="xs text-3" ellipsis>
-        {{ range?.start }} - {{ range?.end }}
+        {{ data?.start }} - {{ data?.end }}
       </div>
     </div>
     <template #extra>

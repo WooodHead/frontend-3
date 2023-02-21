@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { UnitID } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
+import { UnitID } from '@/utils/unit-id'
 import type { UnitTimePickerValue } from '@/components/unit-time-picker.vue'
 
 const store = useStore()

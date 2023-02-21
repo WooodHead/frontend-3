@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import { useStore } from '../../store'
 import InfoModal from './info-modal.vue'
 import api from '@/api/api'
+import { UnitID } from '@/utils/unit-id'
 
 const store = useStore()
 const { eventId } = storeToRefs(store)
@@ -11,15 +11,12 @@ const { eventId } = storeToRefs(store)
 const { data: event } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value]),
-  queryFn: () => api.event.getEvent(eventId.value!),
-  select: data => {
-    const range = UnitIDRange.deserialize(data.range)
-    return {
-      ...data,
-      name: `${data.serial}. ${data.name}`,
-      range: `${range.start} - ${range.end}`,
-    }
-  },
+  queryFn: () => api.event.get(eventId.value!),
+  select: data => ({
+    ...data,
+    name: `${data.serial}. ${data.name}`,
+    range: `${UnitID.fromDayjs(data.unit, data.start).toString()} - ${UnitID.fromDayjs(data.unit, data.end).toString()}`,
+  }),
 })
 
 const visible = ref(false)

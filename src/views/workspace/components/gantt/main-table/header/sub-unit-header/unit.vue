@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-id'
 import { HEADER_HEIGHT, UNIT_WIDTH } from '../../../const'
+import type { UnitID } from '@/utils/unit-id'
 
 const { unit } = defineProps<{ unit: UnitID }>()
 </script>

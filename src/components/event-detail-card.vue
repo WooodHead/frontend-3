@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { UnitIDRange } from '@project-chiral/unit-id'
 import DetailCard from './detail-card/index.vue'
+import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
 
 const { id, show = true, load = true } = defineProps<{
@@ -13,13 +13,13 @@ const { id, show = true, load = true } = defineProps<{
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
   queryKey: computed(() => ['event', id, 'detail']),
-  queryFn: () => api.event.getEventDetail(id),
+  queryFn: () => api.event.getDetail(id),
   select: data => ({
     ...data,
     type: data.type === 'ATOM' ? '原子事件' : '集合事件',
     createdAt: new Date(data.createdAt),
     updatedAt: new Date(data.updatedAt),
-    range: UnitIDRange.deserialize(data.range),
+    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
   }),
 })
 </script>

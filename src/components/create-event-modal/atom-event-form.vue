@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UnitIDRange } from '@project-chiral/unit-id'
+import { UnitIDRange } from '@/utils/unit-id'
 import type { FormRef } from '@/utils/types'
 import type { CreateEventDto } from '@/api/api-base'
 
@@ -46,7 +46,9 @@ defineExpose({ validate })
     <AFormItem
       field="range"
       label="时间范围"
-      :rules="[{ required: true, message: '请选择事件的时间范围' }]"
+      :rules="[
+        { required: true, message: '请选择事件的时间范围' },
+      ]"
     >
       <UnitRangePicker v-model="model.range" />
     </AFormItem>

@@ -11,7 +11,6 @@
 
 export interface EventEntity {
   type: "ATOM" | "COLLECTION";
-  range: string;
   id: number;
   name: string;
   description: string | null;
@@ -34,7 +33,6 @@ export interface EventEntity {
 
 export interface EventDetailEntity {
   type: "ATOM" | "COLLECTION";
-  range: string;
   id: number;
   name: string;
   description: string | null;
@@ -60,18 +58,34 @@ export interface EventDetailEntity {
 
 export interface CreateEventDto {
   type: "ATOM" | "COLLECTION";
-  range: string;
   name: string;
   description: string | null;
   color: string;
+  /**
+   * @min 0
+   * @max 8
+   */
+  unit: number;
+  /** @format date-time */
+  start: string;
+  /** @format date-time */
+  end: string;
 }
 
 export interface UpdateEventDto {
   type?: "ATOM" | "COLLECTION";
-  range?: string;
   name?: string;
   description?: string | null;
   color?: string;
+  /**
+   * @min 0
+   * @max 8
+   */
+  unit?: number;
+  /** @format date-time */
+  start?: string;
+  /** @format date-time */
+  end?: string;
 }
 
 export interface EventContentEntity {
@@ -171,15 +185,22 @@ export interface UpdateSettingsDto {
 }
 
 export interface CreateCharacterDto {
-  range?: string;
   name: string;
   alias: string[];
   description?: string;
   avatar?: string;
+  /**
+   * @min 0
+   * @max 8
+   */
+  unit?: number;
+  /** @format date-time */
+  start?: string;
+  /** @format date-time */
+  end?: string;
 }
 
 export interface CharacterEntity {
-  range?: string;
   id: number;
   name: string;
   alias: string[];
@@ -395,10 +416,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name GetEvent
+     * @name Get
      * @request GET:/event/{id}
      */
-    getEvent: (id: number, params: RequestParams = {}) =>
+    get: (id: number, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event/${id}`,
         method: "GET",
@@ -410,10 +431,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name UpdateEvent
+     * @name Update
      * @request PUT:/event/{id}
      */
-    updateEvent: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
+    update: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event/${id}`,
         method: "PUT",
@@ -427,10 +448,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name RemoveEvent
+     * @name Remove
      * @request DELETE:/event/{id}
      */
-    removeEvent: (
+    remove: (
       id: number,
       query: {
         cascade: boolean;
@@ -446,13 +467,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description 获取事件的详细信息
+     * No description
      *
      * @tags event
-     * @name GetEventDetail
+     * @name GetDetail
      * @request GET:/event/{id}/detail
      */
-    getEventDetail: (id: number, params: RequestParams = {}) =>
+    getDetail: (id: number, params: RequestParams = {}) =>
       this.request<EventDetailEntity, any>({
         path: `/event/${id}/detail`,
         method: "GET",
@@ -461,15 +482,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description 根据时间范围或给定id列表获取事件，将二者的并集返回
+     * No description
      *
      * @tags event
-     * @name GetEventsByRange
+     * @name GetByRange
      * @request GET:/event/range
      */
-    getEventsByRange: (
-      query?: {
-        range?: string;
+    getByRange: (
+      query: {
+        /**
+         * @min 0
+         * @max 8
+         */
+        unit: number;
+        /** @format date-time */
+        start: string;
+        /** @format date-time */
+        end: string;
       },
       params: RequestParams = {},
     ) =>
@@ -485,10 +514,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name GetEventBySerial
+     * @name GetBySerial
      * @request GET:/event/serial
      */
-    getEventBySerial: (serial: number, params: RequestParams = {}) =>
+    getBySerial: (serial: number, params: RequestParams = {}) =>
       this.request<object, any>({
         path: `/event/serial`,
         method: "GET",
@@ -500,10 +529,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name SearchEventName
+     * @name SearchByName
      * @request GET:/event/search/name
      */
-    searchEventName: (
+    searchByName: (
       query: {
         text: string;
       },
@@ -521,10 +550,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
-     * @name CreateEvent
+     * @name Create
      * @request POST:/event
      */
-    createEvent: (data: CreateEventDto, params: RequestParams = {}) =>
+    create: (data: CreateEventDto, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event`,
         method: "POST",
@@ -671,10 +700,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name GetUser
+     * @name Get
      * @request GET:/user
      */
-    getUser: (params: RequestParams = {}) =>
+    get: (params: RequestParams = {}) =>
       this.request<UserEntity, any>({
         path: `/user`,
         method: "GET",
@@ -686,10 +715,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags user
-     * @name DeleteUser
+     * @name Delete
      * @request DELETE:/user
      */
-    deleteUser: (params: RequestParams = {}) =>
+    delete: (params: RequestParams = {}) =>
       this.request<UserEntity, any>({
         path: `/user`,
         method: "DELETE",
@@ -734,10 +763,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 创建新项目
      *
      * @tags project
-     * @name CreateProject
+     * @name Create
      * @request POST:/project
      */
-    createProject: (data: CreateProjectDto, params: RequestParams = {}) =>
+    create: (data: CreateProjectDto, params: RequestParams = {}) =>
       this.request<ProjectEntity, any>({
         path: `/project`,
         method: "POST",
@@ -751,10 +780,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 获取项目信息
      *
      * @tags project
-     * @name GetProject
+     * @name Get
      * @request GET:/project
      */
-    getProject: (params: RequestParams = {}) =>
+    get: (params: RequestParams = {}) =>
       this.request<ProjectEntity, any>({
         path: `/project`,
         method: "GET",
@@ -766,10 +795,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 更新项目信息
      *
      * @tags project
-     * @name UpdateProject
+     * @name Update
      * @request PUT:/project
      */
-    updateProject: (data: UpdateProjectDto, params: RequestParams = {}) =>
+    update: (data: UpdateProjectDto, params: RequestParams = {}) =>
       this.request<ProjectEntity, any>({
         path: `/project`,
         method: "PUT",
@@ -783,10 +812,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 删除项目
      *
      * @tags project
-     * @name RemoveProject
+     * @name Remove
      * @request DELETE:/project
      */
-    removeProject: (params: RequestParams = {}) =>
+    remove: (params: RequestParams = {}) =>
       this.request<ProjectEntity, any>({
         path: `/project`,
         method: "DELETE",
@@ -798,10 +827,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 获取工作区信息
      *
      * @tags project
-     * @name GetWorkspaceInfo
+     * @name GetWorkspace
      * @request GET:/project/workspace
      */
-    getWorkspaceInfo: (params: RequestParams = {}) =>
+    getWorkspace: (params: RequestParams = {}) =>
       this.request<WorkspaceEntity, any>({
         path: `/project/workspace`,
         method: "GET",
@@ -813,10 +842,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 更新工作区信息
      *
      * @tags project
-     * @name UpdateWorkspaceInfo
+     * @name UpdateWorkspace
      * @request PUT:/project/workspace
      */
-    updateWorkspaceInfo: (data: UpdateWorkspaceDto, params: RequestParams = {}) =>
+    updateWorkspace: (data: UpdateWorkspaceDto, params: RequestParams = {}) =>
       this.request<WorkspaceEntity, any>({
         path: `/project/workspace`,
         method: "PUT",
@@ -830,10 +859,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 获取项目设置
      *
      * @tags project
-     * @name GetProjectSettings
+     * @name GetSettings
      * @request GET:/project/settings
      */
-    getProjectSettings: (params: RequestParams = {}) =>
+    getSettings: (params: RequestParams = {}) =>
       this.request<SettingsEntity, any>({
         path: `/project/settings`,
         method: "GET",
@@ -845,10 +874,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description 更新项目设置
      *
      * @tags project
-     * @name UpdateProjectSettings
+     * @name UpdateSettings
      * @request PUT:/project/settings
      */
-    updateProjectSettings: (data: UpdateSettingsDto, params: RequestParams = {}) =>
+    updateSettings: (data: UpdateSettingsDto, params: RequestParams = {}) =>
       this.request<SettingsEntity, any>({
         path: `/project/settings`,
         method: "PUT",
@@ -862,10 +891,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CreateCharacter
+     * @name Create
      * @request POST:/character
      */
-    createCharacter: (data: CreateCharacterDto, params: RequestParams = {}) =>
+    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character`,
         method: "POST",
@@ -878,10 +907,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name GetAllCharacters
+     * @name GetAll
      * @request GET:/character
      */
-    getAllCharacters: (params: RequestParams = {}) =>
+    getAll: (params: RequestParams = {}) =>
       this.request<CharacterEntity[], any>({
         path: `/character`,
         method: "GET",
@@ -892,10 +921,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name GetCharacter
+     * @name Get
      * @request GET:/character/{id}
      */
-    getCharacter: (id: number, params: RequestParams = {}) =>
+    get: (id: number, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "GET",
@@ -906,10 +935,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name UpdateCharacter
+     * @name Update
      * @request PUT:/character/{id}
      */
-    updateCharacter: (id: number, data: CreateCharacterDto, params: RequestParams = {}) =>
+    update: (id: number, data: CreateCharacterDto, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "PUT",
@@ -922,10 +951,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name RemoveCharacter
+     * @name Remove
      * @request DELETE:/character/{id}
      */
-    removeCharacter: (id: number, params: RequestParams = {}) =>
+    remove: (id: number, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "DELETE",
@@ -936,10 +965,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name SearchCharacterByName
+     * @name SearchByName
      * @request GET:/character/search/name
      */
-    searchCharacterByName: (
+    searchByName: (
       query: {
         text: string;
       },
@@ -957,10 +986,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CreateScene
+     * @name Create
      * @request POST:/scene
      */
-    createScene: (data: CreateSceneDto, params: RequestParams = {}) =>
+    create: (data: CreateSceneDto, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene`,
         method: "POST",
@@ -973,10 +1002,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name GetScene
+     * @name Get
      * @request GET:/scene/{id}
      */
-    getScene: (id: number, params: RequestParams = {}) =>
+    get: (id: number, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
         method: "GET",
@@ -987,10 +1016,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name UpdateScene
+     * @name Update
      * @request PUT:/scene/{id}
      */
-    updateScene: (id: number, data: UpdateSceneDto, params: RequestParams = {}) =>
+    update: (id: number, data: UpdateSceneDto, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
         method: "PUT",
@@ -1003,10 +1032,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name RemoveScene
+     * @name Remove
      * @request DELETE:/scene/{id}
      */
-    removeScene: (id: number, params: RequestParams = {}) =>
+    remove: (id: number, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
         method: "DELETE",
@@ -1017,10 +1046,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name SearchSceneByName
+     * @name SearchByName
      * @request GET:/scene/search/name
      */
-    searchSceneByName: (
+    searchByName: (
       query: {
         text: string;
       },
@@ -1038,10 +1067,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name CreateWorldview
+     * @name Create
      * @request POST:/worldview
      */
-    createWorldview: (data: CreateWorldviewDto, params: RequestParams = {}) =>
+    create: (data: CreateWorldviewDto, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview`,
         method: "POST",
@@ -1054,10 +1083,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name GetWorldview
+     * @name Get
      * @request GET:/worldview/{id}
      */
-    getWorldview: (id: number, params: RequestParams = {}) =>
+    get: (id: number, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "GET",
@@ -1068,10 +1097,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name UpdateWorldview
+     * @name Update
      * @request POST:/worldview/{id}
      */
-    updateWorldview: (id: number, data: UpdateWorldviewDto, params: RequestParams = {}) =>
+    update: (id: number, data: UpdateWorldviewDto, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "POST",
@@ -1084,10 +1113,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name RemoveWorldview
+     * @name Remove
      * @request DELETE:/worldview/{id}
      */
-    removeWorldview: (id: number, params: RequestParams = {}) =>
+    remove: (id: number, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "DELETE",

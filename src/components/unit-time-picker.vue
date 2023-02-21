@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormItem } from '@arco-design/web-vue'
-import type { IUnit } from '@project-chiral/unit-id'
 import { usePickerConfig } from './unit-time-picker/usePickerConfig'
+import type { IUnit } from '@/utils/unit-id'
 
 export interface UnitTimePickerValue {
   unit: IUnit

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { UnitID } from '@project-chiral/unit-id'
 import { BLOCK_WIDTH } from '../const'
 import { useStore } from '../store'
 import { useStore as useGanttStore } from '../../store'
+import type { UnitID } from '@/utils/unit-id'
 
 const { id, left, right } = defineProps<{
   id: UnitID
