@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import type { AxiosError } from 'axios'
+import api from '@/api/api'
 import type { CharacterEntity } from '@/api/api-base'
 
 const charaId = ref<number>()
@@ -6,21 +9,70 @@ const handleItemClick = ({ id }: CharacterEntity) => {
   charaId.value = id
 }
 
+const client = useQueryClient()
+
+const { data } = useQuery({
+  queryKey: ['character'],
+  queryFn: () => api.character.getAll(),
+})
+
+const { mutateAsync } = useMutation({
+  mutationFn: () => api.character.create({ name: '新角色' }),
+  onSuccess: data => {
+    client.setQueryData(
+      ['character'],
+      (oldData: CharacterEntity[] | undefined) => [...oldData ?? [], data])
+  },
+  onError: ({ message }: AxiosError) => {
+    console.error(message)
+  },
+})
+
+const list = ref<CharacterEntity[]>([])
 const searchText = ref<string>()
+const debouncedSearchText = debouncedRef(searchText, 300)
+watchEffect(() => {
+  const search = debouncedSearchText.value
+  const rawData = data.value ?? []
+  list.value = search
+    ? rawData.filter(({ name }) => name.includes(search))
+    : rawData
+})
+
+const handleCreate = async () => {
+  await mutateAsync()
+}
 </script>
 
 <template>
   <ResizeLayout full>
     <template #side>
-      <div p-2 border="b border-2">
-        <AInputSearch
+      <div center-x gap-1 p-2 border="b border-2">
+        <AInput
           v-model="searchText"
           size="small"
           placeholder="搜索角色"
           allow-clear
         />
+        <AButton
+          title="创建新角色"
+          size="small" type="outline"
+          shrink-0
+          @click="handleCreate"
+        >
+          <template #icon>
+            <div i-radix-icons-plus text-lg></div>
+          </template>
+        </AButton>
       </div>
-      <CharaItem :id="3" button @click="handleItemClick" />
+      <div h-0 grow overflow-y-auto>
+        <CharaItem
+          v-for="{ id } of list"
+          :id="id"
+          :key="id" button
+          @click="handleItemClick"
+        />
+      </div>
     </template>
     <div p-4 grow center-y overflow-y-auto>
       <div center-x gap-4 m-4>

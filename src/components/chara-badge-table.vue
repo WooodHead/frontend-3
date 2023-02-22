@@ -3,11 +3,12 @@ import Resolved from './chara-badge-table/resolved.vue'
 import Unresolved from './chara-badge-table/unresolved.vue'
 import AddButton from './chara-badge-table/add-button.vue'
 
-const { modelValue } = defineProps<{
+const { modelValue, eventId } = defineProps<{
   modelValue: {
     resolved: number[]
     unresolved: string[]
   }
+  eventId?: number
 }>()
 
 const emit = defineEmits<{

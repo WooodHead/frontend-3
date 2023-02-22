@@ -42,7 +42,7 @@ const handleAddItem = (nodeData: TreeNodeData) => {
 }
 
 const nowData = ref(data)
-watch(() => search, search => {
+watchEffect(() => {
   if (!search) { nowData.value = data }
   else { nowData.value = filterTree(search, data) }
 })
@@ -55,6 +55,7 @@ watch(() => search, search => {
     default-expand-all
     :selectable="(_node, { isLeaf }) => isLeaf"
     :data="nowData"
+    :selected-keys="selectKey ? [selectKey] : []"
     @update:selected-keys="$emit('update:select-key', $event[0])"
   >
     <template #extra="nodeData">

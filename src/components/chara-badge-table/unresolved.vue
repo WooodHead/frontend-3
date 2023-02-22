@@ -5,8 +5,9 @@ import type { AxiosError } from 'axios'
 import Basic from './index.vue'
 import api from '@/api/api'
 import type { CharacterEntity } from '@/api/api-base'
-const { name } = defineProps<{
+const { name, eventId } = defineProps<{
   name: string
+  eventId?: number
 }>()
 
 const emit = defineEmits<{
@@ -17,7 +18,10 @@ const emit = defineEmits<{
 const visible = ref(false)
 
 const { mutateAsync, isLoading } = useMutation({
-  mutationFn: ({ name }: { name: string }) => api.character.create({ name }),
+  mutationFn: ({ name }: { name: string }) => api.character.create({
+    name,
+    eventIds: eventId ? [eventId] : [],
+  }),
   onSuccess: ({ name }) => {
     Message.success(`角色 ${name} 创建成功`)
   },

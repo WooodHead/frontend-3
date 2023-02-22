@@ -198,6 +198,7 @@ export interface CreateCharacterDto {
   start?: string;
   /** @format date-time */
   end?: string;
+  eventIds?: number[];
 }
 
 export interface CharacterEntity {
