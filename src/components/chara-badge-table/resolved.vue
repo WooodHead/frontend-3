@@ -35,7 +35,7 @@ const visible = ref(false)
   >
     <template #avatar>
       <img v-if="data?.avatar" :src="data.avatar">
-      <div v-else i-radix-icons-question-mark-circled full></div>
+      <div v-else i-radix-icons-avatar full></div>
     </template>
     {{ id }}
     <template #popover>

@@ -2,7 +2,6 @@
 import type { ComponentStatus } from '../type'
 import Body from './body/index.vue'
 import { registerStore } from './store'
-import Tools from './tools/index.vue'
 
 interface CharacterProps {
   status: ComponentStatus
@@ -36,24 +35,9 @@ const id = ref('character')
         </ARadioGroup>
       </template>
       <template #right>
-        <div row space-x-2>
-          <AButtonGroup type="outline">
-            <AButton title="查找">
-              <template #icon>
-                <div i-radix-icons-magnifying-glass text-2xl />
-              </template>
-            </AButton>
-            <AButton title="筛选">
-              <template #icon>
-                <div i-radix-icons-mixer-horizontal text-2xl />
-              </template>
-            </AButton>
-          </AButtonGroup>
-        </div>
       </template>
     </ComponentHeader>
     <div relative h-0 grow>
-      <Tools />
       <Body :id="id" />
     </div>
   </div>

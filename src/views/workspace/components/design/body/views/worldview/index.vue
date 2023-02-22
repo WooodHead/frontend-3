@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TreeNodeData } from '@arco-design/web-vue'
+import SearchTree from '../../component/search-tree/index.vue'
 
 const key = ref()
 
@@ -21,6 +22,7 @@ const data = ref<TreeNodeData[]>([
   { title: '5', key: '5' },
 ])
 const searchText = ref<string>()
+const debouncedSearchText = refDebounced(searchText, 300)
 const selectKey = ref<string>()
 </script>
 
@@ -36,16 +38,20 @@ const selectKey = ref<string>()
         />
       </div>
       <div h-full overflow-y-auto>
-        <ATree
-          v-model:selected-keys="key"
-          show-line default-expand-all
-          :selectable="(_node, { isLeaf }) => isLeaf"
+        <SearchTree
+          v-model:select-key="selectKey"
           :data="data"
-          @select="selectKey = $event[0] as string"
+          :search="debouncedSearchText"
         />
       </div>
     </template>
-    <div p-4>
+    <div p-4 column grow>
+      <input
+        text-2xl font-bold
+        outline-none bg-bg-1
+        placeholder="请输入标题"
+      >
+      <ADivider :margin="12" />
       世界观设定
     </div>
   </ResizeLayout>

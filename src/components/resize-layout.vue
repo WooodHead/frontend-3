@@ -9,7 +9,7 @@ const width = computed(() => typeof defaultSideWidth === 'number' ? `${defaultSi
 </script>
 
 <template>
-  <div row>
+  <div nim-row>
     <AResizeBox
       v-if="sideShow"
       :directions="['right']"

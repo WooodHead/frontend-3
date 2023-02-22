@@ -42,11 +42,11 @@ const handleHover = () => {
     @click="handleClick"
     @hover="handleHover"
   >
-    <AAvatar m-2 :size="32">
-      {{ data?.name }}
+    <AAvatar bg-primary-light-4 m-2 :size="32">
+      {{ data?.name.slice(-2) }}
     </AAvatar>
-    <div grow column>
-      <div text="xs text-1" ellipsis>
+    <div grow center-x>
+      <div text="text-1" ellipsis>
         {{ data?.name }}
       </div>
       <div text="xs text-3" ellipsis>

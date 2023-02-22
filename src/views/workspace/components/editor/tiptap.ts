@@ -23,7 +23,7 @@ export const editor = new Editor({
   ],
   editorProps: {
     attributes: {
-      class: 'outline-none',
+      class: 'outline-none subpixel-antialiased',
     },
   },
 })
