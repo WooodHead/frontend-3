@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { Message } from '@arco-design/web-vue'
-import type { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
 import Item from '@/components/item/index.vue'
 import type { CharacterEntity } from '@/api/api-base'
+import { useCharaRemove } from '@/api/character'
 
 const { id, height, button, removable, animate } = defineProps<{
   id: number
@@ -26,21 +25,7 @@ const { data } = useQuery({
 })
 
 // TODO chara-item
-const client = useQueryClient()
-const { mutateAsync: remove } = useMutation({
-  mutationFn: () => api.character.remove(id),
-  onSuccess: ({ id }) => {
-    client.setQueryData(
-      ['character'],
-      (oldData: CharacterEntity[] | undefined) =>
-        oldData?.filter(({ id: _id }) => _id !== id),
-    )
-    client.invalidateQueries(['character', id])
-  },
-  onError: ({ message }: AxiosError) => {
-    Message.error(`删除角色失败: ${message}`)
-  },
-})
+const { mutateAsync: remove } = useCharaRemove(computed(() => id))
 
 const handleClick = () => {
   if (!data.value) { return }

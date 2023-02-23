@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
 import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
 import { UnitIDRange } from '@/utils/unit-id'
+import { useEventRemove } from '@/api/event'
 
 const { id, height, button = false, eventSelect = false, removable, animate } = defineProps<{
   id: number
@@ -20,8 +20,6 @@ const emit = defineEmits<{
   (e: 'click', event: EventEntity): void
   (e: 'hover', event: EventEntity): void
 }>()
-
-const client = useQueryClient()
 
 const { data } = useQuery({
   queryKey: computed(() => ['event', id]),
@@ -44,21 +42,7 @@ const handleHover = () => {
   emit('hover', data.value)
 }
 
-const { mutateAsync } = useMutation({
-  mutationFn: () => api.event.remove(id, { cascade: false }),
-  onSuccess: events => {
-    for (const event of events) {
-      client.invalidateQueries(['event', event.id])
-    }
-    client.invalidateQueries(['event', 'range'])
-  },
-  onError: ({ message }: AxiosError) => {
-    console.error(message)
-  },
-})
-const handleRemove = async () => {
-  await mutateAsync()
-}
+const { mutate: remove } = useEventRemove(computed(() => id))
 </script>
 
 <template>
@@ -69,7 +53,7 @@ const handleRemove = async () => {
     :removable="removable"
     @click="handleClick"
     @hover="handleHover"
-    @remove="handleRemove"
+    @remove="remove"
   >
     <div center min-w-20px shrink-0 p-2>
       <div

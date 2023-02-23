@@ -110,7 +110,7 @@ export interface EventTodoEntity {
 
 export interface CreateTodoDto {
   title: string;
-  color: string | null;
+  color?: string;
 }
 
 export interface UpdateTodoDto {
@@ -184,6 +184,21 @@ export interface UpdateSettingsDto {
   darkMode?: boolean;
 }
 
+export interface CharacterEntity {
+  id: number;
+  name: string;
+  alias: string[];
+  description: string | null;
+  avatar: string | null;
+  /** @format date-time */
+  deleted: string | null;
+  unit: number | null;
+  /** @format date-time */
+  start: string | null;
+  /** @format date-time */
+  end: string | null;
+}
+
 export interface CreateCharacterDto {
   name: string;
   alias?: string[];
@@ -199,21 +214,6 @@ export interface CreateCharacterDto {
   /** @format date-time */
   end?: string;
   eventIds?: number[];
-}
-
-export interface CharacterEntity {
-  id: number;
-  name: string;
-  alias: string[];
-  description: string | null;
-  avatar: string | null;
-  /** @format date-time */
-  deleted: string | null;
-  unit: number | null;
-  /** @format date-time */
-  start: string | null;
-  /** @format date-time */
-  end: string | null;
 }
 
 export interface UpdateCharacterDto {
@@ -503,8 +503,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags event
+     * @name GetAll
+     * @request GET:/event/list
+     */
+    getAll: (params: RequestParams = {}) =>
+      this.request<EventEntity[], any>({
+        path: `/event/list`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
      * @name GetByRange
-     * @request GET:/event/range
+     * @request GET:/event/list/range
      */
     getByRange: (
       query: {
@@ -521,24 +536,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<EventEntity[], any>({
-        path: `/event/range`,
+        path: `/event/list/range`,
         method: "GET",
         query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name GetBySerial
-     * @request GET:/event/serial
-     */
-    getBySerial: (serial: number, params: RequestParams = {}) =>
-      this.request<object, any>({
-        path: `/event/serial`,
-        method: "GET",
         format: "json",
         ...params,
       }),
@@ -679,21 +679,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "PUT",
         body: data,
         type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 获取单个todo项
-     *
-     * @tags event
-     * @name GetTodo
-     * @request GET:/event/todo/{id}
-     */
-    getTodo: (id: number, params: RequestParams = {}) =>
-      this.request<EventTodoEntity, any>({
-        path: `/event/todo/${id}`,
-        method: "GET",
         format: "json",
         ...params,
       }),
@@ -909,36 +894,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name Create
-     * @request POST:/character
-     */
-    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
-        path: `/character`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name GetAll
-     * @request GET:/character
-     */
-    getAll: (params: RequestParams = {}) =>
-      this.request<CharacterEntity[], any>({
-        path: `/character`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @name Get
      * @request GET:/character/{id}
      */
@@ -976,6 +931,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name GetAll
+     * @request GET:/character/list
+     */
+    getAll: (
+      query?: {
+        /** @min 0 */
+        size?: number;
+        /** @min 0 */
+        page?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CharacterEntity[], any>({
+        path: `/character/list`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name Create
+     * @request POST:/character
+     */
+    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
+      this.request<CharacterEntity, any>({
+        path: `/character`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

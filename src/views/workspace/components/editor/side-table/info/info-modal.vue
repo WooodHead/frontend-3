@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { Message } from '@arco-design/web-vue'
-import type { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
 import type { FormRef } from '@/utils/types'
-import type { UpdateEventDto } from '@/api/api-base'
-import emitter from '@/utils/emitter'
+import { useEventUpdate } from '@/api/event'
 
 const { visible } = defineProps<{
   visible: boolean
@@ -19,7 +16,6 @@ const emit = defineEmits<{
 
 const store = useStore()
 const { eventId } = storeToRefs(store)
-const client = useQueryClient()
 
 const formRef = ref<FormRef>()
 const model = reactive<{
@@ -44,22 +40,7 @@ watch(data, data => {
   model.range = range
 }, { immediate: true })
 
-const { mutateAsync } = useMutation({
-  mutationFn: ({ id, dto }: {
-    id: number
-    dto: UpdateEventDto
-  }) => api.event.update(id, dto),
-  onSuccess: data => {
-    Message.success('修改成功')
-    // TODO 更新时间跨度后，甘特图出问题
-    client.setQueryData(['event', data.id], data)
-    client.invalidateQueries(['event', 'range'])
-    emitter.emit('reload', {})
-  },
-  onError: (e: AxiosError) => {
-    Message.error(`修改失败: ${e.message}`)
-  },
-})
+const { mutateAsync: update } = useEventUpdate(eventId)
 
 const handleBeforeOk = async () => {
   if (!eventId.value || !formRef.value) { return false }
@@ -70,13 +51,10 @@ const handleBeforeOk = async () => {
     description,
     range,
   } = model as Required<typeof model>
-  await mutateAsync({
-    id: eventId.value,
-    dto: {
-      name,
-      description,
-      ...range.toJSON(),
-    },
+  await update({
+    name,
+    description,
+    ...range.toJSON(),
   })
   return true
 }

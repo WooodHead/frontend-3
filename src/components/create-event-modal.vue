@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { Message } from '@arco-design/web-vue'
 import AtomEventForm from './create-event-modal/atom-event-form.vue'
 import CollectionEventForm from './create-event-modal/collection-event-form.vue'
 import { UnitIDRange } from '@/utils/unit-id'
 import type { CreateEventDto, EventEntity } from '@/api/api-base'
-import api from '@/api/api'
+import { useEventCreate } from '@/api/event'
 
 const { visible, init } = defineProps<{
   visible?: boolean
@@ -31,23 +29,12 @@ const title = computed(() => {
 })
 
 const formRef = ref<{ validate: () => Promise<CreateEventDto> }>()
-const client = useQueryClient()
 
-const { mutateAsync } = useMutation({
-  mutationFn: (data: CreateEventDto) => api.event.create(data),
-  onSuccess: event => {
-    Message.success('创建事件成功')
-    client.invalidateQueries(['event', 'range'])
-    client.setQueryData(['event', event.id], event)
-  },
-  onError: e => {
-    Message.error(`创建事件失败：${e}`)
-  },
-})
+const { mutateAsync: create } = useEventCreate()
 
 const handleBeforeOk = async () => {
   const data = await formRef.value!.validate()
-  const event = await mutateAsync(data)
+  const event = await create(data)
   emit('beforeOk', event)
   return true
 }

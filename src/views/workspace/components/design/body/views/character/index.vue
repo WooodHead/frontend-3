@@ -1,37 +1,22 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
-import { Message } from '@arco-design/web-vue'
+import { useQuery } from '@tanstack/vue-query'
 import Body from './body/index.vue'
 import api from '@/api/api'
 import type { CharacterEntity } from '@/api/api-base'
+import { useCharaCreate } from '@/api/character'
 
 const charaId = ref<number>()
 const handleClick = ({ id }: CharacterEntity) => {
   charaId.value = id
 }
 
-const client = useQueryClient()
-
+// TODO 改为useInfiniteQuery
 const { data } = useQuery({
-  queryKey: ['character'],
+  queryKey: ['character', 'list'],
   queryFn: () => api.character.getAll(),
 })
 
-const { mutateAsync: create, isLoading } = useMutation({
-  mutationFn: () => api.character.create({ name: '新角色' }),
-  onSuccess: data => {
-    if (charaId.value === undefined) { charaId.value = data.id }
-    client.setQueryData(
-      ['character'],
-      (oldData: CharacterEntity[] | undefined) =>
-        [...oldData ?? [], data],
-    )
-  },
-  onError: ({ message }: AxiosError) => {
-    Message.error(`创建角色失败: ${message}`)
-  },
-})
+const { mutateAsync: create, isLoading } = useCharaCreate()
 
 const list = ref<CharacterEntity[]>([])
 const searchText = ref<string>()
@@ -45,7 +30,7 @@ watchEffect(() => {
 })
 
 const handleCreate = async () => {
-  await create()
+  await create({ name: '新角色' })
 }
 
 const handleDelete = async ({ id }: CharacterEntity) => {

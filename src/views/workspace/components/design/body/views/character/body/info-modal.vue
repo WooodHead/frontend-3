@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
-import { Message } from '@arco-design/web-vue'
+import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
 import type { UpdateCharacterDto } from '@/api/api-base'
 import type { FormRef } from '@/utils/types'
+import { useCharaUpdate } from '@/api/character'
 const { id, visible = false } = defineProps<{
   id: number
   visible?: boolean
@@ -16,7 +15,6 @@ const emit = defineEmits<{
 
 const model = ref<UpdateCharacterDto>({})
 const formRef = ref<FormRef>()
-const client = useQueryClient()
 
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
@@ -34,15 +32,7 @@ watch(data, data => {
   }
 })
 
-const { mutateAsync } = useMutation({
-  mutationFn: (dto: UpdateCharacterDto) => api.character.update(id, dto),
-  onSuccess: data => {
-    client.setQueryData(['character', id], data)
-  },
-  onError: ({ message }: AxiosError) => {
-    Message.error(`更新角色失败: ${message}`)
-  },
-})
+const { mutateAsync } = useCharaUpdate(computed(() => id))
 
 const handleBeforeOk = async () => {
   const error = formRef.value?.validate()
