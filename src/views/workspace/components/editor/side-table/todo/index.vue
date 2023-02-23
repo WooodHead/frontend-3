@@ -58,7 +58,7 @@ const handleUnCheckedItemClick = (id: number) => {
 
 const addVisible = ref(false)
 const { mutate: createTodo, isLoading: createLoading } = useMutation({
-  mutationFn: ({ title, color }: { title: string; color: string }) =>
+  mutationFn: ({ title, color }: { title: string; color?: string }) =>
     api.event.createTodo(eventId.value!, { title, color }),
   onSuccess: todo => {
     addVisible.value = false
@@ -73,10 +73,10 @@ const { mutate: createTodo, isLoading: createLoading } = useMutation({
 })
 const handleAdd = (title: string) => {
   if (!eventId.value) { return }
-  createTodo({ title, color: '#000000' })
+  createTodo({ title })
 }
 
-const { mutate: deleteTodo, isLoading: deleteLoading } = useMutation({
+const { mutate: removeTodo, isLoading: removeLoading } = useMutation({
   mutationFn: ({ id }: { id: number }) => api.event.removeTodo(id),
   onSuccess: ({ id }) => {
     client.setQueryData<EventTodoEntity[]>(
@@ -88,9 +88,9 @@ const { mutate: deleteTodo, isLoading: deleteLoading } = useMutation({
     Message.error(`删除失败：${e.message}`)
   },
 })
-const handleDelete = (id: number) => {
+const handleRemove = (id: number) => {
   if (!eventId.value) { return }
-  deleteTodo({ id })
+  removeTodo({ id })
 }
 </script>
 
@@ -118,9 +118,9 @@ const handleDelete = (id: number) => {
       <Item
         v-for="[id, title] of Array.from(unCheckedTodo)"
         :id="id" :key="id" :title="title"
-        :delete-loading="deleteLoading"
+        :remove-loading="removeLoading"
         @click="handleUnCheckedItemClick"
-        @delete="handleDelete"
+        @remove="handleRemove"
       />
     </div>
     <div v-if="checkedTodo.size > 0" mt-4>
@@ -132,9 +132,9 @@ const handleDelete = (id: number) => {
         v-for="[id, title] of Array.from(checkedTodo)"
         :id="id" :key="id" :title="title"
         checked
-        :delete-loading="deleteLoading"
+        :remove-loading="removeLoading"
         @click="handleCheckedItemClick"
-        @delete="handleDelete"
+        @remove="handleRemove"
       />
     </div>
   </div>

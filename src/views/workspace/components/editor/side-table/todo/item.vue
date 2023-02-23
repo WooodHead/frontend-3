@@ -2,15 +2,15 @@
 import { Motion, Presence } from '@motionone/vue'
 import { fadeInOut } from '@/utils/animation'
 
-const { id, checked = false, deleteLoading = false } = defineProps<{
+const { id, checked = false, removeLoading = false } = defineProps<{
   id: number
   title: string
   checked?: boolean
-  deleteLoading?: boolean
+  removeLoading?: boolean
 }>()
 const emit = defineEmits<{
   (e: 'click', id: number): void
-  (e: 'delete', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const target = ref<HTMLDivElement | null>(null)
@@ -41,15 +41,13 @@ const hover = useElementHover(target)
       <Motion
         v-if="hover"
         v-bind="fadeInOut"
-        center
-        absolute right-0
+        center absolute right-0
         w-50px h-full bg-bg-1
       >
         <AButton
-          :loading="deleteLoading"
-          type="text"
-          transition-colors active="text-red-6"
-          @click.stop="$emit('delete', id)"
+          :loading="removeLoading"
+          type="text" status="danger"
+          @click.stop="$emit('remove', id)"
         >
           <template #icon>
             <div i-radix-icons-trash></div>
