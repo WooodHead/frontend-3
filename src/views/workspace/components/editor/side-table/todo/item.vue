@@ -47,7 +47,8 @@ const hover = useElementHover(target)
       >
         <AButton
           :loading="deleteLoading"
-          status="danger"
+          type="text"
+          transition-colors active="text-red-6"
           @click.stop="$emit('delete', id)"
         >
           <template #icon>

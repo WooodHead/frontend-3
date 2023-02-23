@@ -7,7 +7,7 @@ const store = useStore()
 const { lock } = storeToRefs(store)
 
 const { suspense } = useQuery({
-  staleTime: 0,
+  cacheTime: 0,
   queryKey: ['project', 'workspace', 'lock'],
   queryFn: () => api.project.getWorkspace(),
   onSuccess: ({ lock }) => { store.lock = lock },

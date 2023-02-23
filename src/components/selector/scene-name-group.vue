@@ -32,7 +32,7 @@ await suspense()
       } as SelectorOptionValue) "
       :label="scene.name"
     >
-      <CharaItem :id="scene.id" />
+      <SceneItem :id="scene.id" />
     </AOption>
   </AOptgroup>
 </template>

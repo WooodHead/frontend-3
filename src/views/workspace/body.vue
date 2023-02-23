@@ -13,7 +13,7 @@ import { fadeInOut } from '@/utils/animation'
 const WSStore = useWSStore()
 
 const { suspense } = useQuery({
-  staleTime: 0,
+  cacheTime: 0,
   queryKey: ['project', 'workspace', 'layout'],
   queryFn: () => api.project.getWorkspace(),
   select: ({ layout }) => layout as ILayout,

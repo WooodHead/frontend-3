@@ -23,7 +23,7 @@ watch(
 )
 
 const { suspense } = useQuery({
-  staleTime: 0,
+  cacheTime: 0,
   queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspace(),
   select: ({ origin }) => origin,

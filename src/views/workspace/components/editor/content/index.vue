@@ -61,7 +61,7 @@ const handleSet = () => {
 </script>
 
 <template>
-  <div column w-0 grow overflow-y-auto>
+  <div full column overflow-y-auto>
     <div v-if="isSuccess" column h-full>
       <div h-120px w-full shrink-0 overflow-hidden>
         <img

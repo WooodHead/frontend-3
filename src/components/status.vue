@@ -7,7 +7,7 @@ const { empty, loading, error } = defineProps<{
 </script>
 
 <template>
-  <div full>
+  <div full overflow-hidden>
     <div v-if="empty" center column full>
       <div
         i-radix-icons-info-circled

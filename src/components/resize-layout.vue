@@ -26,6 +26,8 @@ const width = computed(() => typeof defaultSideWidth === 'number' ? `${defaultSi
       </template>
       <slot name="side"></slot>
     </AResizeBox>
-    <slot></slot>
+    <div w-0 grow>
+      <slot></slot>
+    </div>
   </div>
 </template>

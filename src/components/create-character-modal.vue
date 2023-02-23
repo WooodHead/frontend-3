@@ -14,12 +14,12 @@ const { visible, id } = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'beforeOk', data: CharacterEntity): void
+  (e: 'before-ok', data: CharacterEntity): void
   (e: 'ok'): void
 }>()
 
 const { data } = useQuery({
-  enabled: computed(() => !!id),
+  enabled: computed(() => id !== undefined),
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id!),
   select: data => ({
