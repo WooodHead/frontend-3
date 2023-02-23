@@ -61,6 +61,7 @@ const handleResolve = (name: string, id: number) => {
     <Unresolved
       v-for="id of modelValue.unresolved"
       :key="id" :name="`${id}`"
+      :event-id="eventId"
       @resolve="handleResolve"
       @close="handleRemoveUnresolved"
     />
