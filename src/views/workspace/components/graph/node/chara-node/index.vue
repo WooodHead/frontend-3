@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NodeProps } from '@vue-flow/core'
+import { Handle, Position } from '@vue-flow/core'
 
 const { node, isConnecting } = defineProps<{
   node: NodeProps
@@ -14,7 +15,7 @@ const hover = useElementHover(target)
   <div
     ref="target"
     card circle-120px
-    p-2 center
+    center
     transition-colors
     :bg=" node.selected ? `blue-2` : `gray-1`"
     :border="`~ ${node.selected ? `border-4` : `border-2`}`"
@@ -25,5 +26,7 @@ const hover = useElementHover(target)
         刘慈欣
       </template>
     </AAvatar>
+    <Handle scale-200 type="target" :position="Position.Left" />
+    <Handle scale-200 type="source" :position="Position.Right" />
   </div>
 </template>
