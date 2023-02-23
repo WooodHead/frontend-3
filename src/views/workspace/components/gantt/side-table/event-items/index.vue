@@ -14,8 +14,7 @@ const ids = computed(() => store.visibleEvents.data.map(({ eventId }) => eventId
 
 <template>
   <div
-    h-full
-    overflow-y-auto
+    h-full overflow-y-auto
     @scroll="handleScroll"
   >
     <PresenceGroup>
@@ -23,7 +22,7 @@ const ids = computed(() => store.visibleEvents.data.map(({ eventId }) => eventId
         v-for="id in ids"
         :id="id" :key="id"
         :height="EVENT_HEIGHT"
-        animate button event-select
+        animate button event-select removable
       />
     </PresenceGroup>
   </div>

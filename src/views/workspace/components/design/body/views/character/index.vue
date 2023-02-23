@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import type { AxiosError } from 'axios'
+import { Message } from '@arco-design/web-vue'
+import Body from './body/index.vue'
 import api from '@/api/api'
 import type { CharacterEntity } from '@/api/api-base'
 
 const charaId = ref<number>()
-const handleItemClick = ({ id }: CharacterEntity) => {
+const handleClick = ({ id }: CharacterEntity) => {
   charaId.value = id
 }
 
@@ -16,15 +18,18 @@ const { data } = useQuery({
   queryFn: () => api.character.getAll(),
 })
 
-const { mutateAsync } = useMutation({
+const { mutateAsync: create, isLoading } = useMutation({
   mutationFn: () => api.character.create({ name: '新角色' }),
   onSuccess: data => {
+    if (charaId.value === undefined) { charaId.value = data.id }
     client.setQueryData(
       ['character'],
-      (oldData: CharacterEntity[] | undefined) => [...oldData ?? [], data])
+      (oldData: CharacterEntity[] | undefined) =>
+        [...oldData ?? [], data],
+    )
   },
   onError: ({ message }: AxiosError) => {
-    console.error(message)
+    Message.error(`创建角色失败: ${message}`)
   },
 })
 
@@ -40,14 +45,23 @@ watchEffect(() => {
 })
 
 const handleCreate = async () => {
-  await mutateAsync()
+  await create()
+}
+
+const handleDelete = async ({ id }: CharacterEntity) => {
+  if (charaId.value === id) {
+    charaId.value = undefined
+  }
 }
 </script>
 
 <template>
   <ResizeLayout full>
     <template #side>
-      <div center-x gap-1 p-2 border="b border-2">
+      <div
+        center-x gap-1
+        p-2 border="b border-2"
+      >
         <AInput
           v-model="searchText"
           size="small"
@@ -58,6 +72,7 @@ const handleCreate = async () => {
           title="创建新角色"
           size="small" type="outline"
           shrink-0
+          :loading="isLoading"
           @click="handleCreate"
         >
           <template #icon>
@@ -68,39 +83,13 @@ const handleCreate = async () => {
       <div h-0 grow overflow-y-auto>
         <CharaItem
           v-for="{ id } of list"
-          :id="id"
-          :key="id" button
-          @click="handleItemClick"
+          :id="id" :key="id"
+          button removable
+          @click="handleClick"
+          @remove="handleDelete"
         />
       </div>
     </template>
-    <div p-4 grow center-y overflow-y-auto>
-      <div center-x gap-4 m-4>
-        <AAvatar :size="48">
-          慈欣
-        </AAvatar>
-        <div column>
-          <div text="2xl text-1" font-semibold>
-            刘慈欣
-          </div>
-          <div text="sm text-3">
-            大刘、中国科幻第一人
-          </div>
-        </div>
-      </div>
-      <ADivider />
-      <ACard w-full>
-        <ACardMeta title="基本信息" />
-        <ADescriptions
-          mt-2
-          :data="[
-            {
-              label: '姓名',
-              value: '刘慈欣',
-            },
-          ]"
-        />
-      </ACard>
-    </div>
+    <Body :id="charaId" />
   </ResizeLayout>
 </template>

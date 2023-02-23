@@ -216,6 +216,23 @@ export interface CharacterEntity {
   end: string | null;
 }
 
+export interface UpdateCharacterDto {
+  name?: string;
+  alias?: string[];
+  description?: string;
+  avatar?: string;
+  /**
+   * @min 0
+   * @max 8
+   */
+  unit?: number;
+  /** @format date-time */
+  start?: string;
+  /** @format date-time */
+  end?: string;
+  eventIds?: number[];
+}
+
 export interface CreateSceneDto {
   name: string;
   description?: string;
@@ -939,7 +956,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name Update
      * @request PUT:/character/{id}
      */
-    update: (id: number, data: CreateCharacterDto, params: RequestParams = {}) =>
+    update: (id: number, data: UpdateCharacterDto, params: RequestParams = {}) =>
       this.request<CharacterEntity, any>({
         path: `/character/${id}`,
         method: "PUT",
