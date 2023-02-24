@@ -20,8 +20,8 @@ useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     if (isIntersecting) {
-      if (left) { store.loadLeft(4) }
-      if (right) { store.loadRight(4) }
+      if (left) { store.loadLeft() }
+      if (right) { store.loadRight() }
     }
   },
   {

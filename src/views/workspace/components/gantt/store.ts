@@ -1,5 +1,5 @@
 import { ComponentStatus } from '../type'
-import { UNIT_WIDTH } from './const'
+import { UNIT_COUNT, UNIT_WIDTH } from './const'
 import type { IGanttData } from './types'
 import { UnitIDRange } from '@/utils/unit-id'
 import type { UnitID } from '@/utils/unit-id'
@@ -112,8 +112,8 @@ export const { registerStore, useStore } = createStore('gantt', {
       this._reset()
       this.origin = _origin
       this.units = [_origin]
-      this.loadLeft(4)
-      this.loadRight(4)
+      this.loadLeft(Math.floor(UNIT_COUNT / 2))
+      this.loadRight(Math.floor(UNIT_COUNT / 2))
     },
 
     initWithData({ start, end }: IGanttData) {
@@ -135,14 +135,14 @@ export const { registerStore, useStore } = createStore('gantt', {
       const first = this.units[0]
       const prevs = Array(count).fill(0).map((_, i) => first.sub(count - i))
       this.units.unshift(...prevs)
-      if (this.units.length > 20) { this.removeRight(count) }
+      if (this.units.length > UNIT_COUNT) { this.removeRight(count) }
     },
 
     loadRight(count = 1) {
       const last = this.units[this.units.length - 1]
       const nexts = Array(count).fill(0).map((_, i) => last.add(i + 1))
       this.units.push(...nexts)
-      if (this.units.length > 20) { this.removeLeft(count) }
+      if (this.units.length > UNIT_COUNT) { this.removeLeft(count) }
     },
 
     removeLeft(count = 1) {

@@ -13,7 +13,6 @@ export const useCharaCreate = (options?: CharaMutationOptions<CreateCharacterDto
     ...options,
     mutationFn: dto => api.character.create(dto),
     onSuccess: (chara, vars, ctx) => {
-      Message.success('创建角色成功')
       client.setQueryData(['chara', unref(chara.id)], chara)
       client.invalidateQueries(['character', 'list'])
       options?.onSuccess?.(chara, vars, ctx)
@@ -31,7 +30,6 @@ export const useCharaUpdate = (id: MaybeRef<number | undefined>, options?: Chara
     ...options,
     mutationFn: (dto: UpdateCharacterDto) => api.character.update(unref(id)!, dto),
     onSuccess: (chara, vars, ctx) => {
-      Message.success('更新角色成功')
       client.setQueryData(['chara', unref(id)], chara)
       client.invalidateQueries(['character', 'list'])
       options?.onSuccess?.(chara, vars, ctx)

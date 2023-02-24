@@ -1,6 +1,5 @@
 import type { ConfigType } from 'dayjs'
 import { UnitIDException } from './exception'
-import { memoize } from './memoize'
 import type { Unit, UnitConfigType } from './unit'
 import { UnitID } from './unit-id'
 
@@ -19,26 +18,26 @@ export class UnitIDRange {
     this._start = this._start.start
     this._end = this._end.end
 
-    if (!_start.isValid() || !_end.isValid()) { return }
+    // if (!_start.isValid() || !_end.isValid()) { return }
 
-    while (this._unit.upper) {
-      const upper = this._unit.upper.toString()
-      let diff
-      switch (upper) {
-        case 'century':
-          diff = Math.floor((this._end._date.year() - this._start._date.year()) / 100)
-          break
-        case 'decade':
-          diff = Math.floor((this._end._date.year() - this._start._date.year()) / 10)
-          break
-        default:
-          diff = this._end._date.diff(this._start._date, upper)
-          break
-      }
+    // while (this._unit.upper) {
+    //   const upper = this._unit.upper.toString()
+    //   let diff
+    //   switch (upper) {
+    //     case 'century':
+    //       diff = Math.floor((this._end._date.year() - this._start._date.year()) / 100)
+    //       break
+    //     case 'decade':
+    //       diff = Math.floor((this._end._date.year() - this._start._date.year()) / 10)
+    //       break
+    //     default:
+    //       diff = this._end._date.diff(this._start._date, upper)
+    //       break
+    //   }
 
-      if (diff === 0) { break }
-      this._unit = this._unit.upper
-    }
+    //   if (diff === 0) { break }
+    //   this._unit = this._unit.upper
+    // }
   }
 
   static fromUnitID(start?: UnitID, end?: UnitID): UnitIDRange {
@@ -115,7 +114,6 @@ export class UnitIDRange {
 
   get unit(): Unit { return this._unit }
 
-  @memoize
   get ids(): UnitID[] {
     if (!this._start.isValid() || !this._end.isValid()) { return [] }
 
@@ -124,7 +122,6 @@ export class UnitIDRange {
       .map((_, i) => this._start.add(i))
   }
 
-  @memoize
   get length() {
     return this._end.diff(this._start) + 1
   }

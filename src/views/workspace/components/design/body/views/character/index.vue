@@ -16,7 +16,7 @@ const { data } = useQuery({
   queryFn: () => api.character.getAll(),
 })
 
-const { mutateAsync: create, isLoading } = useCharaCreate()
+const { mutate: create, isLoading: createLoading } = useCharaCreate()
 
 const list = ref<CharacterEntity[]>([])
 const searchText = ref<string>()
@@ -28,10 +28,6 @@ watchEffect(() => {
     ? rawData.filter(({ name }) => name.includes(search))
     : rawData
 })
-
-const handleCreate = async () => {
-  await create({ name: '新角色' })
-}
 
 const handleDelete = async ({ id }: CharacterEntity) => {
   if (charaId.value === id) {
@@ -57,8 +53,8 @@ const handleDelete = async ({ id }: CharacterEntity) => {
           title="创建新角色"
           size="small" type="outline"
           shrink-0
-          :loading="isLoading"
-          @click="handleCreate"
+          :loading="createLoading"
+          @click="create({ name: '新角色' })"
         >
           <template #icon>
             <div i-radix-icons-plus text-lg></div>

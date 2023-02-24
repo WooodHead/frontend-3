@@ -67,69 +67,56 @@ const offset = computed(() => {
 })
 const order = computed(() => store.visibleEvents.order(range, { eventId: id }))
 
-// 删除事件时更新事件时间跨度内所有事件列表缓存
-const handleDelete = (ids: number[]) => {
-  store.visibleEvents.remove(range, { eventId: ids[0] })
-
-  for (const id of ids) {
-    client.invalidateQueries(['event', id])
-  }
-
-  client.invalidateQueries(['event', 'range'])
-}
-
 // 预加载当前可见区域内的event detail
 const loadDetail = computed(() => visibleUnit.value?.childrenRange.isIntersect(range))
 </script>
 
 <template>
   <EventDetailCardTrigger :id="id" :load="loadDetail" :disabled="select">
-    <EventContextMenu :id="id" @delete="handleDelete">
+    <div
+      ref="target"
+      name="eventblock"
+      :style="{
+        left: offset && `${offset}px`,
+        transform: `translateY(${order * EVENT_HEIGHT}px)`,
+      }"
+      absolute cursor-pointer
+      transition-transform duration-100
+      z-10 hover:z-100
+    >
       <div
-        ref="target"
-        name="eventblock"
-        :style="{
-          left: offset && `${offset}px`,
-          transform: `translateY(${order * EVENT_HEIGHT}px)`,
-        }"
-        absolute cursor-pointer
-        transition-transform duration-100
-        z-10 hover:z-100
+        v-if="false"
+        :style="{ width: `${UNIT_WIDTH}px`, height: `${EVENT_HEIGHT}px` }"
+        center
       >
         <div
-          v-if="false"
-          :style="{ width: `${UNIT_WIDTH}px`, height: `${EVENT_HEIGHT}px` }"
-          center
-        >
-          <div
-            :style="{
-              width: `${EVENT_HEIGHT * 0.6}px`,
-              height: `${EVENT_HEIGHT * 0.6}px`,
-              backgroundColor: color,
-            }"
-            rounded-full
-          />
-        </div>
-        <div
-          v-else
-          :style="{ width: `${width}px`, height: `${EVENT_HEIGHT}px` }"
-          center
-        >
-          <div
-            :style="{
-              backgroundColor: color,
-              outlineColor: reverseColor(color),
-            }"
-            w-full h-80per
-            transition shadow hover:shadow-lg
-            rounded
-            :outline="active ? '2px solid' : 'none'"
-            hover:filter-brightness-80
-            active:filter-brightness-60
-            @click="handleSelectClick"
-          />
-        </div>
+          :style="{
+            width: `${EVENT_HEIGHT * 0.6}px`,
+            height: `${EVENT_HEIGHT * 0.6}px`,
+            backgroundColor: color,
+          }"
+          rounded-full
+        />
       </div>
-    </EventContextMenu>
+      <div
+        v-else
+        :style="{ width: `${width}px`, height: `${EVENT_HEIGHT}px` }"
+        center
+      >
+        <div
+          :style="{
+            backgroundColor: color,
+            outlineColor: reverseColor(color),
+          }"
+          w-full h-80per
+          transition shadow hover:shadow-lg
+          rounded
+          :outline="active ? '2px solid' : 'none'"
+          hover:filter-brightness-80
+          active:filter-brightness-60
+          @click="handleSelectClick"
+        />
+      </div>
+    </div>
   </EventDetailCardTrigger>
 </template>
