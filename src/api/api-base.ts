@@ -941,19 +941,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name GetAll
      * @request GET:/character/list
      */
-    getAll: (
-      query?: {
-        /** @min 0 */
-        size?: number;
-        /** @min 0 */
-        page?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    getAll: (params: RequestParams = {}) =>
       this.request<CharacterEntity[], any>({
         path: `/character/list`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),

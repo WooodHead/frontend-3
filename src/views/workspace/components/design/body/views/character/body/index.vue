@@ -12,15 +12,24 @@ const { data, isSuccess, isLoading, isError } = useQuery({
   queryFn: () => api.character.get(id!),
 })
 
+const avatarName = computed(() => {
+  const name = data.value?.name
+  if (!name) { return undefined }
+  return name.includes(' ') ? name.split(' ')[0] : name.slice(-2)
+})
+
 const modalVisible = ref(false)
 </script>
 
 <template>
   <Status v-if="!isSuccess" :empty="id === undefined" :loading="isLoading" :error="isError" />
-  <div v-else p-4 center-y gap-2 overflow-y-auto>
+  <div v-else p-4 center-y gap-2>
     <div center-x gap-4 m-4>
-      <AAvatar :size="48">
-        {{ data?.name.slice(-2) }}
+      <AAvatar :size="48" trigger-type="mask">
+        {{ avatarName }}
+        <template #trigger-icon>
+          <div i-radix-icons-pencil-2 text-lg></div>
+        </template>
       </AAvatar>
       <div column>
         <div text="2xl text-1" font-semibold>
@@ -56,6 +65,22 @@ const modalVisible = ref(false)
           </template>
         </AButton>
       </template>
+    </ACard>
+    <ACard w-full title="参与事件" :body-style="{ padding: 0 }">
+      <div max-h-200px overflow-y-auto rounded>
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+        <EventItem :id="13" button />
+      </div>
     </ACard>
   </div>
   <InfoModal

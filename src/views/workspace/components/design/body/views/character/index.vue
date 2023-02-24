@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import type { AxiosError } from 'axios'
+import { Message } from '@arco-design/web-vue'
 import Body from './body/index.vue'
 import api from '@/api/api'
 import type { CharacterEntity } from '@/api/api-base'
@@ -10,10 +12,18 @@ const handleClick = ({ id }: CharacterEntity) => {
   charaId.value = id
 }
 
-// TODO 改为useInfiniteQuery
+const client = useQueryClient()
 const { data } = useQuery({
   queryKey: ['character', 'list'],
   queryFn: () => api.character.getAll(),
+  onSuccess: charas => {
+    for (const chara of charas) {
+      client.setQueryData(['character', chara.id], chara)
+    }
+  },
+  onError: ({ message }: AxiosError) => {
+    Message.error(`获取角色列表失败: ${message}`)
+  },
 })
 
 const { mutate: create, isLoading: createLoading } = useCharaCreate()

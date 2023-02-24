@@ -24,6 +24,12 @@ const { data } = useQuery({
   queryFn: () => api.character.get(id),
 })
 
+const avatarName = computed(() => {
+  const name = data.value?.name
+  if (!name) { return undefined }
+  return name.includes(' ') ? name.split(' ')[0] : name.slice(-2)
+})
+
 // TODO chara-item
 const { mutateAsync: remove } = useCharaRemove(computed(() => id))
 
@@ -55,9 +61,9 @@ const handleRemove = async () => {
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">
-      {{ data?.name.slice(-2) }}
+      {{ avatarName }}
     </AAvatar>
-    <div grow center-x>
+    <div grow center-x gap-2>
       <div text="text-1" ellipsis>
         {{ data?.name }}
       </div>

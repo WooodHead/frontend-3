@@ -30,14 +30,14 @@ watch(data, data => {
     start: data.start ?? undefined,
     end: data.end ?? undefined,
   }
-})
+}, { immediate: true })
 
-const { mutateAsync } = useCharaUpdate(computed(() => id))
+const { mutateAsync: update } = useCharaUpdate(computed(() => id))
 
 const handleBeforeOk = async () => {
-  const error = formRef.value?.validate()
+  const error = await formRef.value?.validate()
   if (error) { return false }
-  await mutateAsync(model.value)
+  await update(model.value)
   emit('update:visible', false)
   return true
 }
@@ -51,13 +51,16 @@ const handleBeforeOk = async () => {
     @before-ok="handleBeforeOk"
   >
     <AForm ref="formRef" :model="model">
-      <AFormItem label="名称" :rules="[{ required: true, message: '请输入名称' }]">
+      <AFormItem
+        field="name" label="名称"
+        :rules="[{ required: true, message: '请输入名称' }]"
+      >
         <AInput v-model="model.name" />
       </AFormItem>
-      <AFormItem label="别名">
+      <AFormItem field="alias" label="别名">
         <ASelect v-model="model.alias" multiple allow-create />
       </AFormItem>
-      <AFormItem label="描述">
+      <AFormItem field="description" label="描述">
         <ATextarea v-model="model.description" />
       </AFormItem>
     </AForm>
