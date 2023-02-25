@@ -2,9 +2,10 @@ import { Message } from '@arco-design/web-vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { MaybeRef } from '@vueuse/shared'
 import api from './api'
-import type { CharacterEntity, CreateCharacterDto, UpdateCharacterDto } from './api-base'
+import type { CharacterEntity, CreateCharacterDto, MutateEventsDto, UpdateCharacterDto } from './api-base'
 import type { MutationOptions } from './types'
 
+// type CharaQueryOptions<T = CharacterEntity> = QueryOptions<T>
 type CharaMutationOptions<T = void, D = CharacterEntity> = MutationOptions<T, D>
 
 export const useCharaCreate = (options?: CharaMutationOptions<CreateCharacterDto>) => {
@@ -13,7 +14,7 @@ export const useCharaCreate = (options?: CharaMutationOptions<CreateCharacterDto
     ...options,
     mutationFn: dto => api.character.create(dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['chara', unref(chara.id)], chara)
+      client.setQueryData(['chara', chara.id], chara)
       client.invalidateQueries(['character', 'list'])
       options?.onSuccess?.(chara, vars, ctx)
     },
@@ -54,6 +55,44 @@ export const useCharaRemove = (id: MaybeRef<number | undefined>, options?: Chara
     },
     onError: (e, vars, ctx) => {
       Message.error(`删除角色失败：${e.message}`)
+      options?.onError?.(e, vars, ctx)
+    },
+  })
+}
+
+export const useCharaConnectEvent = (id: MaybeRef<number | undefined>, options?: CharaMutationOptions<MutateEventsDto>) => {
+  const client = useQueryClient()
+  return useMutation({
+    ...options,
+    mutationFn: (dto: MutateEventsDto) => api.character.addEvents(unref(id)!, dto),
+    onSuccess: (chara, vars, ctx) => {
+      client.setQueryData(['chara', unref(id)], chara)
+      for (const eventId of vars.events) {
+        client.invalidateQueries(['event', eventId])
+      }
+      options?.onSuccess?.(chara, vars, ctx)
+    },
+    onError: (e, vars, ctx) => {
+      Message.error(`添加事件失败：${e.message}`)
+      options?.onError?.(e, vars, ctx)
+    },
+  })
+}
+
+export const useCharaDisconnectEvent = (id: MaybeRef<number | undefined>, options?: CharaMutationOptions<MutateEventsDto>) => {
+  const client = useQueryClient()
+  return useMutation({
+    ...options,
+    mutationFn: (dto: MutateEventsDto) => api.character.removeEvents(unref(id)!, dto),
+    onSuccess: (chara, vars, ctx) => {
+      client.setQueryData(['chara', unref(id)], chara)
+      for (const eventId of vars.events) {
+        client.invalidateQueries(['event', eventId])
+      }
+      options?.onSuccess?.(chara, vars, ctx)
+    },
+    onError: (e, vars, ctx) => {
+      Message.error(`移除事件失败：${e.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
