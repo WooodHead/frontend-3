@@ -10,6 +10,11 @@ const { id, show = true, load = true } = defineProps<{
   load?: boolean
 }>()
 
+const charas = ref({
+  resolved: [] as number[],
+  unresolved: [] as string[],
+})
+
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
   queryKey: computed(() => ['event', id, 'detail']),
@@ -21,6 +26,10 @@ const { data, isSuccess, isLoading, isError } = useQuery({
     updatedAt: new Date(data.updatedAt),
     range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
   }),
+})
+watch(data, data => {
+  if (!data) { return }
+  charas.value.resolved.push(...data.characters)
 })
 </script>
 
@@ -51,21 +60,47 @@ const { data, isSuccess, isLoading, isError } = useQuery({
     </h4>
     {{ data?.description }}
     <ADivider />
+    <div>
+      <h4>参与角色</h4>
+      <CharaBadgeTable v-model="charas" :event-id="id" />
+    </div>
     <div center-x justify-between>
       <h4>父事件</h4>
-      <AButton>添加</AButton>
+      <AButton type="text">
+        <template #icon>
+          <div i-radix-icons-plus></div>
+        </template>
+      </AButton>
     </div>
-    <div border="~ border-2" max-h-200px overflow-y-auto rounded>
-      <EventItem :id="id" button />
-      <EventItem :id="id" button />
+    <div
+      v-if="data?.sups.length ?? 0 > 0"
+      border="~ border-2" rounded
+      max-h-200px overflow-y-auto
+    >
+      <EventItem
+        v-for="supId in data?.sups"
+        :id="supId" :key="supId"
+        button
+      />
     </div>
     <div center-x justify-between>
       <h4>子事件</h4>
-      <AButton>添加</AButton>
+      <AButton type="text">
+        <template #icon>
+          <div i-radix-icons-plus></div>
+        </template>
+      </AButton>
     </div>
-    <div border="~ border-2" max-h-200px overflow-y-auto rounded>
-      <EventItem :id="id" button />
-      <EventItem :id="id" button />
+    <div
+      v-if="data?.subs.length ?? 0 > 0"
+      border="~ border-2" rounded
+      max-h-200px overflow-y-auto
+    >
+      <EventItem
+        v-for="subId in data?.subs"
+        :id="subId" :key="subId"
+        button
+      />
     </div>
   </DetailCard>
 </template>

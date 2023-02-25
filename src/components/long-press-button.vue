@@ -51,6 +51,6 @@ const handlePointerUp = () => {
 
 <style scoped>
 .wrapper :deep(.arco-progress-circle-bar) {
-    transition: none;
+  transition: none;
 }
 </style>

@@ -67,19 +67,18 @@ const modalVisible = ref(false)
       </template>
     </ACard>
     <ACard w-full title="参与事件" :body-style="{ padding: 0 }">
+      <template #extra>
+        <AButton type="text">
+          <template #icon>
+            <div i-radix-icons-plus text-lg></div>
+          </template>
+        </AButton>
+      </template>
       <div max-h-200px overflow-y-auto rounded>
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
-        <EventItem :id="13" button />
+        <EventItem :id="13" button removable />
+        <EventItem :id="13" button removable />
+        <EventItem :id="13" button removable />
+        <EventItem :id="13" button removable />
       </div>
     </ACard>
   </div>

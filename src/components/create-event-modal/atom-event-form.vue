@@ -24,7 +24,6 @@ const validate = async (): Promise<CreateEventDto> => {
   return {
     ...rest,
     ...range.toJSON(),
-    type: 'ATOM',
   }
 }
 

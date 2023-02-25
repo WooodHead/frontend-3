@@ -15,7 +15,7 @@ watch(badges, badges => {
 <template>
   <div nim-column space-y-2>
     <ACard title="参与角色">
-      <CharaBadgeTable v-model="badges" :event-id="eventId" />
+      <CharaBadgeTable v-if="eventId" v-model="badges" :event-id="eventId" />
     </ACard>
   </div>
 </template>
