@@ -8,7 +8,7 @@ const { modelValue, eventId } = defineProps<{
     resolved: number[]
     unresolved: string[]
   }
-  eventId?: number
+  eventId: number
 }>()
 
 const emit = defineEmits<{
@@ -52,15 +52,16 @@ const handleResolve = (name: string, id: number) => {
 
 <template>
   <div full row flex-wrap gap-1 overflow-y-auto>
-    <AddButton @add="handleAdd" />
+    <AddButton :event-id="eventId" @add="handleAdd" />
     <Resolved
       v-for="id of modelValue.resolved"
       :id="id" :key="id"
+      :event-id="eventId"
       @close="handleRemoveSolved"
     />
     <Unresolved
-      v-for="id of modelValue.unresolved"
-      :key="id" :name="`${id}`"
+      v-for="name of modelValue.unresolved"
+      :key="name" :name="name"
       :event-id="eventId"
       @resolve="handleResolve"
       @close="handleRemoveUnresolved"

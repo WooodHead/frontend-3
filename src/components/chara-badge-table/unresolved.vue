@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useQueryClient } from '@tanstack/vue-query'
 import Basic from './index.vue'
 import type { CharacterEntity } from '@/api/api-base'
-import { useCharaCreate } from '@/api/character'
+import { useCharaConnectEvent, useCharaCreate } from '@/api/character'
 const { name, eventId } = defineProps<{
   name: string
-  eventId?: number
+  eventId: number
 }>()
 
 const emit = defineEmits<{
@@ -13,17 +14,28 @@ const emit = defineEmits<{
 }>()
 
 const visible = ref(false)
+const charaId = ref<number>()
 
-const { mutateAsync, isLoading } = useCharaCreate()
-const handleSelect = (chara: CharacterEntity | undefined) => {
+const client = useQueryClient()
+const { mutateAsync: create, isLoading } = useCharaCreate({
+  onSuccess: (_chara, { events }) => {
+    for (const event of events ?? []) {
+      client.invalidateQueries(['event', event])
+    }
+  },
+})
+const { mutateAsync: connect } = useCharaConnectEvent(charaId)
+const handleConnect = async (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
+  charaId.value = chara.id
+  await connect({ events: [eventId] })
   emit('resolve', name, chara.id)
   visible.value = false
 }
 const handleCreate = async () => {
-  const chara = await mutateAsync({
+  const chara = await create({
     name,
-    eventIds: eventId ? [eventId] : [],
+    events: eventId !== undefined ? [eventId] : undefined,
   })
   emit('resolve', name, chara.id)
   visible.value = false
@@ -39,13 +51,13 @@ const handleCreate = async () => {
       <div i-radix-icons-question-mark-circled full text-xl></div>
     </template>
     {{ name }}
-    <template #popover>
+    <template #popup>
       <div card-border p-2 text-text-1 column gap-2>
         <p>关联已有角色：</p>
         <Selector
           character
           placeholder="选择该名称所关联的角色"
-          @select:character="handleSelect"
+          @select:character="handleConnect"
         />
         <p>或创建新角色：</p>
         <AButton

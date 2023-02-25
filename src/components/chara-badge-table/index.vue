@@ -45,7 +45,7 @@ const emit = defineEmits<{
       </AButton>
     </div>
     <template #content>
-      <slot name="popover"></slot>
+      <slot name="popup"></slot>
     </template>
   </ATrigger>
 </template>

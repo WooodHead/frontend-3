@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import type { CharacterEntity } from '@/api/api-base'
+import { useCharaConnectEvent } from '@/api/character'
+
+const { eventId } = defineProps<{
+  eventId: number
+}>()
 
 const emit = defineEmits<{
   (e: 'add', id: number): void
 }>()
 
+const charaId = ref<number>()
 const visible = ref(false)
-const handleAddChara = (chara: CharacterEntity | undefined) => {
+
+const { mutateAsync: connect } = useCharaConnectEvent(charaId)
+const handleAddChara = async (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
+  charaId.value = chara.id
+  await connect({ events: [eventId] })
   emit('add', chara.id)
   visible.value = false
 }
