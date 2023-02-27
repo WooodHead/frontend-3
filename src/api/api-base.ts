@@ -500,7 +500,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/event/{id}
      */
     update: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
+      this.request<EventDetailEntity, any>({
         path: `/event/${id}`,
         method: "PUT",
         body: data,
@@ -516,17 +516,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name Remove
      * @request DELETE:/event/{id}
      */
-    remove: (
-      id: number,
-      query: {
-        cascade: boolean;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<EventEntity[], any>({
+    remove: (id: number, params: RequestParams = {}) =>
+      this.request<EventDetailEntity, any>({
         path: `/event/${id}`,
         method: "DELETE",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -619,7 +612,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/event
      */
     create: (data: CreateEventDto, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
+      this.request<EventDetailEntity, any>({
         path: `/event`,
         method: "POST",
         body: data,
@@ -1097,7 +1090,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/character/{id}
      */
     update: (id: number, data: UpdateCharacterDto, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
+      this.request<CharacterDetailEntity, any>({
         path: `/character/${id}`,
         method: "PUT",
         body: data,
@@ -1114,7 +1107,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/character/{id}
      */
     remove: (id: number, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
+      this.request<CharacterDetailEntity, any>({
         path: `/character/${id}`,
         method: "DELETE",
         format: "json",
@@ -1168,7 +1161,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/character
      */
     create: (data: CreateCharacterDto, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
+      this.request<CharacterDetailEntity, any>({
         path: `/character`,
         method: "POST",
         body: data,

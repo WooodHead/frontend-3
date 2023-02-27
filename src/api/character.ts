@@ -14,8 +14,11 @@ export const useCharaCreate = (options?: CharaMutationOptions<CreateCharacterDto
     ...options,
     mutationFn: dto => api.character.create(dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['chara', chara.id], chara)
+      client.setQueryData(['character', chara.id], chara)
       client.invalidateQueries(['character', 'list'])
+      for (const eventId of chara.events) {
+        client.invalidateQueries(['event', eventId])
+      }
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
@@ -31,8 +34,11 @@ export const useCharaUpdate = (id: MaybeRef<number | undefined>, options?: Chara
     ...options,
     mutationFn: (dto: UpdateCharacterDto) => api.character.update(unref(id)!, dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['chara', unref(id)], chara)
+      client.invalidateQueries(['character', unref(id)])
       client.invalidateQueries(['character', 'list'])
+      for (const eventId of chara.events) {
+        client.invalidateQueries(['event', eventId])
+      }
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
@@ -49,8 +55,11 @@ export const useCharaRemove = (id: MaybeRef<number | undefined>, options?: Chara
     mutationFn: () => api.character.remove(unref(id)!),
     onSuccess: (chara, vars, ctx) => {
       Message.success('删除角色成功')
-      client.removeQueries(['chara', unref(id)])
+      client.removeQueries(['character', unref(id)])
       client.invalidateQueries(['character', 'list'])
+      for (const eventId of chara.events) {
+        client.invalidateQueries(['event', eventId])
+      }
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
@@ -66,7 +75,7 @@ export const useCharaConnectEvent = (id: MaybeRef<number | undefined>, options?:
     ...options,
     mutationFn: (dto: MutateEventsDto) => api.character.addEvents(unref(id)!, dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['chara', unref(id)], chara)
+      client.invalidateQueries(['character', unref(id)])
       for (const eventId of vars.events) {
         client.invalidateQueries(['event', eventId])
       }
@@ -85,7 +94,7 @@ export const useCharaDisconnectEvent = (id: MaybeRef<number | undefined>, option
     ...options,
     mutationFn: (dto: MutateEventsDto) => api.character.removeEvents(unref(id)!, dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['chara', unref(id)], chara)
+      client.invalidateQueries(['character', unref(id)])
       for (const eventId of vars.events) {
         client.invalidateQueries(['event', eventId])
       }
