@@ -3,9 +3,10 @@ import { useQueryClient } from '@tanstack/vue-query'
 import Basic from './index.vue'
 import type { CharacterEntity } from '@/api/api-base'
 import { useCharaConnectEvent, useCharaCreate } from '@/api/character'
-const { name, eventId } = defineProps<{
+const { name, eventId, closable } = defineProps<{
   name: string
   eventId: number
+  closable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -45,6 +46,7 @@ const handleCreate = async () => {
 <template>
   <Basic
     v-model:popup-visible="visible"
+    :closable="closable"
     @close="$emit('close', name)"
   >
     <template #avatar>

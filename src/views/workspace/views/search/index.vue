@@ -11,11 +11,7 @@ const router = useRouter()
       @close="router.back()"
     >
       <div center-y w-50vw prose>
-        <AInput v-auto-focus rounded-b-0 w-full h-60px placeholder="输入想要搜索的信息">
-          <template #prefix>
-            <div i-radix-icons-magnifying-glass text-xl></div>
-          </template>
-        </AInput>
+        <AInputSearch rounded-b-0 w-full h-60px placeholder="输入想要搜索的信息" />
         <h1 text-center>
           可以尝试问问……
         </h1>

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import InfoModal from './info-modal.vue'
+import DescCard from './description.vue'
+import EventCard from './event-card.vue'
 import api from '@/api/api'
+import { useCharaConnectEvent, useCharaDisconnectEvent } from '@/api/character'
 
 const { id } = defineProps<{
   id?: number
 }>()
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id!),
+  queryKey: computed(() => ['character', id, 'detail']),
+  queryFn: () => api.character.getDetail(id!),
 })
 
 const avatarName = computed(() => {
@@ -19,6 +22,9 @@ const avatarName = computed(() => {
 })
 
 const modalVisible = ref(false)
+
+const { mutate: connect } = useCharaConnectEvent(computed(() => id))
+const { mutate: disconnect } = useCharaDisconnectEvent(computed(() => id))
 </script>
 
 <template>
@@ -57,30 +63,12 @@ const modalVisible = ref(false)
         ]"
       />
     </ACard>
-    <ACard w-full title="人物简介">
-      <template #extra>
-        <AButton type="text" size="small">
-          <template #icon>
-            <div i-radix-icons-pencil-2 text-lg></div>
-          </template>
-        </AButton>
-      </template>
-    </ACard>
-    <ACard w-full title="参与事件" :body-style="{ padding: 0 }">
-      <template #extra>
-        <AButton type="text">
-          <template #icon>
-            <div i-radix-icons-plus text-lg></div>
-          </template>
-        </AButton>
-      </template>
-      <div max-h-200px overflow-y-auto rounded>
-        <EventItem :id="13" button removable />
-        <EventItem :id="13" button removable />
-        <EventItem :id="13" button removable />
-        <EventItem :id="13" button removable />
-      </div>
-    </ACard>
+    <DescCard w-full />
+    <EventCard
+      :ids="data?.events ?? []"
+      @add="connect({ events: [$event] })"
+      @remove="disconnect({ events: [$event] })"
+    />
   </div>
   <InfoModal
     v-if="id" :id="id"

@@ -53,12 +53,19 @@ const handleDelete = async ({ id }: CharacterEntity) => {
         center-x gap-1
         p-2 border="b border-2"
       >
-        <AInput
-          v-model="searchText"
-          size="small"
-          placeholder="搜索角色"
-          allow-clear
-        />
+        <div row gap-1>
+          <AInput
+            v-model="searchText"
+            grow size="small"
+            placeholder="搜索角色"
+            allow-clear
+          />
+          <AButton shrink-0>
+            <template #icon>
+              <div i-radix-icons-mixer-horizontal text-lg></div>
+            </template>
+          </AButton>
+        </div>
         <AButton
           title="创建新角色"
           size="small" type="outline"

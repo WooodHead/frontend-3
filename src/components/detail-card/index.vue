@@ -25,7 +25,7 @@ const { show = true, success, error, loading, cover = DefaultCover, title } = de
       <ACard
         v-else
         card-border
-        max-w-300px max-h-400px
+        w-300px max-h-400px
         overflow-y-auto
         prose text-sm
         @wheel.stop

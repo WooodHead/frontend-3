@@ -5,20 +5,21 @@ import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
 import { UnitIDRange } from '@/utils/unit-id'
-import { useEventRemove } from '@/api/event'
 
-const { id, height, button = false, eventSelect = false, removable, animate } = defineProps<{
+const { id, height, button = false, eventSelect = false, removable, removeText, animate } = defineProps<{
   id: number
   height?: number
   button?: boolean
   eventSelect?: boolean
   removable?: boolean
+  removeText?: string
   animate?: boolean | Record<string, any>
 }>()
 
 const emit = defineEmits<{
   (e: 'click', event: EventEntity): void
   (e: 'hover', event: EventEntity): void
+  (e: 'remove', event: EventEntity): void
 }>()
 
 const { data } = useQuery({
@@ -41,8 +42,6 @@ const handleHover = () => {
   if (!data.value) { return }
   emit('hover', data.value)
 }
-
-const { mutate: remove } = useEventRemove(computed(() => id))
 </script>
 
 <template>
@@ -51,9 +50,10 @@ const { mutate: remove } = useEventRemove(computed(() => id))
     :button="button"
     :height="height"
     :removable="removable"
+    :remove-text="removeText"
     @click="handleClick"
     @hover="handleHover"
-    @remove="remove"
+    @remove="$emit('remove', data)"
   >
     <div center min-w-20px shrink-0 p-2>
       <div

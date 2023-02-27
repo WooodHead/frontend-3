@@ -5,7 +5,7 @@ import Todo from './todo/index.vue'
 import Relation from './relation/index.vue'
 
 const store = useStore()
-const { todoDot, relationDot } = storeToRefs (store)
+const { todoDot, relationDot } = storeToRefs(store)
 const active = ref('info')
 </script>
 
@@ -14,14 +14,14 @@ const active = ref('info')
     <ATabPane key="info" title="消息" />
     <ATabPane key="todo">
       <template #title>
-        <ABadge :count="Number(todoDot)" :offset="[8, 2]" dot>
+        <ABadge :count="Number(todoDot)" :offset="[6, 2]" dot>
           待办
         </ABadge>
       </template>
     </ATabPane>
     <ATabPane key="relation">
       <template #title>
-        <ABadge :count="Number(relationDot)" :offset="[8, 2]" dot>
+        <ABadge :count="Number(relationDot)" :offset="[6, 2]" dot>
           关联
         </ABadge>
       </template>

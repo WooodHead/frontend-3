@@ -58,7 +58,7 @@ const handleBeforeOk = async () => {
         <AInput v-model="model.name" />
       </AFormItem>
       <AFormItem field="alias" label="别名">
-        <ASelect v-model="model.alias" multiple allow-create />
+        <AInputTag v-model="model.alias" allow-clear />
       </AFormItem>
       <AFormItem field="description" label="描述">
         <ATextarea v-model="model.description" />

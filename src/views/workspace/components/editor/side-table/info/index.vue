@@ -16,7 +16,7 @@ const { data: event } = useQuery({
   select: data => ({
     ...data,
     name: `${data.serial}. ${data.name}`,
-    range: `${UnitID.fromDayjs(data.unit, data.start).toString()} - ${UnitID.fromDayjs(data.unit, data.end).toString()}`,
+    range: `${UnitID.fromDayjs(data.unit, data.start)} - ${UnitID.fromDayjs(data.unit, data.end)}`,
   }),
 })
 

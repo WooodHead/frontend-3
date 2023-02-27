@@ -4,8 +4,9 @@ import { Motion, Presence } from '@motionone/vue'
 import { fadeInOut } from '@/utils/animation'
 import { fadeInOut as fadeInOutItem } from '@/utils/animation/item'
 
-const { height = 40, removable = false, button = false, animate } = defineProps<{
+const { height = 40, removable = false, removeText, button = false, animate } = defineProps<{
   removable?: boolean
+  removeText?: string
   height?: number
   button?: boolean
   animate?: boolean | Record<string, any>
@@ -59,6 +60,7 @@ const handleRemove = async () => {
         absolute right-2
       >
         <LongPressButton
+          :title="removeText ?? '删除'"
           :loading="deleteLoading"
           status="danger" type="text"
           @press="handleRemove"

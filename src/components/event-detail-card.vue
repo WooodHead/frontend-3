@@ -29,8 +29,8 @@ const { data, isSuccess, isLoading, isError } = useQuery({
 })
 watch(data, data => {
   if (!data) { return }
-  charas.value.resolved.push(...data.characters)
-})
+  charas.value.resolved = data.characters
+}, { immediate: true, deep: true })
 </script>
 
 <template>
@@ -66,11 +66,6 @@ watch(data, data => {
     </div>
     <div center-x justify-between>
       <h4>父事件</h4>
-      <AButton type="text">
-        <template #icon>
-          <div i-radix-icons-plus></div>
-        </template>
-      </AButton>
     </div>
     <div
       v-if="data?.sups.length ?? 0 > 0"
@@ -85,11 +80,6 @@ watch(data, data => {
     </div>
     <div center-x justify-between>
       <h4>子事件</h4>
-      <AButton type="text">
-        <template #icon>
-          <div i-radix-icons-plus></div>
-        </template>
-      </AButton>
     </div>
     <div
       v-if="data?.subs.length ?? 0 > 0"

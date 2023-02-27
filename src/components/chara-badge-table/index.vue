@@ -1,7 +1,8 @@
 <script setup lang="ts">
-const { resolved = false, popupVisible } = defineProps<{
+const { resolved = false, popupVisible, closable = false } = defineProps<{
   resolved?: boolean
   popupVisible: boolean
+  closable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -35,6 +36,7 @@ const emit = defineEmits<{
         <slot></slot>
       </div>
       <AButton
+        v-if="closable"
         square-20px
         shape="circle" type="text"
         @click.stop="$emit('close')"
