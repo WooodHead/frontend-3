@@ -23,6 +23,7 @@ const { data } = useQuery({
     range: (data.unit && data.start && data.end)
       ? UnitIDRange.fromDayjs(data.unit, data.start, data.end)
       : undefined,
+    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
   }),
 })
 const { mutateAsync: disconnect } = useCharaDisconnectEvent(computed(() => id))

@@ -29,7 +29,7 @@ const emit = defineEmits<{
       text-white cursor-pointer
       select-none
     >
-      <div h-full aspect-square rounded-full>
+      <div h-full aspect-square rounded-full overflow-hidden>
         <slot name="avatar"></slot>
       </div>
       <div grow>

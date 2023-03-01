@@ -324,6 +324,38 @@ export interface UpdateWorldviewDto {
   description?: string;
 }
 
+export interface UploadTempFileDto {
+  /** @format binary */
+  file: File;
+}
+
+export interface RegisterFileDto {
+  /** 文件名称 */
+  name: string;
+  /** 文件夹路径 */
+  position: string;
+  /**
+   * 是否将文件夹原先内容删除并替换为新文件
+   *
+   * 适用于文件夹有且仅有一个文件的情况
+   */
+  replace?: boolean;
+}
+
+export interface UnregisterFileDto {
+  /** 待删除文件的名称，如果不指定则删除整个文件夹 */
+  name?: string;
+  /** 文件夹路径 */
+  position: string;
+}
+
+export interface UploadFileDto {
+  /** @format binary */
+  file: File;
+  position: string;
+  replace?: boolean;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1363,6 +1395,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+  };
+  file = {
+    /**
+     * @description 上传临时文件
+     *
+     * @name UploadTempFile
+     * @request POST:/file/upload/temp
+     */
+    uploadTempFile: (data: UploadTempFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/upload/temp`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description 检查临时文件是否已经存在
+     *
+     * @name CheckTempFile
+     * @request GET:/file/check/temp/{name}
+     */
+    checkTempFile: (name: string, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/check/temp/${name}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name RegisterFile
+     * @request PUT:/file/register
+     */
+    registerFile: (data: RegisterFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/register`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UnregisterFile
+     * @request DELETE:/file/register
+     */
+    unregisterFile: (data: UnregisterFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/register`,
+        method: "DELETE",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UploadFile
+     * @request POST:/file/upload
+     */
+    uploadFile: (data: UploadFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/upload`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
         format: "json",
         ...params,
       }),

@@ -22,6 +22,10 @@ const emit = defineEmits<{
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id),
+  select: data => ({
+    ...data,
+    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
+  }),
 })
 
 const avatarName = computed(() => {
@@ -61,7 +65,10 @@ const handleRemove = async () => {
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">
-      {{ avatarName }}
+      <img v-if="data?.avatar" :src="data.avatar">
+      <div v-else>
+        {{ avatarName }}
+      </div>
     </AAvatar>
     <div grow center-x gap-2>
       <div text="text-1" ellipsis>
