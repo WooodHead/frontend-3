@@ -1,7 +1,8 @@
 <script setup lang="ts">
-const { duration = 1000, loading = false, status = 'normal', type = 'secondary' } = defineProps<{
+const { duration = 1000, long, loading = false, status = 'normal', type = 'secondary' } = defineProps<{
   duration?: number
   loading?: boolean
+  long?: boolean
   status?: 'normal' | 'success' | 'warning' | 'danger' | undefined
   type?: 'dashed' | 'text' | 'outline' | 'primary' | 'secondary' | undefined
 }>()
@@ -34,16 +35,19 @@ const handlePointerUp = () => {
 
 <template>
   <div class="wrapper" @pointerdown="handlePointerDown" @pointerup="handlePointerUp">
-    <AButton :type="type" :status="status" :loading="loading">
+    <AButton :long="long" :type="type" :status="status" :loading="loading">
+      <slot></slot>
       <template #icon>
-        <slot v-if="percent === 0" name="icon"></slot>
-        <AProgress
-          v-else
-          size="mini" type="circle"
-          :status="status"
-          :percent="percent"
-          :show-text="false"
-        />
+        <div square-16px center>
+          <slot v-if="percent === 0" name="icon"></slot>
+          <AProgress
+            v-else
+            size="mini" type="circle"
+            :status="status"
+            :percent="percent"
+            :show-text="false"
+          />
+        </div>
       </template>
     </AButton>
   </div>

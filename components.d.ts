@@ -26,5 +26,6 @@ declare module '@vue/runtime-core' {
     Status: typeof import('./src/components/status.vue')['default']
     UnitRangePicker: typeof import('./src/components/unit-range-picker.vue')['default']
     UnitTimePicker: typeof import('./src/components/unit-time-picker.vue')['default']
+    UploadButton: typeof import('./src/components/upload-button.vue')['default']
   }
 }

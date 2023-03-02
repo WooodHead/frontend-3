@@ -24,7 +24,7 @@ const handleRemove = (event: EventEntity | undefined) => {
 </script>
 
 <template>
-  <ACard w-full title="参与事件" :body-style="{ padding: 0 }">
+  <ACard w-full :bordered="false" title="参与事件" :body-style="{ padding: 0 }">
     <template #extra>
       <ATrigger v-model:popup-visible="visible" trigger="click">
         <AButton type="text">

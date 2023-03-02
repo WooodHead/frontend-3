@@ -3,7 +3,7 @@ const editable = ref(false)
 </script>
 
 <template>
-  <ACard title="人物简介">
+  <ACard title="人物简介" :bordered="false" :body-style="{ padding: 0 }">
     <template #extra>
       <AButton
         :type="editable ? 'primary' : 'text'"
@@ -15,6 +15,7 @@ const editable = ref(false)
         </template>
       </AButton>
     </template>
-    <ATextarea :disabled="!editable" />
+    <ContentEditor :editable="editable" />
   </ACard>
 </template>
+

@@ -33,7 +33,6 @@ const { mutate: connect } = useCharaConnectEvent(computed(() => id))
 const { mutate: disconnect } = useCharaDisconnectEvent(computed(() => id))
 
 const { mutateAsync: upload } = useFileUpload()
-
 const handleUploadAvatar = async (file: File) => {
   const avatar = await upload({ file, position: `chara_${id}/avatar` })
   await update({ avatar })
@@ -43,7 +42,7 @@ const handleUploadAvatar = async (file: File) => {
 
 <template>
   <Status v-if="!isSuccess" :empty="id === undefined" :loading="isLoading" :error="isError" />
-  <div v-else p-4 center-y gap-2>
+  <div v-else center-y gap-2>
     <div center-x gap-4 m-4>
       <AAvatar :size="48">
         <img v-if="data?.avatar" :src="data.avatar">
@@ -51,17 +50,10 @@ const handleUploadAvatar = async (file: File) => {
           {{ avatarName }}
         </div>
         <template #trigger-icon>
-          <AUpload
-            accept="image/*"
-            :show-file-list="false"
+          <UploadButton
+            shape="circle" size="mini"
             @before-upload="handleUploadAvatar"
-          >
-            <template #upload-button>
-              <AButton shape="circle" size="mini">
-                <div i-radix-icons-pencil-2 text="primary-light-4"></div>
-              </AButton>
-            </template>
-          </AUpload>
+          />
         </template>
       </AAvatar>
       <div column>
@@ -73,8 +65,7 @@ const handleUploadAvatar = async (file: File) => {
         </div>
       </div>
     </div>
-    <ADivider />
-    <ACard v-if="data" title="基本信息" w-full>
+    <ACard v-if="data" title="基本信息" w-full :bordered="false">
       <template #extra>
         <ALink @click="modalVisible = true">
           编辑

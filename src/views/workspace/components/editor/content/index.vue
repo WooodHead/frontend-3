@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import './style.css'
 import type { EditorEvents } from '@tiptap/vue-3'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'

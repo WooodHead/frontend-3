@@ -16,6 +16,7 @@ specifiers:
   '@tanstack/vue-query': ^4.24.4
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209
   '@tiptap/extension-character-count': 2.0.0-beta.209
+  '@tiptap/extension-document': 2.0.0-beta.220
   '@tiptap/extension-mention': 2.0.0-beta.209
   '@tiptap/extension-placeholder': 2.0.0-beta.209
   '@tiptap/starter-kit': 2.0.0-beta.209
@@ -85,6 +86,7 @@ dependencies:
   '@tanstack/vue-query': 4.24.4_vue@3.2.47
   '@tiptap/extension-bubble-menu': 2.0.0-beta.209_w5m3ddcszxha4fwakfbwcuuiyq
   '@tiptap/extension-character-count': 2.0.0-beta.209_hns5jzllmpwycdp7rynkguro2y
+  '@tiptap/extension-document': 2.0.0-beta.220_fpm27c2ijcgoxttu7rbz5hnmva
   '@tiptap/extension-mention': 2.0.0-beta.209_doyvdz2h4tu5jsgllfttfhscue
   '@tiptap/extension-placeholder': 2.0.0-beta.209_ybzy6c2uu4snkwreaqparlrwcq
   '@tiptap/starter-kit': 2.0.0-beta.209_@tiptap+pm@2.0.0-beta.212
@@ -859,8 +861,8 @@ packages:
       '@tiptap/core': 2.0.0-beta.212_@tiptap+pm@2.0.0-beta.212
     dev: false
 
-  /@tiptap/extension-document/2.0.0-beta.212_fpm27c2ijcgoxttu7rbz5hnmva:
-    resolution: {integrity: sha512-dGt4Y/aDHWkYzGJLaZtx823af0b0NMPdtUECwpypvTEIqLG1RrEvNP5va2BsHcgug+Kt5UgmPrR+PvuDPX9Vnw==}
+  /@tiptap/extension-document/2.0.0-beta.220_fpm27c2ijcgoxttu7rbz5hnmva:
+    resolution: {integrity: sha512-2sja4ZvOb4iynHrzinnclCSFgLyo6fJc1fBV5fIYaOgZOYcvz9KK8fgKiq+wIpG58sJEmQ5kcwwBlkXv+NTK+g==}
     peerDependencies:
       '@tiptap/core': ^2.0.0-beta.209
     dependencies:
@@ -1045,7 +1047,7 @@ packages:
       '@tiptap/extension-bullet-list': 2.0.0-beta.212_fpm27c2ijcgoxttu7rbz5hnmva
       '@tiptap/extension-code': 2.0.0-beta.212_fpm27c2ijcgoxttu7rbz5hnmva
       '@tiptap/extension-code-block': 2.0.0-beta.212_zgjcuhkx73ahmrjtl4wwrfvmla
-      '@tiptap/extension-document': 2.0.0-beta.212_fpm27c2ijcgoxttu7rbz5hnmva
+      '@tiptap/extension-document': 2.0.0-beta.220_fpm27c2ijcgoxttu7rbz5hnmva
       '@tiptap/extension-dropcursor': 2.0.0-beta.212_zgjcuhkx73ahmrjtl4wwrfvmla
       '@tiptap/extension-gapcursor': 2.0.0-beta.212_zgjcuhkx73ahmrjtl4wwrfvmla
       '@tiptap/extension-hard-break': 2.0.0-beta.212_fpm27c2ijcgoxttu7rbz5hnmva

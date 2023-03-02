@@ -10,7 +10,8 @@ const ids = ref({
   <div fullscreen center bg-gray-2>
     <div card center w-3-4 h-3-4>
       <div w="75%">
-        <LongPressButton />
+        <!-- <ContentEditor full /> -->
+        <ContentEditor full force-header />
       </div>
     </div>
   </div>

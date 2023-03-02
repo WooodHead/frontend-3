@@ -45,8 +45,6 @@ const selectKey = ref<string>()
         />
       </div>
     </template>
-    <div p-4>
-      场景设定
-    </div>
+    <ContentEditor cover force-header />
   </ResizeLayout>
 </template>

@@ -45,14 +45,8 @@ const selectKey = ref<string>()
         />
       </div>
     </template>
-    <div p-4 column grow>
-      <input
-        text-2xl font-bold
-        outline-none bg-bg-1
-        placeholder="请输入标题"
-      >
-      <ADivider :margin="12" />
-      世界观设定
+    <div column grow>
+      <ContentEditor full force-header cover placeholder="在这里写下设定" />
     </div>
   </ResizeLayout>
 </template>
