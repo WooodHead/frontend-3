@@ -33,7 +33,7 @@ const { mutate: disconnectSubs } = useEventDisconnectSubs(eventId)
 
 <template>
   <div nim-column space-y-2>
-    <ACard title="参与角色">
+    <ACard title="参与角色" :bordered="false">
       <CharaBadgeTable
         v-if="eventId"
         v-model="badges"

@@ -53,7 +53,7 @@ const handleDelete = async ({ id }: CharacterEntity) => {
         center-x gap-1
         p-2 border="b border-2"
       >
-        <div row gap-1>
+        <div row grow gap-1>
           <AInput
             v-model="searchText"
             grow size="small"

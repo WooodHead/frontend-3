@@ -77,13 +77,9 @@ const handleSelect = (event: EventEntity | undefined) => {
       </template>
       <Content />
     </ResizeLayout>
-    <ComponentFooter>
+    <ComponentFooter v-if="eventId">
       <template #right>
-        <div
-          v-if="eventId"
-          row gap-2
-          text="xs text-3"
-        >
+        <div row gap-2 text="xs text-3">
           <div>{{ saving ? '保存中...' : '已保存' }}</div>
           {{ editor.storage.characterCount.characters() }} 字
         </div>

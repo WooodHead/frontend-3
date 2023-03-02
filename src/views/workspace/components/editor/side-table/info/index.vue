@@ -32,22 +32,13 @@ const visible = ref(false)
 
 <template>
   <div nim-column gap-2>
-    <div center-x gap-1>
-      <AButton grow @click="visible = true">
-        修改
-      </AButton>
-      <LongPressButton
-        :loading="isLoading" status="danger"
-        shrink-0
-        @press="handleRemove"
-      >
-        <template #icon>
-          <div i-radix-icons-trash></div>
-        </template>
-      </LongPressButton>
-    </div>
     <InfoModal v-model:visible="visible" />
-    <ACard title="基本信息">
+    <ACard title="基本信息" :bordered="false">
+      <template #extra>
+        <ALink type="text" @click="visible = true">
+          编辑
+        </ALink>
+      </template>
       <ADescriptions
         :column="1"
         :data="event ? [
@@ -57,8 +48,26 @@ const visible = ref(false)
         ] : []"
       />
     </ACard>
-    <ACard v-if="event?.description" title="简介">
+    <ACard v-if="event?.description" title="简介" :bordered="false">
+      <template #extra>
+        <ALink>
+          编辑
+        </ALink>
+        <ALink>
+          生成
+        </ALink>
+      </template>
       {{ event.description }}
     </ACard>
+    <LongPressButton
+      :loading="isLoading" status="danger"
+      shrink-0 long
+      @press="handleRemove"
+    >
+      删除事件
+      <template #icon>
+        <div i-radix-icons-trash></div>
+      </template>
+    </LongPressButton>
   </div>
 </template>

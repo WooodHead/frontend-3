@@ -26,7 +26,7 @@ const handleRemove = (event: EventEntity | undefined) => {
 </script>
 
 <template>
-  <ACard :title="title" :body-style="{ padding: 0 }">
+  <ACard :title="title" :body-style="{ padding: 0 }" :bordered="false">
     <template #extra>
       <ATrigger v-model:popup-visible="visible" trigger="click">
         <AButton :title="`添加${title}`" type="text">
