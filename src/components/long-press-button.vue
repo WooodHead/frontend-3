@@ -36,7 +36,6 @@ const handlePointerUp = () => {
 <template>
   <div class="wrapper" @pointerdown="handlePointerDown" @pointerup="handlePointerUp">
     <AButton :long="long" :type="type" :status="status" :loading="loading">
-      <slot></slot>
       <template #icon>
         <div square-16px center>
           <slot v-if="percent === 0" name="icon"></slot>

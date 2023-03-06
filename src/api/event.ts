@@ -43,7 +43,6 @@ export const useEventUpdate = (id: MaybeRef<number | undefined>, options?: Event
     ...options,
     mutationFn: (dto: UpdateEventDto) => api.event.update(unref(id)!, dto),
     onSuccess: (event, vars, ctx) => {
-      Message.success('更新事件成功')
       client.invalidateQueries(['event', unref(event.id)])
       client.invalidateQueries(['event', 'list'])
       for (const charaId of event.characters) {

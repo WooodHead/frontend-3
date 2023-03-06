@@ -4,10 +4,10 @@ import { useStore } from '../../store'
 import InfoModal from './info-modal.vue'
 import api from '@/api/api'
 import { UnitID } from '@/utils/unit-id'
-import { useEventRemove } from '@/api/event'
+import { useEventRemove, useEventUpdate } from '@/api/event'
 
 const store = useStore()
-const { eventId } = storeToRefs(store)
+const { eventId, todoDot, relationDot } = storeToRefs(store)
 
 const { data: event } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
@@ -18,6 +18,19 @@ const { data: event } = useQuery({
     name: `${data.serial}. ${data.name}`,
     range: `${UnitID.fromDayjs(data.unit, data.start)} - ${UnitID.fromDayjs(data.unit, data.end)}`,
   }),
+})
+
+const { mutate: update } = useEventUpdate(eventId)
+const handleToggleDone = () => {
+  if (eventId.value === undefined) { return }
+  update({ done: !event?.value?.done })
+}
+watchEffect(() => {
+  if (
+    !(todoDot.value || relationDot.value)
+    || eventId.value === undefined
+  ) { return }
+  update({ done: false })
 })
 
 const { mutateAsync: remove, isLoading } = useEventRemove(eventId)
@@ -33,6 +46,26 @@ const visible = ref(false)
 <template>
   <div nim-column gap-2>
     <InfoModal v-model:visible="visible" />
+    <div center-x gap-1>
+      <AButton
+        grow
+        :type="event?.done ? 'primary' : 'secondary'"
+        @click="handleToggleDone"
+      >
+        {{ event?.done ? '已完成' : '未完成' }}
+      </AButton>
+      <LongPressButton
+        :loading="isLoading"
+        status="danger"
+        shrink-0 long
+        @press="handleRemove"
+      >
+        删除事件
+        <template #icon>
+          <div i-radix-icons-trash></div>
+        </template>
+      </LongPressButton>
+    </div>
     <ACard title="基本信息" :bordered="false">
       <template #extra>
         <ALink type="text" @click="visible = true">
@@ -59,15 +92,5 @@ const visible = ref(false)
       </template>
       {{ event.description }}
     </ACard>
-    <LongPressButton
-      :loading="isLoading" status="danger"
-      shrink-0 long
-      @press="handleRemove"
-    >
-      删除事件
-      <template #icon>
-        <div i-radix-icons-trash></div>
-      </template>
-    </LongPressButton>
   </div>
 </template>

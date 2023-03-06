@@ -27,6 +27,7 @@ export interface EventEntity {
   start: string;
   /** @format date-time */
   end: string;
+  done: boolean;
   contentId: number | null;
   projectId: number;
 }
@@ -49,6 +50,7 @@ export interface EventDetailEntity {
   start: string;
   /** @format date-time */
   end: string;
+  done: boolean;
   contentId: number | null;
   projectId: number;
   characters: number[];
@@ -77,6 +79,7 @@ export interface CreateEventDto {
 }
 
 export interface UpdateEventDto {
+  done?: boolean;
   name?: string;
   description?: string | null;
   color?: string;
@@ -116,6 +119,7 @@ export interface EventContentEntity {
   /** @format date-time */
   updatedAt: string;
   content: string;
+  cover: string | null;
   eventId: number;
 }
 
