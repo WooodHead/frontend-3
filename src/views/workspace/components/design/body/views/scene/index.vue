@@ -45,6 +45,8 @@ const selectKey = ref<string>()
         />
       </div>
     </template>
-    <ContentEditor cover force-header />
+    <div w-0 grow overflow-y-auto>
+      <ContentEditor cover force-header />
+    </div>
   </ResizeLayout>
 </template>

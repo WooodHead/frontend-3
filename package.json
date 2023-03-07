@@ -1,5 +1,5 @@
 {
-  "name": "frontend-vue",
+  "name": "project-chiral-frontend",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -52,6 +52,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.31.1",
     "@arco-plugins/vite-vue": "^1.4.2",
+    "@tauri-apps/cli": "^1.2.3",
     "@types/css": "^0.0.33",
     "@types/d3-force": "^3.0.4",
     "@types/node": "^18.11.18",

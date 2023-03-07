@@ -68,14 +68,13 @@ const handleSelect = (event: EventEntity | undefined) => {
         </div>
       </template>
     </ComponentHeader>
-    <ResizeLayout
-      :side-show="!!eventId"
-      h-0 grow
-    >
+    <ResizeLayout :side-show="eventId !== undefined" h-0 grow>
       <template #side>
         <SideTable />
       </template>
-      <Content />
+      <div w-0 grow overflow-y-auto>
+        <Content />
+      </div>
     </ResizeLayout>
     <ComponentFooter v-if="eventId">
       <template #right>

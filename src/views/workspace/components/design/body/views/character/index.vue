@@ -88,6 +88,8 @@ const handleDelete = async ({ id }: CharacterEntity) => {
         />
       </div>
     </template>
-    <Body :id="charaId" />
+    <div w-0 grow overflow-y-auto>
+      <Body :id="charaId" />
+    </div>
   </ResizeLayout>
 </template>
