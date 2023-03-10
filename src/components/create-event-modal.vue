@@ -12,7 +12,7 @@ const { visible, init } = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'beforeOk', data: EventEntity): void
+  (e: 'before-ok', data: EventEntity): void
   (e: 'ok'): void
 }>()
 
@@ -35,7 +35,7 @@ const { mutateAsync: create } = useEventCreate()
 const handleBeforeOk = async () => {
   const data = await formRef.value!.validate()
   const event = await create(data)
-  emit('beforeOk', event)
+  emit('before-ok', event)
   return true
 }
 </script>

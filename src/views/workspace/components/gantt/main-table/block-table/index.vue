@@ -6,17 +6,16 @@ import api from '@/api/api'
 import { UnitIDRange } from '@/utils/unit-id'
 
 const store = useStore()
-const { subUnitRange, subUnit } = storeToRefs(store)
+const { subUnitRange } = storeToRefs(store)
 
 const { data: events } = useQuery({
-  enabled: computed(() => subUnitRange !== undefined),
+  enabled: computed(() => subUnitRange.value !== undefined),
   queryKey: computed(() => ['event', 'list', 'range', subUnitRange.value?.toJSON()]),
   queryFn: () => api.event.getByRange(subUnitRange.value!.toJSON()),
-  select: data => data
-    .map(e => ({
-      ...e,
-      range: UnitIDRange.fromDayjs(e.unit, e.start, e.end),
-    })),
+  select: data => data.map(event => ({
+    ...event,
+    range: UnitIDRange.fromDayjs(event.unit, event.start, event.end),
+  })),
 })
 // TODO unit切换
 

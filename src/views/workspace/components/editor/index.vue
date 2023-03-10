@@ -41,6 +41,10 @@ const handleSelect = (event: EventEntity | undefined) => {
   emitter.emit('event-select', { event })
 }
 
+const modalVisible = ref(false)
+const handleCreate = ({ id }: EventEntity) => {
+  eventId.value = id
+}
 // TODO 历史记录
 </script>
 
@@ -60,9 +64,9 @@ const handleSelect = (event: EventEntity | undefined) => {
       </template>
       <template #right>
         <div row space-x-2>
-          <AButton type="outline" title="历史记录">
+          <AButton type="outline" title="创建新事件" @click="modalVisible = true">
             <template #icon>
-              <div i-radix-icons-counter-clockwise-clock text-lg></div>
+              <div i-radix-icons-plus text-lg></div>
             </template>
           </AButton>
         </div>
@@ -85,4 +89,8 @@ const handleSelect = (event: EventEntity | undefined) => {
       </template>
     </ComponentFooter>
   </div>
+  <CreateEventModal
+    v-model:visible="modalVisible"
+    @before-ok="handleCreate"
+  />
 </template>

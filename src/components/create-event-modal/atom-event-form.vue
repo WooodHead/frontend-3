@@ -11,7 +11,6 @@ const formRef = ref<FormRef>()
 
 const model = ref({
   name: '',
-  description: '',
   range: init ?? UnitIDRange.fromDayjs('month'),
   color: '#93c5fd',
 })
@@ -23,6 +22,7 @@ const validate = async (): Promise<CreateEventDto> => {
   const { range, ...rest } = model.value
   return {
     ...rest,
+    description: '',
     ...range.toJSON(),
   }
 }
@@ -38,9 +38,6 @@ defineExpose({ validate })
       :rules="[{ required: true, message: '请给事件起个名字' }]"
     >
       <AInput v-model="model.name" />
-    </AFormItem>
-    <AFormItem field="description" label="事件描述">
-      <ATextarea v-model="model.description" />
     </AFormItem>
     <AFormItem
       field="range"
