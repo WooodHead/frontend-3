@@ -1,6 +1,4 @@
-import type { Form } from '@arco-design/web-vue'
+import type { Form, Tree } from '@arco-design/web-vue'
 
-/**
- * 表单实例类型
- */
 export type FormRef = InstanceType<typeof Form>
+export type TreeRef = InstanceType<typeof Tree>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Tree, TreeNodeData } from '@arco-design/web-vue'
+import type { TreeNodeData } from '@arco-design/web-vue'
+import type { TreeRef } from '@/utils/types'
 
 const { data, search, selectKey } = defineProps<{
   data: TreeNodeData[]
@@ -8,11 +9,12 @@ const { data, search, selectKey } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:data', data: TreeNodeData[]): void
+  (e: 'create', key: string | number): void
+  (e: 'remove', key: string | number): void
   (e: 'update:select-key', key: string | number): void
 }>()
 
-const target = ref<InstanceType<typeof Tree> | null>(null)
+const target = ref<TreeRef | null>(null)
 
 const filterTree = (text: string, data: TreeNodeData[]): TreeNodeData[] => {
   text = text.toLowerCase()
@@ -32,20 +34,24 @@ const filterTree = (text: string, data: TreeNodeData[]): TreeNodeData[] => {
   return result
 }
 
-const handleAddItem = (nodeData: TreeNodeData) => {
-  const children = nodeData.children || []
-  children.push({
-    title: 'new tree node',
-    key: `${nodeData.key}-${children.length + 1}`,
-  })
-  nodeData.children = children
+const handleCreate = ({ key }: TreeNodeData) => {
+  if (!key) { return }
+  emit('create', key)
+}
+
+const handleRemove = (key: string | number) => {
+  if (!key) { return }
+  emit('remove', key)
 }
 
 const nowData = ref(data)
-watchEffect(() => {
-  if (!search) { nowData.value = data }
-  else { nowData.value = filterTree(search, data) }
-})
+watch(
+  () => ({ search, data }),
+  ({ search, data }) => {
+    if (!search) { nowData.value = data }
+    else { nowData.value = filterTree(search, data) }
+  },
+)
 </script>
 
 <template>
@@ -59,15 +65,24 @@ watchEffect(() => {
     @update:selected-keys="$emit('update:select-key', $event[0])"
   >
     <template #extra="nodeData">
-      <AButton
-        size="small" type="text"
-        absolute right-2
-        @click="handleAddItem(nodeData)"
-      >
-        <template #icon>
-          <div i-radix-icons-plus></div>
-        </template>
-      </AButton>
+      <AButtonGroup absolute right-2>
+        <AButton
+          size="mini" type="text"
+          @click="handleCreate(nodeData)"
+        >
+          <template #icon>
+            <div i-radix-icons-plus></div>
+          </template>
+        </AButton>
+        <AButton
+          size="mini" type="text"
+          @click="handleRemove(nodeData)"
+        >
+          <template #icon>
+            <div i-radix-icons-trash></div>
+          </template>
+        </AButton>
+      </AButtonGroup>
     </template>
   </ATree>
 </template>

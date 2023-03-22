@@ -52,6 +52,9 @@ const visible = ref(false)
         :type="event?.done ? 'primary' : 'secondary'"
         @click="handleToggleDone"
       >
+        <template #icon>
+          <div :class="event?.done ? `i-radix-icons-check-circled` : `i-radix-icons-circle`"></div>
+        </template>
         {{ event?.done ? '已完成' : '未完成' }}
       </AButton>
       <LongPressButton

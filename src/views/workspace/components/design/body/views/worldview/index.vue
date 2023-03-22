@@ -21,6 +21,11 @@ const data = ref<TreeNodeData[]>([
   { title: '4', key: '4' },
   { title: '5', key: '5' },
 ])
+
+const handleCreate = async (key: string | number) => {}
+
+const handleDelete = (key: string | number) => {}
+
 const searchText = ref<string>()
 const debouncedSearchText = refDebounced(searchText, 300)
 const selectKey = ref<string>()

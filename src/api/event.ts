@@ -2,7 +2,7 @@ import { Message } from '@arco-design/web-vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { MaybeRef } from '@vueuse/shared'
 import api from './api'
-import type { CreateEventDto, EventEntity, MutateCharactersDto, MutateScenesDto, MutateSubsDto, MutateSupsDto, UpdateEventDto } from './api-base'
+import type { CreateEventDto, EventEntity, MutateCharactersDto, MutateEventsDto, MutateScenesDto, MutateSubsDto, MutateSupsDto, UpdateEventDto } from './api-base'
 import type { MutationOptions } from './types'
 
 type EventMutationOptions<T = void, D = EventEntity> = MutationOptions<T, D>
@@ -95,6 +95,8 @@ export const useEventRemove = (id: MaybeRef<number | undefined>, options?: Event
     },
   })
 }
+
+export const useEventConnect(id: MaybeRef<number | undefined>, options?: EventMutationOptions<MutateEventsDto>) {}
 
 export const useEventConnectChara = (id: MaybeRef<number | undefined>, options?: EventMutationOptions<MutateCharactersDto>) => {
   const client = useQueryClient()
