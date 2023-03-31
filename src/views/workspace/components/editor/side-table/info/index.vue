@@ -20,36 +20,37 @@ const { data: event } = useQuery({
   }),
 })
 
-const { mutate: update } = useEventUpdate(eventId)
+const { mutate: update } = useEventUpdate()
 const handleToggleDone = () => {
-  if (eventId.value === undefined) { return }
-  update({ done: !event?.value?.done })
+  if (!eventId.value) { return }
+  update({ id: eventId.value, done: !event?.value?.done })
 }
 watchEffect(() => {
   if (
     !(todoDot.value || relationDot.value)
-    || eventId.value === undefined
+    || !eventId.value
   ) { return }
-  update({ done: false })
+  update({ id: eventId.value, done: false })
 })
 
-const { mutateAsync: remove, isLoading } = useEventRemove(eventId)
+const { mutateAsync: remove, isLoading } = useEventRemove()
 const handleRemove = async () => {
-  if (eventId.value === undefined) { return }
-  await remove()
+  if (!eventId.value) { return }
+  await remove({ id: eventId.value })
   store.eventId = undefined
 }
 
-const visible = ref(false)
+const modalVisible = ref(false)
 </script>
 
 <template>
   <div nim-column gap-2>
-    <InfoModal v-model:visible="visible" />
+    <InfoModal v-model:visible="modalVisible" />
     <div center-x gap-1>
       <AButton
         grow
         :type="event?.done ? 'primary' : 'secondary'"
+        :disabled="todoDot || relationDot"
         @click="handleToggleDone"
       >
         <template #icon>
@@ -71,7 +72,7 @@ const visible = ref(false)
     </div>
     <ACard title="基本信息" :bordered="false">
       <template #extra>
-        <ALink type="text" @click="visible = true">
+        <ALink type="text" @click="modalVisible = true">
           编辑
         </ALink>
       </template>

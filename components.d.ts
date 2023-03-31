@@ -23,6 +23,8 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SceneItem: typeof import('./src/components/scene-item.vue')['default']
     Selector: typeof import('./src/components/selector.vue')['default']
+    Starport: typeof import('vue-starport')['Starport']
+    StarportCarrier: typeof import('vue-starport')['StarportCarrier']
     Status: typeof import('./src/components/status.vue')['default']
     UnitRangePicker: typeof import('./src/components/unit-range-picker.vue')['default']
     UnitTimePicker: typeof import('./src/components/unit-time-picker.vue')['default']

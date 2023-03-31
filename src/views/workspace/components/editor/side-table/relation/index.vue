@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import EventCard from './event-card.vue'
 import api from '@/api/api'
-import { useEventConnectSubs, useEventConnectSups, useEventDisconnectSubs, useEventDisconnectSups } from '@/api/event'
+import { useRelationCreate, useRelationRemove } from '@/api/graph'
+import { EVENT, INCLUDES } from '@/api/graph/schema'
 
 const store = useStore()
 const { relationDot, eventId } = storeToRefs(store)
@@ -16,19 +17,19 @@ watch(badges, badges => {
   relationDot.value = badges.unresolved.length !== 0
 }, { deep: true })
 
-const { data } = useQuery({
+const { data: relations } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
-  queryKey: computed(() => ['event', eventId.value, 'detail']),
-  queryFn: () => api.event.getDetail(eventId.value!),
+  queryKey: computed(() => ['graph', 'relation', 'all', { type: EVENT, id: eventId.value! }]),
+  queryFn: () => api.graph.getRelations({ type: EVENT, id: eventId.value! }),
 })
-watch(() => data.value?.characters, charas => {
-  badges.value.resolved = charas ?? []
-}, { immediate: true, deep: true })
+watchEffect(() => {
+  badges.value.resolved = relations.value?.PARTICIPATED_IN.from ?? []
+})
+const sups = computed(() => relations.value?.INCLUDES.from ?? [])
+const subs = computed(() => relations.value?.INCLUDES.to ?? [])
 
-const { mutate: connectSups } = useEventConnectSups(eventId)
-const { mutate: disconnectSups } = useEventDisconnectSups(eventId)
-const { mutate: connectSubs } = useEventConnectSubs(eventId)
-const { mutate: disconnectSubs } = useEventDisconnectSubs(eventId)
+const { mutateAsync: connect } = useRelationCreate()
+const { mutateAsync: disconnect } = useRelationRemove()
 </script>
 
 <template>
@@ -41,14 +42,30 @@ const { mutate: disconnectSubs } = useEventDisconnectSubs(eventId)
       />
     </ACard>
     <EventCard
-      title="父事件" :ids="data?.sups ?? []"
-      @add="connectSups({ sups: [$event] })"
-      @remove="disconnectSups({ sups: [$event] })"
+      title="父事件" :ids="sups"
+      @add="eventId && connect({
+        type: INCLUDES,
+        from: $event,
+        to: eventId,
+      })"
+      @remove="eventId && disconnect({
+        type: INCLUDES,
+        from: $event,
+        to: eventId,
+      })"
     />
     <EventCard
-      title="子事件" :ids="data?.subs ?? []"
-      @add="connectSubs({ subs: [$event] })"
-      @remove="disconnectSubs({ subs: [$event] })"
+      title="子事件" :ids="subs"
+      @add="eventId && connect({
+        type: INCLUDES,
+        from: eventId,
+        to: $event,
+      })"
+      @remove="eventId && disconnect({
+        type: INCLUDES,
+        from: eventId,
+        to: $event,
+      })"
     />
   </div>
 </template>

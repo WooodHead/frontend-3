@@ -32,12 +32,12 @@ watch(data, data => {
   }
 }, { immediate: true })
 
-const { mutateAsync: update } = useCharaUpdate(computed(() => id))
+const { mutateAsync: update } = useCharaUpdate()
 
 const handleBeforeOk = async () => {
   const error = await formRef.value?.validate()
   if (error) { return false }
-  await update(model.value)
+  await update({ id, ...model.value })
   emit('update:visible', false)
   return true
 }

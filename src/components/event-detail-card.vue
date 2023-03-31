@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
 import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
+import { EVENT } from '@/api/graph/schema'
 
 const { id, show = true, load = true } = defineProps<{
   id: number
@@ -17,8 +18,8 @@ const charas = ref({
 
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
-  queryKey: computed(() => ['event', id, 'detail']),
-  queryFn: () => api.event.getDetail(id),
+  queryKey: computed(() => ['event', id]),
+  queryFn: () => api.event.get(id),
   select: data => ({
     ...data,
     type: data.type === 'ATOM' ? '原子事件' : '集合事件',
@@ -27,10 +28,17 @@ const { data, isSuccess, isLoading, isError } = useQuery({
     range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
   }),
 })
-watch(data, data => {
-  if (!data) { return }
-  charas.value.resolved = data.characters
-}, { immediate: true, deep: true })
+
+const { data: relations } = useQuery({
+  queryKey: computed(() => ['graph', 'relation', 'all', { type: EVENT, id }]),
+  queryFn: () => api.graph.getRelations({ type: EVENT, id }),
+})
+watchEffect(() => {
+  charas.value.resolved = relations.value?.PARTICIPATED_IN?.from ?? []
+})
+
+const sups = computed(() => relations.value?.INCLUDES?.from ?? [])
+const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
 </script>
 
 <template>
@@ -68,12 +76,12 @@ watch(data, data => {
       <h4>父事件</h4>
     </div>
     <div
-      v-if="data?.sups.length ?? 0 > 0"
+      v-if="sups.length ?? 0 > 0"
       border="~ border-2" rounded
       max-h-200px overflow-y-auto
     >
       <EventItem
-        v-for="supId in data?.sups"
+        v-for="supId in sups"
         :id="supId" :key="supId"
         button
       />
@@ -82,12 +90,12 @@ watch(data, data => {
       <h4>子事件</h4>
     </div>
     <div
-      v-if="data?.subs.length ?? 0 > 0"
+      v-if="subs.length ?? 0 > 0"
       border="~ border-2" rounded
       max-h-200px overflow-y-auto
     >
       <EventItem
-        v-for="subId in data?.subs"
+        v-for="subId in subs"
         :id="subId" :key="subId"
         button
       />

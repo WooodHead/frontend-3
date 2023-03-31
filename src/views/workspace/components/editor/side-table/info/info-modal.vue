@@ -40,7 +40,7 @@ watch(data, data => {
   model.range = range
 }, { immediate: true })
 
-const { mutateAsync: update } = useEventUpdate(eventId)
+const { mutateAsync: update } = useEventUpdate()
 
 const handleBeforeOk = async () => {
   if (!eventId.value || !formRef.value) { return false }
@@ -52,6 +52,7 @@ const handleBeforeOk = async () => {
     range,
   } = model as Required<typeof model>
   await update({
+    id: eventId.value,
     name,
     description,
     ...range.toJSON(),

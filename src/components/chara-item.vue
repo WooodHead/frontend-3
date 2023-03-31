@@ -35,21 +35,11 @@ const avatarName = computed(() => {
 })
 
 // TODO chara-item
-const { mutateAsync: remove } = useCharaRemove(computed(() => id))
-
-const handleClick = () => {
-  if (!data.value) { return }
-  emit('click', data.value)
-}
-
-const handleHover = () => {
-  if (!data.value) { return }
-  emit('hover', data.value)
-}
+const { mutateAsync: remove } = useCharaRemove()
 
 const handleRemove = async () => {
   if (!data.value) { return }
-  const chara = await remove()
+  const chara = await remove({ id })
   emit('remove', chara)
 }
 </script>
@@ -60,8 +50,8 @@ const handleRemove = async () => {
     :height="height"
     :animate="animate"
     :removable="removable"
-    @click="handleClick"
-    @hover="handleHover"
+    @click="data && $emit('click', data)"
+    @hover="data && $emit('hover', data)"
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">

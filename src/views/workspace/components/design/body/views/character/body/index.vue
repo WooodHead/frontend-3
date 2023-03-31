@@ -4,8 +4,10 @@ import InfoModal from './info-modal.vue'
 import DescCard from './description.vue'
 import EventCard from './event-card.vue'
 import api from '@/api/api'
-import { useCharaConnectEvent, useCharaDisconnectEvent, useCharaUpdate } from '@/api/character'
+import { useCharaUpdate } from '@/api/character'
 import { useFileUpload } from '@/api/file'
+import { useRelationCreate, useRelationRemove } from '@/api/graph'
+import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
 
 const { id } = defineProps<{
   id?: number
@@ -13,12 +15,19 @@ const { id } = defineProps<{
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => id !== undefined),
   queryKey: computed(() => ['character', id, 'detail']),
-  queryFn: () => api.character.getDetail(id!),
+  queryFn: () => api.character.get(id!),
   select: data => ({
     ...data,
     avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
   }),
 })
+
+const { data: relations } = useQuery({
+  enabled: computed(() => id !== undefined),
+  queryKey: computed(() => ['graph', 'relation', 'all', { type: CHARA, id }]),
+  queryFn: () => api.graph.getRelations({ type: CHARA, id: id! }),
+})
+const events = computed(() => relations.value?.PARTICIPATED_IN.to ?? [])
 
 const avatarName = computed(() => {
   const name = data.value?.name
@@ -28,21 +37,39 @@ const avatarName = computed(() => {
 
 const modalVisible = ref(false)
 
-const { mutateAsync: update } = useCharaUpdate(computed(() => id))
-const { mutate: connect } = useCharaConnectEvent(computed(() => id))
-const { mutate: disconnect } = useCharaDisconnectEvent(computed(() => id))
+const { mutateAsync: update } = useCharaUpdate()
+
+const { mutateAsync: connect } = useRelationCreate()
+const handleAddEvent = async (eventId: number) => {
+  if (!id) { return }
+  await connect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
+}
+const { mutateAsync: disconnect } = useRelationRemove()
+const handleRemoveEvent = async (eventId: number) => {
+  if (!id) { return }
+  await disconnect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
+}
 
 const { mutateAsync: upload } = useFileUpload()
 const handleUploadAvatar = async (file: File) => {
+  if (!id) { return }
   const avatar = await upload({ file, position: `chara_${id}/avatar` })
-  await update({ avatar })
+  await update({ id, avatar })
   return true
 }
 </script>
 
 <template>
   <Status v-if="!isSuccess" :empty="id === undefined" :loading="isLoading" :error="isError" />
-  <div v-else center-y gap-2>
+  <div v-else center-y gap-2 p-2>
     <div center-x gap-4 m-4>
       <AAvatar :size="48">
         <img v-if="data?.avatar" :src="data.avatar">
@@ -83,9 +110,9 @@ const handleUploadAvatar = async (file: File) => {
     </ACard>
     <DescCard w-full />
     <EventCard
-      :ids="data?.events ?? []"
-      @add="connect({ events: [$event] })"
-      @remove="disconnect({ events: [$event] })"
+      :ids="events"
+      @add="handleAddEvent"
+      @remove="handleRemoveEvent"
     />
   </div>
   <InfoModal

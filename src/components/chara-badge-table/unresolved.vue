@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useQueryClient } from '@tanstack/vue-query'
 import Basic from './index.vue'
 import type { CharacterEntity } from '@/api/api-base'
-import { useCharaConnectEvent, useCharaCreate } from '@/api/character'
+import { useCharaCreate } from '@/api/character'
+import { useRelationCreate } from '@/api/graph'
+import { PARTICIPATED_IN } from '@/api/graph/schema'
 const { name, eventId, closable } = defineProps<{
   name: string
   eventId: number
@@ -15,29 +16,22 @@ const emit = defineEmits<{
 }>()
 
 const visible = ref(false)
-const charaId = ref<number>()
 
-const client = useQueryClient()
-const { mutateAsync: create, isLoading } = useCharaCreate({
-  onSuccess: (_chara, { events }) => {
-    for (const event of events ?? []) {
-      client.invalidateQueries(['event', event])
-    }
-  },
-})
-const { mutateAsync: connect } = useCharaConnectEvent(charaId)
+const { mutateAsync: create, isLoading } = useCharaCreate()
+
+const { mutateAsync: connect } = useRelationCreate()
 const handleConnect = async (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
-  charaId.value = chara.id
-  await connect({ events: [eventId] })
+  await connect({
+    type: PARTICIPATED_IN,
+    from: chara.id,
+    to: eventId,
+  })
   emit('resolve', name, chara.id)
   visible.value = false
 }
 const handleCreate = async () => {
-  const chara = await create({
-    name,
-    events: eventId !== undefined ? [eventId] : undefined,
-  })
+  const chara = await create({ name })
   emit('resolve', name, chara.id)
   visible.value = false
 }

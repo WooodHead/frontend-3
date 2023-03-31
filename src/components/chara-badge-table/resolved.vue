@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/vue-query'
 import Basic from './index.vue'
 import { UnitIDRange } from '@/utils/unit-id'
 import api from '@/api/api'
-import { useCharaDisconnectEvent } from '@/api/character'
+import { useRelationRemove } from '@/api/graph'
+import { PARTICIPATED_IN } from '@/api/graph/schema'
 
 const { id, eventId, closable } = defineProps<{
   id: number
@@ -26,13 +27,17 @@ const { data } = useQuery({
     avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
   }),
 })
-const { mutateAsync: disconnect } = useCharaDisconnectEvent(computed(() => id))
 
 const visible = ref(false)
 
+const { mutateAsync: disconnect } = useRelationRemove()
 const handleClose = async () => {
   if (!data.value) { return }
-  await disconnect({ events: [eventId] })
+  await disconnect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
   emit('close', id)
 }
 </script>
