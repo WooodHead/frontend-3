@@ -8,8 +8,13 @@ import type { CharacterEntity } from '@/api/api-base'
 import { useCharaCreate } from '@/api/character'
 
 const charaId = ref<number>()
-const handleClick = ({ id }: CharacterEntity) => {
+const handleClick = (id: number) => {
   charaId.value = id
+}
+const handleRemove = async (id: number) => {
+  if (charaId.value === id) {
+    charaId.value = undefined
+  }
 }
 
 const client = useQueryClient()
@@ -38,12 +43,6 @@ watchEffect(() => {
     ? rawData.filter(({ name }) => name.includes(search))
     : rawData
 })
-
-const handleDelete = async ({ id }: CharacterEntity) => {
-  if (charaId.value === id) {
-    charaId.value = undefined
-  }
-}
 </script>
 
 <template>
@@ -84,7 +83,7 @@ const handleDelete = async ({ id }: CharacterEntity) => {
           :id="id" :key="id"
           button removable
           @click="handleClick"
-          @remove="handleDelete"
+          @remove="handleRemove"
         />
       </div>
     </template>

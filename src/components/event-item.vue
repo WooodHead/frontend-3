@@ -33,7 +33,7 @@ const handleClick = async () => {
   if (!data.value) { return }
   emit('click', data.value.id)
   if (eventSelect) {
-    emitter.emit('event-select', { event: data.value })
+    emitter.emit('event-select', { id: data.value.id })
   }
 }
 </script>

@@ -5,7 +5,6 @@ import { UnitIDRange } from '@/utils/unit-id'
 import type { UnitID } from '@/utils/unit-id'
 import createStore from '@/utils/createStore'
 import { OrderedArray, UnitIDRangeComparor } from '@/utils/ordered-array'
-import emitter from '@/utils/emitter'
 
 export const { registerStore, useStore } = createStore('gantt', {
   state: () => ({
@@ -179,10 +178,4 @@ export const { registerStore, useStore } = createStore('gantt', {
       if (next) { this.navigateTo(next) }
     },
   },
-},
-store => {
-  emitter.on('event-select', async ({ event }) => {
-    const range = UnitIDRange.fromDayjs(event.unit, event.start, event.end)
-    store.navigateTo(range.start.parent)
-  })
 })

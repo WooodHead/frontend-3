@@ -14,7 +14,7 @@ const { id } = defineProps<{
 }>()
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['character', id, 'detail']),
+  queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id!),
   select: data => ({
     ...data,

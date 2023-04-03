@@ -1,7 +1,6 @@
 import { ComponentStatus } from '../type'
 import { editor } from './tiptap'
 import createStore from '@/utils/createStore'
-import emitter from '@/utils/emitter'
 
 export const { registerStore, useStore } = createStore(
   'editor',
@@ -15,10 +14,4 @@ export const { registerStore, useStore } = createStore(
       relationDot: false,
       todoDot: false,
     }),
-  },
-  store => {
-    emitter.on('event-select', ({ event }) => {
-      store.eventId = event.id
-    })
-  },
-)
+  })
