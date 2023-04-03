@@ -17,10 +17,6 @@ const handleSelect = (event: EventEntity | undefined) => {
   emit('add', event.id)
   visible.value = false
 }
-const handleRemove = (event: EventEntity | undefined) => {
-  if (!event) { return }
-  emit('remove', event.id)
-}
 </script>
 
 <template>
@@ -47,7 +43,7 @@ const handleRemove = (event: EventEntity | undefined) => {
         v-for="id of ids"
         :id="id" :key="id"
         button removable
-        @remove="handleRemove"
+        @remove="$emit('remove', $event)"
       />
     </div>
   </ACard>

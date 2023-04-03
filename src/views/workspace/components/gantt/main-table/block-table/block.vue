@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useQueryClient } from '@tanstack/vue-query'
 import { EVENT_HEIGHT, UNIT_WIDTH } from '../../const'
 import { useStore } from '../../store'
 import type { UnitIDRange } from '@/utils/unit-id'
@@ -16,8 +15,6 @@ const { id, range, color } = defineProps<BlockProps>()
 
 const store = useStore()
 const { viewPort, visibleUnit, lock, selectedEvents } = storeToRefs(store)
-
-const client = useQueryClient()
 
 const ctrl = useKeyModifier('Control')
 const meta = useKeyModifier('Meta')

@@ -42,7 +42,7 @@ const handleSelect = (event: EventEntity | undefined) => {
 }
 
 const modalVisible = ref(false)
-const handleCreate = ({ id }: EventEntity) => {
+const handleCreate = (id: number) => {
   eventId.value = id
 }
 // TODO 历史记录

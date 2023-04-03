@@ -2,7 +2,7 @@
 import AtomEventForm from './create-event-modal/atom-event-form.vue'
 import CollectionEventForm from './create-event-modal/collection-event-form.vue'
 import { UnitIDRange } from '@/utils/unit-id'
-import type { CreateEventDto, EventEntity } from '@/api/api-base'
+import type { CreateEventDto } from '@/api/api-base'
 import { useEventCreate } from '@/api/event'
 
 const { visible, init } = defineProps<{
@@ -12,7 +12,7 @@ const { visible, init } = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:visible', visible: boolean): void
-  (e: 'before-ok', data: EventEntity): void
+  (e: 'before-ok', id: number): void
   (e: 'ok'): void
 }>()
 
@@ -35,7 +35,7 @@ const { mutateAsync: create } = useEventCreate()
 const handleBeforeOk = async () => {
   const data = await formRef.value!.validate()
   const event = await create(data)
-  emit('before-ok', event)
+  emit('before-ok', event.id)
   return true
 }
 </script>

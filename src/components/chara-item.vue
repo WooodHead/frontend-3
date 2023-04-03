@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
 import Item from '@/components/item/index.vue'
-import type { CharacterEntity } from '@/api/api-base'
 import { useCharaRemove } from '@/api/character'
 
 const { id, height, button, removable, animate } = defineProps<{
@@ -14,9 +11,9 @@ const { id, height, button, removable, animate } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'click', chara: CharacterEntity): void
-  (e: 'hover', chara: CharacterEntity): void
-  (e: 'remove', chara: CharacterEntity): void
+  (e: 'click', id: number): void
+  (e: 'hover', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const { data } = useQuery({
@@ -40,7 +37,7 @@ const { mutateAsync: remove } = useCharaRemove()
 const handleRemove = async () => {
   if (!data.value) { return }
   const chara = await remove({ id })
-  emit('remove', chara)
+  emit('remove', chara.id)
 }
 </script>
 
@@ -50,8 +47,8 @@ const handleRemove = async () => {
     :height="height"
     :animate="animate"
     :removable="removable"
-    @click="data && $emit('click', data)"
-    @hover="data && $emit('hover', data)"
+    @click="data && $emit('click', data.id)"
+    @hover="data && $emit('hover', data.id)"
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">
