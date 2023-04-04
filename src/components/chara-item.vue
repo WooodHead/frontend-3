@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Item from '@/components/item/index.vue'
-import { useCharaRemove } from '@/api/character'
+import { useCharaQuery, useCharaRemove } from '@/api/character'
 
 const { id, height, button, removable, animate } = defineProps<{
   id: number
@@ -16,14 +16,7 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
 }>()
 
-const { data } = useQuery({
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
-  select: data => ({
-    ...data,
-    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
-  }),
-})
+const { data } = useCharaQuery(computed(() => id))
 
 const avatarName = computed(() => {
   const name = data.value?.name

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
-import { UnitIDRange } from '@/utils/unit-id'
-import api from '@/api/api'
+import type { UnitIDRange } from '@/utils/unit-id'
 import type { FormRef } from '@/utils/types'
-import { useEventUpdate } from '@/api/event'
+import { useEventQuery, useEventUpdate } from '@/api/event'
 
 const { visible } = defineProps<{
   visible: boolean
@@ -23,15 +21,7 @@ const model = reactive<{
   description?: string
   range?: UnitIDRange
 }>({})
-const { data, isLoading } = useQuery({
-  enabled: computed(() => eventId.value !== undefined),
-  queryKey: computed(() => ['event', eventId.value]),
-  queryFn: () => api.event.get(eventId.value!),
-  select: data => ({
-    ...data,
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-  }),
-})
+const { data, isLoading } = useEventQuery(eventId)
 watch(data, data => {
   if (!data) { return }
   const { name, description, range } = data

@@ -4,9 +4,25 @@ import type { NodeIdDto, RelationIdDto } from '../api-base'
 import type { RelationType } from './schema'
 import { RelationSchema } from './schema'
 
-export const invalidateRelation = (client: QueryClient, { from, to }: RelationIdDto) => {
-  client.invalidateQueries(['graph', 'relation', 'all', from])
-  client.invalidateQueries(['graph', 'relation', 'all', to])
+export const invalidateRelation = (client: QueryClient, { type, from, to }: RelationIdDto) => {
+  const { from: fromType, to: toType } = RelationSchema[type]
+  client.invalidateQueries(['graph', 'relation', 'all', { type: fromType, id: from }])
+  client.invalidateQueries(['graph', 'relation', 'all', { type: toType, id: to }])
+
+  // client.setQueryData<RelationsEntity>(['graph', 'relation', 'all', { type: fromType, id: from }], data => data && ({
+  //   ...data,
+  //   [type]: {
+  //     ...data[type],
+  //     to: data[type].to.filter(id => id !== to),
+  //   },
+  // }))
+  // client.setQueryData<RelationsEntity>(['graph', 'relation', 'all', { type: toType, id: to }], data => data && ({
+  //   ...data,
+  //   [type]: {
+  //     ...data[type],
+  //     from: data[type].from.filter(id => id !== from),
+  //   },
+  // }))
 }
 
 export const invalidateNode = async (client: QueryClient, dto: NodeIdDto) => {
@@ -17,8 +33,7 @@ export const invalidateNode = async (client: QueryClient, dto: NodeIdDto) => {
 
   for (const type of Object.keys(relations) as RelationType[]) {
     const { from, to } = relations[type]
-    const fromType = RelationSchema[type].from
-    const toType = RelationSchema[type].to
+    const { from: fromType, to: toType } = RelationSchema[type]
     for (const id of from) {
       client.invalidateQueries(['graph', 'relation', 'all', { type: fromType, id }])
     }

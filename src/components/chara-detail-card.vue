@@ -1,22 +1,13 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
-import api from '@/api/api'
+import { useCharaQuery } from '@/api/character'
 
 const { id, show = true } = defineProps<{
   id: number
   show?: boolean
 }>()
 
-const { data, isSuccess, isLoading, isError } = useQuery({
-  enabled: false,
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
-  select: data => ({
-    ...data,
-    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
-  }),
-})
+const { data, isSuccess, isLoading, isError } = useCharaQuery(computed(() => id))
 
 const avatarName = computed(() => {
   const name = data.value?.name

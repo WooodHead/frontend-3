@@ -1,11 +1,22 @@
 import { Message } from '@arco-design/web-vue'
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import type { MaybeRef } from '@vueuse/shared'
+import type { AxiosError } from 'axios'
 import api from '../api'
-import type { RelationEntity, RelationIdDto } from '../api-base'
+import type { NodeIdDto, RelationEntity, RelationIdDto } from '../api-base'
 import type { MutationOptions } from '../types'
 import { invalidateRelation } from './utils'
 
 type RelationMutationOptions<T = RelationIdDto, D = RelationEntity> = MutationOptions<T, D>
+
+export const useRelationsQuery = (node: MaybeRef<NodeIdDto | undefined>) => useQuery({
+  enabled: computed(() => unref(node) !== undefined),
+  queryKey: computed(() => ['graph', 'relation', 'all', unref(node)]),
+  queryFn: () => api.graph.getRelations(unref(node)!),
+  onError: (e: AxiosError) => {
+    Message.error(`获取关系数据失败：${e.message}`)
+  },
+})
 
 export const useRelationCreate = (options?: RelationMutationOptions) => {
   const client = useQueryClient()

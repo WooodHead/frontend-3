@@ -1,32 +1,18 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import InfoModal from './info-modal.vue'
 import DescCard from './description.vue'
 import EventCard from './event-card.vue'
-import api from '@/api/api'
-import { useCharaUpdate } from '@/api/character'
+import { useCharaQuery, useCharaUpdate } from '@/api/character'
 import { useFileUpload } from '@/api/file'
-import { useRelationCreate, useRelationRemove } from '@/api/graph'
+import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
 import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
 
 const { id } = defineProps<{
   id?: number
 }>()
-const { data, isSuccess, isLoading, isError } = useQuery({
-  enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id!),
-  select: data => ({
-    ...data,
-    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
-  }),
-})
+const { data, isSuccess, isLoading, isError } = useCharaQuery(computed(() => id))
 
-const { data: relations } = useQuery({
-  enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['graph', 'relation', 'all', { type: CHARA, id }]),
-  queryFn: () => api.graph.getRelations({ type: CHARA, id: id! }),
-})
+const { data: relations } = useRelationsQuery(computed(() => id ? { type: CHARA, id } : undefined))
 const events = computed(() => relations.value?.PARTICIPATED_IN.to ?? [])
 
 const avatarName = computed(() => {

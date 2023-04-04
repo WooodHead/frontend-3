@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
 import type { UpdateCharacterDto } from '@/api/api-base'
 import type { FormRef } from '@/utils/types'
-import { useCharaUpdate } from '@/api/character'
+import { useCharaQuery, useCharaUpdate } from '@/api/character'
 const { id, visible = false } = defineProps<{
   id: number
   visible?: boolean
@@ -16,10 +14,7 @@ const emit = defineEmits<{
 const model = ref<UpdateCharacterDto>({})
 const formRef = ref<FormRef>()
 
-const { data } = useQuery({
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
-})
+const { data } = useCharaQuery(computed(() => id))
 watch(data, data => {
   if (!data) { return }
   model.value = {

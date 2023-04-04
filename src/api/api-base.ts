@@ -1398,4 +1398,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
+  ai = {
+    /**
+     * No description
+     *
+     * @tags ai
+     * @name SummarizeTitle
+     * @request GET:/ai/{id}/summarize/title
+     */
+    summarizeTitle: (id: number, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/ai/${id}/summarize/title`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ai
+     * @name SummarizeDesc
+     * @request GET:/ai/{id}/summarize/desc
+     */
+    summarizeDesc: (
+      id: number,
+      query?: {
+        length?: number;
+        /**
+         * @min 0
+         * @max 100
+         */
+        abstraction?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<string, any>({
+        path: `/ai/${id}/summarize/desc`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
 }

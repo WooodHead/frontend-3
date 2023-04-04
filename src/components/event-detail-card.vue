@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
-import { UnitIDRange } from '@/utils/unit-id'
-import api from '@/api/api'
+import { useRelationsQuery } from '@/api/graph'
+import { useEventQuery } from '@/api/event'
 import { EVENT } from '@/api/graph/schema'
 
 const { id, show = true, load = true } = defineProps<{
@@ -16,23 +15,11 @@ const charas = ref({
   unresolved: [] as string[],
 })
 
-const { data, isSuccess, isLoading, isError } = useQuery({
+const { data, isSuccess, isLoading, isError } = useEventQuery(computed(() => id), {
   enabled: computed(() => load),
-  queryKey: computed(() => ['event', id]),
-  queryFn: () => api.event.get(id),
-  select: data => ({
-    ...data,
-    type: data.type === 'ATOM' ? '原子事件' : '集合事件',
-    createdAt: new Date(data.createdAt),
-    updatedAt: new Date(data.updatedAt),
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-  }),
 })
 
-const { data: relations } = useQuery({
-  queryKey: computed(() => ['graph', 'relation', 'all', { type: EVENT, id }]),
-  queryFn: () => api.graph.getRelations({ type: EVENT, id }),
-})
+const { data: relations } = useRelationsQuery({ type: EVENT, id })
 watchEffect(() => {
   charas.value.resolved = relations.value?.PARTICIPATED_IN?.from ?? []
 })

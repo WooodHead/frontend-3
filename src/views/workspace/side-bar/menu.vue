@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import useWSStore from '../store'
 import api from '@/api/api'
 import { useGlobalStore } from '@/store'
@@ -27,20 +26,13 @@ const toggleDarkMode = () => {
   }
 }
 
-const { suspense } = useQuery({
-  queryKey: [],
-  queryFn: () => api.project.getSettings(),
-  onSuccess: ({ darkMode }) => {
-    if (darkMode) { toggleDarkMode() }
-  },
+onMounted(async () => {
+  const settings = await api.project.getSettings()
+  if (settings.darkMode) { toggleDarkMode() }
 })
-
-// await suspense()
-
 watch(darkMode, darkMode => {
   api.project.updateSettings({ darkMode })
-},
-)
+})
 
 const menuConfig: { title: string; name: string }[] = [
   { title: '设置', name: 'ws-settings' },

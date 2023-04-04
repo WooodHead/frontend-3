@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
-import { UnitIDRange } from '@/utils/unit-id'
+import { useEventQuery } from '@/api/event'
 
 const { id, height, button = false, eventSelect = false, removable, removeText, animate } = defineProps<{
   id: number
@@ -21,14 +19,7 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
 }>()
 
-const { data } = useQuery({
-  queryKey: computed(() => ['event', id]),
-  queryFn: () => api.event.get(id),
-  select: data => ({
-    ...data,
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-  }),
-})
+const { data } = useEventQuery(computed(() => id))
 const handleClick = async () => {
   if (!data.value) { return }
   emit('click', data.value.id)

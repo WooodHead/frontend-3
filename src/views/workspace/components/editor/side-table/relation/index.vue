@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import EventCard from './event-card.vue'
-import api from '@/api/api'
-import { useRelationCreate, useRelationRemove } from '@/api/graph'
+import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
 import { EVENT, INCLUDES } from '@/api/graph/schema'
 
 const store = useStore()
@@ -17,11 +15,7 @@ watch(badges, badges => {
   relationDot.value = badges.unresolved.length !== 0
 }, { deep: true })
 
-const { data: relations } = useQuery({
-  enabled: computed(() => eventId.value !== undefined),
-  queryKey: computed(() => ['graph', 'relation', 'all', { type: EVENT, id: eventId.value! }]),
-  queryFn: () => api.graph.getRelations({ type: EVENT, id: eventId.value! }),
-})
+const { data: relations } = useRelationsQuery(computed(() => eventId.value ? { type: EVENT, id: eventId.value } : undefined))
 watchEffect(() => {
   badges.value.resolved = relations.value?.PARTICIPATED_IN.from ?? []
 })
