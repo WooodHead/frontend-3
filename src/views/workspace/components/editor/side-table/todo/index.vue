@@ -97,7 +97,7 @@ const handleRemove = (id: number) => {
 <template>
   <div v-if="isSuccess">
     <APopover v-model:popup-visible="addVisible" trigger="click">
-      <AButton title="添加待办项" long h-20px mb-2 type="primary">
+      <AButton title="添加待办项" long mb-2 type="outline">
         <div i-radix-icons-plus></div>
       </AButton>
       <template #content>

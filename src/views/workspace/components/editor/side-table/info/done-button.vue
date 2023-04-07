@@ -1,0 +1,43 @@
+<script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
+import { useStore } from '../../store'
+import api from '@/api/api'
+import { useEventUpdate } from '@/api/event'
+
+const store = useStore()
+const { eventId, todoDot, relationDot } = storeToRefs(store)
+
+const { data } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.get(eventId.value!),
+})
+
+const { mutate: update } = useEventUpdate()
+
+const config = computed(() => data.value?.done
+  ? {
+      type: 'primary',
+      icon: 'i-radix-icons-check-circled',
+      text: '已完成',
+    } as const
+  : {
+      type: 'secondary',
+      icon: 'i-radix-icons-circle',
+      text: '未完成',
+    } as const,
+)
+</script>
+
+<template>
+  <AButton
+    :type="config.type"
+    :disabled="todoDot || relationDot"
+    @click="eventId && update({ id: eventId, done: !data?.done })"
+  >
+    <template #icon>
+      <div :class="config.icon"></div>
+    </template>
+    {{ config.text }}
+  </AButton>
+</template>

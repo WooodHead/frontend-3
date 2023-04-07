@@ -29,6 +29,11 @@ const { mutateAsync: disconnect } = useRelationRemove()
 <template>
   <div nim-column space-y-2>
     <ACard title="参与角色" :bordered="false">
+      <template #extra>
+        <ALink>
+          刷新
+        </ALink>
+      </template>
       <CharaBadgeTable
         v-if="eventId"
         v-model="badges"

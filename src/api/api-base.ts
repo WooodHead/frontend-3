@@ -155,10 +155,12 @@ export interface SettingsEntity {
   id: number;
   projectId: number;
   darkMode: boolean;
+  lang: string;
 }
 
 export interface UpdateSettingsDto {
   darkMode?: boolean;
+  lang?: string;
 }
 
 export interface CharacterEntity {
@@ -274,23 +276,9 @@ export interface NodeIdDto {
   id: number;
 }
 
-export interface NodeProperty {
-  id: number;
-  projectId: number;
-}
-
-export interface NodeEntity {
-  labels: ("EVENT" | "CHARA" | "SCENE")[];
-  identity: string;
-  properties: NodeProperty;
-}
-
 export interface CreateSceneDto {
   name: string;
   description?: string;
-  sup?: number;
-  subs?: number[];
-  events?: number[];
 }
 
 export interface SceneEntity {
@@ -307,36 +295,29 @@ export interface SceneEntity {
 export interface UpdateSceneDto {
   name?: string;
   description?: string;
-  sup?: number;
-  subs?: number[];
-  events?: number[];
 }
 
 export interface CreateWorldviewDto {
   name: string;
   description?: string;
-  sup?: number;
-  subs?: number[];
 }
 
 export interface WorldviewEntity {
   id: number;
   name: string;
   description: string | null;
-  content: string;
   images: string[];
   /** @format date-time */
   deleted: string | null;
   superId: number | null;
+  sup: number | null;
   projectId: number;
+  contentId: number | null;
 }
 
 export interface UpdateWorldviewDto {
-  content?: string;
   name?: string;
   description?: string;
-  sup?: number;
-  subs?: number[];
 }
 
 export interface UploadTempFileDto {
@@ -369,6 +350,15 @@ export interface UploadFileDto {
   file: File;
   position: string;
   replace?: boolean;
+}
+
+export interface SummarizeDescDto {
+  length?: number;
+  /**
+   * @min 0
+   * @max 100
+   */
+  abstraction?: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
@@ -567,6 +557,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<EventEntity, any>({
         path: `/event/${id}`,
         method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name GetBatch
+     * @request GET:/event/batch
+     */
+    getBatch: (
+      query: {
+        ids: number[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EventEntity[], any>({
+        path: `/event/batch`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
@@ -1078,7 +1089,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags graph
      * @name GetRelations
-     * @request GET:/graph/relation/all
+     * @request GET:/graph/relation
      */
     getRelations: (
       query: {
@@ -1088,7 +1099,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<RelationsEntity, any>({
-        path: `/graph/relation/all`,
+        path: `/graph/relation`,
         method: "GET",
         query: query,
         format: "json",
@@ -1137,12 +1148,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/graph/node
      */
     createNode: (data: NodeIdDto, params: RequestParams = {}) =>
-      this.request<NodeEntity, any>({
+      this.request<void, any>({
         path: `/graph/node`,
         method: "POST",
         body: data,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -1154,12 +1164,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/graph/node
      */
     removeNode: (data: NodeIdDto, params: RequestParams = {}) =>
-      this.request<NodeEntity, any>({
+      this.request<void, any>({
         path: `/graph/node`,
         method: "DELETE",
         body: data,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
   };
@@ -1403,13 +1412,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags ai
-     * @name SummarizeTitle
-     * @request GET:/ai/{id}/summarize/title
+     * @name UpdateEventName
+     * @request POST:/ai/{id}/summarize/title
      */
-    summarizeTitle: (id: number, params: RequestParams = {}) =>
+    updateEventName: (id: number, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/ai/${id}/summarize/title`,
-        method: "GET",
+        method: "POST",
         format: "json",
         ...params,
       }),
@@ -1418,25 +1427,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags ai
-     * @name SummarizeDesc
-     * @request GET:/ai/{id}/summarize/desc
+     * @name UpdateEventDesc
+     * @request POST:/ai/{id}/summarize/desc
      */
-    summarizeDesc: (
-      id: number,
-      query?: {
-        length?: number;
-        /**
-         * @min 0
-         * @max 100
-         */
-        abstraction?: number;
-      },
-      params: RequestParams = {},
-    ) =>
+    updateEventDesc: (id: number, data: SummarizeDescDto, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/ai/${id}/summarize/desc`,
-        method: "GET",
-        query: query,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
