@@ -1,16 +1,24 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import InfoModal from './info-modal.vue'
-import DescCard from './description.vue'
+import IntroCard from './intro-card.vue'
 import EventCard from './event-card.vue'
-import { useCharaQuery, useCharaUpdate } from '@/api/character'
+import DescCard from './desc-card.vue'
+import { selectChara, useCharaUpdate } from '@/api/character'
 import { useFileUpload } from '@/api/file'
 import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
 import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
+import api from '@/api/api'
 
 const { id } = defineProps<{
   id?: number
 }>()
-const { data, isSuccess, isLoading, isError } = useCharaQuery(computed(() => id))
+const { data, isSuccess, isLoading, isError } = useQuery({
+  enabled: computed(() => !!id),
+  queryKey: computed(() => ['character', id]),
+  queryFn: () => api.character.get(id!),
+  select: selectChara,
+})
 
 const { data: relations } = useRelationsQuery(computed(() => id ? { type: CHARA, id } : undefined))
 const events = computed(() => relations.value?.PARTICIPATED_IN.to ?? [])
@@ -78,23 +86,8 @@ const handleUploadAvatar = async (file: File) => {
         </div>
       </div>
     </div>
-    <ACard v-if="data" title="基本信息" w-full :bordered="false">
-      <template #extra>
-        <ALink @click="modalVisible = true">
-          编辑
-        </ALink>
-      </template>
-      <ADescriptions
-        mt-2
-        :data="[
-          {
-            label: '姓名',
-            value: data.name,
-          },
-        ]"
-      />
-    </ACard>
-    <DescCard w-full />
+    <DescCard />
+    <IntroCard w-full />
     <EventCard
       :ids="events"
       @add="handleAddEvent"

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import type { UnitIDRange } from '@/utils/unit-id'
 import type { FormRef } from '@/utils/types'
-import { useEventQuery, useEventUpdate } from '@/api/event'
+import { selectEvent, useEventUpdate } from '@/api/event'
+import api from '@/api/api'
 
 const { visible } = defineProps<{
   visible: boolean
@@ -21,7 +23,13 @@ const model = reactive<{
   description?: string
   range?: UnitIDRange
 }>({})
-const { data, isLoading } = useEventQuery(eventId)
+
+const { data } = useQuery({
+  enabled: computed(() => !!eventId.value),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.get(eventId.value!),
+  select: selectEvent,
+})
 watch(data, data => {
   if (!data) { return }
   const { name, description, range } = data
@@ -30,7 +38,7 @@ watch(data, data => {
   model.range = range
 }, { immediate: true })
 
-const { mutateAsync: update } = useEventUpdate()
+const { mutateAsync: update, isLoading } = useEventUpdate()
 
 const handleBeforeOk = async () => {
   if (!eventId.value || !formRef.value) { return false }

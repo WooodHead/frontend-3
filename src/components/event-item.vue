@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
-import { useEventQuery } from '@/api/event'
+import { selectEvent } from '@/api/event'
+import api from '@/api/api'
 
 const { id, height, button = false, eventSelect = false, removable, removeText, animate } = defineProps<{
   id: number
@@ -19,7 +21,11 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
 }>()
 
-const { data } = useEventQuery(computed(() => id))
+const { data } = useQuery({
+  queryKey: computed(() => ['event', id]),
+  queryFn: () => api.event.get(id),
+  select: selectEvent,
+})
 const handleClick = async () => {
   if (!data.value) { return }
   emit('click', data.value.id)

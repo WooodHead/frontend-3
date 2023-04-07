@@ -1,38 +1,22 @@
 import { Message } from '@arco-design/web-vue'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { MaybeRef } from '@vueuse/shared'
-import type { AxiosError } from 'axios'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import api from './api'
 import type { CreateEventDto, EventEntity, UpdateEventDto } from './api-base'
 import { invalidateNode } from './graph/utils'
 import { EVENT } from './graph/schema'
-import type { MutationOptions, QueryOptions } from './types'
+import type { MutationOptions } from './types'
 import { UnitIDRange } from '@/utils/unit-id'
 
-type EventQueryOptions<D = EventEntity> = QueryOptions<D>
 type EventMutationOptions<T = void, D = EventEntity> = MutationOptions<T, D>
 
-export const useEventQuery = (id: MaybeRef<number | undefined>, options?: EventQueryOptions) => {
-  return useQuery({
-    enabled: computed(() => unref(id) !== undefined),
-    queryKey: computed(() => ['event', unref(id)]),
-    queryFn: () => api.event.get(unref(id)!),
-    select: data => ({
-      ...data,
-      type: data.type === 'ATOM' ? '原子事件' : '集合事件',
-      createdAt: new Date(data.createdAt),
-      updatedAt: new Date(data.updatedAt),
-      deletedAt: data.deleted && new Date(data.deleted),
-      range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-    }),
-
-    onError: (e: AxiosError) => {
-      Message.error(`获取事件失败：${e.message}`)
-    },
-
-    ...options,
-  })
-}
+export const selectEvent = (data: EventEntity) => ({
+  ...data,
+  type: data.type === 'ATOM' ? '原子事件' : '集合事件',
+  createdAt: new Date(data.createdAt),
+  updatedAt: new Date(data.updatedAt),
+  deletedAt: data.deleted && new Date(data.deleted),
+  range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
+})
 
 export const useEventCreate = (options?: EventMutationOptions<CreateEventDto>) => {
   const client = useQueryClient()

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import Item from '@/components/item/index.vue'
-import { useCharaQuery, useCharaRemove } from '@/api/character'
+import { selectChara, useCharaRemove } from '@/api/character'
+import api from '@/api/api'
 
 const { id, height, button, removable, animate } = defineProps<{
   id: number
@@ -16,7 +18,11 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
 }>()
 
-const { data } = useCharaQuery(computed(() => id))
+const { data } = useQuery({
+  queryKey: computed(() => ['character', id]),
+  queryFn: () => api.character.get(id),
+  select: selectChara,
+})
 
 const avatarName = computed(() => {
   const name = data.value?.name

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
 import { useRelationsQuery } from '@/api/graph'
-import { useEventQuery } from '@/api/event'
+import { selectEvent } from '@/api/event'
 import { EVENT } from '@/api/graph/schema'
+import api from '@/api/api'
 
 const { id, show = true, load = true } = defineProps<{
   id: number
@@ -15,15 +17,20 @@ const charas = ref({
   unresolved: [] as string[],
 })
 
-const { data, isSuccess, isLoading, isError } = useEventQuery(computed(() => id), {
+const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
+  queryKey: computed(() => ['event', id]),
+  queryFn: () => api.event.get(id),
+  select: data => ({
+    ...selectEvent(data),
+    description: (data.description) ? data.description : '暂无',
+  }),
 })
 
 const { data: relations } = useRelationsQuery({ type: EVENT, id })
 watchEffect(() => {
   charas.value.resolved = relations.value?.PARTICIPATED_IN?.from ?? []
 })
-
 const sups = computed(() => relations.value?.INCLUDES?.from ?? [])
 const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
 </script>
