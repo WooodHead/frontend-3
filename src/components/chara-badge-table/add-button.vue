@@ -8,10 +8,6 @@ const { eventId, disabled = false } = defineProps<{
   disabled?: boolean
 }>()
 
-const emit = defineEmits<{
-  (e: 'add', id: number): void
-}>()
-
 const visible = ref(false)
 
 const { mutateAsync: connect } = useRelationCreate()
@@ -22,7 +18,6 @@ const handleAddChara = async (chara: CharacterEntity | undefined) => {
     from: chara.id,
     to: eventId,
   })
-  emit('add', chara.id)
   visible.value = false
 }
 </script>

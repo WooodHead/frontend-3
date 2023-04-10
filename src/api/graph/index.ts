@@ -28,7 +28,7 @@ export const useRelationCreate = (options?: RelationMutationOptions) => {
       options?.onSuccess?.(data, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error('')
+      Message.error(`创建关系失败：${e.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
@@ -44,7 +44,7 @@ export const useRelationRemove = (options?: RelationMutationOptions) => {
       options?.onSuccess?.(data, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error('')
+      Message.error(`删除关系失败：${e.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })

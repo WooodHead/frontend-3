@@ -48,7 +48,14 @@ export const useUpdateChara = () => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id }: { id: number }) => api.ai.updateChara(id),
-    onSuccess: (_data, { id }) => {
+    onSuccess: (data, { id }) => {
+      client.setQueryData<EventEntity>(
+        ['event', id],
+        event => event && ({
+          ...event,
+          unresolved: JSON.stringify(data.unresolved),
+        }),
+      )
       invalidateNode(client, { id, type: EVENT })
     },
     onError: (e: AxiosError) => {

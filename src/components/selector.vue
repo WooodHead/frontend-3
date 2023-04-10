@@ -15,6 +15,7 @@ const {
   event = false,
   character = false,
   scene = false,
+  defaultValue = [],
 } = defineProps<{
   inputValue?: string
   modelValue?: SelectorOptionValue
@@ -22,6 +23,7 @@ const {
   character?: boolean
   scene?: boolean
   placeholder?: string
+  defaultValue?: SelectorOptionValue[]
 }>()
 
 const emit = defineEmits<{
@@ -107,6 +109,7 @@ const handleFallback = (rawValue: any): SelectOptionData => {
         :filter-option="false"
         :show-extra-options="false"
         :placeholder="placeholder"
+        :default-value="defaultValue"
         @update:input-value="handleInputUpdate"
         @update:model-value="handleModelUpdate"
         @clear="handleClear"

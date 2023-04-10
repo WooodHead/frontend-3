@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import Basic from './index.vue'
+import Basic from './basic.vue'
 import { useRelationRemove } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
 import { selectChara } from '@/api/character'
 import api from '@/api/api'
 
-const { id, eventId, closable } = defineProps<{
+const { id, eventId, closable, disabled = false } = defineProps<{
   id: number
   eventId: number
   closable?: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const { data } = useQuery({
@@ -32,13 +33,14 @@ const handleClose = async () => {
     from: id,
     to: eventId,
   })
-  emit('close', id)
+  emit('remove', id)
 }
 </script>
 
 <template>
   <Basic
     v-model:popup-visible="visible"
+    :disabled="disabled"
     :closable="closable"
     resolved
     @close="handleClose"

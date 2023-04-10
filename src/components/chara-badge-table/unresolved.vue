@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import Basic from './index.vue'
-import type { CharacterEntity } from '@/api/api-base'
+import { useQueryClient } from '@tanstack/vue-query'
+import type { SelectorOptionValue } from '../selector/value'
+import Basic from './basic.vue'
+import type { CharaOption, CharacterEntity } from '@/api/api-base'
 import { useCharaCreate } from '@/api/character'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
-const { name, eventId, closable } = defineProps<{
+import api from '@/api/api'
+const { name, options, eventId, closable, disabled = false } = defineProps<{
   name: string
+  options: CharaOption[]
   eventId: number
   closable?: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', name: string): void
-  (e: 'resolve', name: string, id: number): void
+  (e: 'remove', name: string): void
 }>()
 
 const visible = ref(false)
@@ -27,31 +31,51 @@ const handleConnect = async (chara: CharacterEntity | undefined) => {
     from: chara.id,
     to: eventId,
   })
-  emit('resolve', name, chara.id)
+  emit('remove', name)
   visible.value = false
 }
 const handleCreate = async () => {
-  const chara = await create({ name })
-  emit('resolve', name, chara.id)
+  await create({ name })
+  emit('remove', name)
   visible.value = false
 }
+
+const client = useQueryClient()
+const selectorOptions = ref<SelectorOptionValue[]>([])
+watch(options, async options => {
+  const ids = options.map(o => o.id)
+  const charas = await Promise.all(ids.map(id => client.ensureQueryData({
+    queryKey: ['character', id],
+    queryFn: () => api.character.get(id),
+  })))
+  selectorOptions.value = charas.map(chara => ({
+    type: 'character',
+    value: chara,
+    id: `chara_${chara.id}`,
+  }))
+}, { immediate: true })
 </script>
 
 <template>
   <Basic
     v-model:popup-visible="visible"
+    :disabled="disabled"
     :closable="closable"
-    @close="$emit('close', name)"
+    @close="$emit('remove', name)"
   >
     <template #avatar>
       <div i-radix-icons-question-mark-circled full text-xl></div>
     </template>
     {{ name }}
     <template #popup>
-      <div card-border p-2 text-text-1 column gap-2>
+      <div
+        v-if="!disabled"
+        card-border p-2 text-text-1 column gap-2
+      >
         <p>关联已有角色：</p>
         <Selector
           character
+          :default-value="selectorOptions"
           placeholder="选择该名称所关联的角色"
           @select:character="handleConnect"
         />

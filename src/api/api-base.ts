@@ -28,6 +28,7 @@ export interface EventEntity {
   /** @format date-time */
   end: string;
   done: boolean;
+  unresolved: string;
   contentId: number | null;
   projectId: number;
 }
@@ -49,6 +50,7 @@ export interface CreateEventDto {
 
 export interface UpdateEventDto {
   done?: boolean;
+  unresolved?: string;
   name?: string;
   description?: string | null;
   color?: string;
@@ -361,6 +363,10 @@ export interface SummarizeDescDto {
   abstraction?: number;
 }
 
+export interface Resolved {
+  id: number;
+}
+
 export interface CharaOption {
   id: number;
   name: string;
@@ -368,9 +374,14 @@ export interface CharaOption {
   score: number;
 }
 
-export interface CharaOptionsDto {
+export interface Unresolved {
   name: string;
   options: CharaOption[];
+}
+
+export interface CharaOptionsDto {
+  resolved: Resolved[];
+  unresolved: Unresolved[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
@@ -1457,11 +1468,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags ai
      * @name UpdateChara
-     * @request POST:/ai/character
+     * @request POST:/ai/{id}/character
      */
     updateChara: (id: number, params: RequestParams = {}) =>
-      this.request<CharaOptionsDto[], any>({
-        path: `/ai/character`,
+      this.request<CharaOptionsDto, any>({
+        path: `/ai/${id}/character`,
         method: "POST",
         format: "json",
         ...params,

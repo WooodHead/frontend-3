@@ -37,7 +37,7 @@ const { mutateAsync: updateChara, isLoading } = useUpdateChara()
 
 const handleRefresh = async () => {
   if (!eventId.value) { return }
-  const options = await updateChara({ id: eventId.value })
+  await updateChara({ id: eventId.value })
 
   // TODO 把结果对接到 chara-badge-table 中
 }
