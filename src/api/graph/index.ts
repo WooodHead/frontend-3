@@ -11,7 +11,7 @@ type RelationMutationOptions<T = RelationIdDto, D = RelationEntity> = MutationOp
 
 export const useRelationsQuery = (node: MaybeRef<NodeIdDto | undefined>) => useQuery({
   enabled: computed(() => unref(node) !== undefined),
-  queryKey: computed(() => ['graph', 'relation', 'all', unref(node)]),
+  queryKey: computed(() => ['graph', 'relations', unref(node)]),
   queryFn: () => api.graph.getRelations(unref(node)!),
   onError: (e: AxiosError) => {
     Message.error(`获取关系数据失败：${e.message}`)
