@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
-import { UnitIDRange } from '@/utils/unit-id'
-import api from '@/api/api'
+import type { UnitIDRange } from '@/utils/unit-id'
 import type { FormRef } from '@/utils/types'
-import { useEventUpdate } from '@/api/event'
+import { selectEvent, useEventUpdate } from '@/api/event'
+import api from '@/api/api'
 
 const { visible } = defineProps<{
   visible: boolean
@@ -23,14 +23,12 @@ const model = reactive<{
   description?: string
   range?: UnitIDRange
 }>({})
-const { data, isLoading } = useQuery({
-  enabled: computed(() => eventId.value !== undefined),
+
+const { data } = useQuery({
+  enabled: computed(() => !!eventId.value),
   queryKey: computed(() => ['event', eventId.value]),
   queryFn: () => api.event.get(eventId.value!),
-  select: data => ({
-    ...data,
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-  }),
+  select: selectEvent,
 })
 watch(data, data => {
   if (!data) { return }
@@ -40,7 +38,7 @@ watch(data, data => {
   model.range = range
 }, { immediate: true })
 
-const { mutateAsync: update } = useEventUpdate(eventId)
+const { mutateAsync: update, isLoading } = useEventUpdate()
 
 const handleBeforeOk = async () => {
   if (!eventId.value || !formRef.value) { return false }
@@ -52,6 +50,7 @@ const handleBeforeOk = async () => {
     range,
   } = model as Required<typeof model>
   await update({
+    id: eventId.value,
     name,
     description,
     ...range.toJSON(),

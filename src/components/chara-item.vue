@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
 import Item from '@/components/item/index.vue'
-import type { CharacterEntity } from '@/api/api-base'
-import { useCharaRemove } from '@/api/character'
+import { selectChara, useCharaRemove } from '@/api/character'
+import api from '@/api/api'
 
 const { id, height, button, removable, animate } = defineProps<{
   id: number
@@ -14,18 +13,15 @@ const { id, height, button, removable, animate } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'click', chara: CharacterEntity): void
-  (e: 'hover', chara: CharacterEntity): void
-  (e: 'remove', chara: CharacterEntity): void
+  (e: 'click', id: number): void
+  (e: 'hover', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id),
-  select: data => ({
-    ...data,
-    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
-  }),
+  select: selectChara,
 })
 
 const avatarName = computed(() => {
@@ -35,22 +31,12 @@ const avatarName = computed(() => {
 })
 
 // TODO chara-item
-const { mutateAsync: remove } = useCharaRemove(computed(() => id))
-
-const handleClick = () => {
-  if (!data.value) { return }
-  emit('click', data.value)
-}
-
-const handleHover = () => {
-  if (!data.value) { return }
-  emit('hover', data.value)
-}
+const { mutateAsync: remove } = useCharaRemove()
 
 const handleRemove = async () => {
   if (!data.value) { return }
-  const chara = await remove()
-  emit('remove', chara)
+  const chara = await remove({ id })
+  emit('remove', chara.id)
 }
 </script>
 
@@ -60,8 +46,8 @@ const handleRemove = async () => {
     :height="height"
     :animate="animate"
     :removable="removable"
-    @click="handleClick"
-    @hover="handleHover"
+    @click="data && $emit('click', data.id)"
+    @hover="data && $emit('hover', data.id)"
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">

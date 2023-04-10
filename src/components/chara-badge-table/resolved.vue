@@ -1,45 +1,46 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import Basic from './index.vue'
-import { UnitIDRange } from '@/utils/unit-id'
+import Basic from './basic.vue'
+import { useRelationRemove } from '@/api/graph'
+import { PARTICIPATED_IN } from '@/api/graph/schema'
+import { selectChara } from '@/api/character'
 import api from '@/api/api'
-import { useCharaDisconnectEvent } from '@/api/character'
 
-const { id, eventId, closable } = defineProps<{
+const { id, eventId, closable, disabled = false } = defineProps<{
   id: number
   eventId: number
   closable?: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id),
-  select: data => ({
-    ...data,
-    range: (data.unit && data.start && data.end)
-      ? UnitIDRange.fromDayjs(data.unit, data.start, data.end)
-      : undefined,
-    avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
-  }),
+  select: selectChara,
 })
-const { mutateAsync: disconnect } = useCharaDisconnectEvent(computed(() => id))
 
 const visible = ref(false)
 
+const { mutateAsync: disconnect } = useRelationRemove()
 const handleClose = async () => {
   if (!data.value) { return }
-  await disconnect({ events: [eventId] })
-  emit('close', id)
+  await disconnect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
+  emit('remove', id)
 }
 </script>
 
 <template>
   <Basic
     v-model:popup-visible="visible"
+    :disabled="disabled"
     :closable="closable"
     resolved
     @close="handleClose"

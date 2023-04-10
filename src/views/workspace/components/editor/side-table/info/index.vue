@@ -1,62 +1,36 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
-import InfoModal from './info-modal.vue'
-import api from '@/api/api'
-import { UnitID } from '@/utils/unit-id'
+import DescCard from './desc-card.vue'
+import InfoCard from './info-card.vue'
+import TitleCard from './title-card.vue'
+import DoneButton from './done-button.vue'
+import RangeCard from './range-card.vue'
 import { useEventRemove, useEventUpdate } from '@/api/event'
 
 const store = useStore()
 const { eventId, todoDot, relationDot } = storeToRefs(store)
 
-const { data: event } = useQuery({
-  enabled: computed(() => eventId.value !== undefined),
-  queryKey: computed(() => ['event', eventId.value]),
-  queryFn: () => api.event.get(eventId.value!),
-  select: data => ({
-    ...data,
-    name: `${data.serial}. ${data.name}`,
-    range: `${UnitID.fromDayjs(data.unit, data.start)} - ${UnitID.fromDayjs(data.unit, data.end)}`,
-  }),
-})
-
-const { mutate: update } = useEventUpdate(eventId)
-const handleToggleDone = () => {
-  if (eventId.value === undefined) { return }
-  update({ done: !event?.value?.done })
-}
+const { mutate: update } = useEventUpdate()
 watchEffect(() => {
-  if (
-    !(todoDot.value || relationDot.value)
-    || eventId.value === undefined
-  ) { return }
-  update({ done: false })
+  if (!eventId.value) { return }
+
+  if (todoDot.value || relationDot.value) {
+    update({ id: eventId.value, done: false })
+  }
 })
 
-const { mutateAsync: remove, isLoading } = useEventRemove(eventId)
+const { mutateAsync: remove, isLoading } = useEventRemove()
 const handleRemove = async () => {
-  if (eventId.value === undefined) { return }
-  await remove()
+  if (!eventId.value) { return }
+  await remove({ id: eventId.value })
   store.eventId = undefined
 }
-
-const visible = ref(false)
 </script>
 
 <template>
   <div nim-column gap-2>
-    <InfoModal v-model:visible="visible" />
     <div center-x gap-1>
-      <AButton
-        grow
-        :type="event?.done ? 'primary' : 'secondary'"
-        @click="handleToggleDone"
-      >
-        <template #icon>
-          <div :class="event?.done ? `i-radix-icons-check-circled` : `i-radix-icons-circle`"></div>
-        </template>
-        {{ event?.done ? '已完成' : '未完成' }}
-      </AButton>
+      <DoneButton grow />
       <LongPressButton
         :loading="isLoading"
         status="danger"
@@ -69,31 +43,9 @@ const visible = ref(false)
         </template>
       </LongPressButton>
     </div>
-    <ACard title="基本信息" :bordered="false">
-      <template #extra>
-        <ALink type="text" @click="visible = true">
-          编辑
-        </ALink>
-      </template>
-      <ADescriptions
-        :column="1"
-        :data="event ? [
-          { label: '名称', value: event.name },
-          { label: '类型', value: event.type },
-          { label: '时间', value: event.range },
-        ] : []"
-      />
-    </ACard>
-    <ACard v-if="event?.description" title="简介" :bordered="false">
-      <template #extra>
-        <ALink>
-          编辑
-        </ALink>
-        <ALink>
-          生成
-        </ALink>
-      </template>
-      {{ event.description }}
-    </ACard>
+    <TitleCard />
+    <RangeCard />
+    <InfoCard />
+    <DescCard />
   </div>
 </template>

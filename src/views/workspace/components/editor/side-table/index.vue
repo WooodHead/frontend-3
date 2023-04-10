@@ -5,13 +5,19 @@ import Todo from './todo/index.vue'
 import Relation from './relation/index.vue'
 
 const store = useStore()
-const { todoDot, relationDot } = storeToRefs(store)
+const { todoDot, relationDot, infoDot } = storeToRefs(store)
 const active = ref('info')
 </script>
 
 <template>
   <ATabs v-model:active-key="active" hide-content>
-    <ATabPane key="info" title="信息" />
+    <ATabPane key="info">
+      <template #title>
+        <ABadge :count="Number(infoDot)" :offset="[6, 2]" dot>
+          信息
+        </ABadge>
+      </template>
+    </ATabPane>
     <ATabPane key="todo">
       <template #title>
         <ABadge :count="Number(todoDot)" :offset="[6, 2]" dot>

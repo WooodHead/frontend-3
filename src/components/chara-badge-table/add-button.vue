@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import type { CharacterEntity } from '@/api/api-base'
-import { useCharaConnectEvent } from '@/api/character'
+import { useRelationCreate } from '@/api/graph'
+import { PARTICIPATED_IN } from '@/api/graph/schema'
 
-const { eventId } = defineProps<{
+const { eventId, disabled = false } = defineProps<{
   eventId: number
+  disabled?: boolean
 }>()
 
-const emit = defineEmits<{
-  (e: 'add', id: number): void
-}>()
-
-const charaId = ref<number>()
 const visible = ref(false)
 
-const { mutateAsync: connect } = useCharaConnectEvent(charaId)
+const { mutateAsync: connect } = useRelationCreate()
 const handleAddChara = async (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
-  charaId.value = chara.id
-  await connect({ events: [eventId] })
-  emit('add', chara.id)
+  await connect({
+    type: PARTICIPATED_IN,
+    from: chara.id,
+    to: eventId,
+  })
   visible.value = false
 }
 </script>
@@ -40,6 +39,7 @@ const handleAddChara = async (chara: CharacterEntity | undefined) => {
       </div>
     </template>
     <AButton
+      :disabled="disabled"
       square-26px
       border-dashed
       shape="circle"

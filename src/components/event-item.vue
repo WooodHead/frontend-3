@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
-import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 import Item from '@/components/item/index.vue'
-import { UnitIDRange } from '@/utils/unit-id'
+import { selectEvent } from '@/api/event'
+import api from '@/api/api'
 
 const { id, height, button = false, eventSelect = false, removable, removeText, animate } = defineProps<{
   id: number
@@ -17,30 +16,22 @@ const { id, height, button = false, eventSelect = false, removable, removeText, 
 }>()
 
 const emit = defineEmits<{
-  (e: 'click', event: EventEntity): void
-  (e: 'hover', event: EventEntity): void
-  (e: 'remove', event: EventEntity): void
+  (e: 'click', id: number): void
+  (e: 'hover', id: number): void
+  (e: 'remove', id: number): void
 }>()
 
 const { data } = useQuery({
   queryKey: computed(() => ['event', id]),
   queryFn: () => api.event.get(id),
-  select: data => ({
-    ...data,
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
-  }),
+  select: selectEvent,
 })
 const handleClick = async () => {
   if (!data.value) { return }
-  emit('click', data.value)
+  emit('click', data.value.id)
   if (eventSelect) {
-    emitter.emit('event-select', { event: data.value })
+    emitter.emit('event-select', { id: data.value.id })
   }
-}
-
-const handleHover = () => {
-  if (!data.value) { return }
-  emit('hover', data.value)
 }
 </script>
 
@@ -52,8 +43,8 @@ const handleHover = () => {
     :removable="removable"
     :remove-text="removeText"
     @click="handleClick"
-    @hover="handleHover"
-    @remove="$emit('remove', data)"
+    @hover="data && $emit('hover', data.id)"
+    @remove="data && $emit('remove', data.id)"
   >
     <div center min-w-20px shrink-0 p-2>
       <div

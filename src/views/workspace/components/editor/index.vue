@@ -33,16 +33,16 @@ watch(data, data => {
   eventOption.value = { type: 'event', value: data, id: `event_${data.id}` }
 }, { deep: true })
 
-emitter.on('event-select', ({ event }) => {
-  eventId.value = event.id
+emitter.on('event-select', ({ id }) => {
+  eventId.value = id
 })
 const handleSelect = (event: EventEntity | undefined) => {
   if (!event) { return }
-  emitter.emit('event-select', { event })
+  emitter.emit('event-select', { id: event.id })
 }
 
 const modalVisible = ref(false)
-const handleCreate = ({ id }: EventEntity) => {
+const handleCreate = (id: number) => {
   eventId.value = id
 }
 // TODO 历史记录

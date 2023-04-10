@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
-import { UnitIDRange } from '@/utils/unit-id'
+import { useRelationsQuery } from '@/api/graph'
+import { selectEvent } from '@/api/event'
+import { EVENT } from '@/api/graph/schema'
 import api from '@/api/api'
 
 const { id, show = true, load = true } = defineProps<{
@@ -17,20 +19,20 @@ const charas = ref({
 
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
-  queryKey: computed(() => ['event', id, 'detail']),
-  queryFn: () => api.event.getDetail(id),
+  queryKey: computed(() => ['event', id]),
+  queryFn: () => api.event.get(id),
   select: data => ({
-    ...data,
-    type: data.type === 'ATOM' ? '原子事件' : '集合事件',
-    createdAt: new Date(data.createdAt),
-    updatedAt: new Date(data.updatedAt),
-    range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
+    ...selectEvent(data),
+    description: (data.description) ? data.description : '暂无',
   }),
 })
-watch(data, data => {
-  if (!data) { return }
-  charas.value.resolved = data.characters
-}, { immediate: true, deep: true })
+
+const { data: relations } = useRelationsQuery({ type: EVENT, id })
+watchEffect(() => {
+  charas.value.resolved = relations.value?.PARTICIPATED_IN?.from ?? []
+})
+const sups = computed(() => relations.value?.INCLUDES?.from ?? [])
+const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
 </script>
 
 <template>
@@ -68,12 +70,12 @@ watch(data, data => {
       <h4>父事件</h4>
     </div>
     <div
-      v-if="data?.sups.length ?? 0 > 0"
+      v-if="sups.length ?? 0 > 0"
       border="~ border-2" rounded
       max-h-200px overflow-y-auto
     >
       <EventItem
-        v-for="supId in data?.sups"
+        v-for="supId in sups"
         :id="supId" :key="supId"
         button
       />
@@ -82,12 +84,12 @@ watch(data, data => {
       <h4>子事件</h4>
     </div>
     <div
-      v-if="data?.subs.length ?? 0 > 0"
+      v-if="subs.length ?? 0 > 0"
       border="~ border-2" rounded
       max-h-200px overflow-y-auto
     >
       <EventItem
-        v-for="subId in data?.subs"
+        v-for="subId in subs"
         :id="subId" :key="subId"
         button
       />

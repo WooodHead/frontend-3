@@ -5,7 +5,7 @@ import emitter from '@/utils/emitter'
 const visible = ref(false)
 const handleSelect = (event: EventEntity | undefined) => {
   if (!event) { return }
-  emitter.emit('event-select', { event })
+  emitter.emit('event-select', { id: event.id })
 }
 </script>
 

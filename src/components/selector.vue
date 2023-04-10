@@ -5,7 +5,6 @@ import { Message } from '@arco-design/web-vue'
 import type { SelectorOptionValue } from './selector/value'
 import CharaNameGroup from './selector/chara-name-group.vue'
 import EventNameGroup from './selector/event-name-group.vue'
-import EventContentGroup from './selector/event-content-group.vue'
 import SceneNameGroup from './selector/scene-name-group.vue'
 import type { CharacterEntity, EventEntity, SceneEntity } from '@/api/api-base'
 
@@ -16,6 +15,7 @@ const {
   event = false,
   character = false,
   scene = false,
+  defaultValue = [],
 } = defineProps<{
   inputValue?: string
   modelValue?: SelectorOptionValue
@@ -23,6 +23,7 @@ const {
   character?: boolean
   scene?: boolean
   placeholder?: string
+  defaultValue?: SelectorOptionValue[]
 }>()
 
 const emit = defineEmits<{
@@ -91,6 +92,7 @@ const handleFallback = (rawValue: any): SelectOptionData => {
 // TODO 虚拟滚动
 // TODO 选项筛选配置
 // TODO modelValue相同id的值更新后不会触发更新
+// TODO 通过事件描述搜索事件存在 bug
 </script>
 
 <template>
@@ -107,12 +109,13 @@ const handleFallback = (rawValue: any): SelectOptionData => {
         :filter-option="false"
         :show-extra-options="false"
         :placeholder="placeholder"
+        :default-value="defaultValue"
         @update:input-value="handleInputUpdate"
         @update:model-value="handleModelUpdate"
         @clear="handleClear"
       >
         <EventNameGroup v-if="event" :search-value="searchValue" />
-        <EventContentGroup v-if="event" :search-value="searchValue" />
+        <!-- <EventContentGroup v-if="event" :search-value="searchValue" /> -->
         <CharaNameGroup v-if="character" :search-value="searchValue" />
         <SceneNameGroup v-if="scene" :search-value="searchValue" />
       </ASelect>

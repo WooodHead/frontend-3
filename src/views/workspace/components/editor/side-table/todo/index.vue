@@ -11,6 +11,12 @@ const store = useStore()
 const { eventId, todoDot } = storeToRefs(store)
 const client = useQueryClient()
 
+const { data } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['event', eventId.value]),
+  queryFn: () => api.event.get(eventId.value!),
+})
+
 const checkedTodo = reactive(new Map<number, string>())
 const unCheckedTodo = reactive(new Map<number, string>())
 watch(unCheckedTodo, todos => {
@@ -76,7 +82,7 @@ const handleAdd = (title: string) => {
   createTodo({ title })
 }
 
-const { mutate: removeTodo, isLoading: removeLoading } = useMutation({
+const { mutate: removeTodo } = useMutation({
   mutationFn: ({ id }: { id: number }) => api.event.removeTodo(id),
   onSuccess: ({ id }) => {
     client.setQueryData<EventTodoEntity[]>(
@@ -97,7 +103,7 @@ const handleRemove = (id: number) => {
 <template>
   <div v-if="isSuccess">
     <APopover v-model:popup-visible="addVisible" trigger="click">
-      <AButton title="添加待办项" long h-20px mb-2 type="primary">
+      <AButton :disabled="data?.done" title="添加待办项" long mb-2 type="outline">
         <div i-radix-icons-plus></div>
       </AButton>
       <template #content>
@@ -118,7 +124,7 @@ const handleRemove = (id: number) => {
       <Item
         v-for="[id, title] of Array.from(unCheckedTodo)"
         :id="id" :key="id" :title="title"
-        :remove-loading="removeLoading"
+        :disabled="data?.done"
         @click="handleUnCheckedItemClick"
         @remove="handleRemove"
       />
@@ -131,8 +137,7 @@ const handleRemove = (id: number) => {
       <Item
         v-for="[id, title] of Array.from(checkedTodo)"
         :id="id" :key="id" :title="title"
-        checked
-        :remove-loading="removeLoading"
+        :disabled="data?.done" checked
         @click="handleCheckedItemClick"
         @remove="handleRemove"
       />

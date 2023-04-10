@@ -46,7 +46,8 @@ export const useFileUpload = () => {
       replace?: boolean
     }) => {
       const name = await getHashName(file)
-      position = `project_${sessionStorage.getItem('project-id')}/${position}`
+      const projectId = sessionStorage.getItem('project-id')
+      position = `project_${projectId}/${position}`
       let url = await api.file.registerFile({ name, position, replace })
       if (url === '') {
         url = await api.file.uploadFile({ file, position })

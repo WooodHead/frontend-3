@@ -1,9 +1,40 @@
 <script setup lang="ts">
+import { useMutation } from '@tanstack/vue-query'
+import type { AxiosError } from 'axios'
+import { Message } from '@arco-design/web-vue'
+import api from '@/api/api'
+import type { UpdateSettingsDto } from '@/api/api-base'
+
 const router = useRouter()
+
+const model = ref({
+  lang: 'cn',
+})
+
+const { mutateAsync: update } = useMutation({
+  mutationFn: (dto: UpdateSettingsDto) => api.project.updateSettings(dto),
+  onError: (e: AxiosError) => {
+    Message.error(`更新失败: ${e.message}`)
+  },
+})
+watch(model, async model => {
+  await update(model)
+}, { deep: true })
 </script>
 
 <template>
   <AModal title="设置" default-visible @close="router.back()">
-    1
+    <AForm :model="model">
+      <AFormItem label="语言" field="lang">
+        <ARadioGroup v-model="model.lang" type="button">
+          <ARadio value="cn">
+            中文
+          </ARadio>
+          <ARadio value="en">
+            English
+          </ARadio>
+        </ARadioGroup>
+      </AFormItem>
+    </AForm>
   </AModal>
 </template>

@@ -18,11 +18,6 @@ const handleSelect = (event: EventEntity | undefined) => {
   emit('add', event.id)
   visible.value = false
 }
-
-const handleRemove = (event: EventEntity | undefined) => {
-  if (!event) { return }
-  emit('remove', event.id)
-}
 </script>
 
 <template>
@@ -49,7 +44,7 @@ const handleRemove = (event: EventEntity | undefined) => {
       :id="id" :key="id"
       button removable
       :remove-text="`移除${title}`"
-      @remove="handleRemove"
+      @remove="$emit('remove', $event)"
     />
   </ACard>
 </template>
