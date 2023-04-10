@@ -247,8 +247,8 @@ export interface RelationIdDto {
     | "HAS_RELATIONSHIP"
     | "PARTICIPATED_IN"
     | "CONTAINS";
-  from: number;
-  to: number;
+  from?: number;
+  to?: number;
 }
 
 export interface RelationProperty {
@@ -359,6 +359,18 @@ export interface SummarizeDescDto {
    * @max 100
    */
   abstraction?: number;
+}
+
+export interface CharaOption {
+  id: number;
+  name: string;
+  alias: string;
+  score: number;
+}
+
+export interface CharaOptionsDto {
+  name: string;
+  options: CharaOption[];
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
@@ -1089,7 +1101,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags graph
      * @name GetRelations
-     * @request GET:/graph/relation
+     * @request GET:/graph/relations
      */
     getRelations: (
       query: {
@@ -1099,7 +1111,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<RelationsEntity, any>({
-        path: `/graph/relation`,
+        path: `/graph/relations`,
         method: "GET",
         query: query,
         format: "json",
@@ -1436,6 +1448,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ai
+     * @name UpdateChara
+     * @request POST:/ai/character
+     */
+    updateChara: (id: number, params: RequestParams = {}) =>
+      this.request<CharaOptionsDto[], any>({
+        path: `/ai/character`,
+        method: "POST",
         format: "json",
         ...params,
       }),

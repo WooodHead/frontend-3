@@ -13,7 +13,14 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
 })
 
-const { mutate: update } = useEventUpdate()
+const { mutateAsync: update } = useEventUpdate()
+
+const disabled = computed(() => Boolean(
+  todoDot.value
+   || relationDot.value
+    || !data.value?.name
+    || !data.value?.description,
+))
 
 const config = computed(() => data.value?.done
   ? {
@@ -32,7 +39,7 @@ const config = computed(() => data.value?.done
 <template>
   <AButton
     :type="config.type"
-    :disabled="todoDot || relationDot"
+    :disabled="disabled"
     @click="eventId && update({ id: eventId, done: !data?.done })"
   >
     <template #icon>

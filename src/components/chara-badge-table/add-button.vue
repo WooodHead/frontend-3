@@ -3,8 +3,9 @@ import type { CharacterEntity } from '@/api/api-base'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
 
-const { eventId } = defineProps<{
+const { eventId, disabled = false } = defineProps<{
   eventId: number
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -43,6 +44,7 @@ const handleAddChara = async (chara: CharacterEntity | undefined) => {
       </div>
     </template>
     <AButton
+      :disabled="disabled"
       square-26px
       border-dashed
       shape="circle"

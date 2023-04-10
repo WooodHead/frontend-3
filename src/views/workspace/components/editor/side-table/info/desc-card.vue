@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
-import { Message } from '@arco-design/web-vue'
+import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
+import { useUpdateDesc } from '../query'
 import api from '@/api/api'
-import { selectEvent } from '@/api/event'
-import type { EventEntity, SummarizeDescDto } from '@/api/api-base'
+import { selectEvent, useEventUpdate } from '@/api/event'
 
 const store = useStore()
 const { eventId } = storeToRefs(store)
+
+const editContent = ref('')
 
 const { data } = useQuery({
   enabled: computed(() => !!eventId.value),
@@ -16,36 +16,42 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
 })
+watch(() => data.value?.description, desc => {
+  editContent.value = desc || ''
+}, { immediate: true })
 
-const client = useQueryClient()
-const { mutateAsync: updateDesc, isLoading } = useMutation({
-  mutationFn: ({ id, ...dto }: SummarizeDescDto & { id: number }) => api.ai.updateEventDesc(id, dto),
-  onSuccess: (description, { id }) => {
-    client.setQueryData<EventEntity>(['event', id], event => event && ({
-      ...event,
-      description,
-    }))
-  },
-  onError: (e: AxiosError) => {
-    Message.error(`生成失败：${e.message}`)
-  },
-})
+const { mutateAsync: update } = useEventUpdate()
+const { mutateAsync: updateDesc, isLoading } = useUpdateDesc()
 
-const handleGenerate = async () => {
+const editable = ref(false)
+whenever(() => !editable.value, () => {
   if (!eventId.value) { return }
-  await updateDesc({ id: eventId.value })
-}
+  update({
+    id: eventId.value,
+    description: editContent.value,
+  })
+})
 </script>
 
 <template>
   <ACard title="简介" :loading="isLoading" :bordered="false">
     <template #extra>
-      <ALink @click="handleGenerate">
+      <ALink
+        :disabled="data?.done"
+        @click="eventId && updateDesc({ id: eventId })"
+      >
         生成
       </ALink>
+      <ALink
+        :disabled="data?.done"
+        @click="editable = !editable"
+      >
+        {{ editable ? '保存' : '编辑' }}
+      </ALink>
     </template>
-    <div prose leading-6>
-      {{ data?.description }}
+    <ATextarea v-if="editable" v-model="editContent" auto-size />
+    <div v-else prose leading-6>
+      {{ editContent }}
     </div>
   </ACard>
 </template>

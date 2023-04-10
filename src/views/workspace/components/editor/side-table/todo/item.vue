@@ -2,11 +2,11 @@
 import { Motion, Presence } from '@motionone/vue'
 import { fadeInOut } from '@/utils/animation'
 
-const { id, checked = false, removeLoading = false } = defineProps<{
+const { id, checked = false, disabled = false } = defineProps<{
   id: number
   title: string
   checked?: boolean
-  removeLoading?: boolean
+  disabled?: boolean
 }>()
 const emit = defineEmits<{
   (e: 'click', id: number): void
@@ -29,7 +29,7 @@ const hover = useElementHover(target)
     :filter="checked ? 'grayscale' : 'none'"
     p-1 mb-1 cursor-pointer
     rounded shadow-none
-    @click="$emit('click', id)"
+    @click="!disabled && $emit('click', id)"
   >
     <div h-full w-20per center>
       <div :class="checked ? `i-radix-icons-check-circled` : `i-radix-icons-circle`"></div>
@@ -45,7 +45,7 @@ const hover = useElementHover(target)
         w-50px h-full bg-bg-1
       >
         <AButton
-          :loading="removeLoading"
+          :disabled="disabled"
           type="text" status="danger"
           @click.stop="$emit('remove', id)"
         >

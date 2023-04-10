@@ -4,6 +4,7 @@ import DescCard from './desc-card.vue'
 import InfoCard from './info-card.vue'
 import TitleCard from './title-card.vue'
 import DoneButton from './done-button.vue'
+import RangeCard from './range-card.vue'
 import { useEventRemove, useEventUpdate } from '@/api/event'
 
 const store = useStore()
@@ -43,6 +44,7 @@ const handleRemove = async () => {
       </LongPressButton>
     </div>
     <TitleCard />
+    <RangeCard />
     <InfoCard />
     <DescCard />
   </div>

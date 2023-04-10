@@ -21,7 +21,10 @@ const modalVisible = ref(false)
 <template>
   <ACard title="基本信息" :bordered="false">
     <template #extra>
-      <ALink type="text" @click="modalVisible = true">
+      <ALink
+        :disabled="data?.done" type="text"
+        @click="modalVisible = true"
+      >
         编辑
       </ALink>
     </template>

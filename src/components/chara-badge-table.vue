@@ -3,13 +3,14 @@ import Resolved from './chara-badge-table/resolved.vue'
 import Unresolved from './chara-badge-table/unresolved.vue'
 import AddButton from './chara-badge-table/add-button.vue'
 
-const { modelValue, eventId, editable = false } = defineProps<{
+const { modelValue, eventId, editable = false, disabled = false } = defineProps<{
   modelValue: {
     resolved: number[]
     unresolved: string[]
   }
   eventId: number
   editable?: boolean
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -53,7 +54,11 @@ const handleResolve = (name: string, id: number) => {
 
 <template>
   <div full row flex-wrap gap-1 overflow-y-auto>
-    <AddButton v-if="editable" :event-id="eventId" @add="handleAdd" />
+    <AddButton
+      v-if="editable"
+      :disabled="disabled" :event-id="eventId"
+      @add="handleAdd"
+    />
     <Resolved
       v-for="id of modelValue.resolved"
       :id="id" :key="id"
