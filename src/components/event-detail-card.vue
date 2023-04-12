@@ -12,11 +12,6 @@ const { id, show = true, load = true } = defineProps<{
   load?: boolean
 }>()
 
-const charas = ref({
-  resolved: [] as number[],
-  unresolved: [] as string[],
-})
-
 const { data, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => load),
   queryKey: computed(() => ['event', id]),
@@ -28,9 +23,7 @@ const { data, isSuccess, isLoading, isError } = useQuery({
 })
 
 const { data: relations } = useRelationsQuery({ type: EVENT, id })
-watchEffect(() => {
-  charas.value.resolved = relations.value?.PARTICIPATED_IN?.from ?? []
-})
+
 const sups = computed(() => relations.value?.INCLUDES?.from ?? [])
 const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
 </script>
@@ -64,7 +57,7 @@ const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
     <ADivider />
     <div>
       <h4>参与角色</h4>
-      <CharaBadgeTable v-model="charas" :event-id="id" />
+      <CharaBadgeTable :event-id="id" :editable="false" />
     </div>
     <div center-x justify-between>
       <h4>父事件</h4>

@@ -11,6 +11,7 @@ export const invalidateRelation = (client: QueryClient, { type, from, to }: Rela
 }
 
 export const invalidateNode = async (client: QueryClient, dto: NodeIdDto) => {
+  client.invalidateQueries(['graph', 'node', dto])
   const relations = await client.ensureQueryData({
     queryKey: ['graph', 'relations', dto],
     queryFn: () => api.graph.getRelations(dto),

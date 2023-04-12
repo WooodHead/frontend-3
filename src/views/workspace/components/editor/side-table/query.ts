@@ -2,9 +2,9 @@ import { Message } from '@arco-design/web-vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { EventEntity, SummarizeDescDto } from '@/api/api-base'
 import api from '@/api/api'
-import { invalidateNode } from '@/api/graph/utils'
 import { EVENT } from '@/api/graph/schema'
 import type { ApiError } from '@/api/types'
+import { invalidateNode } from '@/api/graph/utils'
 
 export const useUpdateDesc = () => {
   const client = useQueryClient()
@@ -48,7 +48,7 @@ export const useUpdateChara = () => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id }: { id: number }) => api.ai.updateChara(id),
-    onSuccess: (data, { id }) => {
+    onSuccess: async (data, { id }) => {
       client.setQueryData<EventEntity>(
         ['event', id],
         event => event && ({
