@@ -13,10 +13,6 @@ const { id, eventId, closable, disabled = false } = defineProps<{
   disabled?: boolean
 }>()
 
-const emit = defineEmits<{
-  (e: 'remove', id: number): void
-}>()
-
 const { data } = useQuery({
   queryKey: computed(() => ['character', id]),
   queryFn: () => api.character.get(id),
@@ -33,7 +29,6 @@ const handleClose = async () => {
     from: id,
     to: eventId,
   })
-  emit('remove', id)
 }
 </script>
 

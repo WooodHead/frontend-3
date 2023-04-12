@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { AxiosError } from 'axios'
 import { Message } from '@arco-design/web-vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import Item from './item.vue'
 import api from '@/api/api'
 import type { EventTodoEntity } from '@/api/api-base'
+import type { ApiError } from '@/api/types'
 
 const store = useStore()
 const { eventId, todoDot } = storeToRefs(store)
@@ -27,8 +27,8 @@ const { data: todos, isSuccess } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value, 'todo']),
   queryFn: () => api.event.getTodos(eventId.value!),
-  onError: (e: AxiosError) => {
-    Message.error(`获取待办事项失败：${e.message}`)
+  onError: (e: ApiError) => {
+    Message.error(`获取待办事项失败：${e.response?.data.message}`)
   },
 })
 
@@ -47,8 +47,8 @@ const handleCheckedItemClick = (id: number) => {
     .then(() => {
       unCheckedTodo.set(id, checkedTodo.get(id)!)
       checkedTodo.delete(id)
-    }).catch((e: AxiosError) => {
-      Message.error(`更新失败：${e.message}`)
+    }).catch((e: ApiError) => {
+      Message.error(`更新失败：${e.response?.data.message}`)
     })
 }
 
@@ -57,8 +57,8 @@ const handleUnCheckedItemClick = (id: number) => {
     .then(() => {
       checkedTodo.set(id, unCheckedTodo.get(id)!)
       unCheckedTodo.delete(id)
-    }).catch((e: AxiosError) => {
-      Message.error(`更新失败：${e.message}`)
+    }).catch((e: ApiError) => {
+      Message.error(`更新失败：${e.response?.data.message}`)
     })
 }
 
@@ -73,8 +73,8 @@ const { mutate: createTodo, isLoading: createLoading } = useMutation({
       todos => [...todos ?? [], todo],
     )
   },
-  onError: (e: AxiosError) => {
-    Message.error(`添加失败：${e.message}`)
+  onError: (e: ApiError) => {
+    Message.error(`添加失败：${e.response?.data.message}`)
   },
 })
 const handleAdd = (title: string) => {
@@ -90,8 +90,8 @@ const { mutate: removeTodo } = useMutation({
       todos => todos?.filter(todo => todo.id !== id),
     )
   },
-  onError: (e: AxiosError) => {
-    Message.error(`删除失败：${e.message}`)
+  onError: (e: ApiError) => {
+    Message.error(`删除失败：${e.response?.data.message}`)
   },
 })
 const handleRemove = (id: number) => {

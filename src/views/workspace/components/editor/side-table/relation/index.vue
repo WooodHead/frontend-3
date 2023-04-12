@@ -48,7 +48,7 @@ const handleRefresh = async () => {
     <ACard title="参与角色" :bordered="false" :loading="isLoading">
       <template #extra>
         <ALink :disabled="data?.done" @click="handleRefresh">
-          刷新
+          重新生成
         </ALink>
       </template>
       <CharaBadgeTable

@@ -32,7 +32,6 @@ const modalVisible = ref(false)
       :column="1"
       :data="data ? [
         { label: '类型', value: data.type },
-        { label: '时间', value: `${data.range.start} - ${data.range.end}` },
         { label: '创建于', value: data.createdAt.toLocaleDateString() },
         { label: '最后更新于', value: data.updatedAt.toLocaleDateString() },
       ] : []"

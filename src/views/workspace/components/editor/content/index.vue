@@ -2,11 +2,11 @@
 import type { EditorEvents } from '@tiptap/vue-3'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
 import { Message } from '@arco-design/web-vue'
 import { useStore } from '../store'
 import BubbleMenu from './bubble-menu.vue'
 import api from '@/api/api'
+import type { ApiError } from '@/api/types'
 
 const store = useStore()
 const { editor, eventId } = storeToRefs(store)
@@ -25,8 +25,8 @@ const handleSave = (eventId: number | undefined, content: string) => {
     .then(content => {
       saved.value = true
       client.setQueryData(['event', eventId, 'content'], content)
-    }).catch((e: AxiosError) => {
-      Message.error(`保存失败：${e.message}`)
+    }).catch((e: ApiError) => {
+      Message.error(`保存失败：${e.response?.data.message}`)
     }).finally(() => {
       store.saving = false
     })
@@ -43,8 +43,8 @@ const { data: content, isSuccess, isLoading, isError } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value, 'content']),
   queryFn: () => api.event.getContent(eventId.value!),
-  onError: (e: AxiosError) => {
-    Message.error(`获取内容失败：${e.message}`)
+  onError: (e: ApiError) => {
+    Message.error(`获取内容失败：${e.response?.data.message}`)
   },
 })
 watch(content, (newContent, oldContent) => {

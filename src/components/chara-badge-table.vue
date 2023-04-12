@@ -18,7 +18,7 @@ const { eventId, editable = false, disabled = false } = defineProps<{
 const { data: unresolved } = useQuery({
   queryKey: computed(() => ['event', eventId]),
   queryFn: () => api.event.get(eventId),
-  select: ({ unresolved }) => JSON.parse(unresolved) as UnresolvedType[],
+  select: ({ unresolved }) => unresolved as UnresolvedType[],
 })
 const { mutateAsync: update } = useEventUpdate()
 const { data: relations } = useRelationsQuery(computed(() => ({
@@ -32,7 +32,7 @@ const handleRemoveUnresolved = async (name: string) => {
   const newUnresolved = unresolved.value?.filter(({ name: n }) => n !== name)
   await update({
     id: eventId,
-    unresolved: JSON.stringify(newUnresolved),
+    unresolved: newUnresolved,
   })
 }
 </script>

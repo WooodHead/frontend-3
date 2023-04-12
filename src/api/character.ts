@@ -28,7 +28,12 @@ export const useCharaCreate = (options?: CharaMutationOptions<CreateCharacterDto
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`创建角色失败：${e.message}`)
+      if (e.response?.status === 409) {
+        Message.error('创建角色失败：已有同名角色')
+      }
+      else {
+        Message.error(`创建角色失败：${e.response?.data.message}`)
+      }
       options?.onError?.(e, vars, ctx)
     },
   })
@@ -46,7 +51,7 @@ export const useCharaUpdate = (options?: CharaMutationOptions<Update>) => {
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`更新角色失败：${e.message}`)
+      Message.error(`更新角色失败：${e.response?.data.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
@@ -66,7 +71,7 @@ export const useCharaRemove = (options?: CharaMutationOptions<Remove>) => {
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`删除角色失败：${e.message}`)
+      Message.error(`删除角色失败：${e.response?.data.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })

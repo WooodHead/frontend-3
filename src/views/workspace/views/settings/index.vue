@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useMutation } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
 import { Message } from '@arco-design/web-vue'
 import api from '@/api/api'
 import type { UpdateSettingsDto } from '@/api/api-base'
+import type { ApiError } from '@/api/types'
 
 const router = useRouter()
 
@@ -13,8 +13,8 @@ const model = ref({
 
 const { mutateAsync: update } = useMutation({
   mutationFn: (dto: UpdateSettingsDto) => api.project.updateSettings(dto),
-  onError: (e: AxiosError) => {
-    Message.error(`更新失败: ${e.message}`)
+  onError: (e: ApiError) => {
+    Message.error(`更新失败: ${e.response?.data.message}`)
   },
 })
 watch(model, async model => {

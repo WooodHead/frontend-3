@@ -42,6 +42,6 @@ const handleUpdate = () => {
         修改
       </ALink>
     </template>
-    {{ data?.range }}
+    {{ `${data?.range.start} - ${data?.range.end}` }}
   </ACard>
 </template>

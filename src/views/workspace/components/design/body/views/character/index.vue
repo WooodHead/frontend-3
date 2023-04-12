@@ -88,7 +88,7 @@ watchEffect(() => {
       </div>
     </template>
     <div w-0 grow overflow-y-auto>
-      <Body :id="charaId" />
+      <Body :id="charaId" :key="charaId" />
     </div>
   </ResizeLayout>
 </template>

@@ -1,10 +1,10 @@
 import { Message } from '@arco-design/web-vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import type { AxiosError } from 'axios'
 import type { EventEntity, SummarizeDescDto } from '@/api/api-base'
 import api from '@/api/api'
 import { invalidateNode } from '@/api/graph/utils'
 import { EVENT } from '@/api/graph/schema'
+import type { ApiError } from '@/api/types'
 
 export const useUpdateDesc = () => {
   const client = useQueryClient()
@@ -19,8 +19,8 @@ export const useUpdateDesc = () => {
           description,
         }))
     },
-    onError: (e: AxiosError) => {
-      Message.error(`生成失败：${e.message}`)
+    onError: (e: ApiError) => {
+      Message.error(`生成失败：${e.response?.data.message}`)
     },
   })
 }
@@ -38,8 +38,8 @@ export const useUpdateName = () => {
           name,
         }))
     },
-    onError: (e: AxiosError) => {
-      Message.error(`更新失败：${e.message}`)
+    onError: (e: ApiError) => {
+      Message.error(`更新失败：${e.response?.data.message}`)
     },
   })
 }
@@ -53,13 +53,13 @@ export const useUpdateChara = () => {
         ['event', id],
         event => event && ({
           ...event,
-          unresolved: JSON.stringify(data.unresolved),
+          unresolved: data.unresolved,
         }),
       )
       invalidateNode(client, { id, type: EVENT })
     },
-    onError: (e: AxiosError) => {
-      Message.error(`更新失败：${e.message}`)
+    onError: (e: ApiError) => {
+      Message.error(`更新失败：${e.response?.data.message}`)
     },
   })
 }

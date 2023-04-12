@@ -28,7 +28,7 @@ export interface EventEntity {
   /** @format date-time */
   end: string;
   done: boolean;
-  unresolved: string;
+  unresolved: object;
   contentId: number | null;
   projectId: number;
 }
@@ -48,9 +48,21 @@ export interface CreateEventDto {
   end: string;
 }
 
+export interface CharaOption {
+  id: number;
+  name: string;
+  alias: string;
+  score: number;
+}
+
+export interface Unresolved {
+  name: string;
+  options: CharaOption[];
+}
+
 export interface UpdateEventDto {
   done?: boolean;
-  unresolved?: string;
+  unresolved?: Unresolved[];
   name?: string;
   description?: string | null;
   color?: string;
@@ -365,18 +377,6 @@ export interface SummarizeDescDto {
 
 export interface Resolved {
   id: number;
-}
-
-export interface CharaOption {
-  id: number;
-  name: string;
-  alias: string;
-  score: number;
-}
-
-export interface Unresolved {
-  name: string;
-  options: CharaOption[];
 }
 
 export interface CharaOptionsDto {

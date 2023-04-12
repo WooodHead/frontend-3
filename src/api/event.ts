@@ -30,7 +30,7 @@ export const useEventCreate = (options?: EventMutationOptions<CreateEventDto>) =
       options?.onSuccess?.(event, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`创建事件失败：${e.message}`)
+      Message.error(`创建事件失败：${e.response?.data.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
@@ -48,7 +48,7 @@ export const useEventUpdate = (options?: EventMutationOptions<Update>) => {
       options?.onSuccess?.(event, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`更新事件失败：${e.message}`)
+      Message.error(`更新事件失败：${e.response?.data.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
@@ -68,7 +68,7 @@ export const useEventRemove = (options?: EventMutationOptions<Remove>) => {
       options?.onSuccess?.(event, vars, ctx)
     },
     onError: (e, vars, ctx) => {
-      Message.error(`删除事件失败：${e.message}`)
+      Message.error(`删除事件失败：${e.response?.data.message}`)
       options?.onError?.(e, vars, ctx)
     },
   })
