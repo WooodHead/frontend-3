@@ -9,7 +9,7 @@ const store = useStore()
 const { eventId } = storeToRefs(store)
 
 const { data } = useQuery({
-  enabled: computed(() => !!eventId.value),
+  enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value]),
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
