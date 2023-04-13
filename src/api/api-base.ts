@@ -522,20 +522,6 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  apiDocs = {
-    /**
-     * No description
-     *
-     * @name GetApiDocs
-     * @request GET:/api-docs
-     */
-    getApiDocs: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api-docs`,
-        method: "GET",
-        ...params,
-      }),
-  };
   event = {
     /**
      * No description
@@ -1137,7 +1123,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/graph/relation
      */
     createRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity, any>({
+      this.request<RelationEntity[], any>({
         path: `/graph/relation`,
         method: "POST",
         body: data,
@@ -1154,7 +1140,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/graph/relation
      */
     removeRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity, any>({
+      this.request<RelationEntity[], any>({
         path: `/graph/relation`,
         method: "DELETE",
         body: data,
