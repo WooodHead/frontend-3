@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useQueryClient } from '@tanstack/vue-query'
 import Basic from './basic.vue'
 import type { CharaOption, CharacterEntity } from '@/api/api-base'
-import { useCharaCreate } from '@/api/character'
+import { useCharaCreate, useCharaUpdate } from '@/api/character'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
+import api from '@/api/api'
 const { name, options, eventId, closable, disabled = false } = defineProps<{
   name: string
   options: CharaOption[]
@@ -18,10 +20,38 @@ const emit = defineEmits<{
 
 const visible = ref(false)
 
+const client = useQueryClient()
 const { mutateAsync: create, isLoading } = useCharaCreate()
+const { mutateAsync: update } = useCharaUpdate()
 const { mutateAsync: connect } = useRelationCreate()
 const handleConnect = async (chara: CharacterEntity | undefined) => {
   if (!chara) { return }
+
+  await connect({
+    type: PARTICIPATED_IN,
+    from: chara.id,
+    to: eventId,
+  })
+
+  const { alias } = await client.ensureQueryData({
+    queryKey: ['character', chara.id],
+    queryFn: () => api.character.get(chara.id),
+  })
+
+  // 如果别名中没有当前名称，则添加
+  if (!alias.includes(name)) {
+    await update({
+      id: chara.id,
+      alias: [...alias, name],
+    })
+  }
+
+  emit('remove', name)
+  visible.value = false
+}
+
+const handleCreate = async () => {
+  const chara = await create({ name })
   await connect({
     type: PARTICIPATED_IN,
     from: chara.id,
@@ -30,13 +60,8 @@ const handleConnect = async (chara: CharacterEntity | undefined) => {
   emit('remove', name)
   visible.value = false
 }
-const handleCreate = async () => {
-  const chara = await create({ name })
-  await handleConnect(chara)
-  emit('remove', name)
-  visible.value = false
-}
 
+// TODO selector options
 // const client = useQueryClient()
 // const selectorOptions = ref<SelectorOptionValue[]>([])
 // watch(options, async options => {
