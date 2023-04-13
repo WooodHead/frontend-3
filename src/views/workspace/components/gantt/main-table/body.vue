@@ -13,7 +13,7 @@ const client = useQueryClient()
 
 // 当 event-select 时，定位到相应事件所在的时间范围开头
 emitter.on('event-select', async ({ id }) => {
-  const event = await client.fetchQuery({
+  const event = await client.ensureQueryData({
     queryKey: ['event', id],
     queryFn: () => api.event.get(id),
   })

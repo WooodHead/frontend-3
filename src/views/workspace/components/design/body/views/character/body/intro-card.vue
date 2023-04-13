@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const { id } = defineProps<{
+  id?: number
+}>()
+
 const editable = ref(false)
 </script>
 

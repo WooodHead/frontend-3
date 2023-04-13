@@ -1,20 +1,41 @@
 <script setup lang="ts">
 import type { EventEntity } from '@/api/api-base'
+import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
+import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
 
-const { ids } = defineProps<{
-  ids: number[]
+const { id } = defineProps<{
+  id?: number
 }>()
 
-const emit = defineEmits<{
-  (e: 'add', id: number): void
-  (e: 'remove', id: number): void
-}>()
+const { data: relations, suspense } = useRelationsQuery(computed(() => id ? { type: CHARA, id } : undefined))
+await suspense()
+
+const events = computed(() => relations.value?.PARTICIPATED_IN.to ?? [])
+
+const { mutateAsync: connect } = useRelationCreate()
+const handleAddEvent = async (eventId: number) => {
+  if (!id) { return }
+  await connect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
+}
+const { mutateAsync: disconnect } = useRelationRemove()
+const handleRemoveEvent = async (eventId: number) => {
+  if (!id) { return }
+  await disconnect({
+    type: PARTICIPATED_IN,
+    from: id,
+    to: eventId,
+  })
+}
 
 const visible = ref(false)
 
 const handleSelect = (event: EventEntity | undefined) => {
   if (!event) { return }
-  emit('add', event.id)
+  handleAddEvent(event.id)
   visible.value = false
 }
 </script>
@@ -40,10 +61,10 @@ const handleSelect = (event: EventEntity | undefined) => {
     </template>
     <div max-h-200px overflow-y-auto rounded>
       <EventItem
-        v-for="id of ids"
-        :id="id" :key="id"
+        v-for="eventId of events"
+        :id="eventId" :key="eventId"
         button removable
-        @remove="$emit('remove', $event)"
+        @remove="handleRemoveEvent"
       />
     </div>
   </ACard>

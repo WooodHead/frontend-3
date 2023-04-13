@@ -8,14 +8,6 @@ import type { CharacterEntity } from '@/api/api-base'
 import { useCharaCreate } from '@/api/character'
 
 const charaId = ref<number>()
-const handleClick = (id: number) => {
-  charaId.value = id
-}
-const handleRemove = async (id: number) => {
-  if (charaId.value === id) {
-    charaId.value = undefined
-  }
-}
 
 const client = useQueryClient()
 const { data } = useQuery({
@@ -82,13 +74,13 @@ watchEffect(() => {
           v-for="{ id } of list"
           :id="id" :key="id"
           button removable
-          @click="handleClick"
-          @remove="handleRemove"
+          @click="charaId = id"
+          @remove="charaId === id && (charaId = undefined)"
         />
       </div>
     </template>
     <div w-0 grow overflow-y-auto>
-      <Body :id="charaId" :key="charaId" />
+      <Body :id="charaId" />
     </div>
   </ResizeLayout>
 </template>

@@ -12,6 +12,7 @@ type CharaMutationOptions<T = void, D = CharacterEntity> = MutationOptions<T, D>
 export const selectChara = (data: CharacterEntity) => ({
   ...data,
   avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
+  avatarName: data.name.includes(' ') ? data.name.split(' ')[0] : data.name.slice(-2),
   range: (data.unit && data.start && data.end)
     ? UnitIDRange.fromDayjs(data.unit, data.start, data.end)
     : null,
