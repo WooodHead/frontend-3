@@ -6,7 +6,7 @@ import type { NodeIdDto, RelationEntity, RelationIdDto } from '../api-base'
 import type { ApiError, MutationOptions } from '../types'
 import { invalidateRelation } from './utils'
 
-type RelationMutationOptions<T = RelationIdDto, D = RelationEntity> = MutationOptions<T, D>
+type RelationMutationOptions<T = RelationIdDto, D = RelationEntity[]> = MutationOptions<T, D>
 
 export const useRelationsQuery = (node: MaybeRef<NodeIdDto | undefined>) => useQuery({
   enabled: computed(() => unref(node) !== undefined),

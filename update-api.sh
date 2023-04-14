@@ -1,6 +1,6 @@
 source .env.development
 
-# API_PATH=src/api
+API_PATH=src/api
 
 pnpm swagger-typescript-api \
     -p $VITE_BASE_URL/api-json \
