@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import { Message } from '@arco-design/web-vue'
 import IntroCard from './intro-card.vue'
 import EventCard from './event-card.vue'
 import InfoCard from './info-card.vue'
 import TitleCard from './title-card.vue'
+import type { ApiError } from '@/api/types'
 
 const { id } = defineProps<{
   id?: number
 }>()
+
+const error = ref<ApiError | null>(null)
+onErrorCaptured((e: ApiError) => {
+  Message.error(`加载失败：${e.response?.data.message}`)
+  error.value = e
+})
 </script>
 
 <template>
@@ -18,7 +26,9 @@ const { id } = defineProps<{
       <EventCard :id="id" />
     </div>
     <template #fallback>
-      <Status full empty />
+      <Status v-if="id === undefined" full empty />
+      <Status v-else-if="error" full error />
+      <Status v-else full loading />
     </template>
   </Suspense>
 </template>
