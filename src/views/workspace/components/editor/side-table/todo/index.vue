@@ -102,20 +102,30 @@ const handleRemove = (id: number) => {
 
 <template>
   <div v-if="isSuccess">
-    <APopover v-model:popup-visible="addVisible" trigger="click">
-      <AButton :disabled="data?.done" title="添加待办项" long mb-2 type="outline">
+    <ATrigger
+      v-model:popup-visible="addVisible"
+      trigger="click"
+      :popup-translate="[0, 8]"
+    >
+      <AButton
+        :disabled="data?.done"
+        title="添加待办项" long mb-2
+        type="outline"
+      >
         <div i-radix-icons-plus></div>
       </AButton>
       <template #content>
-        <AInputSearch
-          search-button
-          button-text="添加"
-          placeholder="代办项标题"
-          :loading="createLoading"
-          @change="handleAdd"
-        />
+        <div card-border p-2>
+          <AInputSearch
+            search-button
+            button-text="添加"
+            placeholder="代办项标题"
+            :loading="createLoading"
+            @change="handleAdd"
+          />
+        </div>
       </template>
-    </APopover>
+    </ATrigger>
     <div v-if="unCheckedTodo.size > 0">
       <div text="center text-1" font-bold>
         未完成

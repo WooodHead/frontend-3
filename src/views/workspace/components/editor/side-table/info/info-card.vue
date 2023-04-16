@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
-import InfoModal from './info-modal.vue'
 import { selectEvent } from '@/api/event'
 import api from '@/api/api'
 
@@ -14,20 +13,10 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
 })
-
-const modalVisible = ref(false)
 </script>
 
 <template>
   <ACard title="基本信息" :bordered="false">
-    <template #extra>
-      <ALink
-        :disabled="data?.done" type="text"
-        @click="modalVisible = true"
-      >
-        编辑
-      </ALink>
-    </template>
     <ADescriptions
       :column="1"
       :data="data ? [
@@ -37,5 +26,4 @@ const modalVisible = ref(false)
       ] : []"
     />
   </ACard>
-  <InfoModal v-model:visible="modalVisible" />
 </template>

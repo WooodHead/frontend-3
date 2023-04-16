@@ -8,7 +8,7 @@ import type { UnitIDRange } from '@/utils/unit-id'
 const store = useStore()
 const { eventId } = storeToRefs(store)
 
-const val = ref<UnitIDRange>()
+const range = ref<UnitIDRange>()
 
 const { data } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
@@ -16,31 +16,38 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
 })
-watch(() => data.value?.range, range => {
-  val.value = range
+watchEffect(() => {
+  if (!data.value) { return }
+  range.value = data.value.range
 })
 
-const { mutate } = useEventUpdate()
-const handleUpdate = () => {
-  if (!eventId.value) { return }
-  mutate({
+const { mutateAsync: update } = useEventUpdate()
+const handleVisibleChange = async (visible: boolean) => {
+  if (!eventId.value || visible) { return }
+  update({
     id: eventId.value,
-    ...val.value?.toJSON(),
+    ...range.value?.toJSON(),
   })
 }
-
-// TODO range-card
 </script>
 
 <template>
   <ACard title="发生时间" :bordered="false">
     <template #extra>
-      <ALink
-        :disabled="data?.done"
-        @click="handleUpdate"
+      <ATrigger
+        trigger="click"
+        :popup-translate="[0, 8]"
+        @popup-visible-change="handleVisibleChange"
       >
-        修改
-      </ALink>
+        <ALink :disabled="data?.done">
+          修改
+        </ALink>
+        <template #content>
+          <div card-border p-2>
+            <UnitRangePicker v-model="range" />
+          </div>
+        </template>
+      </ATrigger>
     </template>
     {{ `${data?.range.start} - ${data?.range.end}` }}
   </ACard>

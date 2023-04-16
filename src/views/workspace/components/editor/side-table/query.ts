@@ -6,7 +6,7 @@ import { EVENT } from '@/api/graph/schema'
 import type { ApiError } from '@/api/types'
 import { invalidateNode } from '@/api/graph/utils'
 
-export const useUpdateDesc = () => {
+export const useGenerateDesc = () => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id, ...dto }: SummarizeDescDto & { id: number }) =>
@@ -25,7 +25,7 @@ export const useUpdateDesc = () => {
   })
 }
 
-export const useUpdateName = () => {
+export const useGenerateName = () => {
   const client = useQueryClient()
   return useMutation({
     mutationFn: ({ id }: { id: number }) =>

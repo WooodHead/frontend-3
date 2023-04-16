@@ -314,17 +314,17 @@ export interface UpdateSceneDto {
 export interface CreateWorldviewDto {
   name: string;
   description?: string;
+  path: string;
+  supId?: number;
 }
 
 export interface WorldviewEntity {
+  path: string;
   id: number;
   name: string;
   description: string | null;
-  images: string[];
   /** @format date-time */
   deleted: string | null;
-  superId: number | null;
-  sup: number | null;
   projectId: number;
   contentId: number | null;
 }
@@ -332,6 +332,8 @@ export interface WorldviewEntity {
 export interface UpdateWorldviewDto {
   name?: string;
   description?: string;
+  path?: string;
+  supId?: number;
 }
 
 export interface UploadTempFileDto {
@@ -522,6 +524,20 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @name Test
+   * @request GET:/
+   */
+  test = (params: RequestParams = {}) =>
+    this.request<string, any>({
+      path: `/`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   event = {
     /**
      * No description
@@ -1281,6 +1297,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags worldview
+     * @name GetAll
+     * @request GET:/worldview
+     */
+    getAll: (params: RequestParams = {}) =>
+      this.request<WorldviewEntity[], any>({
+        path: `/worldview`,
+        method: "GET",
         format: "json",
         ...params,
       }),

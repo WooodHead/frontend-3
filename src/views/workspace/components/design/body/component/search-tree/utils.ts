@@ -1,39 +1,28 @@
 import type { TreeNodeData } from '@arco-design/web-vue'
 
-type Key = string | number
-
-export const createTree = () => {}
-
-export type TreeOperation = {
-  type: 'create'
-  key: Key
-  data: TreeNodeData
-} | {
-  type: 'delete'
-  key: Key
+export interface TreeNode {
+  id: number
+  path: string
+  name?: string
 }
 
-export const updateTree = (tree: TreeNodeData[], op: TreeOperation) => {
-  let done = false
+export const toTree = (nodes: TreeNode[]): TreeNodeData[] => {
+  const lookup = new Map<number, TreeNodeData>()
 
-  const traverse = (node: TreeNodeData): TreeNodeData => {
-    const newNode: TreeNodeData = { ...node, children: [] }
-    if (!done && op.type === 'create' && op.key === node.key) {
-      newNode.children!.push(op.data)
-      done = true
+  for (const { id, path, name } of nodes) {
+    const paths = path.split('/').filter(Boolean).map(parseInt)
+    for (const key of paths.concat(id)) {
+      if (lookup.has(key)) { continue }
+      lookup.set(key, { key, title: name, children: [] })
     }
-
-    for (const child of node.children ?? []) {
-      if (!done && op.type === 'delete' && op.key === child.key) {
-        done = true
-        continue
-      }
-
-      newNode.children!.push(traverse(child))
-    }
-
-    return newNode
+    if (!paths.length) { continue }
+    const sup = paths[paths.length - 1]
+    const node = lookup.get(id)!
+    const supNode = lookup.get(sup)!
+    supNode.children!.push(node)
   }
 
-  return [...tree].map(traverse)
+  return nodes
+    .filter(({ path }) => path === '')
+    .map(({ id }) => lookup.get(id)!)
 }

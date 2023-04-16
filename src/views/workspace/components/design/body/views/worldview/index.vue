@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import type { TreeNodeData } from '@arco-design/web-vue'
+import { useQueryClient } from '@tanstack/vue-query'
 import SearchTree from '../../component/search-tree/index.vue'
+import { useWorldviewCreate, useWorldviewQuery, useWorldviewRemove } from './query'
+import api from '@/api/api'
 
-const key = ref()
+const { data } = useWorldviewQuery()
+const { mutateAsync: create } = useWorldviewCreate()
+const { mutateAsync: remove } = useWorldviewRemove()
 
-const data = ref<TreeNodeData[]>([
-  {
-    title: '1',
-    key: '1',
-    children: [
-      { title: '1-1', key: '1-1' },
-      { title: '1-2', key: '1-2' },
-      { title: '1-3', key: '1-3' },
-      { title: '1-4', key: '1-4' },
-      { title: '1-5', key: '1-5' },
-    ],
-  },
-  { title: '2', key: '2' },
-  { title: '3', key: '3' },
-  { title: '4', key: '4' },
-  { title: '5', key: '5' },
-])
+const client = useQueryClient()
+const handleCreate = async (sup?: number) => {
+  let path = ''
 
-const handleCreate = async (key: string | number) => {}
+  if (sup) {
+    const { id, path: supPath } = await client.ensureQueryData({
+      queryKey: ['worldview', sup],
+      queryFn: () => api.worldview.get(sup),
+    })
+    path = `${supPath}/${id}`
+  }
 
-const handleDelete = (key: string | number) => {}
+  await create({
+    name: '新条目',
+    path,
+  })
+}
+
+const handleRemove = async (id: number) => {
+  await remove({ id })
+}
 
 const searchText = ref<string>()
 const debouncedSearchText = refDebounced(searchText, 300)
@@ -34,19 +38,32 @@ const selectKey = ref<string>()
 <template>
   <ResizeLayout h-full>
     <template #side>
-      <div p-2 border="b border-2">
+      <div row gap-1 p-2 border="b border-2">
         <AInput
           v-model="searchText"
+          grow
           size="small"
           placeholder="搜索指定条目"
           allow-clear
         />
+        <AButton
+          shrink-0
+          title="创建新条目" shape="square"
+          type="outline"
+          @click="handleCreate()"
+        >
+          <template #icon>
+            <div i-radix-icons-plus />
+          </template>
+        </AButton>
       </div>
       <div h-full overflow-y-auto>
         <SearchTree
           v-model:select-key="selectKey"
-          :data="data"
+          :data="data ?? []"
           :search="debouncedSearchText"
+          @remove="handleRemove"
+          @create="handleCreate"
         />
       </div>
     </template>

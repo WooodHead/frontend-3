@@ -9,9 +9,9 @@ const { data, search, selectKey } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'create', key: string | number): void
-  (e: 'remove', key: string | number): void
-  (e: 'update:select-key', key: string | number): void
+  (e: 'create', sup: number): void
+  (e: 'remove', key: number): void
+  (e: 'update:select-key', key: number): void
 }>()
 
 const target = ref<TreeRef | null>(null)
@@ -36,12 +36,12 @@ const filterTree = (text: string, data: TreeNodeData[]): TreeNodeData[] => {
 
 const handleCreate = ({ key }: TreeNodeData) => {
   if (!key) { return }
-  emit('create', key)
+  emit('create', key as number)
 }
 
 const handleRemove = (key: string | number) => {
   if (!key) { return }
-  emit('remove', key)
+  emit('remove', key as number)
 }
 
 const nowData = ref(data)
