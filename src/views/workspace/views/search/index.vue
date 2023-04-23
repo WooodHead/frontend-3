@@ -1,5 +1,25 @@
 <script setup lang="ts">
+import { useMutation } from '@tanstack/vue-query'
+import { Message } from '@arco-design/web-vue'
+import Answer from './answer.vue'
+import { qaApi } from '@/api/api'
+import type { BaseQaDto } from '@/api/api-qa'
+import type { ApiError } from '@/api/types'
+
 const router = useRouter()
+
+const answer = ref<string>()
+
+const { mutateAsync: send, isLoading } = useMutation({
+  mutationFn: (dto: BaseQaDto) => qaApi.baseQa(dto),
+  onError: (e: ApiError) => {
+    Message.error(`请求失败：${e.response?.data.message}`)
+  },
+})
+
+const handleSearch = async (query: string) => {
+  answer.value = await send({ query })
+}
 </script>
 
 <template>
@@ -14,25 +34,14 @@ const router = useRouter()
     >
       <div center-y w-50vw prose>
         <AInputSearch
-          rounded-b-0
-          w-full
-          h-60px
+          size="large"
           placeholder="输入想要搜索的信息"
+          search-button
+          button-text="提问"
+          allow-clear
+          @search="handleSearch"
         />
-        <h1 text-center>可以尝试问问……</h1>
-        <div></div>
-        <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon> 😄 </template>
-          “2022年2月4日都发生了什么事情？”
-        </AButton>
-        <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon> 🤔️ </template>
-          “皮特在保险柜里放了什么东西？”
-        </AButton>
-        <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon> 😯 </template>
-          “皮特和露易丝是什么关系？”
-        </AButton>
+        <Answer :answer="answer" :loading="isLoading" />
       </div>
     </AModal>
   </div>
@@ -40,7 +49,7 @@ const router = useRouter()
 
 <style scoped>
 .modal-container :deep(.arco-modal-simple) {
-  padding: 0;
+  padding: 20px;
   width: auto;
 }
 

@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export interface BaseQaDto {
+  query: string
+}
+
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -194,29 +198,15 @@ export class Api<
    * No description
    *
    * @name BaseQa
-   * @request GET:/
+   * @request POST:/
    */
-  baseQa = (params: RequestParams = {}) =>
+  baseQa = (data: BaseQaDto, params: RequestParams = {}) =>
     this.request<string, any>({
       path: `/`,
-      method: 'GET',
+      method: 'POST',
+      body: data,
+      type: ContentType.Json,
       format: 'json',
       ...params,
     })
-
-  test = {
-    /**
-     * No description
-     *
-     * @name GetTest
-     * @request GET:/test
-     */
-    getTest: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/test`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  }
 }

@@ -16,6 +16,7 @@
     "@arco-themes/vue-project-chiral": "^0.0.2",
     "@iconify-json/mdi": "^1.1.45",
     "@iconify-json/radix-icons": "^1.1.8",
+    "@iconify-json/twemoji": "^1.1.11",
     "@motionone/vue": "^10.15.5",
     "@tanstack/vue-query": "^4.24.4",
     "@tiptap/extension-bubble-menu": "2.0.0-beta.209",
