@@ -9,21 +9,14 @@ const visible = ref(false)
     trigger="click"
     w-300px
   >
-    <AButton
-      title="操作历史记录"
-      type="outline"
-      h-full
-      @click="visible = true"
-    >
+    <AButton title="操作历史记录" type="outline" h-full @click="visible = true">
       <template #icon>
         <div i-radix-icons-counter-clockwise-clock />
       </template>
     </AButton>
     <template #content>
       <AList my-4>
-        <AListItem>
-          1
-        </AListItem>
+        <AListItem> 1 </AListItem>
       </AList>
     </template>
   </APopover>

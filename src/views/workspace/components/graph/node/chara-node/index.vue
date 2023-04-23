@@ -14,17 +14,16 @@ const hover = useElementHover(target)
 <template>
   <div
     ref="target"
-    card circle-120px
+    card
+    circle-120px
     center
     transition-colors
-    :bg=" node.selected ? `blue-2` : `gray-1`"
+    :bg="node.selected ? `blue-2` : `gray-1`"
     :border="`~ ${node.selected ? `border-4` : `border-2`}`"
   >
     <AAvatar full trigger-type="mask">
       刘慈欣
-      <template #trigger-icon>
-        刘慈欣
-      </template>
+      <template #trigger-icon> 刘慈欣 </template>
     </AAvatar>
     <Handle scale-200 type="target" :position="Position.Left" />
     <Handle scale-200 type="source" :position="Position.Right" />

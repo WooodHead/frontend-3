@@ -8,7 +8,10 @@ import History from './history.vue'
 <template>
   <div
     :style="{ height: `${HEADER_HEIGHT}px` }"
-    column shrink-0 p-2 bg-bg-3
+    column
+    shrink-0
+    p-2
+    bg-bg-3
     border="b border-2"
     space-y-2
   >

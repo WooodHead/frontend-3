@@ -9,7 +9,9 @@ const { subUnit, selectedRange } = storeToRefs(store)
 const visible = ref(false)
 
 const value = computed<UnitIDRange | undefined>(() => {
-  if (!subUnit.value || selectedRange.value.length === 0) { return undefined }
+  if (!subUnit.value || selectedRange.value.length === 0) {
+    return undefined
+  }
   return UnitIDRange.fromUnitID(...selectedRange.value).as(subUnit.value)
 })
 </script>

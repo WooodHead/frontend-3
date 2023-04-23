@@ -17,10 +17,12 @@ const store = useWSStore()
 const [dropProps, drop] = useDrop({
   accept: 'component-handler',
   drop: ({ id: handlerID }: { id: string }) => {
-    if (id === 'none') { return }
+    if (id === 'none') {
+      return
+    }
     store.insertComponent(handlerID, id)
   },
-  collect: monitor => ({
+  collect: (monitor) => ({
     hover: monitor.isOver(),
   }),
 })
@@ -32,12 +34,16 @@ const [dropProps, drop] = useDrop({
     center
     :class="`col-span-${col} row-span-${row}`"
     backdrop-blur
-    :bg="dropProps.hover
-      ? `blue-400/50 dark:blue-300/50`
-      : `blue-200/50 dark:blue-500/50`"
+    :bg="
+      dropProps.hover
+        ? `blue-400/50 dark:blue-300/50`
+        : `blue-200/50 dark:blue-500/50`
+    "
     transition-colors
-    border="2 border-3 dashed" rounded-lg
-    text="center 4xl gray-600/60 dark:gray-300/60" font-bold
+    border="2 border-3 dashed"
+    rounded-lg
+    text="center 4xl gray-600/60 dark:gray-300/60"
+    font-bold
   >
     {{ description }}
   </div>

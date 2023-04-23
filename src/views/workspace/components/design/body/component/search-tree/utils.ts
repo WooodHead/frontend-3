@@ -12,10 +12,14 @@ export const toTree = (nodes: TreeNode[]): TreeNodeData[] => {
   for (const { id, path, name } of nodes) {
     const paths = path.split('/').filter(Boolean).map(parseInt)
     for (const key of paths.concat(id)) {
-      if (lookup.has(key)) { continue }
+      if (lookup.has(key)) {
+        continue
+      }
       lookup.set(key, { key, title: name, children: [] })
     }
-    if (!paths.length) { continue }
+    if (!paths.length) {
+      continue
+    }
     const sup = paths[paths.length - 1]
     const node = lookup.get(id)!
     const supNode = lookup.get(sup)!

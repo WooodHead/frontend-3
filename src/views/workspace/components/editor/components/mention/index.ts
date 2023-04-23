@@ -8,25 +8,23 @@ export const suggestionConfig: Omit<SuggestionOptions, 'editor'> = {
   items: ({ query }) => {
     console.log(query)
 
-    return [
-      'a',
-      'b',
-      'c',
-    ]
+    return ['a', 'b', 'c']
   },
 
   render: () => {
     let component: VueRenderer
     let popup: Instance<Props>[]
     return {
-      onStart: props => {
+      onStart: (props) => {
         component = new VueRenderer(MentionList, {
           props: { suggestion: props },
           editor: props.editor,
         })
 
         const rect = props.clientRect?.()
-        if (!rect) { return }
+        if (!rect) {
+          return
+        }
 
         popup = tippy('body', {
           getReferenceClientRect: () => rect,
@@ -38,7 +36,7 @@ export const suggestionConfig: Omit<SuggestionOptions, 'editor'> = {
           placement: 'bottom-start',
         })
       },
-      onUpdate: props => {
+      onUpdate: (props) => {
         component.updateProps({ suggestion: props })
 
         if (!props.clientRect) {
@@ -46,13 +44,15 @@ export const suggestionConfig: Omit<SuggestionOptions, 'editor'> = {
         }
 
         const rect = props.clientRect?.()
-        if (!rect) { return }
+        if (!rect) {
+          return
+        }
         popup[0].setProps({
           getReferenceClientRect: () => rect,
         })
       },
 
-      onKeyDown: props => {
+      onKeyDown: (props) => {
         if (props.event.key === 'Escape') {
           popup[0].hide()
           return true

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { resolved = false, popupVisible, closable = false, disabled = false } = defineProps<{
+const {
+  resolved = false,
+  popupVisible,
+  closable = false,
+  disabled = false,
+} = defineProps<{
   resolved?: boolean
   popupVisible: boolean
   closable?: boolean
@@ -21,13 +26,19 @@ const emit = defineEmits<{
   >
     <div
       center-x
-      w-fit h-26px
+      w-fit
+      h-26px
       transition-colors
-      :bg="resolved
-        ? 'blue-5 hover:blue-6 active:blue-7'
-        : 'gray-5 hover:gray-6 active:gray-7'"
-      rounded-full pr-4px gap-2px
-      text-white cursor-pointer
+      :bg="
+        resolved
+          ? 'blue-5 hover:blue-6 active:blue-7'
+          : 'gray-5 hover:gray-6 active:gray-7'
+      "
+      rounded-full
+      pr-4px
+      gap-2px
+      text-white
+      cursor-pointer
       select-none
     >
       <div h-full aspect-square rounded-full overflow-hidden>
@@ -40,7 +51,8 @@ const emit = defineEmits<{
         v-if="closable"
         :disabled="disabled"
         square-20px
-        shape="circle" type="text"
+        shape="circle"
+        type="text"
         @click.stop="$emit('close')"
       >
         <template #icon>

@@ -22,10 +22,17 @@ const expand = ref(false)
     </Presence>
     <AButton
       shadow-lg
-      type="primary" size="large" shape="circle"
+      type="primary"
+      size="large"
+      shape="circle"
       @click="expand = !expand"
     >
-      <div :class="expand ? 'i-radix-icons-triangle-down' : 'i-radix-icons-triangle-up'" text-4xl></div>
+      <div
+        :class="
+          expand ? 'i-radix-icons-triangle-down' : 'i-radix-icons-triangle-up'
+        "
+        text-4xl
+      ></div>
     </AButton>
   </div>
 </template>

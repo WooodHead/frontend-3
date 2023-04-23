@@ -11,11 +11,9 @@ export const mapToTree = (map: Map<string, string>) => {
       const path = paths[i]
       if (!current[path]) {
         current[path] = i === paths.length - 1 ? value : {}
-      }
-      else if (typeof current[path] === 'string') {
+      } else if (typeof current[path] === 'string') {
         current[path] = { default: current[path] }
-      }
-      else if (typeof current[path] === 'object') {
+      } else if (typeof current[path] === 'object') {
         if (i === paths.length - 1) {
           current[path].default = value
         }
@@ -27,22 +25,21 @@ export const mapToTree = (map: Map<string, string>) => {
   return result
 }
 
-export const ruleToText = (text: string, rule: css.Rule) => text.slice(
-  rule.position?.start?.column ?? 0 - 1,
-  rule.position?.end?.column ?? 0 - 1,
-)
+export const ruleToText = (text: string, rule: css.Rule) =>
+  text.slice(
+    rule.position?.start?.column ?? 0 - 1,
+    rule.position?.end?.column ?? 0 - 1
+  )
 
 export const getNodeModulesPath = (root = __filename): string | undefined => {
   const expectPath = path.join(root, 'node_modules')
   if (existsSync(expectPath)) {
     return expectPath
-  }
-  else {
+  } else {
     const parent = path.dirname(root)
     if (parent === root) {
       return undefined
-    }
-    else {
+    } else {
       return getNodeModulesPath(parent)
     }
   }

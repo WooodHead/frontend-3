@@ -15,7 +15,8 @@ const { unit } = defineProps<{ unit: UnitID }>()
     center
     bg-bg-2
     border="r b border-2"
-    select-none z-10
+    select-none
+    z-10
   >
     {{ unit.toUnitString() }}
   </div>

@@ -26,7 +26,9 @@ const { data } = useQuery({
 
 const avatarName = computed(() => {
   const name = data.value?.name
-  if (!name) { return undefined }
+  if (!name) {
+    return undefined
+  }
   return name.includes(' ') ? name.split(' ')[0] : name.slice(-2)
 })
 
@@ -34,7 +36,9 @@ const avatarName = computed(() => {
 const { mutateAsync: remove } = useCharaRemove()
 
 const handleRemove = async () => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   const chara = await remove({ id })
   emit('remove', chara.id)
 }
@@ -51,7 +55,7 @@ const handleRemove = async () => {
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">
-      <img v-if="data?.avatar" :src="data.avatar">
+      <img v-if="data?.avatar" :src="data.avatar" />
       <div v-else>
         {{ avatarName }}
       </div>

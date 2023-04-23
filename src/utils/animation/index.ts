@@ -19,11 +19,13 @@ export const fadeInOutY = {
   exit: { translateY: '100%', opacity: 0 },
 }
 
-export const combine = (...animations: {
-  initial?: any
-  animate?: any
-  exit?: any
-}[]) => {
+export const combine = (
+  ...animations: {
+    initial?: any
+    animate?: any
+    exit?: any
+  }[]
+) => {
   return animations.reduce(
     (acc, animation) => {
       return {
@@ -32,6 +34,6 @@ export const combine = (...animations: {
         exit: { ...acc.exit, ...animation.exit },
       }
     },
-    { initial: {}, animate: {}, exit: {} },
+    { initial: {}, animate: {}, exit: {} }
   )
 }

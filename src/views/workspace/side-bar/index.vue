@@ -19,7 +19,9 @@ const router = useRouter()
 const WSStore = useWSStore()
 const { menuExpand } = storeToRefs(WSStore)
 
-const handleClickOutside = () => { menuExpand.value = false }
+const handleClickOutside = () => {
+  menuExpand.value = false
+}
 </script>
 
 <template>
@@ -27,36 +29,51 @@ const handleClickOutside = () => { menuExpand.value = false }
     <Menu />
     <div
       :shadow="menuExpand ? 'none' : 'lg'"
-      column shrink-0 relative
-      w-16 h-full
-      bg-gray-2 z-50
+      column
+      shrink-0
+      relative
+      w-16
+      h-full
+      bg-gray-2
+      z-50
     >
-      <AButton
-        h-40px rounded-0
-        @click="menuExpand = !menuExpand"
-      >
+      <AButton h-40px rounded-0 @click="menuExpand = !menuExpand">
         <div i-radix-icons-hamburger-menu text="2xl gray-6"></div>
       </AButton>
       <Presence>
         <DropArea v-if="WSStore.dragging" />
       </Presence>
       <div grow column justify-center w-full>
-        <Handler id="gantt" name="时序图" :icon="GanttIcon" :dark-icon="GanttDarkIcon" />
-        <Handler id="editor" name="编辑器" :icon="EditorIcon" :dark-icon="EditorDarkIcon" />
-        <Handler id="graph" name="关系图" :icon="GraphIcon" :dark-icon="GraphDarkIcon" />
-        <Handler id="design" name="设定" :icon="DesignIcon" :dark-icon="DesignDarkIcon" />
+        <Handler
+          id="gantt"
+          name="时序图"
+          :icon="GanttIcon"
+          :dark-icon="GanttDarkIcon"
+        />
+        <Handler
+          id="editor"
+          name="编辑器"
+          :icon="EditorIcon"
+          :dark-icon="EditorDarkIcon"
+        />
+        <Handler
+          id="graph"
+          name="关系图"
+          :icon="GraphIcon"
+          :dark-icon="GraphDarkIcon"
+        />
+        <Handler
+          id="design"
+          name="设定"
+          :icon="DesignIcon"
+          :dark-icon="DesignDarkIcon"
+        />
       </div>
       <div center-y space-y-2 mb-4 w-full>
-        <AButton
-          shape="circle"
-          @click="router.push({ name: 'ws-search' })"
-        >
+        <AButton shape="circle" @click="router.push({ name: 'ws-search' })">
           <div square-30px i-radix-icons-magnifying-glass></div>
         </AButton>
-        <AButton
-          shape="circle"
-          @click="router.push({ name: 'ws-user' })"
-        >
+        <AButton shape="circle" @click="router.push({ name: 'ws-user' })">
           <div square-30px i-radix-icons-avatar></div>
         </AButton>
       </div>

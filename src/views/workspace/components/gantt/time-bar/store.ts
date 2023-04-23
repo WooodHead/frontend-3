@@ -5,7 +5,7 @@ export const { registerStore, useStore } = createStore('gantt/time-bar', {
   state: () => ({
     blockQueue: [] as UnitID[],
     offset: 0,
-    viewPort: null as (HTMLDivElement | null),
+    viewPort: null as HTMLDivElement | null,
   }),
 
   actions: {
@@ -18,16 +18,24 @@ export const { registerStore, useStore } = createStore('gantt/time-bar', {
 
     loadLeft(count = 1) {
       const first = this.blockQueue[0]
-      const prevs = Array(count).fill(0).map((_, i) => first.sub(count - i))
+      const prevs = Array(count)
+        .fill(0)
+        .map((_, i) => first.sub(count - i))
       this.blockQueue.unshift(...prevs)
-      if (this.blockQueue.length > 100) { this.removeRight(count) }
+      if (this.blockQueue.length > 100) {
+        this.removeRight(count)
+      }
     },
 
     loadRight(count = 1) {
       const last = this.blockQueue[this.blockQueue.length - 1]
-      const nexts = Array(count).fill(0).map((_, i) => last.add(i + 1))
+      const nexts = Array(count)
+        .fill(0)
+        .map((_, i) => last.add(i + 1))
       this.blockQueue.push(...nexts)
-      if (this.blockQueue.length > 100) { this.removeLeft(count) }
+      if (this.blockQueue.length > 100) {
+        this.removeLeft(count)
+      }
     },
 
     removeLeft(count = 1) {

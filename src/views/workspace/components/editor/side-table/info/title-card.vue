@@ -17,7 +17,9 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
 })
 watchEffect(() => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   name.value = data.value?.name
 })
 
@@ -25,12 +27,16 @@ const { mutateAsync: update } = useEventUpdate()
 const { mutateAsync: generateName, isLoading } = useGenerateName()
 
 const handleGenerate = async () => {
-  if (!eventId.value) { return }
+  if (!eventId.value) {
+    return
+  }
   await generateName({ id: eventId.value })
 }
 const toggleEditable = async () => {
   editable.value = !editable.value
-  if (editable.value || !eventId.value) { return }
+  if (editable.value || !eventId.value) {
+    return
+  }
   await update({
     id: eventId.value,
     name: name.value,
@@ -41,16 +47,8 @@ const toggleEditable = async () => {
 <template>
   <ACard title="事件名称" :bordered="false" :loading="isLoading">
     <template #extra>
-      <ALink
-        :disabled="data?.done"
-        @click="handleGenerate"
-      >
-        生成
-      </ALink>
-      <ALink
-        :disabled="data?.done"
-        @click="toggleEditable"
-      >
+      <ALink :disabled="data?.done" @click="handleGenerate"> 生成 </ALink>
+      <ALink :disabled="data?.done" @click="toggleEditable">
         {{ editable ? '保存' : '编辑' }}
       </ALink>
     </template>

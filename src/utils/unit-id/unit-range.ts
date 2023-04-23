@@ -6,10 +6,7 @@ import { UnitID } from './unit-id'
 export class UnitIDRange {
   readonly _unit: Unit
 
-  constructor(
-    readonly _start: UnitID,
-    readonly _end: UnitID,
-  ) {
+  constructor(readonly _start: UnitID, readonly _end: UnitID) {
     if (!_start.unit.isSame(_end.unit)) {
       throw new UnitIDException('UnitIDRange', 'unit not match')
     }
@@ -48,26 +45,31 @@ export class UnitIDRange {
       return start.isBefore(end)
         ? new UnitIDRange(start, end)
         : new UnitIDRange(end, start)
-    }
-    else if (start.isValid()) {
+    } else if (start.isValid()) {
       return new UnitIDRange(start, UnitID.invalid().as(start.unit))
-    }
-    else if (end.isValid()) {
+    } else if (end.isValid()) {
       return new UnitIDRange(UnitID.invalid().as(end.unit), end)
-    }
-    else {
+    } else {
       return UnitIDRange.invalid()
     }
   }
 
-  static fromDayjs(unit: UnitConfigType, start?: ConfigType, end?: ConfigType): UnitIDRange {
+  static fromDayjs(
+    unit: UnitConfigType,
+    start?: ConfigType,
+    end?: ConfigType
+  ): UnitIDRange {
     return new UnitIDRange(
       UnitID.fromDayjs(unit, start),
-      UnitID.fromDayjs(unit, end),
+      UnitID.fromDayjs(unit, end)
     )
   }
 
-  static fromJSON({ unit, start, end }: {
+  static fromJSON({
+    unit,
+    start,
+    end,
+  }: {
     unit: number
     start: Date
     end: Date
@@ -80,7 +82,9 @@ export class UnitIDRange {
   }
 
   toJSON() {
-    if (!this.isValid()) { throw new UnitIDException('UnitIDRange', 'invalid') }
+    if (!this.isValid()) {
+      throw new UnitIDException('UnitIDRange', 'invalid')
+    }
     return {
       unit: this._unit.order,
       start: this._start._date.toISOString(),
@@ -93,10 +97,13 @@ export class UnitIDRange {
     const endValid = this._end.isValid()
     if (startValid && endValid) {
       return [this._start.toDate(), this._end.toDate()]
+    } else if (startValid) {
+      return [this._start.toDate()]
+    } else if (endValid) {
+      return [this._end.toDate()]
+    } else {
+      return []
     }
-    else if (startValid) { return [this._start.toDate()] }
-    else if (endValid) { return [this._end.toDate()] }
-    else { return [] }
   }
 
   static deserialize(str: string): UnitIDRange {
@@ -108,14 +115,22 @@ export class UnitIDRange {
     return `${this._unit.order}_${this._start.format()}_${this._end.format()}`
   }
 
-  get start(): UnitID { return this._start }
+  get start(): UnitID {
+    return this._start
+  }
 
-  get end(): UnitID { return this._end }
+  get end(): UnitID {
+    return this._end
+  }
 
-  get unit(): Unit { return this._unit }
+  get unit(): Unit {
+    return this._unit
+  }
 
   get ids(): UnitID[] {
-    if (!this._start.isValid() || !this._end.isValid()) { return [] }
+    if (!this._start.isValid() || !this._end.isValid()) {
+      return []
+    }
 
     return Array(this._end.diff(this._start) + 1)
       .fill(0)
@@ -139,10 +154,14 @@ export class UnitIDRange {
   }
 
   isIntersect(range: UnitIDRange) {
-    if (!this.isValid() || !range.isValid()) { return false }
+    if (!this.isValid() || !range.isValid()) {
+      return false
+    }
 
-    return (this._start.isBefore(range._end) && this._end.isAfter(range._start))
-            || (range._start.isBefore(this._end) && range._end.isAfter(this._start))
+    return (
+      (this._start.isBefore(range._end) && this._end.isAfter(range._start)) ||
+      (range._start.isBefore(this._end) && range._end.isAfter(this._start))
+    )
   }
 
   isValid() {

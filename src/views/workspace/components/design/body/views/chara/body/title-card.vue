@@ -20,7 +20,9 @@ await suspense()
 const { mutateAsync: update } = useCharaUpdate()
 const { mutateAsync: upload } = useFileUpload()
 const handleUploadAvatar = async (file: File) => {
-  if (!id) { return }
+  if (!id) {
+    return
+  }
   const avatar = await upload({ file, position: `chara_${id}/avatar` })
   await update({ id, avatar })
   return true
@@ -30,13 +32,14 @@ const handleUploadAvatar = async (file: File) => {
 <template>
   <div center-x gap-4 m-4>
     <AAvatar :size="48">
-      <img v-if="data?.avatar" :src="data.avatar">
+      <img v-if="data?.avatar" :src="data.avatar" />
       <div v-else>
         {{ data?.avatarName }}
       </div>
       <template #trigger-icon>
         <UploadButton
-          shape="circle" size="mini"
+          shape="circle"
+          size="mini"
           @before-upload="handleUploadAvatar"
         />
       </template>

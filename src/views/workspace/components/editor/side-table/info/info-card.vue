@@ -19,11 +19,15 @@ const { data } = useQuery({
   <ACard title="基本信息" :bordered="false">
     <ADescriptions
       :column="1"
-      :data="data ? [
-        { label: '类型', value: data.type },
-        { label: '创建于', value: data.createdAt.toLocaleString() },
-        { label: '最后更新于', value: data.updatedAt.toLocaleString() },
-      ] : []"
+      :data="
+        data
+          ? [
+              { label: '类型', value: data.type },
+              { label: '创建于', value: data.createdAt.toLocaleString() },
+              { label: '最后更新于', value: data.updatedAt.toLocaleString() },
+            ]
+          : []
+      "
     />
   </ACard>
 </template>

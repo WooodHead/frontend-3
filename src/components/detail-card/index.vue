@@ -3,7 +3,14 @@ import { Motion, Presence } from '@motionone/vue'
 import { fadeInOut } from '@/utils/animation'
 import DefaultCover from '@/assets/default-cover.webp'
 
-const { show = true, success, error, loading, cover = DefaultCover, title } = defineProps<{
+const {
+  show = true,
+  success,
+  error,
+  loading,
+  cover = DefaultCover,
+  title,
+} = defineProps<{
   show?: boolean
   success?: boolean
   error?: boolean
@@ -18,25 +25,25 @@ const { show = true, success, error, loading, cover = DefaultCover, title } = de
     <Motion v-if="show" v-bind="fadeInOut">
       <Status
         v-if="!success"
-        w-300px h-400px card-border
+        w-300px
+        h-400px
+        card-border
         :loading="loading"
         :error="error"
       />
       <ACard
         v-else
         card-border
-        w-300px max-h-400px
+        w-300px
+        max-h-400px
         overflow-y-auto
-        prose text-sm
+        prose
+        text-sm
         @wheel.stop
       >
         <template #cover>
           <div h-102px overflow-hidden>
-            <img
-              full object-cover
-              alt="dessert"
-              :src="cover"
-            >
+            <img full object-cover alt="dessert" :src="cover" />
           </div>
         </template>
         <ACardMeta :title="title" />

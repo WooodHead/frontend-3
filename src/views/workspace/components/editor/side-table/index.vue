@@ -13,16 +13,12 @@ const active = ref('info')
   <ATabs v-model:active-key="active" hide-content>
     <ATabPane key="info">
       <template #title>
-        <ABadge :count="Number(infoDot)" :offset="[6, 2]" dot>
-          信息
-        </ABadge>
+        <ABadge :count="Number(infoDot)" :offset="[6, 2]" dot> 信息 </ABadge>
       </template>
     </ATabPane>
     <ATabPane key="todo">
       <template #title>
-        <ABadge :count="Number(todoDot)" :offset="[6, 2]" dot>
-          待办
-        </ABadge>
+        <ABadge :count="Number(todoDot)" :offset="[6, 2]" dot> 待办 </ABadge>
       </template>
     </ATabPane>
     <ATabPane key="relation">

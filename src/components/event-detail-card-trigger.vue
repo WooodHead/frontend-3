@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { id, load, disabled = false, trigger = 'click' } = defineProps<{
+const {
+  id,
+  load,
+  disabled = false,
+  trigger = 'click',
+} = defineProps<{
   id: number
   load?: boolean
   disabled?: boolean

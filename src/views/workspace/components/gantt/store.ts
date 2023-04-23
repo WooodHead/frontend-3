@@ -18,50 +18,55 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     eventScrollTop: 0, // 侧边栏滚动距离，用于与主视图同步
 
-    origin: undefined as (UnitID | undefined), // 当前视图的原点单位
+    origin: undefined as UnitID | undefined, // 当前视图的原点单位
 
-    viewPort: null as (HTMLDivElement | null), // 当前视区的 DOM
+    viewPort: null as HTMLDivElement | null, // 当前视区的 DOM
     viewPortWidth: 0, // 当前视区的宽度
 
     units: [] as UnitID[], // 当前已加载的单位队列，用于渲染
 
-    visibleUnit: undefined as (UnitID | undefined), // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
+    visibleUnit: undefined as UnitID | undefined, // 当前视图的可见单位（两个单位均可见时，可见面积更大的被认为是可见单位）
 
-    visibleEvents: new OrderedArray<{ eventId: number }, UnitIDRange>(UnitIDRangeComparor), // 当前视图的可见事件队列，有序
+    visibleEvents: new OrderedArray<{ eventId: number }, UnitIDRange>(
+      UnitIDRangeComparor
+    ), // 当前视图的可见事件队列，有序
 
     _offset: 0, // 主视图的偏移量
-    offsetUpperBound: undefined as (number | undefined), // 主视图的偏移量上限
-    offsetLowerBound: undefined as (number | undefined), // 主视图的偏移量下限
+    offsetUpperBound: undefined as number | undefined, // 主视图的偏移量上限
+    offsetLowerBound: undefined as number | undefined, // 主视图的偏移量下限
 
     selectedRange: [] as UnitID[], // 当前选中的时间范围
     selectedEvents: new Set<number>(), // 当前选中的事件
   }),
   getters: {
-    unit: state => state.origin?.unit.toString(),
-    subUnit: state => state.origin?.unit.lower?.toString(),
+    unit: (state) => state.origin?.unit.toString(),
+    subUnit: (state) => state.origin?.unit.lower?.toString(),
 
-    offset: state => computed({
-      get: () => state._offset,
-      set: value => {
-        if (
-          state.offsetUpperBound !== undefined
-          && value > state.offsetUpperBound
-        ) {
-          state._offset = state.offsetUpperBound
-        }
-        else if (
-          state.offsetLowerBound !== undefined
-          && value < (state.offsetLowerBound + state.viewPortWidth)
-        ) {
-          state._offset = (state.offsetLowerBound + state.viewPortWidth)
-        }
-        else { state._offset = value }
-      },
-    }),
+    offset: (state) =>
+      computed({
+        get: () => state._offset,
+        set: (value) => {
+          if (
+            state.offsetUpperBound !== undefined &&
+            value > state.offsetUpperBound
+          ) {
+            state._offset = state.offsetUpperBound
+          } else if (
+            state.offsetLowerBound !== undefined &&
+            value < state.offsetLowerBound + state.viewPortWidth
+          ) {
+            state._offset = state.offsetLowerBound + state.viewPortWidth
+          } else {
+            state._offset = value
+          }
+        },
+      }),
 
-    unitOffset: state => (id: UnitID) => {
+    unitOffset: (state) => (id: UnitID) => {
       const origin = state.origin
-      if (!origin || !id) { return 0 }
+      if (!origin || !id) {
+        return 0
+      }
       if (!origin.unit.isSame(id.unit)) {
         throw new Error('unit not match')
       }
@@ -69,9 +74,11 @@ export const { registerStore, useStore } = createStore('gantt', {
       return id.diff(origin)
     },
 
-    subUnitOffset: state => (id: UnitID) => {
+    subUnitOffset: (state) => (id: UnitID) => {
       const origin = state.origin
-      if (!origin || !id) { return 0 }
+      if (!origin || !id) {
+        return 0
+      }
       if (!origin.unit.isSame(id.unit)) {
         throw new Error('unit not match')
       }
@@ -86,15 +93,19 @@ export const { registerStore, useStore } = createStore('gantt', {
     unitRange: ({ units: unitQueue }) => {
       const first = unitQueue[0]
       const last = unitQueue[unitQueue.length - 1]
-      if (!first || !last) { return undefined }
+      if (!first || !last) {
+        return undefined
+      }
       return UnitIDRange.fromUnitID(first, last)
     },
 
     // 当前已加载的子单位范围
-    subUnitRange: state => {
+    subUnitRange: (state) => {
       const first = state.units[0]
       const last = state.units[state.units.length - 1]
-      if (!first || !last) { return undefined }
+      if (!first || !last) {
+        return undefined
+      }
       return UnitIDRange.fromUnitID(first.firstChild, last.lastChild)
     },
   },
@@ -132,16 +143,24 @@ export const { registerStore, useStore } = createStore('gantt', {
 
     loadLeft(count = 1) {
       const first = this.units[0]
-      const prevs = Array(count).fill(0).map((_, i) => first.sub(count - i))
+      const prevs = Array(count)
+        .fill(0)
+        .map((_, i) => first.sub(count - i))
       this.units.unshift(...prevs)
-      if (this.units.length > UNIT_COUNT) { this.removeRight(count) }
+      if (this.units.length > UNIT_COUNT) {
+        this.removeRight(count)
+      }
     },
 
     loadRight(count = 1) {
       const last = this.units[this.units.length - 1]
-      const nexts = Array(count).fill(0).map((_, i) => last.add(i + 1))
+      const nexts = Array(count)
+        .fill(0)
+        .map((_, i) => last.add(i + 1))
       this.units.push(...nexts)
-      if (this.units.length > UNIT_COUNT) { this.removeLeft(count) }
+      if (this.units.length > UNIT_COUNT) {
+        this.removeLeft(count)
+      }
     },
 
     removeLeft(count = 1) {
@@ -157,25 +176,28 @@ export const { registerStore, useStore } = createStore('gantt', {
       const end = this.units[this.units.length - 1]
 
       if (
-        this.unit
-        && id.unit.isSame(this.unit)
-        && id.isBetween(start, end, '[]')
+        this.unit &&
+        id.unit.isSame(this.unit) &&
+        id.isBetween(start, end, '[]')
       ) {
         this.offset.value = -this.subUnitOffset(id) * UNIT_WIDTH
-      }
-      else {
+      } else {
         this.init(id)
       }
     },
 
     navigateToPrev() {
       const prev = this.visibleUnit?.prev
-      if (prev) { this.navigateTo(prev) }
+      if (prev) {
+        this.navigateTo(prev)
+      }
     },
 
     navigateToNext() {
       const next = this.visibleUnit?.next
-      if (next) { this.navigateTo(next) }
+      if (next) {
+        this.navigateTo(next)
+      }
     },
   },
 })

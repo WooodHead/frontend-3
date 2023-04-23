@@ -9,7 +9,14 @@ import { Motion, Presence } from '@motionone/vue'
 import type { ContentEditorCommands } from './content-editor/types'
 import { fadeInOut } from '@/utils/animation'
 
-const { editable = true, cover = false, forceHeader = false, placeholder, characterCount, debounceTime = 1000 } = defineProps<{
+const {
+  editable = true,
+  cover = false,
+  forceHeader = false,
+  placeholder,
+  characterCount,
+  debounceTime = 1000,
+} = defineProps<{
   editable?: boolean
   cover?: boolean
   forceHeader?: boolean
@@ -41,9 +48,11 @@ const extensions: Extensions = [
   }),
 ]
 if (forceHeader) {
-  extensions.push(Document.extend({
-    content: 'heading block*',
-  }))
+  extensions.push(
+    Document.extend({
+      content: 'heading block*',
+    })
+  )
 }
 if (characterCount) {
   extensions.push(CharacterCount)
@@ -65,13 +74,11 @@ watchEffect(() => {
 const handleDebouncedSave = useDebounceFn(
   (content: string) => emit('save', content),
   debounceTime,
-  { maxWait: debounceTime * 10 },
+  { maxWait: debounceTime * 10 }
 )
 
-editor.value?.on(
-  'update',
-  ({ editor }: EditorEvents['update']) =>
-    handleDebouncedSave(editor.getHTML()),
+editor.value?.on('update', ({ editor }: EditorEvents['update']) =>
+  handleDebouncedSave(editor.getHTML())
 )
 
 const coverRef = ref<HTMLDivElement | null>(null)
@@ -84,7 +91,9 @@ const handleCoverChange = async (file: File) => {
 const setContent = (content: string) => {
   editor.value?.commands.setContent(content)
 }
-const count = computed(() => editor.value?.storage.characterCount.characters() as number)
+const count = computed(
+  () => editor.value?.storage.characterCount.characters() as number
+)
 defineExpose({
   setContent,
   count,
@@ -93,16 +102,27 @@ defineExpose({
 
 <template>
   <div column>
-    <div v-if="cover" ref="coverRef" relative h-100px w-full shrink-0 overflow-hidden>
+    <div
+      v-if="cover"
+      ref="coverRef"
+      relative
+      h-100px
+      w-full
+      shrink-0
+      overflow-hidden
+    >
       <img
-        full object-cover
+        full
+        object-cover
         alt="dessert"
         src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp"
-      >
+      />
       <Presence>
         <Motion v-if="coverHover" v-bind="fadeInOut">
           <UploadButton
-            absolute right-1 bottom-1
+            absolute
+            right-1
+            bottom-1
             @before-upload="handleCoverChange"
           >
             <template #icon>

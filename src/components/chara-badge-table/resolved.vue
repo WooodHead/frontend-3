@@ -6,7 +6,12 @@ import { PARTICIPATED_IN } from '@/api/graph/schema'
 import { selectChara } from '@/api/chara'
 import api from '@/api/api'
 
-const { id, eventId, closable, disabled = false } = defineProps<{
+const {
+  id,
+  eventId,
+  closable,
+  disabled = false,
+} = defineProps<{
   id: number
   eventId: number
   closable?: boolean
@@ -23,7 +28,9 @@ const visible = ref(false)
 
 const { mutateAsync: disconnect } = useRelationRemove()
 const handleClose = async () => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   await disconnect({
     type: PARTICIPATED_IN,
     from: id,
@@ -41,7 +48,7 @@ const handleClose = async () => {
     @close="handleClose"
   >
     <template #avatar>
-      <img v-if="data?.avatar" :src="data.avatar">
+      <img v-if="data?.avatar" :src="data.avatar" />
       <div v-else i-radix-icons-avatar full></div>
     </template>
     {{ data?.name }}

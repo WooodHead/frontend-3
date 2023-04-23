@@ -19,7 +19,9 @@ export const parseArcoTheme = (themeName: string, savePath?: string) => {
     throw new Error('Can not find node_modules')
   }
   const themePath = path.join(nodeModulesPath, `@arco-themes/${themeName}`)
-  const version = JSON.parse(readFileSync(path.join(themePath, 'package.json')).toString()).version
+  const version = JSON.parse(
+    readFileSync(path.join(themePath, 'package.json')).toString()
+  ).version
 
   if (savePath && existsSync(savePath)) {
     const json = JSON.parse(readFileSync(savePath).toString())
@@ -29,10 +31,14 @@ export const parseArcoTheme = (themeName: string, savePath?: string) => {
     }
   }
 
-  const rawCSS = readFileSync(path.join(themePath, 'theme.css')).toString().replace(/\n/g, '')
+  const rawCSS = readFileSync(path.join(themePath, 'theme.css'))
+    .toString()
+    .replace(/\n/g, '')
 
   const { stylesheet } = css.parse(rawCSS)
-  if (!stylesheet) { return undefined }
+  if (!stylesheet) {
+    return undefined
+  }
   const { rules } = stylesheet
 
   const lightThemeRule = rules[1] as css.Rule
@@ -40,23 +46,19 @@ export const parseArcoTheme = (themeName: string, savePath?: string) => {
   const lightColorRule = rules[3] as css.Rule
   const darkColorRule = rules[4] as css.Rule
 
-  const lightColorMap = new VarMap(
-    ruleToText(rawCSS, lightColorRule),
-  )
-  const darkColorMap = new VarMap(
-    ruleToText(rawCSS, darkColorRule),
-    [lightColorMap],
-  )
-  const lightThemeMap = new VarMap(
-    ruleToText(rawCSS, lightThemeRule),
-    [lightColorMap],
-  )
+  const lightColorMap = new VarMap(ruleToText(rawCSS, lightColorRule))
+  const darkColorMap = new VarMap(ruleToText(rawCSS, darkColorRule), [
+    lightColorMap,
+  ])
+  const lightThemeMap = new VarMap(ruleToText(rawCSS, lightThemeRule), [
+    lightColorMap,
+  ])
   const darkThemeMap = new VarMap(
     ruleToText(
       rawCSS.replace(/var\(--color-neutral-(.+?)\)/g, 'rgb(var(--gray-$1))'),
-      darkThemeRule,
+      darkThemeRule
     ),
-    [darkColorMap, lightThemeMap],
+    [darkColorMap, lightThemeMap]
   )
 
   const lightColorTree = mapToTree(toColor(lightColorMap.solved))

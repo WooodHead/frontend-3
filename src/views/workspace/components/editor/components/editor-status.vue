@@ -7,19 +7,7 @@ const { success, error, loading } = defineProps<{
 </script>
 
 <template>
-  <ABadge
-    v-if="error"
-    status="danger"
-    text="保存失败"
-  />
-  <ABadge
-    v-else-if="loading"
-    status="warning"
-    text="保存中"
-  />
-  <ABadge
-    v-else-if="success"
-    status="success"
-    text="保存成功"
-  />
+  <ABadge v-if="error" status="danger" text="保存失败" />
+  <ABadge v-else-if="loading" status="warning" text="保存中" />
+  <ABadge v-else-if="success" status="success" text="保存成功" />
 </template>

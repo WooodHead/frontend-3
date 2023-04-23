@@ -1,4 +1,9 @@
-import type { DefineStoreOptions, StateTree, StoreDefinition, _GettersTree } from 'pinia'
+import type {
+  DefineStoreOptions,
+  StateTree,
+  StoreDefinition,
+  _GettersTree,
+} from 'pinia'
 
 /**
  * 创建拥有组件作用域的store
@@ -11,11 +16,11 @@ export const createStore = <
   Dis extends string,
   S extends StateTree = {},
   G extends _GettersTree<S> = {},
-  A = {},
->
-  (
-    baseID: Id,
-    options: Omit<DefineStoreOptions<Id, S, G, A>, 'id'>) => {
+  A = {}
+>(
+  baseID: Id,
+  options: Omit<DefineStoreOptions<Id, S, G, A>, 'id'>
+) => {
   return {
     registerStore: (distinct: Dis) => {
       const useStore = defineStore(`${baseID}_${distinct}`, options)
@@ -28,7 +33,8 @@ export const createStore = <
 
       return store
     },
-    useStore: () => (inject(`store_${baseID}`) as StoreDefinition<string, S, G, A>)(),
+    useStore: () =>
+      (inject(`store_${baseID}`) as StoreDefinition<string, S, G, A>)(),
   }
 }
 

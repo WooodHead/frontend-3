@@ -18,7 +18,9 @@ export const selectEvent = (data: EventEntity) => ({
   range: UnitIDRange.fromDayjs(data.unit, data.start, data.end),
 })
 
-export const useEventCreate = (options?: EventMutationOptions<CreateEventDto>) => {
+export const useEventCreate = (
+  options?: EventMutationOptions<CreateEventDto>
+) => {
   const client = useQueryClient()
   return useMutation({
     ...options,
@@ -54,7 +56,9 @@ export const useEventUpdate = (options?: EventMutationOptions<Update>) => {
   })
 }
 
-interface Remove { id: number }
+interface Remove {
+  id: number
+}
 export const useEventRemove = (options?: EventMutationOptions<Remove>) => {
   const client = useQueryClient()
   return useMutation({

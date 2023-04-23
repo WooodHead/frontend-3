@@ -8,7 +8,11 @@ export interface UnitTimePickerValue {
   time: Date
 }
 
-const { modelValue, disabled = false, readonly = false } = defineProps<{
+const {
+  modelValue,
+  disabled = false,
+  readonly = false,
+} = defineProps<{
   modelValue?: UnitTimePickerValue
   disabled?: boolean
   readonly?: boolean
@@ -39,9 +43,9 @@ const handleTimeChange = (value: string | number | Date | undefined) => {
 }
 
 const common = computed(() => ({
-  'disabled': mergedDisabled,
-  'error': mergedError,
-  'size': mergedSize,
+  disabled: mergedDisabled,
+  error: mergedError,
+  size: mergedSize,
   'model-value': modelValue?.time,
   'show-time': showTime.value,
   'time-picker-props': timePickerProps.value,
@@ -54,36 +58,22 @@ const common = computed(() => ({
   <div column>
     <ARadioGroup
       type="button"
-      rounded-b-0 w-full justify-between
+      rounded-b-0
+      w-full
+      justify-between
       :disabled="mergedDisabled"
       :size="mergedSize"
       :model-value="modelValue?.unit"
       @update:model-value="handleUnitChange"
     >
-      <ARadio value="century">
-        世纪
-      </ARadio>
-      <ARadio value="decade">
-        年代
-      </ARadio>
-      <ARadio value="year">
-        年
-      </ARadio>
-      <ARadio value="month">
-        月
-      </ARadio>
-      <ARadio value="date">
-        日
-      </ARadio>
-      <ARadio value="hour">
-        时
-      </ARadio>
-      <ARadio value="minute">
-        分
-      </ARadio>
-      <ARadio value="second">
-        秒
-      </ARadio>
+      <ARadio value="century"> 世纪 </ARadio>
+      <ARadio value="decade"> 年代 </ARadio>
+      <ARadio value="year"> 年 </ARadio>
+      <ARadio value="month"> 月 </ARadio>
+      <ARadio value="date"> 日 </ARadio>
+      <ARadio value="hour"> 时 </ARadio>
+      <ARadio value="minute"> 分 </ARadio>
+      <ARadio value="second"> 秒 </ARadio>
     </ARadioGroup>
 
     <AYearPicker

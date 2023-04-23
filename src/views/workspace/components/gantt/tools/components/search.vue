@@ -1,8 +1,5 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <AModal>
-    1
-  </AModal>
+  <AModal> 1 </AModal>
 </template>

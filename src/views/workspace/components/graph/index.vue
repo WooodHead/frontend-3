@@ -16,29 +16,48 @@ interface GraphProps {
 const { status } = defineProps<GraphProps>()
 
 const store = registerStore(status.positionId)
-watch(() => status, status => {
-  store.status = status
-}, { deep: true })
+watch(
+  () => status,
+  (status) => {
+    store.status = status
+  },
+  { deep: true }
+)
 
 const nodes = reactive<Node[]>([])
 const edges = reactive<Edge[]>([])
-const { nodes: graphNodes, onConnectStart, onConnectEnd, addSelectedNodes, removeSelectedNodes, fitView } = useVueFlow()
+const {
+  nodes: graphNodes,
+  onConnectStart,
+  onConnectEnd,
+  addSelectedNodes,
+  removeSelectedNodes,
+  fitView,
+} = useVueFlow()
 // useForceLayout()
 
 onMounted(() => {
-  nodes.push(...Array(2).fill(0).map((_, i) => ({
-    id: `${i}`,
-    type: 'event',
-    position: { x: i * 200, y: 0 },
-    label: `Node ${i}`,
-  })))
+  nodes.push(
+    ...Array(2)
+      .fill(0)
+      .map((_, i) => ({
+        id: `${i}`,
+        type: 'event',
+        position: { x: i * 200, y: 0 },
+        label: `Node ${i}`,
+      }))
+  )
 
-  nodes.push(...Array(2).fill(0).map((_, i) => ({
-    id: `Chara_${i}`,
-    type: 'chara',
-    position: { x: (i + 2) * 200, y: 0 },
-    label: `Chara ${i}`,
-  })))
+  nodes.push(
+    ...Array(2)
+      .fill(0)
+      .map((_, i) => ({
+        id: `Chara_${i}`,
+        type: 'chara',
+        position: { x: (i + 2) * 200, y: 0 },
+        label: `Chara ${i}`,
+      }))
+  )
 
   // edges.push(...Array(19).fill(0).map((_, i) => ({
   //   id: `${i}_${i + 1}`,
@@ -55,12 +74,24 @@ onConnectStart(({ nodeId }) => {
 })
 onConnectEnd(() => {
   connectingNodeId.value = undefined
-  removeSelectedNodes(graphNodes.value.filter(({ id }) => id === connectingNodeId.value))
+  removeSelectedNodes(
+    graphNodes.value.filter(({ id }) => id === connectingNodeId.value)
+  )
 })
 
-watch(() => status.position, () => { fitView() })
+watch(
+  () => status.position,
+  () => {
+    fitView()
+  }
+)
 
-const showMiniMap = computed(() => ![IPositionState.Corner, IPositionState.Vertical].includes(status.state ?? -1))
+const showMiniMap = computed(
+  () =>
+    ![IPositionState.Corner, IPositionState.Vertical].includes(
+      status.state ?? -1
+    )
+)
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import type { Directive } from 'vue'
 
 const ClickOutsideFn: {
-  [k: string]: ((e: MouseEvent) => void)
+  [k: string]: (e: MouseEvent) => void
 } = {}
 
 export const ClickOutside: Directive<HTMLElement> = {
@@ -14,7 +14,7 @@ export const ClickOutside: Directive<HTMLElement> = {
     document.addEventListener('click', ClickOutsideFn[el.id])
   },
 
-  unmounted: el => {
+  unmounted: (el) => {
     document.removeEventListener('click', ClickOutsideFn[el.id])
     delete ClickOutsideFn[el.id]
   },

@@ -17,7 +17,9 @@ const model = ref({
 
 const validate = async (): Promise<CreateEventDto> => {
   const error = await formRef.value!.validate()
-  if (error) { return Promise.reject(error) }
+  if (error) {
+    return Promise.reject(error)
+  }
 
   const { range, ...rest } = model.value
   return {
@@ -42,9 +44,7 @@ defineExpose({ validate })
     <AFormItem
       field="range"
       label="时间范围"
-      :rules="[
-        { required: true, message: '请选择事件的时间范围' },
-      ]"
+      :rules="[{ required: true, message: '请选择事件的时间范围' }]"
     >
       <UnitRangePicker v-model="model.range" />
     </AFormItem>

@@ -5,7 +5,11 @@ import usePickerConfig from './unit-time-picker/usePickerConfig'
 import type { IUnit } from '@/utils/unit-id'
 import { UnitIDRange } from '@/utils/unit-id'
 
-const { modelValue, disabled = false, readonly = false } = defineProps<{
+const {
+  modelValue,
+  disabled = false,
+  readonly = false,
+} = defineProps<{
   modelValue?: UnitIDRange
   disabled?: boolean
   readonly?: boolean
@@ -26,19 +30,17 @@ const { mode, showTime, timePickerProps } = usePickerConfig(unitValue)
 
 const handleUnitChange = (unit: string | number | boolean) => {
   const [start, end] = pickerValue.value ?? []
-  emit(
-    'update:modelValue',
-    UnitIDRange.fromDayjs(unit as IUnit, start, end),
-  )
+  emit('update:modelValue', UnitIDRange.fromDayjs(unit as IUnit, start, end))
 }
 
-const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => {
+const handleRangeChange = (
+  range: (CalendarValue | undefined)[] | undefined
+) => {
   const [start, end] = range ?? []
-  if (!modelValue?.unit) { return }
-  emit(
-    'update:modelValue',
-    UnitIDRange.fromDayjs(modelValue.unit, start, end),
-  )
+  if (!modelValue?.unit) {
+    return
+  }
+  emit('update:modelValue', UnitIDRange.fromDayjs(modelValue.unit, start, end))
 }
 </script>
 
@@ -46,36 +48,22 @@ const handleRangeChange = (range: (CalendarValue | undefined)[] | undefined) => 
   <div column>
     <ARadioGroup
       type="button"
-      rounded-b-0 w-full justify-between
+      rounded-b-0
+      w-full
+      justify-between
       :disabled="mergedDisabled"
       :size="mergedSize"
       :model-value="unitValue"
       @update:model-value="handleUnitChange"
     >
-      <ARadio value="century">
-        世纪
-      </ARadio>
-      <ARadio value="decade">
-        年代
-      </ARadio>
-      <ARadio value="year">
-        年
-      </ARadio>
-      <ARadio value="month">
-        月
-      </ARadio>
-      <ARadio value="date">
-        日
-      </ARadio>
-      <ARadio value="hour">
-        时
-      </ARadio>
-      <ARadio value="minute">
-        分
-      </ARadio>
-      <ARadio value="second">
-        秒
-      </ARadio>
+      <ARadio value="century"> 世纪 </ARadio>
+      <ARadio value="decade"> 年代 </ARadio>
+      <ARadio value="year"> 年 </ARadio>
+      <ARadio value="month"> 月 </ARadio>
+      <ARadio value="date"> 日 </ARadio>
+      <ARadio value="hour"> 时 </ARadio>
+      <ARadio value="minute"> 分 </ARadio>
+      <ARadio value="second"> 秒 </ARadio>
     </ARadioGroup>
     <ARangePicker
       :readonly="readonly"

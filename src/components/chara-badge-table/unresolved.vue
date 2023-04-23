@@ -6,7 +6,13 @@ import { useCharaCreate, useCharaUpdate } from '@/api/chara'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
 import api from '@/api/api'
-const { name, options, eventId, closable, disabled = false } = defineProps<{
+const {
+  name,
+  options,
+  eventId,
+  closable,
+  disabled = false,
+} = defineProps<{
   name: string
   options: unknown[]
   eventId: number
@@ -25,7 +31,9 @@ const { mutateAsync: create, isLoading } = useCharaCreate()
 const { mutateAsync: update } = useCharaUpdate()
 const { mutateAsync: connect } = useRelationCreate()
 const handleConnect = async (chara: CharaEntity | undefined) => {
-  if (!chara) { return }
+  if (!chara) {
+    return
+  }
 
   await connect({
     type: PARTICIPATED_IN,
@@ -90,10 +98,7 @@ const handleCreate = async () => {
     </template>
     {{ name }}
     <template #popup>
-      <div
-        v-if="!disabled"
-        card-border p-2 text-text-1 column gap-2
-      >
+      <div v-if="!disabled" card-border p-2 text-text-1 column gap-2>
         <p>关联已有角色：</p>
         <Selector
           chara
@@ -101,11 +106,7 @@ const handleCreate = async () => {
           @select:chara="handleConnect"
         />
         <p>或创建新角色：</p>
-        <AButton
-          long type="primary"
-          :loading="isLoading"
-          @click="handleCreate"
-        >
+        <AButton long type="primary" :loading="isLoading" @click="handleCreate">
           <template #icon>
             <div i-radix-icons-plus></div>
           </template>
@@ -113,5 +114,5 @@ const handleCreate = async () => {
         </AButton>
       </div>
     </template>
-  </basic>
+  </Basic>
 </template>

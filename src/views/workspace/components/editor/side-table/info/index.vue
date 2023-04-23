@@ -12,7 +12,9 @@ const { eventId, todoDot, relationDot } = storeToRefs(store)
 
 const { mutate: update } = useEventUpdate()
 watchEffect(() => {
-  if (!eventId.value) { return }
+  if (!eventId.value) {
+    return
+  }
 
   if (todoDot.value || relationDot.value) {
     update({ id: eventId.value, done: false })
@@ -21,7 +23,9 @@ watchEffect(() => {
 
 const { mutateAsync: remove, isLoading } = useEventRemove()
 const handleRemove = async () => {
-  if (!eventId.value) { return }
+  if (!eventId.value) {
+    return
+  }
   await remove({ id: eventId.value })
   store.eventId = undefined
 }
@@ -34,7 +38,8 @@ const handleRemove = async () => {
       <LongPressButton
         :loading="isLoading"
         status="danger"
-        shrink-0 long
+        shrink-0
+        long
         @press="handleRemove"
       >
         删除事件

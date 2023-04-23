@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { accept = 'image/*', type, shape, size = 'mini' } = defineProps<{
+const {
+  accept = 'image/*',
+  type,
+  shape,
+  size = 'mini',
+} = defineProps<{
   accept?: string
   type?: 'text' | 'dashed' | 'outline' | 'primary' | 'secondary'
   shape?: 'round' | 'circle' | 'square'
@@ -10,7 +15,9 @@ const emit = defineEmits<{
   (e: 'before-upload', file: File): Promise<boolean>
 }>()
 
-const handleBeforeUpload = async (file: File) => { return await emit('before-upload', file) }
+const handleBeforeUpload = async (file: File) => {
+  return await emit('before-upload', file)
+}
 </script>
 
 <template>

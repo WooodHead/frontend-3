@@ -8,9 +8,15 @@ const store = useStore()
 const ganttStore = useGanttStore()
 
 // 当 origin 变化时，自动更新
-watch(() => ganttStore.origin, origin => {
-  if (origin) { store.init(origin) }
-}, { immediate: true })
+watch(
+  () => ganttStore.origin,
+  (origin) => {
+    if (origin) {
+      store.init(origin)
+    }
+  },
+  { immediate: true }
+)
 
 const handleWheel = (e: WheelEvent) => {
   store.offset += -Math.sign(e.deltaY) * (1 * BLOCK_WIDTH)
@@ -21,7 +27,8 @@ const handleWheel = (e: WheelEvent) => {
   <div
     ref="viewPortRef"
     :style="{ transform: `translateX(${store.offset}px)` }"
-    relative full
+    relative
+    full
     transition-transform
     @wheel.passive="handleWheel"
   >

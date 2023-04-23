@@ -3,6 +3,6 @@ import createStore from '@/utils/createStore'
 
 export const { registerStore, useStore } = createStore('graph/selector', {
   state: () => ({
-    subject: undefined as (SelectorOptionValue | undefined),
+    subject: undefined as SelectorOptionValue | undefined,
   }),
 })

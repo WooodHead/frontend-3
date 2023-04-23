@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import type { EventEntity } from '@/api/api-base'
-import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
+import {
+  useRelationCreate,
+  useRelationRemove,
+  useRelationsQuery,
+} from '@/api/graph'
 import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
 
 const { id } = defineProps<{
   id?: number
 }>()
 
-const { data: relations, suspense } = useRelationsQuery(computed(() => id ? { type: CHARA, id } : undefined))
+const { data: relations, suspense } = useRelationsQuery(
+  computed(() => (id ? { type: CHARA, id } : undefined))
+)
 await suspense()
 
 const events = computed(() => relations.value?.PARTICIPATED_IN.to ?? [])
 
 const { mutateAsync: connect } = useRelationCreate()
 const handleAddEvent = async (eventId: number) => {
-  if (!id) { return }
+  if (!id) {
+    return
+  }
   await connect({
     type: PARTICIPATED_IN,
     from: id,
@@ -23,7 +31,9 @@ const handleAddEvent = async (eventId: number) => {
 }
 const { mutateAsync: disconnect } = useRelationRemove()
 const handleRemoveEvent = async (eventId: number) => {
-  if (!id) { return }
+  if (!id) {
+    return
+  }
   await disconnect({
     type: PARTICIPATED_IN,
     from: id,
@@ -34,7 +44,9 @@ const handleRemoveEvent = async (eventId: number) => {
 const visible = ref(false)
 
 const handleSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
+  if (!event) {
+    return
+  }
   handleAddEvent(event.id)
   visible.value = false
 }
@@ -52,7 +64,8 @@ const handleSelect = (event: EventEntity | undefined) => {
         <template #content>
           <div card-border p-2>
             <Selector
-              event placeholder="选择事件"
+              event
+              placeholder="选择事件"
               @select:event="handleSelect"
             />
           </div>
@@ -62,8 +75,10 @@ const handleSelect = (event: EventEntity | undefined) => {
     <div max-h-200px overflow-y-auto rounded>
       <EventItem
         v-for="eventId of events"
-        :id="eventId" :key="eventId"
-        button removable
+        :id="eventId"
+        :key="eventId"
+        button
+        removable
         @remove="handleRemoveEvent"
       />
     </div>

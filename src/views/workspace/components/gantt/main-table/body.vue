@@ -25,13 +25,10 @@ emitter.on('event-select', async ({ id }) => {
 <template>
   <div
     :style="{ transform: `translateY(${store.eventScrollTop}px)` }"
-    row h-full
+    row
+    h-full
   >
-    <UnitGroup
-      v-for="unit in store.units"
-      :id="unit"
-      :key="unit.uid"
-    />
+    <UnitGroup v-for="unit in store.units" :id="unit" :key="unit.uid" />
     <DashedTable />
     <BlockTable />
   </div>

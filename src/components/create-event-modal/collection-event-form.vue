@@ -16,13 +16,17 @@ const model = ref({
 
 // TODO collection-event-form
 const handleEventSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
+  if (!event) {
+    return
+  }
   model.value.subIds.add(event.id)
 }
 
 const validate = async (): Promise<CreateEventDto> => {
   const error = await formRef.value?.validate()
-  if (error) { return Promise.reject(error) }
+  if (error) {
+    return Promise.reject(error)
+  }
 
   return Promise.reject(new Error('114514'))
   // return {
@@ -51,10 +55,7 @@ defineExpose({ validate })
       label="子事件"
       :rules="[{ required: true, message: '请选择当前事件的子事件' }]"
     >
-      <Selector
-        event
-        @select:event="handleEventSelect"
-      />
+      <Selector event @select:event="handleEventSelect" />
     </AFormItem>
   </AForm>
 </template>

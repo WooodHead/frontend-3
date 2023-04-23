@@ -10,10 +10,7 @@ import { UnitIDRange } from './unit-range'
 export class UnitID {
   readonly _uid: string
 
-  constructor(
-    readonly _date: Dayjs,
-    readonly _unit: Unit,
-  ) {
+  constructor(readonly _date: Dayjs, readonly _unit: Unit) {
     const uType = this._unit.toString()
     const century = this._date.year() / 100
     const decade = this._date.year() / 10
@@ -25,7 +22,9 @@ export class UnitID {
         this._uid = hash([century, decade])
         break
       default: {
-        const rest = UNITS.slice(2, this._unit._order + 1).map(unit => this._date.get(unit as UnitType))
+        const rest = UNITS.slice(2, this._unit._order + 1).map((unit) =>
+          this._date.get(unit as UnitType)
+        )
         this._uid = hash([century, decade, ...rest])
         break
       }
@@ -66,7 +65,9 @@ export class UnitID {
   }
 
   add(value: number): UnitID {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
     const uType = this._unit.toString()
     switch (uType) {
       case 'century':
@@ -80,26 +81,40 @@ export class UnitID {
     }
   }
 
-  sub(value: number): UnitID { return this.add(-value) }
+  sub(value: number): UnitID {
+    return this.add(-value)
+  }
 
-  get date() { return this._date }
+  get date() {
+    return this._date
+  }
 
-  get unit() { return this._unit }
+  get unit() {
+    return this._unit
+  }
 
   @memoize
-  get next(): UnitID { return this.add(1) }
+  get next(): UnitID {
+    return this.add(1)
+  }
 
   @memoize
-  get prev(): UnitID { return this.sub(1) }
+  get prev(): UnitID {
+    return this.sub(1)
+  }
 
   diff(date: UnitID, milliSecond = false): number {
-    if (!this.isValid() || !date.isValid()) { return NaN }
+    if (!this.isValid() || !date.isValid()) {
+      return NaN
+    }
 
     if (!this._unit.isSame(date._unit)) {
       throw new UnitIDException('UnitID diff', 'unit not match')
     }
 
-    if (milliSecond) { return this._date.diff(date._date, 'millisecond') }
+    if (milliSecond) {
+      return this._date.diff(date._date, 'millisecond')
+    }
 
     const uType = this._unit.toString()
     const start = date._date
@@ -118,11 +133,13 @@ export class UnitID {
   }
 
   /**
-     * 获取当前时间单位下的最小时间，即：当前时间单位以下的时间全部设置为最小值
-     */
+   * 获取当前时间单位下的最小时间，即：当前时间单位以下的时间全部设置为最小值
+   */
   @memoize
   get start(): UnitID {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
 
     const uType = this._unit.toString()
     switch (uType) {
@@ -140,28 +157,36 @@ export class UnitID {
   }
 
   get isStart() {
-    if (!this.isValid()) { return false }
+    if (!this.isValid()) {
+      return false
+    }
 
     const uType = this._unit.toString()
-    if (uType === 'century') { return this._date.year() % 100 === 0 }
-    else if (uType === 'decade') { return this._date.year() % 10 === 0 }
-    else { return this._date.startOf(uType).isSame(this._date) }
+    if (uType === 'century') {
+      return this._date.year() % 100 === 0
+    } else if (uType === 'decade') {
+      return this._date.year() % 10 === 0
+    } else {
+      return this._date.startOf(uType).isSame(this._date)
+    }
   }
 
   /**
-     * 获取当前时间单位下的最大时间，即：当前时间单位以下的时间全部设置为最大值
-     */
+   * 获取当前时间单位下的最大时间，即：当前时间单位以下的时间全部设置为最大值
+   */
   @memoize
   get end(): UnitID {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
 
     const uType = this._unit.toString()
     switch (uType) {
-      case 'century':{
+      case 'century': {
         const century = Math.floor(this._date.year() / 100) * 100 + 99
         return new UnitID(this._date.endOf('year').year(century), this._unit)
       }
-      case 'decade':{
+      case 'decade': {
         const decade = Math.floor(this._date.year() / 10) * 10 + 9
         return new UnitID(this._date.endOf('year').year(decade), this._unit)
       }
@@ -171,19 +196,29 @@ export class UnitID {
   }
 
   get isEnd() {
-    if (!this.isValid()) { return false }
+    if (!this.isValid()) {
+      return false
+    }
 
     const uType = this._unit.toString()
-    if (uType === 'century') { return this._date.year() % 100 === 99 }
-    else if (uType === 'decade') { return this._date.year() % 10 === 9 }
-    else { return this._date.endOf(uType).isSame(this._date) }
+    if (uType === 'century') {
+      return this._date.year() % 100 === 99
+    } else if (uType === 'decade') {
+      return this._date.year() % 10 === 9
+    } else {
+      return this._date.endOf(uType).isSame(this._date)
+    }
   }
 
-  get uid() { return this._uid }
+  get uid() {
+    return this._uid
+  }
 
   @memoize
   get parent(): UnitID {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
 
     const upperUnit = this._unit.upper
     if (!upperUnit) {
@@ -193,15 +228,20 @@ export class UnitID {
   }
 
   /**
-     * 以UnitIDRange的形式表达的当前时间单位的所有子时间单位
-     */
+   * 以UnitIDRange的形式表达的当前时间单位的所有子时间单位
+   */
   @memoize
   get childrenRange(): UnitIDRange {
-    if (!this.isValid()) { return UnitIDRange.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitIDRange.invalid(this.unit)
+    }
 
     const lowerUnit = this._unit.lower
     if (!lowerUnit) {
-      throw new UnitIDException('UnitID childrenRange', 'second has no children')
+      throw new UnitIDException(
+        'UnitID childrenRange',
+        'second has no children'
+      )
     }
     const start = this.start.as(lowerUnit)
     const end = this.end.as(lowerUnit)
@@ -209,23 +249,29 @@ export class UnitID {
   }
 
   /**
-     * 当前时间单位所在的单位范围，如1月18号处于1月1日～1月31日的范围内
-     */
+   * 当前时间单位所在的单位范围，如1月18号处于1月1日～1月31日的范围内
+   */
   @memoize
   get range() {
-    if (!this.isValid()) { return UnitIDRange.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitIDRange.invalid(this.unit)
+    }
     return UnitIDRange.fromUnitID(this.parent, this.parent).as(this._unit)
   }
 
   @memoize
   get children(): UnitID[] {
-    if (!this.isValid()) { return [] }
+    if (!this.isValid()) {
+      return []
+    }
     return this.childrenRange.ids
   }
 
   @memoize
   get firstChild() {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
     const lowerUnit = this._unit.lower
     if (!lowerUnit) {
       throw new UnitIDException('UnitID firstChild', 'second has no children')
@@ -235,7 +281,9 @@ export class UnitID {
 
   @memoize
   get lastChild() {
-    if (!this.isValid()) { return UnitID.invalid(this.unit) }
+    if (!this.isValid()) {
+      return UnitID.invalid(this.unit)
+    }
     const lowerUnit = this._unit.lower
     if (!lowerUnit) {
       throw new UnitIDException('UnitID lastChild', 'second has no children')
@@ -244,26 +292,32 @@ export class UnitID {
   }
 
   toString() {
-    if (!this.isValid()) { return 'invalid' }
+    if (!this.isValid()) {
+      return 'invalid'
+    }
 
     const startIdx = this._unit.isLower('decade') ? 2 : 0 // 单位在年以下，只显示年份，不显示世纪
-    return UNITS
-      .slice(startIdx, this._unit.order + 1)
-      .map(unit => this.as(unit).toUnitString())
+    return UNITS.slice(startIdx, this._unit.order + 1)
+      .map((unit) => this.as(unit).toUnitString())
       .join('')
   }
 
   toUnitString() {
-    if (!this.isValid()) { return 'invalid' }
+    if (!this.isValid()) {
+      return 'invalid'
+    }
 
     const uType = this._unit.toString()
     switch (uType) {
       case 'century':
         return `${Math.floor(this._date.year() / 100) + 1}世纪`
       case 'decade': {
-        const decade = this._date.year() % 100 - this._date.year() % 10
-        if (decade === 0) { return '世纪初' }
-        else { return `${decade}年代` }
+        const decade = (this._date.year() % 100) - (this._date.year() % 10)
+        if (decade === 0) {
+          return '世纪初'
+        } else {
+          return `${decade}年代`
+        }
       }
       case 'year':
         return `${this._date.year()}年`
@@ -281,7 +335,9 @@ export class UnitID {
   }
 
   toBriefString() {
-    if (!this.isValid()) { return 'invalid' }
+    if (!this.isValid()) {
+      return 'invalid'
+    }
 
     const uType = this._unit.toString()
     switch (uType) {
@@ -311,22 +367,30 @@ export class UnitID {
   }
 
   format() {
-    if (!this.isValid()) { return 'invalid' }
+    if (!this.isValid()) {
+      return 'invalid'
+    }
     return this._date.format()
   }
 
   isBefore(date: UnitID) {
-    if (!this.isValid() || !this._unit.isSame(date._unit)) { return false }
+    if (!this.isValid() || !this._unit.isSame(date._unit)) {
+      return false
+    }
     return this._date.isBefore(date._date)
   }
 
   isAfter(date: UnitID) {
-    if (!this.isValid() || !this._unit.isSame(date._unit)) { return false }
+    if (!this.isValid() || !this._unit.isSame(date._unit)) {
+      return false
+    }
     return this._date.isAfter(date._date)
   }
 
   isSame({ _date, _unit }: UnitID) {
-    if (!this.isValid() || !this._unit.isSame(_unit)) { return false }
+    if (!this.isValid() || !this._unit.isSame(_unit)) {
+      return false
+    }
     const uType = this._unit.toString()
     switch (uType) {
       case 'century':
@@ -340,14 +404,18 @@ export class UnitID {
   isBetween(
     { _date: startDate, _unit: startUnit }: UnitID,
     { _date: endDate, _unit: endUnit }: UnitID,
-    d?: '()' | '[]' | '[)' | '(]',
+    d?: '()' | '[]' | '[)' | '(]'
   ) {
     if (
-      !this.isValid()
-            || !this._unit.isSame(startUnit)
-            || !this._unit.isSame(endUnit)
-    ) { return false }
-    if (endDate.isBefore(startDate)) { return false }
+      !this.isValid() ||
+      !this._unit.isSame(startUnit) ||
+      !this._unit.isSame(endUnit)
+    ) {
+      return false
+    }
+    if (endDate.isBefore(startDate)) {
+      return false
+    }
 
     const uType = this._unit.toString()
     switch (uType) {

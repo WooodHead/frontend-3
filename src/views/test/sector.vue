@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { innerRadius = 0, outerRadius, offsetAngle = 0, sectorAngle } = defineProps<{
+const {
+  innerRadius = 0,
+  outerRadius,
+  offsetAngle = 0,
+  sectorAngle,
+} = defineProps<{
   innerRadius?: number
   outerRadius: number
   offsetAngle?: number
@@ -34,8 +39,12 @@ const innerEnd = computed(() => ({
 const textAngle = computed(() => sectorAngle / 2 + offsetAngle)
 
 const textPosition = computed(() => ({
-  x: outerRadius + (outerRadius + innerRadius) / 2 * Math.sin(toRadians(textAngle.value)),
-  y: outerRadius - (outerRadius + innerRadius) / 2 * Math.cos(toRadians(textAngle.value)),
+  x:
+    outerRadius +
+    ((outerRadius + innerRadius) / 2) * Math.sin(toRadians(textAngle.value)),
+  y:
+    outerRadius -
+    ((outerRadius + innerRadius) / 2) * Math.cos(toRadians(textAngle.value)),
 }))
 
 const handleMouseEnter = () => {
@@ -46,7 +55,9 @@ const handleMouseEnter = () => {
 
 <template>
   <path
-    fill-blue-2 hover:fill-red-2 transition-colors
+    fill-blue-2
+    hover:fill-red-2
+    transition-colors
     :d="`M ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 0 1 ${innerEnd.x} ${innerEnd.y} L ${outerEnd.x} ${outerEnd.y} A ${outerRadius} ${outerRadius} 0 0 0 ${outerStart.x} ${outerStart.y} Z`"
     @mouseenter="handleMouseEnter"
   />

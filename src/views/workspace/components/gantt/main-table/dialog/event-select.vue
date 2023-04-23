@@ -18,16 +18,8 @@ const init = computed(() => Array.from(selectedEvents.value))
     @cancel="selectedEvents.clear()"
     @ok="visible = true"
   >
-    <div
-      border="~ border-2"
-      w-full max-h-400px
-      gap-0 overflow-y-auto
-    >
-      <EventItem
-        v-for="id in selectedEvents"
-        :id="id" :key="id"
-        button
-      />
+    <div border="~ border-2" w-full max-h-400px gap-0 overflow-y-auto>
+      <EventItem v-for="id in selectedEvents" :id="id" :key="id" button />
     </div>
   </Basic>
   <CreateEventModal

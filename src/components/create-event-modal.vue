@@ -17,14 +17,22 @@ const emit = defineEmits<{
 }>()
 
 const type = computed(() => {
-  if (init === undefined) { return 'both' }
-  if (Array.isArray(init)) { return 'collection' }
+  if (init === undefined) {
+    return 'both'
+  }
+  if (Array.isArray(init)) {
+    return 'collection'
+  }
   return 'atom'
 })
 
 const title = computed(() => {
-  if (type.value === 'both') { return '创建事件' }
-  if (type.value === 'atom') { return '创建原子事件' }
+  if (type.value === 'both') {
+    return '创建事件'
+  }
+  if (type.value === 'atom') {
+    return '创建原子事件'
+  }
   return '创建集合事件'
 })
 

@@ -8,7 +8,8 @@
     "dev": "pnpm update-api && vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint \"src/**/*.{ts,vue}\" --fix"
+    "lint": "eslint \"src/**/*.{ts,vue}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,vue}\""
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.42.1",

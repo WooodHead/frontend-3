@@ -14,7 +14,8 @@ const store = useStore()
       left: `${store.subUnitOffset(id) * UNIT_WIDTH}px`,
       top: `${HEADER_HEIGHT / 2}px`,
     }"
-    absolute row
+    absolute
+    row
   >
     <Unit v-for="subUnit of id.children" :key="subUnit.uid" :unit="subUnit" />
   </div>

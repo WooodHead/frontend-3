@@ -16,9 +16,13 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
 })
-watch(() => data.value?.description, desc => {
-  editContent.value = desc || ''
-}, { immediate: true })
+watch(
+  () => data.value?.description,
+  (desc) => {
+    editContent.value = desc || ''
+  },
+  { immediate: true }
+)
 
 const { mutateAsync: update } = useEventUpdate()
 const { mutateAsync: updateDesc, isLoading } = useGenerateDesc()
@@ -26,7 +30,9 @@ const { mutateAsync: updateDesc, isLoading } = useGenerateDesc()
 const editable = ref(false)
 const toggleEditable = async () => {
   editable.value = !editable.value
-  if (!eventId.value || editable.value) { return }
+  if (!eventId.value || editable.value) {
+    return
+  }
   await update({
     id: eventId.value,
     description: editContent.value,
@@ -43,16 +49,14 @@ const toggleEditable = async () => {
       >
         生成
       </ALink>
-      <ALink
-        :disabled="data?.done"
-        @click="toggleEditable"
-      >
+      <ALink :disabled="data?.done" @click="toggleEditable">
         {{ editable ? '保存' : '编辑' }}
       </ALink>
     </template>
     <ATextarea
       v-if="editable"
-      v-model="editContent" auto-size
+      v-model="editContent"
+      auto-size
       @blur="toggleEditable"
     />
     <div v-else prose leading-6>

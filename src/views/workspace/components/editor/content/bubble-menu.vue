@@ -7,8 +7,14 @@ const { editor } = storeToRefs(store)
 // TODO 完成浮动菜单
 
 const commands = [
-  { icon: 'i-radix-icons-font-bold', command: () => editor.value.commands.toggleBold() },
-  { icon: 'i-radix-icons-font-italic', command: () => editor.value.commands.toggleItalic() },
+  {
+    icon: 'i-radix-icons-font-bold',
+    command: () => editor.value.commands.toggleBold(),
+  },
+  {
+    icon: 'i-radix-icons-font-italic',
+    command: () => editor.value.commands.toggleItalic(),
+  },
 ]
 </script>
 
@@ -23,7 +29,8 @@ const commands = [
         v-for="{ icon, command } of commands"
         :key="icon"
         type="text"
-        rounded-0 text-text-1
+        rounded-0
+        text-text-1
         @click="command"
       >
         <template #icon>

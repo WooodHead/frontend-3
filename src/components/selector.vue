@@ -42,7 +42,7 @@ const searchValue = refDebounced(computedInputValue, 200) // 手动消抖
 const _modelValue = ref<SelectorOptionValue>()
 const computedModelValue = computed(() => modelValue || _modelValue.value)
 
-onErrorCaptured<AxiosError>(err => {
+onErrorCaptured<AxiosError>((err) => {
   Message.error(err.message)
 })
 
@@ -83,8 +83,10 @@ const handleModelUpdate = (rawValue: any) => {
 const handleFallback = (rawValue: any): SelectOptionData => {
   const value = rawValue as SelectorOptionValue
   switch (value.type) {
-    case 'event': return { label: `${value.value.serial}. ${value.value.name}`, value }
-    default: return { label: value.value.name, value }
+    case 'event':
+      return { label: `${value.value.serial}. ${value.value.name}`, value }
+    default:
+      return { label: value.value.name, value }
   }
 }
 

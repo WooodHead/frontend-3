@@ -3,7 +3,13 @@ import { useDrag } from 'vue3-dnd'
 import useWSStore from '../store'
 import { useGlobalStore } from '@/store'
 
-const { id, name, icon, darkIcon, size = 40 } = defineProps<{
+const {
+  id,
+  name,
+  icon,
+  darkIcon,
+  size = 40,
+} = defineProps<{
   id: string
   name: string
   icon: string
@@ -18,15 +24,19 @@ const { darkMode } = storeToRefs(globalStore)
 const [dragProps, dragSource] = useDrag({
   type: 'component-handler',
   item: { id },
-  collect: monitor => ({
+  collect: (monitor) => ({
     isDragging: monitor.isDragging(),
     dragID: monitor.getItem()?.id,
   }),
 })
 
 watch(dragProps, ({ isDragging, dragID }) => {
-  if (dragID === undefined) { WSStore.dragging = false }
-  if (dragID === id) { WSStore.dragging = isDragging }
+  if (dragID === undefined) {
+    WSStore.dragging = false
+  }
+  if (dragID === id) {
+    WSStore.dragging = isDragging
+  }
 })
 </script>
 
@@ -36,8 +46,10 @@ watch(dragProps, ({ isDragging, dragID }) => {
       :ref="dragSource"
       :class="dragProps.isDragging ? `invisible` : `visible`"
       center
-      w-16 h-16
-      transition-transform hover:scale-125
+      w-16
+      h-16
+      transition-transform
+      hover:scale-125
       cursor-pointer
     >
       <img
@@ -46,7 +58,7 @@ watch(dragProps, ({ isDragging, dragID }) => {
           height: `${size}px`,
         }"
         :src="darkMode ? darkIcon : icon"
-      >
+      />
     </div>
   </ATooltip>
 </template>

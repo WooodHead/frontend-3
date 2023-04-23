@@ -17,9 +17,13 @@ const { status } = defineProps<EditorProps>()
 
 const store = registerStore(status.positionId)
 const { editor, eventId, saving } = storeToRefs(store)
-watch(() => status, status => {
-  store.status = status
-}, { deep: true })
+watch(
+  () => status,
+  (status) => {
+    store.status = status
+  },
+  { deep: true }
+)
 
 const eventOption = ref<SelectorOptionValue>()
 
@@ -28,16 +32,24 @@ const { data } = useQuery({
   queryKey: computed(() => ['event', eventId.value]),
   queryFn: () => api.event.get(eventId.value!),
 })
-watch(data, data => {
-  if (!data) { return }
-  eventOption.value = { type: 'event', value: data, id: `event_${data.id}` }
-}, { deep: true })
+watch(
+  data,
+  (data) => {
+    if (!data) {
+      return
+    }
+    eventOption.value = { type: 'event', value: data, id: `event_${data.id}` }
+  },
+  { deep: true }
+)
 
 emitter.on('event-select', ({ id }) => {
   eventId.value = id
 })
 const handleSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
+  if (!event) {
+    return
+  }
   emitter.emit('event-select', { id: event.id })
 }
 
@@ -64,7 +76,11 @@ const handleCreate = (id: number) => {
       </template>
       <template #right>
         <div row space-x-2>
-          <AButton type="outline" title="创建新事件" @click="modalVisible = true">
+          <AButton
+            type="outline"
+            title="创建新事件"
+            @click="modalVisible = true"
+          >
             <template #icon>
               <div i-radix-icons-plus text-lg></div>
             </template>
@@ -89,8 +105,5 @@ const handleCreate = (id: number) => {
       </template>
     </ComponentFooter>
   </div>
-  <CreateEventModal
-    v-model:visible="modalVisible"
-    @before-ok="handleCreate"
-  />
+  <CreateEventModal v-model:visible="modalVisible" @before-ok="handleCreate" />
 </template>

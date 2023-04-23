@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useQueryClient } from '@tanstack/vue-query'
 import SearchTree from '../../component/search-tree/index.vue'
-import { useWorldviewCreate, useWorldviewQuery, useWorldviewRemove } from './query'
+import {
+  useWorldviewCreate,
+  useWorldviewQuery,
+  useWorldviewRemove,
+} from './query'
 import api from '@/api/api'
 
 const { data } = useWorldviewQuery()
@@ -48,7 +52,8 @@ const selectKey = ref<string>()
         />
         <AButton
           shrink-0
-          title="创建新条目" shape="square"
+          title="创建新条目"
+          shape="square"
           type="outline"
           @click="handleCreate()"
         >

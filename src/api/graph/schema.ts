@@ -2,14 +2,14 @@ export const EVENT = 'EVENT' // 事件
 export const CHARA = 'CHARA' // 角色
 export const SCENE = 'SCENE' // 场景
 
-export const HAPPENED_AFTER = 'HAPPENED_AFTER' as const// event to event 顺承
-export const LED_TO = 'LED_TO' as const// event to event 因果
-export const AFFECTED = 'AFFECTED' as const// event to event 影响
+export const HAPPENED_AFTER = 'HAPPENED_AFTER' as const // event to event 顺承
+export const LED_TO = 'LED_TO' as const // event to event 因果
+export const AFFECTED = 'AFFECTED' as const // event to event 影响
 export const INCLUDES = 'INCLUDES' as const // event to event 包含
-export const OCCURRED_IN = 'OCCURRED_IN' as const// event to scene 发生在
-export const HAS_RELATIONSHIP = 'HAS_RELATIONSHIP' as const// chara to chara 角色关系
-export const PARTICIPATED_IN = 'PARTICIPATED_IN' as const// chara to event 参与
-export const CONTAINS = 'CONTAINS' as const// scene to scene 场景包含
+export const OCCURRED_IN = 'OCCURRED_IN' as const // event to scene 发生在
+export const HAS_RELATIONSHIP = 'HAS_RELATIONSHIP' as const // chara to chara 角色关系
+export const PARTICIPATED_IN = 'PARTICIPATED_IN' as const // chara to event 参与
+export const CONTAINS = 'CONTAINS' as const // scene to scene 场景包含
 
 export declare const NodeType: {
   EVENT: 'EVENT'
@@ -17,7 +17,7 @@ export declare const NodeType: {
   SCENE: 'SCENE'
 }
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type NodeType = typeof NodeType[keyof typeof NodeType]
+export type NodeType = (typeof NodeType)[keyof typeof NodeType]
 export enum NodeEnum {
   EVENT,
   CHARA,
@@ -35,7 +35,7 @@ export declare const RelationType: {
   CONTAINS: 'CONTAINS'
 }
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type RelationType = typeof RelationType[keyof typeof RelationType]
+export type RelationType = (typeof RelationType)[keyof typeof RelationType]
 export enum RelationEnum {
   HAPPENED_AFTER,
   LED_TO,

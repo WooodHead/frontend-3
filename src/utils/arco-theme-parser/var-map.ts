@@ -9,7 +9,7 @@ export class VarMap {
 
   constructor(text: string, extra: VarMap[] = []) {
     this.solved = new Map<string, string>()
-    this.extra = extra.map(m => m.solved)
+    this.extra = extra.map((m) => m.solved)
 
     const success = this._parse(text)
     if (!success) {
@@ -19,7 +19,9 @@ export class VarMap {
 
   _parse(text: string) {
     const defs = text.matchAll(VAR_DEF_EXP)
-    if (!defs) { return }
+    if (!defs) {
+      return
+    }
 
     for (const def of defs) {
       const [, name, value] = def
@@ -29,8 +31,7 @@ export class VarMap {
           text: value.replace(VAR_EXP, '$'),
           var: match[1].replace(/^--/, ''),
         })
-      }
-      else {
+      } else {
         this.solved.set(name, value)
       }
     }
@@ -41,7 +42,9 @@ export class VarMap {
   _get(key: string) {
     for (const m of [this.solved, ...this.extra]) {
       const value = m.get(key)
-      if (value) { return value }
+      if (value) {
+        return value
+      }
     }
   }
 
@@ -51,7 +54,9 @@ export class VarMap {
       count = 0
       for (const [name, { text, var: varName }] of this.unsolved.entries()) {
         const varValue = this._get(varName)
-        if (!varValue) { continue }
+        if (!varValue) {
+          continue
+        }
         this.solved.set(name, text.replace('$', varValue))
         this.unsolved.delete(name)
         count += 1

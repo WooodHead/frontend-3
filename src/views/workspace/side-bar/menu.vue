@@ -18,8 +18,7 @@ const toggleDarkMode = () => {
     document.body.setAttribute('arco-theme', 'dark')
     document.body.classList.add('dark')
     document.body.style.colorScheme = 'dark'
-  }
-  else {
+  } else {
     document.body.setAttribute('arco-theme', 'light')
     document.body.classList.remove('dark')
     document.body.style.colorScheme = 'light'
@@ -28,9 +27,11 @@ const toggleDarkMode = () => {
 
 onMounted(async () => {
   const settings = await api.project.getSettings()
-  if (settings.darkMode) { toggleDarkMode() }
+  if (settings.darkMode) {
+    toggleDarkMode()
+  }
 })
-watch(darkMode, darkMode => {
+watch(darkMode, (darkMode) => {
   api.project.updateSettings({ darkMode })
 })
 
@@ -43,18 +44,25 @@ const menuConfig: { title: string; name: string }[] = [
 
 <template>
   <div
-    column justify-center
-    fixed left="-200px"
+    column
+    justify-center
+    fixed
+    left="-200px"
     transition-transform
     :translate-x="menuExpand ? '260px' : '0'"
-    w-200px h-full
-    bg-gray-2 shadow-lg
+    w-200px
+    h-full
+    bg-gray-2
+    shadow-lg
     z-20
   >
     <div
       :class="`${darkMode ? `i-radix-icons-moon` : `i-radix-icons-sun`}`"
-      w-32px h-32px
-      absolute top-6 right-6
+      w-32px
+      h-32px
+      absolute
+      top-6
+      right-6
       cursor-pointer
       text-gray-5
       @click="toggleDarkMode"
@@ -62,7 +70,10 @@ const menuConfig: { title: string; name: string }[] = [
     <AButton
       v-for="{ title, name } of menuConfig"
       :key="title"
-      center h-64px rounded-0 text-xl
+      center
+      h-64px
+      rounded-0
+      text-xl
       @click="router.push({ name })"
     >
       {{ title }}

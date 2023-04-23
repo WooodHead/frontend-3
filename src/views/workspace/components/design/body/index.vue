@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CharaView from './views/character/index.vue'
+import CharaView from './views/chara/index.vue'
 import SceneView from './views/scene/index.vue'
 import WorldView from './views/worldview/index.vue'
 

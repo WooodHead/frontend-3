@@ -14,7 +14,9 @@ const emit = defineEmits<{
 const visible = ref(false)
 
 const handleSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
+  if (!event) {
+    return
+  }
   emit('add', event.id)
   visible.value = false
 }
@@ -32,7 +34,8 @@ const handleSelect = (event: EventEntity | undefined) => {
         <template #content>
           <div card-border p-2>
             <Selector
-              event :placeholder="`选择${title}`"
+              event
+              :placeholder="`选择${title}`"
               @select:event="handleSelect"
             />
           </div>
@@ -41,8 +44,10 @@ const handleSelect = (event: EventEntity | undefined) => {
     </template>
     <EventItem
       v-for="id of ids"
-      :id="id" :key="id"
-      button removable
+      :id="id"
+      :key="id"
+      button
+      removable
       :remove-text="`移除${title}`"
       @remove="$emit('remove', $event)"
     />

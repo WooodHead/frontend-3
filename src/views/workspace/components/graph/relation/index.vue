@@ -9,9 +9,11 @@ interface RelationProps {
   targetPosition: string
 }
 
-const { sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition } = defineProps<RelationProps>()
+const { sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition } =
+  defineProps<RelationProps>()
 
-const { getNodes, connectionStartHandle, onConnectEnd, addEdges, edges } = useVueFlow()
+const { getNodes, connectionStartHandle, onConnectEnd, addEdges, edges } =
+  useVueFlow()
 </script>
 
 <template>

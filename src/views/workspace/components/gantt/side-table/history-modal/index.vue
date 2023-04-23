@@ -3,24 +3,18 @@
 </script>
 
 <template>
-  <APopover
-    title="操作历史记录"
-    trigger="click"
-    w-300px
-  >
+  <APopover title="操作历史记录" trigger="click" w-300px>
     <slot></slot>
     <template #content>
       <AList my-4>
-        <AListItem>
-          1
-        </AListItem>
+        <AListItem> 1 </AListItem>
       </AList>
     </template>
   </APopover>
 </template>
 
 <style scoped>
-.arco-popover-popup-content{
+.arco-popover-popup-content {
   padding: 12px !important;
 }
 </style>

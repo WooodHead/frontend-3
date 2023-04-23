@@ -24,7 +24,9 @@ const model = ref<{
   range?: UnitIDRange
 }>({})
 watchEffect(() => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   const { name, alias, range } = data.value
   model.value = {
     name,
@@ -36,7 +38,9 @@ watchEffect(() => {
 const editable = ref(false)
 const toggleEditable = () => {
   editable.value = !editable.value
-  if (editable.value) { return }
+  if (editable.value) {
+    return
+  }
   const { name, alias, range } = model.value
   update({
     id: data.value!.id,

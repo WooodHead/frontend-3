@@ -17,9 +17,13 @@ const { mutateAsync: update } = useMutation({
     Message.error(`更新失败: ${e.response?.data.message}`)
   },
 })
-watch(model, async model => {
-  await update(model)
-}, { deep: true })
+watch(
+  model,
+  async (model) => {
+    await update(model)
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -27,12 +31,8 @@ watch(model, async model => {
     <AForm :model="model">
       <AFormItem label="语言" field="lang">
         <ARadioGroup v-model="model.lang" type="button">
-          <ARadio value="cn">
-            中文
-          </ARadio>
-          <ARadio value="en">
-            English
-          </ARadio>
+          <ARadio value="cn"> 中文 </ARadio>
+          <ARadio value="en"> English </ARadio>
         </ARadioGroup>
       </AFormItem>
     </AForm>

@@ -22,4 +22,3 @@ const editable = ref(false)
     <ContentEditor :editable="editable" />
   </ACard>
 </template>
-

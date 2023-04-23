@@ -14,7 +14,7 @@ export interface UseDraggableOptions {
 
 export const useDraggable = (
   target: MaybeComputedRef<HTMLElement | SVGElement | null | undefined>,
-  { onMove, onEnd, minDistance = 5 }: UseDraggableOptions = {},
+  { onMove, onEnd, minDistance = 5 }: UseDraggableOptions = {}
 ) => {
   const start = ref<Position>()
   const delta = ref<Position>({ x: 0, y: 0 })
@@ -26,11 +26,15 @@ export const useDraggable = (
   }
 
   const handleMove = (e: PointerEvent) => {
-    if (!start.value) { return }
+    if (!start.value) {
+      return
+    }
     const { x, y } = start.value
     const nowDelta = { x: e.clientX - x, y: e.clientY - y }
 
-    if (isDragging.value) { delta.value = nowDelta }
+    if (isDragging.value) {
+      delta.value = nowDelta
+    }
     // 拖动距离过短时不触发拖动
     else if (Math.abs(nowDelta.x) >= minDistance) {
       isDragging.value = true
@@ -41,7 +45,9 @@ export const useDraggable = (
   }
 
   const handleEnd = (e: PointerEvent) => {
-    if (onEnd) { onEnd(delta.value, e) }
+    if (onEnd) {
+      onEnd(delta.value, e)
+    }
 
     start.value = undefined
     isDragging.value = false
@@ -51,12 +57,16 @@ export const useDraggable = (
   useEventListener(target, 'pointerdown', handleStart, true)
   useEventListener(document, 'pointerup', handleEnd, true)
 
-  const cleanup = ref<(() => void)>()
-  watch(start, start => {
+  const cleanup = ref<() => void>()
+  watch(start, (start) => {
     if (start) {
-      cleanup.value = useEventListener(document, 'pointermove', handleMove, true)
-    }
-    else {
+      cleanup.value = useEventListener(
+        document,
+        'pointermove',
+        handleMove,
+        true
+      )
+    } else {
       cleanup.value?.()
       cleanup.value = undefined
     }

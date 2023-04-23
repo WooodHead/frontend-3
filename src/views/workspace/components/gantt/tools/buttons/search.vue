@@ -4,7 +4,9 @@ import type { EventEntity } from '@/api/api-base'
 import emitter from '@/utils/emitter'
 const visible = ref(false)
 const handleSelect = (event: EventEntity | undefined) => {
-  if (!event) { return }
+  if (!event) {
+    return
+  }
   emitter.emit('event-select', { id: event.id })
 }
 </script>

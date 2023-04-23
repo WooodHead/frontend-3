@@ -6,33 +6,31 @@ const router = useRouter()
   <div class="modal-container">
     <AModal
       :render-to-body="false"
-      default-visible simple :footer="false"
+      default-visible
+      simple
+      :footer="false"
       column
       @close="router.back()"
     >
       <div center-y w-50vw prose>
-        <AInputSearch rounded-b-0 w-full h-60px placeholder="输入想要搜索的信息" />
-        <h1 text-center>
-          可以尝试问问……
-        </h1>
-        <div>
-        </div>
+        <AInputSearch
+          rounded-b-0
+          w-full
+          h-60px
+          placeholder="输入想要搜索的信息"
+        />
+        <h1 text-center>可以尝试问问……</h1>
+        <div></div>
         <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon>
-            😄
-          </template>
+          <template #icon> 😄 </template>
           “2022年2月4日都发生了什么事情？”
         </AButton>
         <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon>
-            🤔️
-          </template>
+          <template #icon> 🤔️ </template>
           “皮特在保险柜里放了什么东西？”
         </AButton>
         <AButton center rounded-lg mb-4 w="[calc(100%-32px)]" h-60px>
-          <template #icon>
-            😯
-          </template>
+          <template #icon> 😯 </template>
           “皮特和露易丝是什么关系？”
         </AButton>
       </div>

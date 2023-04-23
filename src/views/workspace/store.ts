@@ -10,7 +10,7 @@ const useWSStore = defineStore({
     layout: new Layout(),
   }),
   getters: {
-    components: state => state.layout.components,
+    components: (state) => state.layout.components,
   },
   actions: {
     insertComponent(handlerID: string, dropID: IPositionID) {

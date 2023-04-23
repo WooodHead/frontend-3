@@ -24,7 +24,6 @@ const app = createApp(App)
   .use(router)
   .use(ArcoVue)
 
-app.directive('click-outside', ClickOutside)
-  .directive('auto-focus', AutoFocus)
+app.directive('click-outside', ClickOutside).directive('auto-focus', AutoFocus)
 
 app.mount('#app')

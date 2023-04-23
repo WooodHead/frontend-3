@@ -8,7 +8,9 @@ const { subject } = storeToRefs(store)
 <template>
   <Selector
     v-model="subject"
-    event chara scene
+    event
+    chara
+    scene
     placeholder="选择事件、角色或场景"
   />
 </template>

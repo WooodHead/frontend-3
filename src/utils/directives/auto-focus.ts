@@ -1,7 +1,7 @@
 import type { Directive } from 'vue'
 
 export const AutoFocus: Directive<HTMLElement> = {
-  mounted: el => {
+  mounted: (el) => {
     el.focus()
   },
 }

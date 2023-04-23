@@ -40,7 +40,11 @@ export const useTempFileUpload = () => {
  */
 export const useFileUpload = () => {
   return useMutation({
-    mutationFn: async ({ file, position, replace = false }: {
+    mutationFn: async ({
+      file,
+      position,
+      replace = false,
+    }: {
       file: File
       position: string
       replace?: boolean
@@ -60,7 +64,6 @@ export const useFileUpload = () => {
     onError: ({ message }: AxiosError) => {
       Message.error(`上传失败: ${message}`)
     },
-
   })
 }
 

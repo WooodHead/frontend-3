@@ -10,12 +10,14 @@ const { suspense } = useQuery({
   cacheTime: 0,
   queryKey: ['project', 'workspace', 'lock'],
   queryFn: () => api.project.getWorkspace(),
-  onSuccess: ({ lock }) => { store.lock = lock },
+  onSuccess: ({ lock }) => {
+    store.lock = lock
+  },
 })
 
 await suspense()
 
-watch(lock, lock => {
+watch(lock, (lock) => {
   api.project.updateWorkspace({ lock })
 })
 </script>
@@ -23,7 +25,8 @@ watch(lock, lock => {
 <template>
   <AButton
     title="锁定事件列表"
-    long h-full
+    long
+    h-full
     :type="lock ? `primary` : `outline`"
     @click="lock = !lock"
   >

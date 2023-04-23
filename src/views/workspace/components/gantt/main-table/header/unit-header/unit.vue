@@ -20,27 +20,33 @@ useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
     if (isIntersecting) {
-      if (left) { store.loadLeft() }
-      if (right) { store.loadRight() }
+      if (left) {
+        store.loadLeft()
+      }
+      if (right) {
+        store.loadRight()
+      }
     }
   },
   {
     root: viewPort,
     threshold: [0, 1],
-  },
+  }
 )
 
 // 检测当前单位是否可见
 useIntersectionObserver(
   target,
   ([{ isIntersecting }]) => {
-    if (isIntersecting) { store.visibleUnit = id }
+    if (isIntersecting) {
+      store.visibleUnit = id
+    }
   },
   {
     root: viewPort,
     rootMargin: '0px -50% 0px -50%',
     threshold: [0, 1],
-  },
+  }
 )
 </script>
 
@@ -53,10 +59,12 @@ useIntersectionObserver(
       width: `${id.children.length * UNIT_WIDTH}px`,
       height: `${HEADER_HEIGHT / 2}px`,
     }"
-    absolute center
+    absolute
+    center
     bg-bg-2
     border="r b border-2"
-    select-none z-50
+    select-none
+    z-50
   >
     {{ id.toString() }}
   </div>

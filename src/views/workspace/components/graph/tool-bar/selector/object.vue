@@ -6,8 +6,5 @@ const { subject } = storeToRefs(store)
 </script>
 
 <template>
-  <ASelect
-    :disabled="!subject"
-    placeholder="选择事件、角色或场景"
-  />
+  <ASelect :disabled="!subject" placeholder="选择事件、角色或场景" />
 </template>

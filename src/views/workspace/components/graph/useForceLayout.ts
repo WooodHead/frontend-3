@@ -1,6 +1,12 @@
 import { useVueFlow } from '@vue-flow/core'
 import type { SimulationLinkDatum, SimulationNodeDatum } from 'd3-force'
-import { forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation } from 'd3-force'
+import {
+  forceCenter,
+  forceCollide,
+  forceLink,
+  forceManyBody,
+  forceSimulation,
+} from 'd3-force'
 
 interface UseForceLayoutConfig {
   forceCenterPosition?: { x: number; y: number }
@@ -14,8 +20,7 @@ interface UseForceLayoutConfig {
  * @param edges flow中的边
  * @param configs  配置项
  */
-export const useForceLayout = (
-  configs?: UseForceLayoutConfig) => {
+export const useForceLayout = (configs?: UseForceLayoutConfig) => {
   const { forceCenterPosition } = configs ?? {}
 
   const { onNodeDrag, nodes, edges } = useVueFlow()
@@ -28,7 +33,10 @@ export const useForceLayout = (
     .force('collide', forceCollide().radius(50))
 
   if (forceCenterPosition) {
-    sim.force('center', forceCenter(forceCenterPosition.x, forceCenterPosition.y))
+    sim.force(
+      'center',
+      forceCenter(forceCenterPosition.x, forceCenterPosition.y)
+    )
   }
 
   // 每tick根据simNodes更新nodes位置
@@ -60,29 +68,33 @@ export const useForceLayout = (
 
   // 节点更新的监听
   // 如果节点在更新前已经存在，则继承其对应的模拟节点的；否则新建模拟节点
-  watch(() => nodes.value.length, length => {
-    const simNodes = sim.nodes()
-    const newSimNodes: SimulationNodeDatum[] = Array.from({ length })
+  watch(
+    () => nodes.value.length,
+    (length) => {
+      const simNodes = sim.nodes()
+      const newSimNodes: SimulationNodeDatum[] = Array.from({ length })
 
-    for (const [newIndex, node] of nodes.value.entries()) {
-      const oldIndex = indexLookup.value.get(node.id)
-      if (oldIndex) {
-        const simNode = simNodes[oldIndex]
-        simNode.index = newIndex
-        newSimNodes[newIndex] = simNode
-      }
-      else {
-        newSimNodes[newIndex] = {
-          index: newIndex,
-          x: node.position.x,
-          y: node.position.y,
+      for (const [newIndex, node] of nodes.value.entries()) {
+        const oldIndex = indexLookup.value.get(node.id)
+        if (oldIndex) {
+          const simNode = simNodes[oldIndex]
+          simNode.index = newIndex
+          newSimNodes[newIndex] = simNode
+        } else {
+          newSimNodes[newIndex] = {
+            index: newIndex,
+            x: node.position.x,
+            y: node.position.y,
+          }
         }
       }
-    }
 
-    sim.nodes(newSimNodes)
-    indexLookup.value = new Map(nodes.value.map(({ id }, index) => [id, index]))
-  })
+      sim.nodes(newSimNodes)
+      indexLookup.value = new Map(
+        nodes.value.map(({ id }, index) => [id, index])
+      )
+    }
+  )
 
   // 节点拖拽的监听
   onNodeDrag(({ node }) => {

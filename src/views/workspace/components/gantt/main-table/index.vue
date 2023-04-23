@@ -11,14 +11,18 @@ const { viewPort } = storeToRefs(store)
 
 const tableRef = ref<HTMLElement | null>(null)
 const { x, isDragging } = useDraggable(tableRef, {
-  onEnd: ({ x }) => { store.offset.value += x },
+  onEnd: ({ x }) => {
+    store.offset.value += x
+  },
 })
-watch(isDragging, dragging => {
+watch(isDragging, (dragging) => {
   store.dragging = dragging
 })
 
 const handleWheel = (e: WheelEvent) => {
-  if (isDragging.value) { return }
+  if (isDragging.value) {
+    return
+  }
   store.offset.value -= Math.sign(e.deltaY) * 100
 }
 </script>
@@ -30,7 +34,9 @@ const handleWheel = (e: WheelEvent) => {
         ref="tableRef"
         :style="{ transform: `translateX(${store.offset.value + x}px)` }"
         :transition="!isDragging && `transform`"
-        column absolute h-full
+        column
+        absolute
+        h-full
         @wheel.passive="handleWheel"
       >
         <Header />
@@ -38,11 +44,7 @@ const handleWheel = (e: WheelEvent) => {
       </div>
     </div>
   </div>
-  <div
-    center-y
-    fixed m-auto left-0 right-0 bottom-10
-    z-100 space-y-4
-  >
+  <div center-y fixed m-auto left-0 right-0 bottom-10 z-100 space-y-4>
     <EventSelect />
     <UnitSelect />
   </div>

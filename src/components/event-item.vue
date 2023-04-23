@@ -5,7 +5,15 @@ import Item from '@/components/item/index.vue'
 import { selectEvent } from '@/api/event'
 import api from '@/api/api'
 
-const { id, height, button = false, eventSelect = false, removable, removeText, animate } = defineProps<{
+const {
+  id,
+  height,
+  button = false,
+  eventSelect = false,
+  removable,
+  removeText,
+  animate,
+} = defineProps<{
   id: number
   height?: number
   button?: boolean
@@ -27,7 +35,9 @@ const { data } = useQuery({
   select: selectEvent,
 })
 const handleClick = async () => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   emit('click', data.value.id)
   if (eventSelect) {
     emitter.emit('event-select', { id: data.value.id })
@@ -49,13 +59,13 @@ const handleClick = async () => {
     <div center min-w-20px shrink-0 p-2>
       <div
         :style="{ backgroundColor: data?.color ?? '#93c5fd' }"
-        w-12px h-12px rounded-sm
+        w-12px
+        h-12px
+        rounded-sm
       ></div>
     </div>
     <div grow column p-1 overflow-hidden>
-      <div text="xs text-1" ellipsis>
-        {{ data?.serial }}. {{ data?.name }}
-      </div>
+      <div text="xs text-1" ellipsis>{{ data?.serial }}. {{ data?.name }}</div>
       <div text="xs text-3" ellipsis>
         {{ data?.range.start }} - {{ data?.range.end }}
       </div>

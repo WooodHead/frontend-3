@@ -22,8 +22,7 @@ const filterTree = (text: string, data: TreeNodeData[]): TreeNodeData[] => {
   for (const node of data) {
     if (node.title?.toLowerCase().includes(text)) {
       result.push({ ...node })
-    }
-    else if (node.children) {
+    } else if (node.children) {
       const filteredChildren = filterTree(text, node.children)
       if (filteredChildren.length) {
         result.push({ ...node, children: filteredChildren })
@@ -35,12 +34,16 @@ const filterTree = (text: string, data: TreeNodeData[]): TreeNodeData[] => {
 }
 
 const handleCreate = ({ key }: TreeNodeData) => {
-  if (!key) { return }
+  if (!key) {
+    return
+  }
   emit('create', key as number)
 }
 
 const handleRemove = (key: string | number) => {
-  if (!key) { return }
+  if (!key) {
+    return
+  }
   emit('remove', key as number)
 }
 
@@ -48,9 +51,12 @@ const nowData = ref(data)
 watch(
   () => ({ search, data }),
   ({ search, data }) => {
-    if (!search) { nowData.value = data }
-    else { nowData.value = filterTree(search, data) }
-  },
+    if (!search) {
+      nowData.value = data
+    } else {
+      nowData.value = filterTree(search, data)
+    }
+  }
 )
 </script>
 
@@ -66,18 +72,12 @@ watch(
   >
     <template #extra="nodeData">
       <AButtonGroup absolute right-2>
-        <AButton
-          size="mini" type="text"
-          @click="handleCreate(nodeData)"
-        >
+        <AButton size="mini" type="text" @click="handleCreate(nodeData)">
           <template #icon>
             <div i-radix-icons-plus></div>
           </template>
         </AButton>
-        <AButton
-          size="mini" type="text"
-          @click="handleRemove(nodeData)"
-        >
+        <AButton size="mini" type="text" @click="handleRemove(nodeData)">
           <template #icon>
             <div i-radix-icons-trash></div>
           </template>

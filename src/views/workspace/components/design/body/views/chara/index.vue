@@ -13,7 +13,7 @@ const client = useQueryClient()
 const { data } = useQuery({
   queryKey: ['chara', 'list'],
   queryFn: () => api.chara.getAll(),
-  onSuccess: charas => {
+  onSuccess: (charas) => {
     for (const chara of charas) {
       client.setQueryData(['chara', chara.id], chara)
     }
@@ -40,14 +40,12 @@ watchEffect(() => {
 <template>
   <ResizeLayout full>
     <template #side>
-      <div
-        center-x gap-1
-        p-2 border="b border-2"
-      >
+      <div center-x gap-1 p-2 border="b border-2">
         <div row grow gap-1>
           <AInput
             v-model="searchText"
-            grow size="small"
+            grow
+            size="small"
             placeholder="搜索角色"
             allow-clear
           />
@@ -59,7 +57,8 @@ watchEffect(() => {
         </div>
         <AButton
           title="创建新角色"
-          size="small" type="outline"
+          size="small"
+          type="outline"
           shrink-0
           :loading="createLoading"
           @click="create({ name: '新角色' })"
@@ -72,8 +71,10 @@ watchEffect(() => {
       <div h-0 grow overflow-y-auto>
         <CharaItem
           v-for="{ id } of list"
-          :id="id" :key="id"
-          button removable
+          :id="id"
+          :key="id"
+          button
+          removable
           @click="charaId = id"
           @remove="charaId === id && (charaId = undefined)"
         />

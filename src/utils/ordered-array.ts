@@ -19,11 +19,9 @@ export class OrderedArray<T extends Record<string, any>, K> {
       const cmp = this._comparor(key, k)
       if (cmp < 0) {
         upperBound = mid
-      }
-      else if (cmp > 0) {
+      } else if (cmp > 0) {
         lowerBound = mid + 1
-      }
-      else {
+      } else {
         lowerBound = mid
         break
       }
@@ -43,7 +41,9 @@ export class OrderedArray<T extends Record<string, any>, K> {
     const indexes: number[] = []
     for (const [i, [, d]] of this._data.entries()) {
       for (const [key, value] of Object.entries(data)) {
-        if (d[key] !== value) { continue }
+        if (d[key] !== value) {
+          continue
+        }
       }
       indexes.push(i)
     }
@@ -54,11 +54,16 @@ export class OrderedArray<T extends Record<string, any>, K> {
 
   order(key: K, data?: Partial<T>) {
     return this._data.findIndex(([k, v]) => {
-      if (this._comparor(k, key) !== 0) { return false }
-      if (!data) { return true }
-      else {
+      if (this._comparor(k, key) !== 0) {
+        return false
+      }
+      if (!data) {
+        return true
+      } else {
         for (const [key, value] of Object.entries(data)) {
-          if (v[key] !== value) { return false }
+          if (v[key] !== value) {
+            return false
+          }
         }
         return true
       }
@@ -68,7 +73,9 @@ export class OrderedArray<T extends Record<string, any>, K> {
   orderByData(data: Partial<T>) {
     return this._data.findIndex(([, v]) => {
       for (const [key, value] of Object.entries(data)) {
-        if (v[key] !== value) { return false }
+        if (v[key] !== value) {
+          return false
+        }
       }
       return true
     })
@@ -94,11 +101,9 @@ export class OrderedArray<T extends Record<string, any>, K> {
 export const UnitIDComparor = (a: UnitID, b: UnitID) => {
   if (a.isBefore(b)) {
     return -1
-  }
-  else if (a.isAfter(b)) {
+  } else if (a.isAfter(b)) {
     return 1
-  }
-  else {
+  } else {
     return 0
   }
 }
@@ -106,17 +111,13 @@ export const UnitIDComparor = (a: UnitID, b: UnitID) => {
 export const UnitIDRangeComparor = (a: UnitIDRange, b: UnitIDRange) => {
   if (a.start.isBefore(b.start)) {
     return -1
-  }
-  else if (a.start.isAfter(b.start)) {
+  } else if (a.start.isAfter(b.start)) {
     return 1
-  }
-  else if (a.end.isBefore(b.end)) {
+  } else if (a.end.isBefore(b.end)) {
     return -1
-  }
-  else if (a.end.isAfter(b.end)) {
+  } else if (a.end.isAfter(b.end)) {
     return 1
-  }
-  else {
+  } else {
     return 0
   }
 }

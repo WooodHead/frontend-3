@@ -17,13 +17,17 @@ const { data } = useQuery({
   select: selectEvent,
 })
 watchEffect(() => {
-  if (!data.value) { return }
+  if (!data.value) {
+    return
+  }
   range.value = data.value.range
 })
 
 const { mutateAsync: update } = useEventUpdate()
 const handleVisibleChange = async (visible: boolean) => {
-  if (!eventId.value || visible) { return }
+  if (!eventId.value || visible) {
+    return
+  }
   update({
     id: eventId.value,
     ...range.value?.toJSON(),
@@ -39,9 +43,7 @@ const handleVisibleChange = async (visible: boolean) => {
         :popup-translate="[0, 8]"
         @popup-visible-change="handleVisibleChange"
       >
-        <ALink :disabled="data?.done">
-          修改
-        </ALink>
+        <ALink :disabled="data?.done"> 修改 </ALink>
         <template #content>
           <div card-border p-2>
             <UnitRangePicker v-model="range" />

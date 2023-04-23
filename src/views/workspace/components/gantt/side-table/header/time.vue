@@ -8,7 +8,9 @@ const { unit, visibleUnit } = storeToRefs(store)
 
 const timePickerVisible = ref(false)
 const timePickerValue = computed(() => {
-  if (!unit.value || !visibleUnit.value) { return undefined }
+  if (!unit.value || !visibleUnit.value) {
+    return undefined
+  }
   return {
     unit: unit.value,
     time: visibleUnit.value?.toDate(),

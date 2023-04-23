@@ -12,10 +12,7 @@ const offset = computed(() => store.subUnitOffset(id) * UNIT_WIDTH)
 </script>
 
 <template>
-  <div
-    :style="{ left: `${offset}px` }"
-    absolute row z-0
-  >
+  <div :style="{ left: `${offset}px` }" absolute row z-0>
     <Unit v-for="subID of id.children" :id="subID" :key="subID.uid" />
   </div>
 </template>

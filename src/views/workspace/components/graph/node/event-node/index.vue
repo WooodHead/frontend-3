@@ -16,11 +16,13 @@ const target = ref<HTMLElement | null>(null)
   <div
     ref="target"
     card
-    relative center
+    relative
+    center
     square-120px
-    p-2 text-center
+    p-2
+    text-center
     transition-colors
-    :bg=" node.selected ? `blue-2` : `gray-1`"
+    :bg="node.selected ? `blue-2` : `gray-1`"
     :border="`~ ${node.selected ? `border-4` : `border-2`}`"
   >
     <Presence>

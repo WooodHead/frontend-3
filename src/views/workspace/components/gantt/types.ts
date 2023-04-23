@@ -6,4 +6,3 @@ export interface IGanttData {
   end: UnitID
   events: string[]
 }
-

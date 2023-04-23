@@ -6,10 +6,14 @@ import { useEventUpdate } from '@/api/event'
 import Resolved from '@/components/chara-badge-table/resolved.vue'
 import Unresolved from '@/components/chara-badge-table/unresolved.vue'
 import { useRelationsQuery } from '@/api/graph'
-import { EVENT } from '@/api/graph/schema' 
+import { EVENT } from '@/api/graph/schema'
 import type { UnresolvedEntityDto } from '@/api/api-base'
 
-const { eventId, editable = false, disabled = false } = defineProps<{
+const {
+  eventId,
+  editable = false,
+  disabled = false,
+} = defineProps<{
   eventId: number
   editable?: boolean
   disabled?: boolean
@@ -21,10 +25,12 @@ const { data: unresolved } = useQuery({
   select: ({ unresolved }) => unresolved as UnresolvedEntityDto[],
 })
 const { mutateAsync: update } = useEventUpdate()
-const { data: relations } = useRelationsQuery(computed(() => ({
-  type: EVENT,
-  id: eventId,
-})))
+const { data: relations } = useRelationsQuery(
+  computed(() => ({
+    type: EVENT,
+    id: eventId,
+  }))
+)
 
 const resolved = computed(() => relations.value?.PARTICIPATED_IN.from ?? [])
 
@@ -42,7 +48,8 @@ const handleRemoveUnresolved = async (name: string) => {
     <AddButton v-if="editable && !disabled" :event-id="eventId" />
     <Resolved
       v-for="id of resolved"
-      :id="id" :key="id"
+      :id="id"
+      :key="id"
       :closable="editable"
       :disabled="disabled"
       :event-id="eventId"
@@ -50,7 +57,8 @@ const handleRemoveUnresolved = async (name: string) => {
     <Unresolved
       v-for="{ name, options } of unresolved ?? []"
       :key="name"
-      :name="name" :options="options"
+      :name="name"
+      :options="options"
       :event-id="eventId"
       :closable="editable"
       :disabled="disabled"

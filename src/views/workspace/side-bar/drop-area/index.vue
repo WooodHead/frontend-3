@@ -22,8 +22,12 @@ const blocks: BlockProps[] = [
   <Motion
     v-bind="fadeInOut"
     :transition="{ duration: 0.1 }"
-    full fixed top-0 left-0
-    bg="white/20" backdrop="filter blur-8"
+    full
+    fixed
+    top-0
+    left-0
+    bg="white/20"
+    backdrop="filter blur-8"
     z-20
   >
     <div full grid="~ cols-10 rows-5" gap-2 p-2>

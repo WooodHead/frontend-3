@@ -24,12 +24,15 @@ const { x, y } = useDraggable(target, {
     position.y += y
   },
 })
-watch(() => show, show => {
-  if (!show) {
-    position.x = 0
-    position.y = 0
+watch(
+  () => show,
+  (show) => {
+    if (!show) {
+      position.x = 0
+      position.y = 0
+    }
   }
-})
+)
 </script>
 
 <template>
@@ -38,10 +41,14 @@ watch(() => show, show => {
       v-if="show"
       v-bind="fadeInOut"
       ref="target"
-      :style="{ transform: `translate(${position.x + x}px, ${position.y + y}px)` }"
+      :style="{
+        transform: `translate(${position.x + x}px, ${position.y + y}px)`,
+      }"
       card-border
-      column relative
-      w-400px h-auto
+      column
+      relative
+      w-400px
+      h-auto
       cursor-move
     >
       <div grow w-full center p-2>

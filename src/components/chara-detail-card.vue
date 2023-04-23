@@ -17,7 +17,9 @@ const { data, isSuccess, isLoading, isError } = useQuery({
 
 const avatarName = computed(() => {
   const name = data.value?.name
-  if (!name) { return undefined }
+  if (!name) {
+    return undefined
+  }
   return name.includes(' ') ? name.split(' ')[0] : name.slice(-2)
 })
 
@@ -33,7 +35,7 @@ const avatarName = computed(() => {
   >
     <div w-full center-x gap-4 m-4>
       <AAvatar :size="48">
-        <img v-if="data?.avatar" :src="data.avatar">
+        <img v-if="data?.avatar" :src="data.avatar" />
         <div v-else>
           {{ avatarName }}
         </div>

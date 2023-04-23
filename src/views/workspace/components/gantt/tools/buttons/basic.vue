@@ -14,15 +14,8 @@ const handleClick = (ev: MouseEvent) => {
 </script>
 
 <template>
-  <ATooltip
-    v-model:popup-visible="visible"
-    position="left"
-    :content="tooltip"
-  >
-    <AButton
-      shape="circle" type="primary" size="large"
-      @click="handleClick"
-    >
+  <ATooltip v-model:popup-visible="visible" position="left" :content="tooltip">
+    <AButton shape="circle" type="primary" size="large" @click="handleClick">
       <slot></slot>
     </AButton>
   </ATooltip>

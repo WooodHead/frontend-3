@@ -12,7 +12,9 @@ const visible = ref(false)
 
 const { mutateAsync: connect } = useRelationCreate()
 const handleAddChara = async (chara: CharaEntity | undefined) => {
-  if (!chara) { return }
+  if (!chara) {
+    return
+  }
   await connect({
     type: PARTICIPATED_IN,
     from: chara.id,

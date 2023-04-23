@@ -18,8 +18,10 @@ const { visibleUnit } = storeToRefs(store)
 
 watch(
   () => status,
-  status => { store.status = status },
-  { deep: true },
+  (status) => {
+    store.status = status
+  },
+  { deep: true }
 )
 
 const { suspense } = useQuery({
@@ -27,9 +29,12 @@ const { suspense } = useQuery({
   queryKey: ['project', 'workspace', 'origin'],
   queryFn: () => api.project.getWorkspace(),
   select: ({ origin }) => origin,
-  onSuccess: id => {
-    if (!id) { store.init(UnitID.fromDayjs('month')) }
-    else { store.init(UnitID.deserialize(id)) }
+  onSuccess: (id) => {
+    if (!id) {
+      store.init(UnitID.fromDayjs('month'))
+    } else {
+      store.init(UnitID.deserialize(id))
+    }
   },
   onError: () => {
     store.init(UnitID.fromDayjs('month'))
@@ -38,12 +43,18 @@ const { suspense } = useQuery({
 
 await suspense()
 
-watchDebounced(visibleUnit, visibleUnit => {
-  if (!visibleUnit) { return }
-  api.project.updateWorkspace({
-    origin: visibleUnit.serialize(),
-  })
-}, { debounce: 100 })
+watchDebounced(
+  visibleUnit,
+  (visibleUnit) => {
+    if (!visibleUnit) {
+      return
+    }
+    api.project.updateWorkspace({
+      origin: visibleUnit.serialize(),
+    })
+  },
+  { debounce: 100 }
+)
 </script>
 
 <template>
