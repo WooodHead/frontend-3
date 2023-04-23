@@ -49,7 +49,6 @@ export interface CreateEventDto {
 }
 
 export interface UpdateEventDto {
-  done?: boolean
   unresolved?: object[]
   name?: string
   description?: string | null
@@ -63,6 +62,10 @@ export interface UpdateEventDto {
   start?: string
   /** @format date-time */
   end?: string
+}
+
+export interface ToggleEventDoneDto {
+  done: boolean
 }
 
 export interface EventContentEntity {
@@ -560,6 +563,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<EventEntity, any>({
         path: `/event`,
         method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name ToggleDone
+     * @request PUT:/event/{id}/done
+     */
+    toggleDone: (id: number, data: ToggleEventDoneDto, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}/done`,
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
         format: 'json',
