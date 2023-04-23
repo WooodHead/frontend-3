@@ -10,438 +10,314 @@
  */
 
 export interface EventEntity {
-  type: "ATOM" | "COLLECTION";
-  id: number;
-  name: string;
-  description: string | null;
-  color: string;
-  serial: number;
+  type: 'ATOM' | 'COLLECTION'
+  id: number
+  name: string
+  description: string | null
+  color: string
+  serial: number
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
   /** @format date-time */
-  deleted: string | null;
-  unit: number;
+  deleted: string | null
+  unit: number
   /** @format date-time */
-  start: string;
+  start: string
   /** @format date-time */
-  end: string;
-  done: boolean;
-  unresolved: object;
-  contentId: number | null;
-  projectId: number;
+  end: string
+  done: boolean
+  unresolved: object
+  contentId: number | null
+  projectId: number
 }
 
 export interface CreateEventDto {
-  name: string;
-  description: string | null;
-  color: string;
+  name: string
+  description: string | null
+  color: string
   /**
    * @min 0
    * @max 8
    */
-  unit: number;
+  unit: number
   /** @format date-time */
-  start: string;
+  start: string
   /** @format date-time */
-  end: string;
-}
-
-export interface CharaOption {
-  id: number;
-  name: string;
-  alias: string;
-  score: number;
-}
-
-export interface Unresolved {
-  name: string;
-  options: CharaOption[];
+  end: string
 }
 
 export interface UpdateEventDto {
-  done?: boolean;
-  unresolved?: Unresolved[];
-  name?: string;
-  description?: string | null;
-  color?: string;
+  done?: boolean
+  unresolved?: object[]
+  name?: string
+  description?: string | null
+  color?: string
   /**
    * @min 0
    * @max 8
    */
-  unit?: number;
+  unit?: number
   /** @format date-time */
-  start?: string;
+  start?: string
   /** @format date-time */
-  end?: string;
+  end?: string
 }
 
 export interface EventContentEntity {
-  id: number;
+  id: number
   /** @format date-time */
-  updatedAt: string;
-  content: string;
-  cover: string | null;
-  eventId: number;
+  updatedAt: string
+  content: string
+  cover: string | null
+  eventId: number
 }
 
 export interface UpdateContentDto {
-  content?: string;
-  cover?: string;
+  content?: string
+  cover?: string
 }
 
 export interface EventTodoEntity {
-  id: number;
-  title: string;
-  color: string | null;
-  checked: boolean;
-  eventId: number | null;
+  id: number
+  title: string
+  color: string | null
+  checked: boolean
+  eventId: number | null
 }
 
 export interface CreateTodoDto {
-  title: string;
-  color?: string;
+  title: string
+  color?: string
 }
 
 export interface UpdateTodoDto {
-  color?: string;
-  checked?: boolean;
+  color?: string
+  checked?: boolean
 }
 
-export interface UserEntity {
-  id: number;
-  username: string;
-  phone: string | null;
-  email: string | null;
-  avatar: string | null;
-}
-
-export interface UserLoginRespDto {
-  access_token: string;
-}
-
-export interface CreateUserDto {
-  username: string;
-  password: string;
-  phone?: string;
-  email?: string;
-}
-
-export interface CreateProjectDto {
-  name: string;
-  description: string;
-}
-
-export interface ProjectEntity {
-  id: number;
-  serial: number;
-  name: string;
-  description: string | null;
-  /** @format date-time */
-  createdAt: string;
-  /** @format date-time */
-  updatedAt: string;
-  /** @format date-time */
-  deleted: string | null;
-}
-
-export interface UpdateProjectDto {
-  name?: string;
-  description?: string;
-}
-
-export interface WorkspaceEntity {
-  id: number;
-  origin: string | null;
-  layout: object[] | null;
-  lock: boolean;
-  projectId: number;
-}
-
-export interface UpdateWorkspaceDto {
-  origin?: string;
-  layout?: object[];
-  lock?: boolean;
-}
-
-export interface SettingsEntity {
-  id: number;
-  projectId: number;
-  darkMode: boolean;
-  lang: string;
-}
-
-export interface UpdateSettingsDto {
-  darkMode?: boolean;
-  lang?: string;
-}
-
-export interface CharacterEntity {
-  id: number;
-  name: string;
-  alias: string[];
-  description: string | null;
-  avatar: string | null;
-  /** @format date-time */
-  deleted: string | null;
-  unit: number | null;
-  /** @format date-time */
-  start: string | null;
-  /** @format date-time */
-  end: string | null;
-  projectId: number;
-}
-
-export interface CreateCharacterDto {
-  name: string;
-  alias?: string[];
-  description?: string;
-  avatar?: string;
+export interface CreateCharaDto {
+  name: string
+  alias?: string[]
+  description?: string
+  avatar?: string
   /**
    * @min 0
    * @max 8
    */
-  unit?: number;
+  unit?: number
   /** @format date-time */
-  start?: string;
+  start?: string
   /** @format date-time */
-  end?: string;
+  end?: string
 }
 
-export interface UpdateCharacterDto {
-  name?: string;
-  alias?: string[];
-  description?: string;
-  avatar?: string;
+export interface CharaEntity {
+  id: number
+  name: string
+  alias: string[]
+  description: string | null
+  avatar: string | null
+  /** @format date-time */
+  deleted: string | null
+  unit: number | null
+  /** @format date-time */
+  start: string | null
+  /** @format date-time */
+  end: string | null
+  projectId: number
+}
+
+export interface UpdateCharaDto {
+  name?: string
+  alias?: string[]
+  description?: string
+  avatar?: string
   /**
    * @min 0
    * @max 8
    */
-  unit?: number;
+  unit?: number
   /** @format date-time */
-  start?: string;
+  start?: string
   /** @format date-time */
-  end?: string;
-}
-
-export interface Relations {
-  /** @default [] */
-  from: number[];
-  /** @default [] */
-  to: number[];
-}
-
-export interface RelationsEntity {
-  /** @default {"from":[],"to":[]} */
-  HAPPENED_AFTER: Relations;
-  /** @default {"from":[],"to":[]} */
-  LED_TO: Relations;
-  /** @default {"from":[],"to":[]} */
-  AFFECTED: Relations;
-  /** @default {"from":[],"to":[]} */
-  INCLUDES: Relations;
-  /** @default {"from":[],"to":[]} */
-  OCCURRED_IN: Relations;
-  /** @default {"from":[],"to":[]} */
-  HAS_RELATIONSHIP: Relations;
-  /** @default {"from":[],"to":[]} */
-  PARTICIPATED_IN: Relations;
-  /** @default {"from":[],"to":[]} */
-  CONTAINS: Relations;
-}
-
-export interface RelationIdDto {
-  type:
-    | "HAPPENED_AFTER"
-    | "LED_TO"
-    | "AFFECTED"
-    | "INCLUDES"
-    | "OCCURRED_IN"
-    | "HAS_RELATIONSHIP"
-    | "PARTICIPATED_IN"
-    | "CONTAINS";
-  from?: number;
-  to?: number;
-}
-
-export interface RelationProperty {
-  projectId: number;
-}
-
-export interface RelationEntity {
-  label:
-    | "HAPPENED_AFTER"
-    | "LED_TO"
-    | "AFFECTED"
-    | "INCLUDES"
-    | "OCCURRED_IN"
-    | "HAS_RELATIONSHIP"
-    | "PARTICIPATED_IN"
-    | "CONTAINS";
-  identity: string;
-  start: string;
-  end: string;
-  properties: RelationProperty;
-}
-
-export interface NodeIdDto {
-  type: "EVENT" | "CHARA" | "SCENE";
-  id: number;
+  end?: string
 }
 
 export interface CreateSceneDto {
-  name: string;
-  description?: string;
+  name: string
+  description?: string
 }
 
 export interface SceneEntity {
-  id: number;
-  name: string;
-  alias: string[];
-  description: string | null;
+  id: number
+  name: string
+  alias: string[]
+  description: string | null
   /** @format date-time */
-  deleted: string | null;
-  superId: number | null;
-  projectId: number;
+  deleted: string | null
+  superId: number | null
+  projectId: number
 }
 
 export interface UpdateSceneDto {
-  name?: string;
-  description?: string;
-}
-
-export interface CreateWorldviewDto {
-  name: string;
-  description?: string;
-  path: string;
-  supId?: number;
-}
-
-export interface WorldviewEntity {
-  path: string;
-  id: number;
-  name: string;
-  description: string | null;
-  /** @format date-time */
-  deleted: string | null;
-  projectId: number;
-  contentId: number | null;
-}
-
-export interface UpdateWorldviewDto {
-  name?: string;
-  description?: string;
-  path?: string;
-  supId?: number;
-}
-
-export interface UploadTempFileDto {
-  /** @format binary */
-  file: File;
-}
-
-export interface RegisterFileDto {
-  /** 文件名称 */
-  name: string;
-  /** 文件夹路径 */
-  position: string;
-  /**
-   * 是否将文件夹原先内容删除并替换为新文件
-   *
-   * 适用于文件夹有且仅有一个文件的情况
-   */
-  replace?: boolean;
-}
-
-export interface UnregisterFileDto {
-  /** 待删除文件的名称，如果不指定则删除整个文件夹 */
-  name?: string;
-  /** 文件夹路径 */
-  position: string;
+  name?: string
+  description?: string
 }
 
 export interface UploadFileDto {
-  /** @format binary */
-  file: File;
-  position: string;
-  replace?: boolean;
+  position: string
 }
 
-export interface SummarizeDescDto {
-  length?: number;
-  /**
-   * @min 0
-   * @max 100
-   */
-  abstraction?: number;
+export interface RemoveFileDto {
+  position: string
 }
 
-export interface Resolved {
-  id: number;
+export interface CreateWorldviewDto {
+  name: string
+  description?: string
+  path: string
+  supId?: number
 }
 
-export interface CharaOptionsDto {
-  resolved: Resolved[];
-  unresolved: Unresolved[];
+export interface WorldviewEntity {
+  path: string
+  id: number
+  name: string
+  description: string | null
+  /** @format date-time */
+  deleted: string | null
+  projectId: number
+  contentId: number | null
 }
 
-import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from "axios";
+export interface UpdateWorldviewDto {
+  name?: string
+  description?: string
+  path?: string
+  supId?: number
+}
 
-export type QueryParamsType = Record<string | number, any>;
+export interface CreateProjectDto {
+  name: string
+  description: string
+}
 
-export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+export interface ProjectEntity {
+  id: number
+  serial: number
+  name: string
+  description: string | null
+  /** @format date-time */
+  createdAt: string
+  /** @format date-time */
+  updatedAt: string
+  /** @format date-time */
+  deleted: string | null
+}
+
+export interface UpdateProjectDto {
+  name?: string
+  description?: string
+}
+
+export interface WorkspaceEntity {
+  id: number
+  origin: string | null
+  layout: object[] | null
+  lock: boolean
+  projectId: number
+}
+
+export interface UpdateWorkspaceDto {
+  origin?: string
+  layout?: object[]
+  lock?: boolean
+}
+
+export interface SettingsEntity {
+  id: number
+  projectId: number
+  darkMode: boolean
+  lang: string
+}
+
+export interface UpdateSettingsDto {
+  darkMode?: boolean
+  lang?: string
+}
+
+export type SummarizeDescParams = object
+
+export interface EntityOption {
+  id: number
+  name: string
+  alias: string
+  score: number
+}
+
+export interface UnresolvedEntityDto {
+  name: string
+  options: EntityOption[]
+}
+
+import axios, { AxiosInstance, AxiosRequestConfig, HeadersDefaults, ResponseType } from 'axios'
+
+export type QueryParamsType = Record<string | number, any>
+
+export interface FullRequestParams extends Omit<AxiosRequestConfig, 'data' | 'params' | 'url' | 'responseType'> {
   /** set parameter to `true` for call `securityWorker` for this request */
-  secure?: boolean;
+  secure?: boolean
   /** request path */
-  path: string;
+  path: string
   /** content type of request body */
-  type?: ContentType;
+  type?: ContentType
   /** query params */
-  query?: QueryParamsType;
+  query?: QueryParamsType
   /** format of response (i.e. response.json() -> format: "json") */
-  format?: ResponseType;
+  format?: ResponseType
   /** request body */
-  body?: unknown;
+  body?: unknown
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
   securityWorker?: (
-    securityData: SecurityDataType | null,
-  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
-  secure?: boolean;
-  format?: ResponseType;
+    securityData: SecurityDataType | null
+  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void
+  secure?: boolean
+  format?: ResponseType
 }
 
 export enum ContentType {
-  Json = "application/json",
-  FormData = "multipart/form-data",
-  UrlEncoded = "application/x-www-form-urlencoded",
-  Text = "text/plain",
+  Json = 'application/json',
+  FormData = 'multipart/form-data',
+  UrlEncoded = 'application/x-www-form-urlencoded',
+  Text = 'text/plain',
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public instance: AxiosInstance;
-  private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
-  private secure?: boolean;
-  private format?: ResponseType;
+  public instance: AxiosInstance
+  private securityData: SecurityDataType | null = null
+  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
+  private secure?: boolean
+  private format?: ResponseType
 
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
-    this.secure = secure;
-    this.format = format;
-    this.securityWorker = securityWorker;
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || '' })
+    this.secure = secure
+    this.format = format
+    this.securityWorker = securityWorker
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
-    this.securityData = data;
-  };
+    this.securityData = data
+  }
 
   protected mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
-    const method = params1.method || (params2 && params2.method);
+    const method = params1.method || (params2 && params2.method)
 
     return {
       ...this.instance.defaults,
@@ -452,29 +328,29 @@ export class HttpClient<SecurityDataType = unknown> {
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
-    };
+    }
   }
 
   protected stringifyFormItem(formItem: unknown) {
-    if (typeof formItem === "object" && formItem !== null) {
-      return JSON.stringify(formItem);
+    if (typeof formItem === 'object' && formItem !== null) {
+      return JSON.stringify(formItem)
     } else {
-      return `${formItem}`;
+      return `${formItem}`
     }
   }
 
   protected createFormData(input: Record<string, unknown>): FormData {
     return Object.keys(input || {}).reduce((formData, key) => {
-      const property = input[key];
-      const propertyContent: any[] = property instanceof Array ? property : [property];
+      const property = input[key]
+      const propertyContent: any[] = property instanceof Array ? property : [property]
 
       for (const formItem of propertyContent) {
-        const isFileType = formItem instanceof Blob || formItem instanceof File;
-        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem));
+        const isFileType = formItem instanceof Blob || formItem instanceof File
+        formData.append(key, isFileType ? formItem : this.stringifyFormItem(formItem))
       }
 
-      return formData;
-    }, new FormData());
+      return formData
+    }, new FormData())
   }
 
   public request = async <T = any, _E = any>({
@@ -487,19 +363,19 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<T> => {
     const secureParams =
-      ((typeof secure === "boolean" ? secure : this.secure) &&
+      ((typeof secure === 'boolean' ? secure : this.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
-      {};
-    const requestParams = this.mergeRequestParams(params, secureParams);
-    const responseFormat = format || this.format || undefined;
+      {}
+    const requestParams = this.mergeRequestParams(params, secureParams)
+    const responseFormat = format || this.format || undefined
 
-    if (type === ContentType.FormData && body && body !== null && typeof body === "object") {
-      body = this.createFormData(body as Record<string, unknown>);
+    if (type === ContentType.FormData && body && body !== null && typeof body === 'object') {
+      body = this.createFormData(body as Record<string, unknown>)
     }
 
-    if (type === ContentType.Text && body && body !== null && typeof body !== "string") {
-      body = JSON.stringify(body);
+    if (type === ContentType.Text && body && body !== null && typeof body !== 'string') {
+      body = JSON.stringify(body)
     }
 
     return this.instance
@@ -507,15 +383,15 @@ export class HttpClient<SecurityDataType = unknown> {
         ...requestParams,
         headers: {
           ...(requestParams.headers || {}),
-          ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+          ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
         },
         params: query,
         responseType: responseFormat,
         data: body,
         url: path,
       })
-      .then((response) => response.data);
-  };
+      .then((response) => response.data)
+  }
 }
 
 /**
@@ -524,20 +400,21 @@ export class HttpClient<SecurityDataType = unknown> {
  * @contact
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  /**
-   * No description
-   *
-   * @name Test
-   * @request GET:/
-   */
-  test = (params: RequestParams = {}) =>
-    this.request<string, any>({
-      path: `/`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
+  test = {
+    /**
+     * No description
+     *
+     * @name GetTest
+     * @request GET:/test
+     */
+    getTest: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/test`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+  }
   event = {
     /**
      * No description
@@ -549,8 +426,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     get: (id: number, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event/${id}`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -564,10 +441,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     update: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event/${id}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -581,8 +458,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     remove: (id: number, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event/${id}`,
-        method: "DELETE",
-        format: "json",
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
 
@@ -595,15 +472,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     getBatch: (
       query: {
-        ids: number[];
+        ids: number[]
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<EventEntity[], any>({
         path: `/event/batch`,
-        method: "GET",
+        method: 'GET',
         query: query,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -617,8 +494,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getAll: (params: RequestParams = {}) =>
       this.request<EventEntity[], any>({
         path: `/event/list`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -635,19 +512,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @min 0
          * @max 8
          */
-        unit: number;
+        unit: number
         /** @format date-time */
-        start: string;
+        start: string
         /** @format date-time */
-        end: string;
+        end: string
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<EventEntity[], any>({
         path: `/event/list/range`,
-        method: "GET",
+        method: 'GET',
         query: query,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -660,15 +537,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     searchByName: (
       query: {
-        text: string;
+        text: string
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<EventEntity[], any>({
         path: `/event/search/name`,
-        method: "GET",
+        method: 'GET',
         query: query,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -682,10 +559,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     create: (data: CreateEventDto, params: RequestParams = {}) =>
       this.request<EventEntity, any>({
         path: `/event`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -699,8 +576,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getContent: (id: number, params: RequestParams = {}) =>
       this.request<EventContentEntity, any>({
         path: `/event/${id}/content`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -714,10 +591,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     updateContent: (id: number, data: UpdateContentDto, params: RequestParams = {}) =>
       this.request<EventContentEntity, any>({
         path: `/event/${id}/content`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -730,15 +607,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     searchContent: (
       query: {
-        text: string;
+        text: string
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<EventEntity[], any>({
         path: `/event/search/content`,
-        method: "GET",
+        method: 'GET',
         query: query,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -752,8 +629,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getTodos: (id: number, params: RequestParams = {}) =>
       this.request<EventTodoEntity[], any>({
         path: `/event/${id}/todo`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -767,10 +644,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     createTodo: (id: number, data: CreateTodoDto, params: RequestParams = {}) =>
       this.request<EventTodoEntity, any>({
         path: `/event/${id}/todo`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -784,10 +661,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     updateTodo: (id: number, data: UpdateTodoDto, params: RequestParams = {}) =>
       this.request<EventTodoEntity, any>({
         path: `/event/${id}/todo`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -801,402 +678,106 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     removeTodo: (id: number, params: RequestParams = {}) =>
       this.request<EventTodoEntity, any>({
         path: `/event/todo/${id}`,
-        method: "DELETE",
-        format: "json",
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
-  };
-  user = {
+  }
+  chara = {
     /**
      * No description
      *
-     * @tags user
-     * @name Get
-     * @request GET:/user
-     */
-    get: (params: RequestParams = {}) =>
-      this.request<UserEntity, any>({
-        path: `/user`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name Delete
-     * @request DELETE:/user
-     */
-    delete: (params: RequestParams = {}) =>
-      this.request<UserEntity, any>({
-        path: `/user`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name Login
-     * @request POST:/user/login
-     */
-    login: (params: RequestParams = {}) =>
-      this.request<UserLoginRespDto, any>({
-        path: `/user/login`,
-        method: "POST",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name Register
-     * @request POST:/user/register
-     */
-    register: (data: CreateUserDto, params: RequestParams = {}) =>
-      this.request<UserEntity, any>({
-        path: `/user/register`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  project = {
-    /**
-     * @description 创建新项目
-     *
-     * @tags project
+     * @tags chara
      * @name Create
-     * @request POST:/project
+     * @request POST:/chara
      */
-    create: (data: CreateProjectDto, params: RequestParams = {}) =>
-      this.request<ProjectEntity, any>({
-        path: `/project`,
-        method: "POST",
+    create: (data: CreateCharaDto, params: RequestParams = {}) =>
+      this.request<CharaEntity, any>({
+        path: `/chara`,
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
-    /**
-     * @description 获取项目信息
-     *
-     * @tags project
-     * @name Get
-     * @request GET:/project
-     */
-    get: (params: RequestParams = {}) =>
-      this.request<ProjectEntity, any>({
-        path: `/project`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 更新项目信息
-     *
-     * @tags project
-     * @name Update
-     * @request PUT:/project
-     */
-    update: (data: UpdateProjectDto, params: RequestParams = {}) =>
-      this.request<ProjectEntity, any>({
-        path: `/project`,
-        method: "PUT",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 删除项目
-     *
-     * @tags project
-     * @name Remove
-     * @request DELETE:/project
-     */
-    remove: (params: RequestParams = {}) =>
-      this.request<ProjectEntity, any>({
-        path: `/project`,
-        method: "DELETE",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 获取工作区信息
-     *
-     * @tags project
-     * @name GetWorkspace
-     * @request GET:/project/workspace
-     */
-    getWorkspace: (params: RequestParams = {}) =>
-      this.request<WorkspaceEntity, any>({
-        path: `/project/workspace`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 更新工作区信息
-     *
-     * @tags project
-     * @name UpdateWorkspace
-     * @request PUT:/project/workspace
-     */
-    updateWorkspace: (data: UpdateWorkspaceDto, params: RequestParams = {}) =>
-      this.request<WorkspaceEntity, any>({
-        path: `/project/workspace`,
-        method: "PUT",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 获取项目设置
-     *
-     * @tags project
-     * @name GetSettings
-     * @request GET:/project/settings
-     */
-    getSettings: (params: RequestParams = {}) =>
-      this.request<SettingsEntity, any>({
-        path: `/project/settings`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 更新项目设置
-     *
-     * @tags project
-     * @name UpdateSettings
-     * @request PUT:/project/settings
-     */
-    updateSettings: (data: UpdateSettingsDto, params: RequestParams = {}) =>
-      this.request<SettingsEntity, any>({
-        path: `/project/settings`,
-        method: "PUT",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-  };
-  character = {
     /**
      * No description
      *
-     * @tags character
+     * @tags chara
+     * @name GetAll
+     * @request GET:/chara
+     */
+    getAll: (params: RequestParams = {}) =>
+      this.request<CharaEntity[], any>({
+        path: `/chara`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags chara
      * @name Get
-     * @request GET:/character/{id}
+     * @request GET:/chara/{id}
      */
     get: (id: number, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
-        path: `/character/${id}`,
-        method: "GET",
-        format: "json",
+      this.request<CharaEntity, any>({
+        path: `/chara/${id}`,
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags character
+     * @tags chara
      * @name Update
-     * @request PUT:/character/{id}
+     * @request PATCH:/chara/{id}
      */
-    update: (id: number, data: UpdateCharacterDto, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
-        path: `/character/${id}`,
-        method: "PUT",
+    update: (id: number, data: UpdateCharaDto, params: RequestParams = {}) =>
+      this.request<CharaEntity, any>({
+        path: `/chara/${id}`,
+        method: 'PATCH',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags character
+     * @tags chara
      * @name Remove
-     * @request DELETE:/character/{id}
+     * @request DELETE:/chara/{id}
      */
     remove: (id: number, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
-        path: `/character/${id}`,
-        method: "DELETE",
-        format: "json",
+      this.request<CharaEntity, any>({
+        path: `/chara/${id}`,
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags character
-     * @name GetAll
-     * @request GET:/character/list
-     */
-    getAll: (
-      query?: {
-        /** @min 0 */
-        size?: number;
-        /** @min 0 */
-        page?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<CharacterEntity[], any>({
-        path: `/character/list`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags character
-     * @name Create
-     * @request POST:/character
-     */
-    create: (data: CreateCharacterDto, params: RequestParams = {}) =>
-      this.request<CharacterEntity, any>({
-        path: `/character`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags character
+     * @tags chara
      * @name SearchByName
-     * @request GET:/character/search/name
+     * @request GET:/chara/search/name/{name}
      */
-    searchByName: (
-      query: {
-        text: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<CharacterEntity[], any>({
-        path: `/character/search/name`,
-        method: "GET",
-        query: query,
-        format: "json",
+    searchByName: (name: string, params: RequestParams = {}) =>
+      this.request<CharaEntity[], any>({
+        path: `/chara/search/name/${name}`,
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
-  };
-  graph = {
-    /**
-     * No description
-     *
-     * @tags graph
-     * @name GetRelations
-     * @request GET:/graph/relations
-     */
-    getRelations: (
-      query: {
-        type: "EVENT" | "CHARA" | "SCENE";
-        id: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<RelationsEntity, any>({
-        path: `/graph/relations`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags graph
-     * @name CreateRelation
-     * @request POST:/graph/relation
-     */
-    createRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity[], any>({
-        path: `/graph/relation`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags graph
-     * @name RemoveRelation
-     * @request DELETE:/graph/relation
-     */
-    removeRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity[], any>({
-        path: `/graph/relation`,
-        method: "DELETE",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags graph
-     * @name CreateNode
-     * @request POST:/graph/node
-     */
-    createNode: (data: NodeIdDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/graph/node`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags graph
-     * @name RemoveNode
-     * @request DELETE:/graph/node
-     */
-    removeNode: (data: NodeIdDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/graph/node`,
-        method: "DELETE",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-  };
+  }
   scene = {
     /**
      * No description
@@ -1208,10 +789,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     create: (data: CreateSceneDto, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1225,8 +806,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     get: (id: number, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -1240,10 +821,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     update: (id: number, data: UpdateSceneDto, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1257,8 +838,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     remove: (id: number, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
-        method: "DELETE",
-        format: "json",
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
 
@@ -1271,18 +852,68 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     searchByName: (
       query: {
-        text: string;
+        text: string
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<SceneEntity[], any>({
         path: `/scene/search/name`,
-        method: "GET",
+        method: 'GET',
         query: query,
-        format: "json",
+        format: 'json',
         ...params,
       }),
-  };
+  }
+  file = {
+    /**
+     * No description
+     *
+     * @tags file
+     * @name Upload
+     * @request POST:/file
+     */
+    upload: (data: UploadFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file`,
+        method: 'POST',
+        body: data,
+        type: ContentType.FormData,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags file
+     * @name Remove
+     * @request DELETE:/file
+     */
+    remove: (data: RemoveFileDto, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file`,
+        method: 'DELETE',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags file
+     * @name UploadTemp
+     * @request POST:/file/temp
+     */
+    uploadTemp: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/file/temp`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+  }
   worldview = {
     /**
      * No description
@@ -1294,10 +925,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     create: (data: CreateWorldviewDto, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1311,8 +942,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getAll: (params: RequestParams = {}) =>
       this.request<WorldviewEntity[], any>({
         path: `/worldview`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -1326,8 +957,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     get: (id: number, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -1341,10 +972,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     update: (id: number, data: UpdateWorldviewDto, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1358,141 +989,183 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     remove: (id: number, params: RequestParams = {}) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
-        method: "DELETE",
-        format: "json",
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
-  };
-  file = {
+  }
+  project = {
     /**
-     * @description 上传临时文件
+     * @description 创建新项目
      *
-     * @tags file
-     * @name UploadTempFile
-     * @request POST:/file/upload/temp
+     * @tags project
+     * @name Create
+     * @request POST:/project
      */
-    uploadTempFile: (data: UploadTempFileDto, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/file/upload/temp`,
-        method: "POST",
-        body: data,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description 检查临时文件是否已经存在
-     *
-     * @tags file
-     * @name CheckTempFile
-     * @request GET:/file/check/temp/{name}
-     */
-    checkTempFile: (name: string, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/file/check/temp/${name}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags file
-     * @name RegisterFile
-     * @request PUT:/file/register
-     */
-    registerFile: (data: RegisterFileDto, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/file/register`,
-        method: "PUT",
+    create: (data: CreateProjectDto, params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
     /**
-     * No description
+     * @description 获取项目信息
      *
-     * @tags file
-     * @name UnregisterFile
-     * @request DELETE:/file/register
+     * @tags project
+     * @name Get
+     * @request GET:/project
      */
-    unregisterFile: (data: UnregisterFileDto, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/file/register`,
-        method: "DELETE",
+    get: (params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description 更新项目信息
+     *
+     * @tags project
+     * @name Update
+     * @request PUT:/project
+     */
+    update: (data: UpdateProjectDto, params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
     /**
-     * No description
+     * @description 删除项目
      *
-     * @tags file
-     * @name UploadFile
-     * @request POST:/file/upload
+     * @tags project
+     * @name Remove
+     * @request DELETE:/project
      */
-    uploadFile: (data: UploadFileDto, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/file/upload`,
-        method: "POST",
-        body: data,
-        type: ContentType.FormData,
-        format: "json",
+    remove: (params: RequestParams = {}) =>
+      this.request<ProjectEntity, any>({
+        path: `/project`,
+        method: 'DELETE',
+        format: 'json',
         ...params,
       }),
-  };
+
+    /**
+     * @description 获取工作区信息
+     *
+     * @tags project
+     * @name GetWorkspace
+     * @request GET:/project/workspace
+     */
+    getWorkspace: (params: RequestParams = {}) =>
+      this.request<WorkspaceEntity, any>({
+        path: `/project/workspace`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description 更新工作区信息
+     *
+     * @tags project
+     * @name UpdateWorkspace
+     * @request PUT:/project/workspace
+     */
+    updateWorkspace: (data: UpdateWorkspaceDto, params: RequestParams = {}) =>
+      this.request<WorkspaceEntity, any>({
+        path: `/project/workspace`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description 获取项目设置
+     *
+     * @tags project
+     * @name GetSettings
+     * @request GET:/project/settings
+     */
+    getSettings: (params: RequestParams = {}) =>
+      this.request<SettingsEntity, any>({
+        path: `/project/settings`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description 更新项目设置
+     *
+     * @tags project
+     * @name UpdateSettings
+     * @request PUT:/project/settings
+     */
+    updateSettings: (data: UpdateSettingsDto, params: RequestParams = {}) =>
+      this.request<SettingsEntity, any>({
+        path: `/project/settings`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+  }
   ai = {
     /**
      * No description
      *
-     * @tags ai
-     * @name UpdateEventName
+     * @name SummarizeTitle
      * @request POST:/ai/{id}/summarize/title
      */
-    updateEventName: (id: number, params: RequestParams = {}) =>
+    summarizeTitle: (id: number, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/ai/${id}/summarize/title`,
-        method: "POST",
-        format: "json",
+        method: 'POST',
+        format: 'json',
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags ai
-     * @name UpdateEventDesc
+     * @name SummarizeDesc
      * @request POST:/ai/{id}/summarize/desc
      */
-    updateEventDesc: (id: number, data: SummarizeDescDto, params: RequestParams = {}) =>
+    summarizeDesc: (id: number, data: SummarizeDescParams, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/ai/${id}/summarize/desc`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags ai
-     * @name UpdateChara
-     * @request POST:/ai/{id}/character
+     * @name ResolveEntities
+     * @request POST:/ai/{id}/entities
      */
-    updateChara: (id: number, params: RequestParams = {}) =>
-      this.request<CharaOptionsDto, any>({
-        path: `/ai/${id}/character`,
-        method: "POST",
-        format: "json",
+    resolveEntities: (id: number, params: RequestParams = {}) =>
+      this.request<UnresolvedEntityDto[], any>({
+        path: `/ai/${id}/entities`,
+        method: 'POST',
+        format: 'json',
         ...params,
       }),
-  };
+  }
 }

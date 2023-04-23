@@ -4,18 +4,18 @@ import type { AxiosError } from 'axios'
 import { Message } from '@arco-design/web-vue'
 import Body from './body/index.vue'
 import api from '@/api/api'
-import type { CharacterEntity } from '@/api/api-base'
-import { useCharaCreate } from '@/api/character'
+import type { CharaEntity } from '@/api/api-base'
+import { useCharaCreate } from '@/api/chara'
 
 const charaId = ref<number>()
 
 const client = useQueryClient()
 const { data } = useQuery({
-  queryKey: ['character', 'list'],
-  queryFn: () => api.character.getAll(),
+  queryKey: ['chara', 'list'],
+  queryFn: () => api.chara.getAll(),
   onSuccess: charas => {
     for (const chara of charas) {
-      client.setQueryData(['character', chara.id], chara)
+      client.setQueryData(['chara', chara.id], chara)
     }
   },
   onError: ({ message }: AxiosError) => {
@@ -25,7 +25,7 @@ const { data } = useQuery({
 
 const { mutate: create, isLoading: createLoading } = useCharaCreate()
 
-const list = ref<CharacterEntity[]>([])
+const list = ref<CharaEntity[]>([])
 const searchText = ref<string>()
 const debouncedSearchText = debouncedRef(searchText, 300)
 watchEffect(() => {

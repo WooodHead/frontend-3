@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
-import { selectChara, useCharaUpdate } from '@/api/character'
+import { selectChara, useCharaUpdate } from '@/api/chara'
 import { useFileUpload } from '@/api/file'
 
 const { id } = defineProps<{
@@ -10,8 +10,8 @@ const { id } = defineProps<{
 
 const { data, suspense } = useQuery({
   enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id!),
+  queryKey: computed(() => ['chara', id]),
+  queryFn: () => api.chara.get(id!),
   select: selectChara,
 })
 

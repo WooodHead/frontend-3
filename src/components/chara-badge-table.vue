@@ -6,8 +6,8 @@ import { useEventUpdate } from '@/api/event'
 import Resolved from '@/components/chara-badge-table/resolved.vue'
 import Unresolved from '@/components/chara-badge-table/unresolved.vue'
 import { useRelationsQuery } from '@/api/graph'
-import { EVENT } from '@/api/graph/schema'
-import type { Unresolved as UnresolvedType } from '@/api/api-base'
+import { EVENT } from '@/api/graph/schema' 
+import type { UnresolvedEntityDto } from '@/api/api-base'
 
 const { eventId, editable = false, disabled = false } = defineProps<{
   eventId: number
@@ -18,7 +18,7 @@ const { eventId, editable = false, disabled = false } = defineProps<{
 const { data: unresolved } = useQuery({
   queryKey: computed(() => ['event', eventId]),
   queryFn: () => api.event.get(eventId),
-  select: ({ unresolved }) => unresolved as UnresolvedType[],
+  select: ({ unresolved }) => unresolved as UnresolvedEntityDto[],
 })
 const { mutateAsync: update } = useEventUpdate()
 const { data: relations } = useRelationsQuery(computed(() => ({

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import Item from '@/components/item/index.vue'
-import { selectChara, useCharaRemove } from '@/api/character'
+import { selectChara, useCharaRemove } from '@/api/chara'
 import api from '@/api/api'
 
 const { id, height, button, removable, animate } = defineProps<{
@@ -19,8 +19,8 @@ const emit = defineEmits<{
 }>()
 
 const { data } = useQuery({
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
+  queryKey: computed(() => ['chara', id]),
+  queryFn: () => api.chara.get(id),
   select: selectChara,
 })
 

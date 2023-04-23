@@ -3,11 +3,9 @@ import type { ComponentStatus } from '../type'
 import Body from './body/index.vue'
 import { registerStore } from './store'
 
-interface CharacterProps {
+const { status } = defineProps<{
   status: ComponentStatus
-}
-
-const { status } = defineProps<CharacterProps>()
+}>()
 
 const store = registerStore(status.positionId)
 
@@ -15,7 +13,7 @@ watch(() => status, status => {
   store.status = status
 }, { deep: true })
 
-const id = ref('character')
+const id = ref('chara')
 </script>
 
 <template>
@@ -23,7 +21,7 @@ const id = ref('character')
     <ComponentHeader>
       <template #middle>
         <ARadioGroup v-model="id" row type="button">
-          <ARadio value="character" grow center>
+          <ARadio value="chara" grow center>
             角色
           </ARadio>
           <ARadio value="scene" grow center>

@@ -2,6 +2,7 @@ module.exports = {
   extends: [
     '@antfu',
     'plugin:vue/vue3-recommended',
+    'prettier',
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -50,10 +51,6 @@ module.exports = {
     'quotes': [
       'error',
       'single',
-    ],
-    'arrow-parens': [
-      'error',
-      'as-needed',
     ],
     'curly': [
       'error',

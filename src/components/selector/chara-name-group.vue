@@ -10,8 +10,8 @@ const { searchValue } = defineProps<{
 const { data, suspense } = useQuery({
   enabled: computed(() => searchValue !== undefined && searchValue.length > 0),
   cacheTime: 0,
-  queryKey: computed(() => ['character', 'search', 'name', searchValue]),
-  queryFn: () => api.character.searchByName({ text: searchValue! }),
+  queryKey: computed(() => ['chara', 'search', 'name', searchValue]),
+  queryFn: () => api.chara.searchByName(searchValue!),
 })
 
 await suspense()
@@ -26,7 +26,7 @@ await suspense()
       v-for="chara of data"
       :key="chara.id"
       :value="({
-        type: 'character',
+        type: 'chara',
         value: chara,
         id: `chara_${chara.id}`,
       } as SelectorOptionValue)"

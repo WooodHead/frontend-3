@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import Basic from './basic.vue'
 import { useRelationRemove } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
-import { selectChara } from '@/api/character'
+import { selectChara } from '@/api/chara'
 import api from '@/api/api'
 
 const { id, eventId, closable, disabled = false } = defineProps<{
@@ -14,8 +14,8 @@ const { id, eventId, closable, disabled = false } = defineProps<{
 }>()
 
 const { data } = useQuery({
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
+  queryKey: computed(() => ['chara', id]),
+  queryFn: () => api.chara.get(id),
   select: selectChara,
 })
 

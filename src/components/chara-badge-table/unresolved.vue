@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useQueryClient } from '@tanstack/vue-query'
 import Basic from './basic.vue'
-import type { CharaOption, CharacterEntity } from '@/api/api-base'
-import { useCharaCreate, useCharaUpdate } from '@/api/character'
+import type { CharaEntity } from '@/api/api-base'
+import { useCharaCreate, useCharaUpdate } from '@/api/chara'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
 import api from '@/api/api'
 const { name, options, eventId, closable, disabled = false } = defineProps<{
   name: string
-  options: CharaOption[]
+  options: unknown[]
   eventId: number
   closable?: boolean
   disabled?: boolean
@@ -24,7 +24,7 @@ const client = useQueryClient()
 const { mutateAsync: create, isLoading } = useCharaCreate()
 const { mutateAsync: update } = useCharaUpdate()
 const { mutateAsync: connect } = useRelationCreate()
-const handleConnect = async (chara: CharacterEntity | undefined) => {
+const handleConnect = async (chara: CharaEntity | undefined) => {
   if (!chara) { return }
 
   await connect({
@@ -34,8 +34,8 @@ const handleConnect = async (chara: CharacterEntity | undefined) => {
   })
 
   const { alias } = await client.ensureQueryData({
-    queryKey: ['character', chara.id],
-    queryFn: () => api.character.get(chara.id),
+    queryKey: ['chara', chara.id],
+    queryFn: () => api.chara.get(chara.id),
   })
 
   // 如果别名中没有当前名称，则添加
@@ -67,11 +67,11 @@ const handleCreate = async () => {
 // watch(options, async options => {
 //   const ids = options.map(o => o.id)
 //   const charas = await Promise.all(ids.map(id => client.ensureQueryData({
-//     queryKey: ['character', id],
-//     queryFn: () => api.character.get(id),
+//     queryKey: ['chara', id],
+//     queryFn: () => api.chara.get(id),
 //   })))
 //   selectorOptions.value = charas.map(chara => ({
-//     type: 'character',
+//     type: 'chara',
 //     value: chara,
 //     id: `chara_${chara.id}`,
 //   }))
@@ -96,9 +96,9 @@ const handleCreate = async () => {
       >
         <p>关联已有角色：</p>
         <Selector
-          character
+          chara
           placeholder="选择该名称所关联的角色"
-          @select:character="handleConnect"
+          @select:chara="handleConnect"
         />
         <p>或创建新角色：</p>
         <AButton

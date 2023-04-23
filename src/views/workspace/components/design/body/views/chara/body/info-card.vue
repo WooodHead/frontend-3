@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import api from '@/api/api'
 import type { UnitIDRange } from '@/utils/unit-id'
-import { selectChara, useCharaUpdate } from '@/api/character'
+import { selectChara, useCharaUpdate } from '@/api/chara'
 
 const { id } = defineProps<{
   id?: number
@@ -10,8 +10,8 @@ const { id } = defineProps<{
 
 const { data, suspense } = useQuery({
   enabled: computed(() => id !== undefined),
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id!),
+  queryKey: computed(() => ['chara', id]),
+  queryFn: () => api.chara.get(id!),
   select: selectChara,
 })
 const { mutateAsync: update } = useCharaUpdate()

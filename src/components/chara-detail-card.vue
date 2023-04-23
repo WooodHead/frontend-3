@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
-import { selectChara } from '@/api/character'
+import { selectChara } from '@/api/chara'
 import api from '@/api/api'
 
 const { id, show = true } = defineProps<{
@@ -10,8 +10,8 @@ const { id, show = true } = defineProps<{
 }>()
 
 const { data, isSuccess, isLoading, isError } = useQuery({
-  queryKey: computed(() => ['character', id]),
-  queryFn: () => api.character.get(id),
+  queryKey: computed(() => ['chara', id]),
+  queryFn: () => api.chara.get(id),
   select: selectChara,
 })
 

@@ -6,7 +6,8 @@ import EventCard from './event-card.vue'
 import { useRelationCreate, useRelationRemove, useRelationsQuery } from '@/api/graph'
 import { EVENT, INCLUDES } from '@/api/graph/schema'
 import api from '@/api/api'
-import type { Unresolved } from '@/api/api-base'
+import type { UnresolvedEntityDto } from '@/api/api-base'
+
 
 const store = useStore()
 const { relationDot, eventId } = storeToRefs(store)
@@ -17,7 +18,7 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
 })
 watchEffect(() => {
-  const unresolved = (data.value?.unresolved as Unresolved[]) ?? []
+  const unresolved = (data.value?.unresolved as UnresolvedEntityDto[]) ?? []
   relationDot.value = unresolved.length > 0
 })
 

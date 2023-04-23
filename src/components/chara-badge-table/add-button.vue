@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CharacterEntity } from '@/api/api-base'
+import type { CharaEntity } from '@/api/api-base'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
 
@@ -11,7 +11,7 @@ const { eventId, disabled = false } = defineProps<{
 const visible = ref(false)
 
 const { mutateAsync: connect } = useRelationCreate()
-const handleAddChara = async (chara: CharacterEntity | undefined) => {
+const handleAddChara = async (chara: CharaEntity | undefined) => {
   if (!chara) { return }
   await connect({
     type: PARTICIPATED_IN,
@@ -32,9 +32,9 @@ const handleAddChara = async (chara: CharacterEntity | undefined) => {
     <template #content>
       <div card-border p-2>
         <Selector
-          character
+          chara
           placeholder="选择要添加的角色"
-          @select:character="handleAddChara"
+          @select:chara="handleAddChara"
         />
       </div>
     </template>

@@ -6,21 +6,21 @@ import type { SelectorOptionValue } from './selector/value'
 import CharaNameGroup from './selector/chara-name-group.vue'
 import EventNameGroup from './selector/event-name-group.vue'
 import SceneNameGroup from './selector/scene-name-group.vue'
-import type { CharacterEntity, EventEntity, SceneEntity } from '@/api/api-base'
+import type { CharaEntity, EventEntity, SceneEntity } from '@/api/api-base'
 
 const {
   inputValue,
   modelValue,
   placeholder,
   event = false,
-  character = false,
+  chara = false,
   scene = false,
   defaultValue = [],
 } = defineProps<{
   inputValue?: string
   modelValue?: SelectorOptionValue
   event?: boolean
-  character?: boolean
+  chara?: boolean
   scene?: boolean
   placeholder?: string
   defaultValue?: SelectorOptionValue[]
@@ -31,7 +31,7 @@ const emit = defineEmits<{
   (e: 'update:model-value', value: SelectorOptionValue | undefined): void
   (e: 'select', value: SelectorOptionValue | undefined): void
   (e: 'select:event', event: EventEntity | undefined): void
-  (e: 'select:character', character: CharacterEntity | undefined): void
+  (e: 'select:chara', chara: CharaEntity | undefined): void
   (e: 'select:scene', scene: SceneEntity | undefined): void
   (e: 'clear'): void
 }>()
@@ -71,8 +71,8 @@ const handleModelUpdate = (rawValue: any) => {
     case 'event':
       emit('select:event', value.value)
       break
-    case 'character':
-      emit('select:character', value.value)
+    case 'chara':
+      emit('select:chara', value.value)
       break
     case 'scene':
       emit('select:scene', value.value)
@@ -116,7 +116,7 @@ const handleFallback = (rawValue: any): SelectOptionData => {
       >
         <EventNameGroup v-if="event" :search-value="searchValue" />
         <!-- <EventContentGroup v-if="event" :search-value="searchValue" /> -->
-        <CharaNameGroup v-if="character" :search-value="searchValue" />
+        <CharaNameGroup v-if="chara" :search-value="searchValue" />
         <SceneNameGroup v-if="scene" :search-value="searchValue" />
       </ASelect>
     </Suspense>
