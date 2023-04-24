@@ -1246,5 +1246,19 @@ export class Api<
         format: 'json',
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @name GenerateQuery
+     * @request GET:/ai/query
+     */
+    generateQuery: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/ai/query`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
   }
 }
