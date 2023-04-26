@@ -55,7 +55,7 @@ const handleRemove = async () => {
     @remove="handleRemove"
   >
     <AAvatar bg-primary-light-4 m-2 :size="32">
-      <img v-if="data?.avatar" :src="data.avatar" />
+      <img v-if="data?.avatar" :src="data.avatar" >
       <div v-else>
         {{ avatarName }}
       </div>

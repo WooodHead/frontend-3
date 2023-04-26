@@ -32,7 +32,7 @@ const handleUploadAvatar = async (file: File) => {
 <template>
   <div center-x gap-4 m-4>
     <AAvatar :size="48">
-      <img v-if="data?.avatar" :src="data.avatar" />
+      <img v-if="data?.avatar" :src="data.avatar" >
       <div v-else>
         {{ data?.avatarName }}
       </div>

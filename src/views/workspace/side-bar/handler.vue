@@ -58,7 +58,7 @@ watch(dragProps, ({ isDragging, dragID }) => {
           height: `${size}px`,
         }"
         :src="darkMode ? darkIcon : icon"
-      />
+      >
     </div>
   </ATooltip>
 </template>

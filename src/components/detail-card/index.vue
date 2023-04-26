@@ -43,7 +43,7 @@ const {
       >
         <template #cover>
           <div h-102px overflow-hidden>
-            <img full object-cover alt="dessert" :src="cover" />
+            <img full object-cover alt="dessert" :src="cover" >
           </div>
         </template>
         <ACardMeta :title="title" />

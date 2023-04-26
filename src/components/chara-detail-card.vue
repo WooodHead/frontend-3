@@ -35,7 +35,7 @@ const avatarName = computed(() => {
   >
     <div w-full center-x gap-4 m-4>
       <AAvatar :size="48">
-        <img v-if="data?.avatar" :src="data.avatar" />
+        <img v-if="data?.avatar" :src="data.avatar" >
         <div v-else>
           {{ avatarName }}
         </div>

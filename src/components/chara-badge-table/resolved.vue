@@ -48,7 +48,7 @@ const handleClose = async () => {
     @close="handleClose"
   >
     <template #avatar>
-      <img v-if="data?.avatar" :src="data.avatar" />
+      <img v-if="data?.avatar" :src="data.avatar" >
       <div v-else i-radix-icons-avatar full></div>
     </template>
     {{ data?.name }}

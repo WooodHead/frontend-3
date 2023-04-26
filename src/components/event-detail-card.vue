@@ -45,7 +45,7 @@ const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
       {{
         `${data?.createdAt.toLocaleDateString()} ${data?.createdAt.toLocaleTimeString()}`
       }}
-      <br />
+      <br >
       最后更新于
       {{
         `${data?.updatedAt.toLocaleDateString()} ${data?.updatedAt.toLocaleTimeString()}`
