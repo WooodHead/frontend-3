@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import Basic from './basic.vue'
-import { useRelationRemove } from '@/api/graph'
-import { PARTICIPATED_IN } from '@/api/graph/schema'
 import { selectChara } from '@/api/chara'
 import api from '@/api/api'
+import { useRelationRemove } from '@/api/graph'
+import { PARTICIPATED_IN } from '@/api/graph/schema'
 
 const {
   id,
@@ -24,14 +24,15 @@ const { data } = useQuery({
   select: selectChara,
 })
 
+const { mutateAsync: remove } = useRelationRemove()
+
 const visible = ref(false)
 
-const { mutateAsync: disconnect } = useRelationRemove()
 const handleClose = async () => {
   if (!data.value) {
     return
   }
-  await disconnect({
+  await remove({
     type: PARTICIPATED_IN,
     from: id,
     to: eventId,
@@ -48,7 +49,7 @@ const handleClose = async () => {
     @close="handleClose"
   >
     <template #avatar>
-      <img v-if="data?.avatar" :src="data.avatar" >
+      <img v-if="data?.avatar" :src="data.avatar" />
       <div v-else i-radix-icons-avatar full></div>
     </template>
     {{ data?.name }}

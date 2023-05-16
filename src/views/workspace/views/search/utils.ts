@@ -1,4 +1,4 @@
-const eventIdRE = /\{"id":\d+\}/
+const eventIdRE = /\[@(\d+?)\]/
 
 export const splitAnswer = (answer: string): (string | number)[] => {
   answer = answer.replace(' ', '')
@@ -7,13 +7,14 @@ export const splitAnswer = (answer: string): (string | number)[] => {
     return [answer]
   }
   const splits = answer.split(eventIdRE)
+
   const result: (string | number)[] = []
   for (let i = 0; i < splits.length; i++) {
-    if (splits[i]) {
+    const parsed = parseInt(splits[i])
+    if (parsed) {
+      result.push(parsed)
+    } else {
       result.push(splits[i])
-    }
-    if (eventIds[i]) {
-      result.push(JSON.parse(eventIds[i]).id)
     }
   }
   return result

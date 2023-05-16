@@ -16,13 +16,12 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
   select: selectEvent,
 })
-watch(
-  () => data.value?.description,
-  (desc) => {
-    editContent.value = desc || ''
-  },
-  { immediate: true }
-)
+watchEffect(() => {
+  if (!data) {
+    return
+  }
+  editContent.value = data.value?.description ?? ''
+})
 
 const { mutateAsync: update } = useEventUpdate()
 const { mutateAsync: updateDesc, isLoading } = useGenerateDesc()

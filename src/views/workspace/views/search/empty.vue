@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import api from '@/api/api'
+import { aiApi } from '@/api/api'
 
 const { answer, loading } = defineProps<{
   answer?: string
@@ -19,12 +19,7 @@ const {
 } = useQuery({
   enabled: computed(() => !answer && !loading),
   queryKey: ['ai', 'query'],
-  queryFn: () =>
-    Promise.all(
-      Array(3)
-        .fill(0)
-        .map(() => api.ai.generateQuery())
-    ),
+  queryFn: () => aiApi.query.generate({ n: 3 }),
 })
 </script>
 

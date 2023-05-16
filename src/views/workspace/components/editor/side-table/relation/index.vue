@@ -1,31 +1,36 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
-import { useUpdateChara } from '../query'
+import { useResolveChara } from '../query'
 import EventCard from './event-card.vue'
 import {
+  useNodeRelationsQuery,
   useRelationCreate,
   useRelationRemove,
-  useRelationsQuery,
 } from '@/api/graph'
 import { EVENT, INCLUDES } from '@/api/graph/schema'
-import api from '@/api/api'
-import type { UnresolvedEntityDto } from '@/api/api-base'
+import api, { aiApi } from '@/api/api'
 
 const store = useStore()
 const { relationDot, eventId } = storeToRefs(store)
+
+const { data: unresolved } = useQuery({
+  enabled: computed(() => eventId.value !== undefined),
+  queryKey: computed(() => ['ai', 'chara', eventId, 'unresolved']),
+  queryFn: () => aiApi.chara.getUnresolved(eventId.value!),
+})
+// 当存在unresolved时，在“关系”tab上显示红点
+watchEffect(() => {
+  relationDot.value = (unresolved.value?.length ?? 0) > 0
+})
 
 const { data } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
   queryKey: computed(() => ['event', eventId.value]),
   queryFn: () => api.event.get(eventId.value!),
 })
-watchEffect(() => {
-  const unresolved = (data.value?.unresolved as UnresolvedEntityDto[]) ?? []
-  relationDot.value = unresolved.length > 0
-})
 
-const { data: relations } = useRelationsQuery(
+const { data: relations } = useNodeRelationsQuery(
   computed(() =>
     eventId.value ? { type: EVENT, id: eventId.value } : undefined
   )
@@ -36,7 +41,7 @@ const subs = computed(() => relations.value?.INCLUDES.to ?? [])
 
 const { mutateAsync: connect } = useRelationCreate()
 const { mutateAsync: disconnect } = useRelationRemove()
-const { mutateAsync: updateChara, isLoading } = useUpdateChara()
+const { mutateAsync: updateChara, isLoading } = useResolveChara()
 
 const handleUpdateChara = async () => {
   if (!eventId.value) {

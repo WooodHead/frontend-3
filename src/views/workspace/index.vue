@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useQueryClient } from '@tanstack/vue-query'
 import SideBar from './side-bar/index.vue'
 import Body from './body.vue'
-import api from '@/api/api'
 
 onMounted(() => {
   const route = useRoute()
@@ -17,17 +15,6 @@ const router = useRouter()
 const { Ctrl_P } = useMagicKeys({ passive: false })
 whenever(Ctrl_P, () => {
   router.push({ name: 'ws-search' })
-})
-
-const client = useQueryClient()
-client.prefetchQuery({
-  queryKey: ['ai', 'query'],
-  queryFn: () =>
-    Promise.all(
-      Array(3)
-        .fill(0)
-        .map(() => api.ai.generateQuery())
-    ),
 })
 </script>
 

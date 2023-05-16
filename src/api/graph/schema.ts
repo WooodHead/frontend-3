@@ -1,6 +1,6 @@
-export const EVENT = 'EVENT' // 事件
-export const CHARA = 'CHARA' // 角色
-export const SCENE = 'SCENE' // 场景
+export const EVENT = 'event' // 事件
+export const CHARA = 'chara' // 角色
+export const SCENE = 'scene' // 场景
 
 export const HAPPENED_AFTER = 'HAPPENED_AFTER' as const // event to event 顺承
 export const LED_TO = 'LED_TO' as const // event to event 因果
@@ -12,16 +12,16 @@ export const PARTICIPATED_IN = 'PARTICIPATED_IN' as const // chara to event 参�
 export const CONTAINS = 'CONTAINS' as const // scene to scene 场景包含
 
 export declare const NodeType: {
-  EVENT: 'EVENT'
-  CHARA: 'CHARA'
-  SCENE: 'SCENE'
+  EVENT: 'event'
+  CHARA: 'chara'
+  SCENE: 'scene'
 }
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type NodeType = (typeof NodeType)[keyof typeof NodeType]
 export enum NodeEnum {
-  EVENT,
-  CHARA,
-  SCENE,
+  EVENT = 'event',
+  CHARA = 'chara',
+  SCENE = 'scene',
 }
 
 export declare const RelationType: {
@@ -37,14 +37,14 @@ export declare const RelationType: {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type RelationType = (typeof RelationType)[keyof typeof RelationType]
 export enum RelationEnum {
-  HAPPENED_AFTER,
-  LED_TO,
-  AFFECTED,
-  INCLUDES,
-  OCCURRED_IN,
-  HAS_RELATIONSHIP,
-  PARTICIPATED_IN,
-  CONTAINS,
+  HAPPENED_AFTER = 'HAPPENED_AFTER',
+  LED_TO = 'LED_TO',
+  AFFECTED = 'AFFECTED',
+  INCLUDES = 'INCLUDES',
+  OCCURRED_IN = 'OCCURRED_IN',
+  HAS_RELATIONSHIP = 'HAS_RELATIONSHIP',
+  PARTICIPATED_IN = 'PARTICIPATED_IN',
+  CONTAINS = 'CONTAINS',
 }
 
 export const RelationSchema = {

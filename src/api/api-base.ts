@@ -9,9 +9,80 @@
  * ---------------------------------------------------------------
  */
 
+export interface NodeRelation {
+  /** @default [] */
+  from: number[]
+  /** @default [] */
+  to: number[]
+}
+
+export interface NodeRelationsEntity {
+  /** @default {"from":[],"to":[]} */
+  HAPPENED_AFTER: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  LED_TO: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  AFFECTED: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  INCLUDES: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  OCCURRED_IN: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  HAS_RELATIONSHIP: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  PARTICIPATED_IN: NodeRelation
+  /** @default {"from":[],"to":[]} */
+  CONTAINS: NodeRelation
+}
+
+export interface RelationIdDto {
+  type:
+    | 'HAPPENED_AFTER'
+    | 'LED_TO'
+    | 'AFFECTED'
+    | 'INCLUDES'
+    | 'OCCURRED_IN'
+    | 'HAS_RELATIONSHIP'
+    | 'PARTICIPATED_IN'
+    | 'CONTAINS'
+  from?: number
+  to?: number
+}
+
+export interface RelationEntity {
+  type: object
+  from: number
+  to: number
+  props: object
+}
+
+export interface Relation {
+  from?: number
+  to?: number
+}
+
+export interface RelationIdsDto {
+  type:
+    | 'HAPPENED_AFTER'
+    | 'LED_TO'
+    | 'AFFECTED'
+    | 'INCLUDES'
+    | 'OCCURRED_IN'
+    | 'HAS_RELATIONSHIP'
+    | 'PARTICIPATED_IN'
+    | 'CONTAINS'
+  ids: Relation[]
+}
+
+export interface NodeIdDto {
+  type: 'event' | 'chara' | 'scene'
+  id: number
+}
+
 export interface EventEntity {
   type: 'ATOM' | 'COLLECTION'
   id: number
+  path: string
   name: string
   description: string | null
   color: string
@@ -28,14 +99,15 @@ export interface EventEntity {
   /** @format date-time */
   end: string
   done: boolean
-  unresolved: object
+  cover: string
   contentId: number | null
   projectId: number
 }
 
 export interface CreateEventDto {
   name: string
-  description: string | null
+  path?: string
+  description?: string
   color: string
   /**
    * @min 0
@@ -46,12 +118,14 @@ export interface CreateEventDto {
   start: string
   /** @format date-time */
   end: string
+  cover?: string
 }
 
 export interface UpdateEventDto {
-  unresolved?: object[]
+  done?: boolean
   name?: string
-  description?: string | null
+  path?: string
+  description?: string
   color?: string
   /**
    * @min 0
@@ -62,23 +136,6 @@ export interface UpdateEventDto {
   start?: string
   /** @format date-time */
   end?: string
-}
-
-export interface ToggleEventDoneDto {
-  done: boolean
-}
-
-export interface EventContentEntity {
-  id: number
-  /** @format date-time */
-  updatedAt: string
-  content: string
-  cover: string | null
-  eventId: number
-}
-
-export interface UpdateContentDto {
-  content?: string
   cover?: string
 }
 
@@ -129,10 +186,12 @@ export interface CharaEntity {
   start: string | null
   /** @format date-time */
   end: string | null
+  done: boolean
   projectId: number
 }
 
 export interface UpdateCharaDto {
+  done?: boolean
   name?: string
   alias?: string[]
   description?: string
@@ -161,19 +220,33 @@ export interface SceneEntity {
   /** @format date-time */
   deleted: string | null
   superId: number | null
+  done: boolean
   projectId: number
 }
 
 export interface UpdateSceneDto {
+  done?: boolean
   name?: string
   description?: string
 }
 
 export interface UploadFileDto {
+  /** @format binary */
+  file: File
   position: string
 }
 
 export interface RemoveFileDto {
+  position: string
+}
+
+export interface UploadTempFileDto {
+  /** @format binary */
+  file: File
+}
+
+export interface SaveTempFileDto {
+  name: string
   position: string
 }
 
@@ -185,17 +258,20 @@ export interface CreateWorldviewDto {
 }
 
 export interface WorldviewEntity {
-  path: string
   id: number
   name: string
   description: string | null
+  cover: string
+  path: string
   /** @format date-time */
   deleted: string | null
+  done: boolean
   projectId: number
   contentId: number | null
 }
 
 export interface UpdateWorldviewDto {
+  done?: boolean
   name?: string
   description?: string
   path?: string
@@ -251,18 +327,23 @@ export interface UpdateSettingsDto {
   lang?: string
 }
 
-export type SummarizeDescParams = object
-
-export interface EntityOption {
+export interface UserEntity {
   id: number
-  name: string
-  alias: string
-  score: number
+  username: string
+  phone: string | null
+  email: string | null
+  avatar: string | null
 }
 
-export interface UnresolvedEntityDto {
-  name: string
-  options: EntityOption[]
+export interface UserLoginRespDto {
+  access_token: string
+}
+
+export interface CreateUserDto {
+  username: string
+  password: string
+  phone?: string
+  email?: string
 }
 
 import axios, {
@@ -461,17 +542,17 @@ export class Api<
         ...params,
       }),
   }
-  event = {
+  graph = {
     /**
      * No description
      *
-     * @tags event
-     * @name Get
-     * @request GET:/event/{id}
+     * @tags graph
+     * @name GetTest
+     * @request GET:/graph/test
      */
-    get: (id: number, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
-        path: `/event/${id}`,
+    getTest: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/graph/test`,
         method: 'GET',
         format: 'json',
         ...params,
@@ -480,14 +561,36 @@ export class Api<
     /**
      * No description
      *
-     * @tags event
-     * @name Update
-     * @request PUT:/event/{id}
+     * @tags graph
+     * @name GetNodeRelations
+     * @request GET:/graph/node/relations
      */
-    update: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
-        path: `/event/${id}`,
-        method: 'PUT',
+    getNodeRelations: (
+      query: {
+        type: 'event' | 'chara' | 'scene'
+        id: number
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<NodeRelationsEntity, any>({
+        path: `/graph/node/relations`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags graph
+     * @name CreateRelation
+     * @request POST:/graph/relation
+     */
+    createRelation: (data: RelationIdDto, params: RequestParams = {}) =>
+      this.request<RelationEntity[], any>({
+        path: `/graph/relation`,
+        method: 'POST',
         body: data,
         type: ContentType.Json,
         format: 'json',
@@ -497,18 +600,87 @@ export class Api<
     /**
      * No description
      *
-     * @tags event
-     * @name Remove
-     * @request DELETE:/event/{id}
+     * @tags graph
+     * @name RemoveRelation
+     * @request DELETE:/graph/relation
      */
-    remove: (id: number, params: RequestParams = {}) =>
-      this.request<EventEntity, any>({
-        path: `/event/${id}`,
+    removeRelation: (data: RelationIdDto, params: RequestParams = {}) =>
+      this.request<RelationEntity[], any>({
+        path: `/graph/relation`,
         method: 'DELETE',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
 
+    /**
+     * No description
+     *
+     * @tags graph
+     * @name CreateRelations
+     * @request POST:/graph/relation/batch
+     */
+    createRelations: (data: RelationIdsDto, params: RequestParams = {}) =>
+      this.request<RelationEntity[], any>({
+        path: `/graph/relation/batch`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags graph
+     * @name RemoveRelations
+     * @request DELETE:/graph/relation/batch
+     */
+    removeRelations: (data: RelationIdsDto, params: RequestParams = {}) =>
+      this.request<RelationEntity[], any>({
+        path: `/graph/relation/batch`,
+        method: 'DELETE',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags graph
+     * @name CreateNode
+     * @request POST:/graph/node
+     */
+    createNode: (data: NodeIdDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/graph/node`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags graph
+     * @name RemoveNode
+     * @request DELETE:/graph/node
+     */
+    removeNode: (data: NodeIdDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/graph/node`,
+        method: 'DELETE',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+  }
+  event = {
     /**
      * No description
      *
@@ -599,6 +771,53 @@ export class Api<
      * No description
      *
      * @tags event
+     * @name Get
+     * @request GET:/event/{id}
+     */
+    get: (id: number, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name Update
+     * @request PUT:/event/{id}
+     */
+    update: (id: number, data: UpdateEventDto, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
+     * @name Remove
+     * @request DELETE:/event/{id}
+     */
+    remove: (id: number, params: RequestParams = {}) =>
+      this.request<EventEntity, any>({
+        path: `/event/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags event
      * @name Create
      * @request POST:/event
      */
@@ -608,84 +827,6 @@ export class Api<
         method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name ToggleDone
-     * @request PUT:/event/{id}/done
-     */
-    toggleDone: (
-      id: number,
-      data: ToggleEventDoneDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<EventEntity, any>({
-        path: `/event/${id}/done`,
-        method: 'PUT',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name GetContent
-     * @request GET:/event/{id}/content
-     */
-    getContent: (id: number, params: RequestParams = {}) =>
-      this.request<EventContentEntity, any>({
-        path: `/event/${id}/content`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name UpdateContent
-     * @request PUT:/event/{id}/content
-     */
-    updateContent: (
-      id: number,
-      data: UpdateContentDto,
-      params: RequestParams = {}
-    ) =>
-      this.request<EventContentEntity, any>({
-        path: `/event/${id}/content`,
-        method: 'PUT',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags event
-     * @name SearchContent
-     * @request GET:/event/search/content
-     */
-    searchContent: (
-      query: {
-        text: string
-      },
-      params: RequestParams = {}
-    ) =>
-      this.request<EventEntity[], any>({
-        path: `/event/search/content`,
-        method: 'GET',
-        query: query,
         format: 'json',
         ...params,
       }),
@@ -887,12 +1028,12 @@ export class Api<
      *
      * @tags scene
      * @name Update
-     * @request PUT:/scene/{id}
+     * @request PATCH:/scene/{id}
      */
     update: (id: number, data: UpdateSceneDto, params: RequestParams = {}) =>
       this.request<SceneEntity, any>({
         path: `/scene/${id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: data,
         type: ContentType.Json,
         format: 'json',
@@ -977,11 +1118,29 @@ export class Api<
      * @name UploadTemp
      * @request POST:/file/temp
      */
-    uploadTemp: (params: RequestParams = {}) =>
+    uploadTemp: (data: UploadTempFileDto, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/file/temp`,
         method: 'POST',
+        body: data,
+        type: ContentType.FormData,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags file
+     * @name SaveTemp
+     * @request PUT:/file/temp/save
+     */
+    saveTemp: (data: SaveTempFileDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/file/temp/save`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   }
@@ -1038,7 +1197,7 @@ export class Api<
      *
      * @tags worldview
      * @name Update
-     * @request POST:/worldview/{id}
+     * @request PATCH:/worldview/{id}
      */
     update: (
       id: number,
@@ -1047,7 +1206,7 @@ export class Api<
     ) =>
       this.request<WorldviewEntity, any>({
         path: `/worldview/${id}`,
-        method: 'POST',
+        method: 'PATCH',
         body: data,
         type: ContentType.Json,
         format: 'json',
@@ -1198,16 +1357,47 @@ export class Api<
         ...params,
       }),
   }
-  ai = {
+  user = {
     /**
      * No description
      *
-     * @name SummarizeTitle
-     * @request POST:/ai/{id}/summarize/title
+     * @tags user
+     * @name Get
+     * @request GET:/user
      */
-    summarizeTitle: (id: number, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/ai/${id}/summarize/title`,
+    get: (params: RequestParams = {}) =>
+      this.request<UserEntity, any>({
+        path: `/user`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name Delete
+     * @request DELETE:/user
+     */
+    delete: (params: RequestParams = {}) =>
+      this.request<UserEntity, any>({
+        path: `/user`,
+        method: 'DELETE',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name Login
+     * @request POST:/user/login
+     */
+    login: (params: RequestParams = {}) =>
+      this.request<UserLoginRespDto, any>({
+        path: `/user/login`,
         method: 'POST',
         format: 'json',
         ...params,
@@ -1216,47 +1406,16 @@ export class Api<
     /**
      * No description
      *
-     * @name SummarizeDesc
-     * @request POST:/ai/{id}/summarize/desc
+     * @tags user
+     * @name Register
+     * @request POST:/user/register
      */
-    summarizeDesc: (
-      id: number,
-      data: SummarizeDescParams,
-      params: RequestParams = {}
-    ) =>
-      this.request<string, any>({
-        path: `/ai/${id}/summarize/desc`,
+    register: (data: CreateUserDto, params: RequestParams = {}) =>
+      this.request<UserEntity, any>({
+        path: `/user/register`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name ResolveEntities
-     * @request POST:/ai/{id}/entities
-     */
-    resolveEntities: (id: number, params: RequestParams = {}) =>
-      this.request<UnresolvedEntityDto[], any>({
-        path: `/ai/${id}/entities`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name GenerateQuery
-     * @request GET:/ai/query
-     */
-    generateQuery: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/ai/query`,
-        method: 'GET',
         format: 'json',
         ...params,
       }),

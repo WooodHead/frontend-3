@@ -11,7 +11,8 @@ type CharaMutationOptions<T = void, D = CharaEntity> = MutationOptions<T, D>
 
 export const selectChara = (data: CharaEntity) => ({
   ...data,
-  avatar: data.avatar && `${import.meta.env.VITE_BASE_URL}/${data.avatar}`,
+  avatar:
+    data.avatar && `${import.meta.env.VITE_BASE_URL}/files/${data.avatar}`,
   avatarName: data.name.includes(' ')
     ? data.name.split(' ')[0]
     : data.name.slice(-2),
@@ -29,8 +30,8 @@ export const useCharaCreate = (
     ...options,
     mutationFn: (dto) => api.chara.create(dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['Chara', chara.id], chara)
-      client.invalidateQueries(['Chara', 'list'])
+      client.setQueryData(['chara', chara.id], chara)
+      client.invalidateQueries(['chara', 'list'])
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
@@ -51,8 +52,8 @@ export const useCharaUpdate = (options?: CharaMutationOptions<Update>) => {
     ...options,
     mutationFn: ({ id, ...dto }) => api.chara.update(id, dto),
     onSuccess: (chara, vars, ctx) => {
-      client.setQueryData(['Chara', vars.id], chara)
-      client.invalidateQueries(['Chara', 'list'])
+      client.setQueryData(['chara', vars.id], chara)
+      client.invalidateQueries(['chara', 'list'])
       options?.onSuccess?.(chara, vars, ctx)
     },
     onError: (e, vars, ctx) => {
@@ -72,8 +73,8 @@ export const useCharaRemove = (options?: CharaMutationOptions<Remove>) => {
     mutationFn: ({ id }) => api.chara.remove(id),
     onSuccess: (chara, vars, ctx) => {
       Message.success('删除角色成功')
-      client.removeQueries(['Chara', vars.id])
-      client.invalidateQueries(['Chara', 'list'])
+      client.removeQueries(['chara', vars.id])
+      client.invalidateQueries(['chara', 'list'])
       invalidateNode(client, { type: CHARA, id: vars.id })
       options?.onSuccess?.(chara, vars, ctx)
     },

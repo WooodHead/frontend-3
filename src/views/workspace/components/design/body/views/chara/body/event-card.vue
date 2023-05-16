@@ -3,7 +3,7 @@ import type { EventEntity } from '@/api/api-base'
 import {
   useRelationCreate,
   useRelationRemove,
-  useRelationsQuery,
+  useNodeRelationsQuery,
 } from '@/api/graph'
 import { CHARA, PARTICIPATED_IN } from '@/api/graph/schema'
 
@@ -11,7 +11,7 @@ const { id } = defineProps<{
   id?: number
 }>()
 
-const { data: relations, suspense } = useRelationsQuery(
+const { data: relations, suspense } = useNodeRelationsQuery(
   computed(() => (id ? { type: CHARA, id } : undefined))
 )
 await suspense()

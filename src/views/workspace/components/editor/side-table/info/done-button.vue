@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { Message } from '@arco-design/web-vue'
+import { useQuery } from '@tanstack/vue-query'
 import { useStore } from '../../store'
 import api from '@/api/api'
-import type { ApiError } from '@/api/types'
+import { useEventUpdate } from '@/api/event'
 
 const store = useStore()
 const { eventId, todoDot, relationDot } = storeToRefs(store)
@@ -14,17 +13,7 @@ const { data } = useQuery({
   queryFn: () => api.event.get(eventId.value!),
 })
 
-const client = useQueryClient()
-const { mutateAsync: toggleDone } = useMutation({
-  mutationFn: ({ id, done }: { id: number; done: boolean }) =>
-    api.event.toggleDone(id, { done }),
-  onSuccess: (event) => {
-    client.setQueryData(['event', event.id], event)
-  },
-  onError: (e: ApiError) => {
-    Message.error(`操作失败：${e.response?.data.message}`)
-  },
-})
+const { mutateAsync: update } = useEventUpdate()
 
 const disabled = computed(() =>
   Boolean(
@@ -53,7 +42,7 @@ const handleToggleDone = async () => {
   if (!data.value || !eventId.value) {
     return
   }
-  await toggleDone({ id: eventId.value, done: !data.value.done })
+  await update({ id: eventId.value, done: !data.value.done })
 }
 </script>
 

@@ -1,18 +1,13 @@
 import type { AxiosRequestConfig } from 'axios'
 import { Api as BaseApi } from './api-base'
-import { Api as GraphApi } from './api-graph'
-import { Api as QaApi } from './api-qa'
+import { Api as AiApi } from './api-ai'
 
 export const api = new BaseApi({
   baseURL: 'http://localhost:4000',
 })
 
-export const graphApi = new GraphApi({
+export const aiApi = new AiApi({
   baseURL: 'http://localhost:4001',
-})
-
-export const qaApi = new QaApi({
-  baseURL: 'http://localhost:4002',
 })
 
 const interceptRequest = (req: AxiosRequestConfig<any>) => {
@@ -31,7 +26,6 @@ const interceptRequest = (req: AxiosRequestConfig<any>) => {
 }
 
 api.instance.interceptors.request.use(interceptRequest)
-graphApi.instance.interceptors.request.use(interceptRequest)
-qaApi.instance.interceptors.request.use(interceptRequest)
+aiApi.instance.interceptors.request.use(interceptRequest)
 
 export default api

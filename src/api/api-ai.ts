@@ -9,70 +9,43 @@
  * ---------------------------------------------------------------
  */
 
-export interface Relations {
-  /** @default [] */
-  from: number[]
-  /** @default [] */
-  to: number[]
+export interface BaseQaDto {
+  query: string
 }
 
-export interface RelationsEntity {
-  /** @default {"from":[],"to":[]} */
-  HAPPENED_AFTER: Relations
-  /** @default {"from":[],"to":[]} */
-  LED_TO: Relations
-  /** @default {"from":[],"to":[]} */
-  AFFECTED: Relations
-  /** @default {"from":[],"to":[]} */
-  INCLUDES: Relations
-  /** @default {"from":[],"to":[]} */
-  OCCURRED_IN: Relations
-  /** @default {"from":[],"to":[]} */
-  HAS_RELATIONSHIP: Relations
-  /** @default {"from":[],"to":[]} */
-  PARTICIPATED_IN: Relations
-  /** @default {"from":[],"to":[]} */
-  CONTAINS: Relations
-}
-
-export interface RelationIdDto {
-  type:
-    | 'HAPPENED_AFTER'
-    | 'LED_TO'
-    | 'AFFECTED'
-    | 'INCLUDES'
-    | 'OCCURRED_IN'
-    | 'HAS_RELATIONSHIP'
-    | 'PARTICIPATED_IN'
-    | 'CONTAINS'
-  from?: number
-  to?: number
-}
-
-export interface RelationProperty {
-  projectId: number
-}
-
-export interface RelationEntity {
-  label:
-    | 'HAPPENED_AFTER'
-    | 'LED_TO'
-    | 'AFFECTED'
-    | 'INCLUDES'
-    | 'OCCURRED_IN'
-    | 'HAS_RELATIONSHIP'
-    | 'PARTICIPATED_IN'
-    | 'CONTAINS'
-  identity: string
-  start: string
-  end: string
-  properties: RelationProperty
-}
-
-export interface NodeIdDto {
-  type: 'EVENT' | 'CHARA' | 'SCENE'
+export interface ContentEntity {
+  /** @format date-time */
+  updateAt: string
+  type: object
   id: number
+  projectId: number
+  content: string
 }
+
+export interface UpdateContentDto {
+  type: 'event' | 'chara' | 'scene' | 'worldview'
+  id: number
+  content: string
+}
+
+export interface CharaOption {
+  id: number
+  name: string
+  alias: string
+  score: number
+}
+
+export interface UnresolvedCharasDto {
+  name: string
+  options: CharaOption[]
+}
+
+export interface CharaResolveEntity {
+  resolved: number[]
+  unresolved: UnresolvedCharasDto[]
+}
+
+export type SummarizeDescParams = object
 
 import axios, {
   AxiosInstance,
@@ -255,37 +228,39 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown
 > extends HttpClient<SecurityDataType> {
-  test = {
+  /**
+   * No description
+   *
+   * @name BaseQa
+   * @request POST:/
+   */
+  baseQa = (data: BaseQaDto, params: RequestParams = {}) =>
+    this.request<string, any>({
+      path: `/`,
+      method: 'POST',
+      body: data,
+      type: ContentType.Json,
+      format: 'json',
+      ...params,
+    })
+
+  content = {
     /**
      * No description
      *
-     * @name GetTest
-     * @request GET:/test
+     * @tags content
+     * @name Get
+     * @request GET:/content
      */
-    getTest: (params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/test`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-  }
-  relations = {
-    /**
-     * No description
-     *
-     * @name GetRelations
-     * @request GET:/relations
-     */
-    getRelations: (
+    get: (
       query: {
-        type: 'EVENT' | 'CHARA' | 'SCENE'
+        type: 'event' | 'chara' | 'scene' | 'worldview'
         id: number
       },
       params: RequestParams = {}
     ) =>
-      this.request<RelationsEntity, any>({
-        path: `/relations`,
+      this.request<ContentEntity, any>({
+        path: `/content`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -295,61 +270,14 @@ export class Api<
     /**
      * No description
      *
-     * @name CreateRelations
-     * @request POST:/relations
+     * @tags content
+     * @name Update
+     * @request PUT:/content
      */
-    createRelations: (params: RequestParams = {}) =>
-      this.request<object[], any>({
-        path: `/relations`,
-        method: 'POST',
-        format: 'json',
-        ...params,
-      }),
-  }
-  relation = {
-    /**
-     * No description
-     *
-     * @name CreateRelation
-     * @request POST:/relation
-     */
-    createRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity[], any>({
-        path: `/relation`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name RemoveRelation
-     * @request DELETE:/relation
-     */
-    removeRelation: (data: RelationIdDto, params: RequestParams = {}) =>
-      this.request<RelationEntity[], any>({
-        path: `/relation`,
-        method: 'DELETE',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-  }
-  node = {
-    /**
-     * No description
-     *
-     * @name CreateNode
-     * @request POST:/node
-     */
-    createNode: (data: NodeIdDto, params: RequestParams = {}) =>
+    update: (data: UpdateContentDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/node`,
-        method: 'POST',
+        path: `/content`,
+        method: 'PUT',
         body: data,
         type: ContentType.Json,
         ...params,
@@ -358,15 +286,153 @@ export class Api<
     /**
      * No description
      *
-     * @name RemoveNode
-     * @request DELETE:/node
+     * @tags content
+     * @name GetBatch
+     * @request GET:/content/batch
      */
-    removeNode: (data: NodeIdDto, params: RequestParams = {}) =>
+    getBatch: (
+      query: {
+        type: 'event' | 'chara' | 'scene' | 'worldview'
+        ids: number[]
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<ContentEntity[], any>({
+        path: `/content/batch`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags content
+     * @name Search
+     * @request GET:/content/search
+     */
+    search: (
+      query: {
+        type: 'event' | 'chara' | 'scene' | 'worldview'
+        query: string
+        /** @min 1 */
+        k: number
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<SummarizeDescParams, any>({
+        path: `/content/search`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+  }
+  query = {
+    /**
+     * No description
+     *
+     * @name Generate
+     * @request GET:/query/query
+     */
+    generate: (
+      query: {
+        /**
+         * @min 1
+         * @default 1
+         */
+        n: number
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<string[], any>({
+        path: `/query/query`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+  }
+  chara = {
+    /**
+     * No description
+     *
+     * @tags chara
+     * @name Resolve
+     * @request POST:/chara/{id}
+     */
+    resolve: (id: number, params: RequestParams = {}) =>
+      this.request<CharaResolveEntity, any>({
+        path: `/chara/${id}`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags chara
+     * @name GetUnresolved
+     * @request GET:/chara/{eventId}/unresolved
+     */
+    getUnresolved: (eventId: number, params: RequestParams = {}) =>
+      this.request<UnresolvedCharasDto[], any>({
+        path: `/chara/${eventId}/unresolved`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags chara
+     * @name RemoveUnresolved
+     * @request DELETE:/chara/{eventId}/unresolved/{name}
+     */
+    removeUnresolved: (
+      eventId: number,
+      name: string,
+      params: RequestParams = {}
+    ) =>
       this.request<void, any>({
-        path: `/node`,
+        path: `/chara/${eventId}/unresolved/${name}`,
         method: 'DELETE',
+        ...params,
+      }),
+  }
+  summarize = {
+    /**
+     * No description
+     *
+     * @tags summarize
+     * @name Title
+     * @request POST:/summarize/{id}/title
+     */
+    title: (id: number, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/summarize/${id}/title`,
+        method: 'POST',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags summarize
+     * @name Desc
+     * @request POST:/summarize/{id}/desc
+     */
+    desc: (id: number, data: SummarizeDescParams, params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/summarize/${id}/desc`,
+        method: 'POST',
         body: data,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
   }

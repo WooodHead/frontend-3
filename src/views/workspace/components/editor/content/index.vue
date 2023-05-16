@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { Message } from '@arco-design/web-vue'
 import { useStore } from '../store'
 import BubbleMenu from './bubble-menu.vue'
-import api from '@/api/api'
+import { aiApi } from '@/api/api'
 import type { ApiError } from '@/api/types'
 
 const store = useStore()
@@ -25,8 +25,12 @@ const handleSave = (eventId: number | undefined, content: string) => {
     return
   }
   store.saving = true
-  api.event
-    .updateContent(eventId, { content })
+  aiApi.content
+    .update({
+      type: 'event',
+      id: eventId,
+      content,
+    })
     .then((content) => {
       saved.value = true
       client.setQueryData(['event', eventId, 'content'], content)
@@ -59,8 +63,19 @@ const {
   isError,
 } = useQuery({
   enabled: computed(() => eventId.value !== undefined),
-  queryKey: computed(() => ['event', eventId.value, 'content']),
-  queryFn: () => api.event.getContent(eventId.value!),
+  queryKey: computed(() => [
+    'ai',
+    'content',
+    {
+      type: 'event',
+      id: eventId.value,
+    },
+  ]),
+  queryFn: () =>
+    aiApi.content.get({
+      type: 'event',
+      id: eventId.value!,
+    }),
   onError: (e: ApiError) => {
     Message.error(`获取内容失败：${e.response?.data.message}`)
   },
@@ -68,7 +83,7 @@ const {
 watch(content, (newContent, oldContent) => {
   // 自动保存时设置cache，导致data改变，导致此watch触发；
   // 如果不增加此判断，则用户可能在自动保存请求发送期间输入新内容，而上述过程将会把新内容覆盖为旧内容
-  if (oldContent?.eventId === newContent?.eventId || !newContent) {
+  if (oldContent?.id === newContent?.id || !newContent) {
     return
   }
   editor.value.commands.setContent(newContent.content)
@@ -90,7 +105,7 @@ const handleSet = () => {
           object-cover
           alt="dessert"
           src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a20012a2d4d5b9db43dfc6a01fe508c0.png~tplv-uwbnlip3yd-webp.webp"
-        >
+        />
       </div>
       <div grow column p-4>
         <BubbleMenu />

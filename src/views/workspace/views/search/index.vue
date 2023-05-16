@@ -4,15 +4,16 @@ import { Message } from '@arco-design/web-vue'
 import Answer from './answer.vue'
 import Empty from './empty.vue'
 import Search from './search.vue'
-import { qaApi } from '@/api/api'
-import type { BaseQaDto } from '@/api/api-qa'
+import Loading from './loading.vue'
 import type { ApiError } from '@/api/types'
+import type { BaseQaDto } from '@/api/api-ai'
+import { aiApi } from '@/api/api'
 
 const router = useRouter()
 
 const inputRef = ref<InstanceType<typeof Search> | null>(null)
 onMounted(() => {
-  // 不加nextTick，inputRef是null
+  // 不加nextTick会导致inputRef是null
   nextTick(() => {
     inputRef.value?.focus()
   })
@@ -22,7 +23,7 @@ const query = ref<string>()
 const answer = ref<string>()
 
 const { mutateAsync: send, isLoading } = useMutation({
-  mutationFn: (dto: BaseQaDto) => qaApi.baseQa(dto),
+  mutationFn: (dto: BaseQaDto) => aiApi.baseQa(dto),
   onError: (e: ApiError) => {
     Message.error(`请求失败：${e.response?.data.message}`)
   },
@@ -65,7 +66,8 @@ const handleReset = () => {
           @clear="handleReset"
         />
         <div w-full pt-4>
-          <Empty v-if="answer === undefined" @select="handleSelect" />
+          <Loading v-if="isLoading" />
+          <Empty v-else-if="answer === undefined" @select="handleSelect" />
           <Answer
             v-else
             :answer="answer"

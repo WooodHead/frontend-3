@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { Message } from '@arco-design/web-vue'
 import Basic from './basic.vue'
 import type { CharaEntity } from '@/api/api-base'
 import { useCharaCreate, useCharaUpdate } from '@/api/chara'
+import api, { aiApi } from '@/api/api'
+import type { ApiError } from '@/api/types'
 import { useRelationCreate } from '@/api/graph'
 import { PARTICIPATED_IN } from '@/api/graph/schema'
-import api from '@/api/api'
 const {
   name,
   options,
@@ -29,17 +31,31 @@ const visible = ref(false)
 const client = useQueryClient()
 const { mutateAsync: create, isLoading } = useCharaCreate()
 const { mutateAsync: update } = useCharaUpdate()
+
 const { mutateAsync: connect } = useRelationCreate()
+const { mutateAsync: remove } = useMutation({
+  mutationFn: () => aiApi.chara.removeUnresolved(eventId, name),
+  onSuccess: () => {
+    client.invalidateQueries(['ai', 'chara', eventId])
+  },
+  onError: (e: ApiError) => {
+    Message.error(`移除角色失败：${e.response?.data.message}`)
+  },
+})
+
 const handleConnect = async (chara: CharaEntity | undefined) => {
   if (!chara) {
     return
   }
 
-  await connect({
-    type: PARTICIPATED_IN,
-    from: chara.id,
-    to: eventId,
-  })
+  await Promise.all([
+    remove(),
+    connect({
+      type: PARTICIPATED_IN,
+      from: chara.id,
+      to: eventId,
+    }),
+  ])
 
   const { alias } = await client.ensureQueryData({
     queryKey: ['chara', chara.id],
@@ -60,13 +76,11 @@ const handleConnect = async (chara: CharaEntity | undefined) => {
 
 const handleCreate = async () => {
   const chara = await create({ name })
-  await connect({
-    type: PARTICIPATED_IN,
-    from: chara.id,
-    to: eventId,
-  })
-  emit('remove', name)
-  visible.value = false
+  await handleConnect(chara)
+}
+
+const handleRemove = async () => {
+  await remove()
 }
 
 // TODO selector options
@@ -91,7 +105,7 @@ const handleCreate = async () => {
     v-model:popup-visible="visible"
     :disabled="disabled"
     :closable="closable"
-    @close="$emit('remove', name)"
+    @close="handleRemove"
   >
     <template #avatar>
       <div i-radix-icons-question-mark-circled full text-xl></div>

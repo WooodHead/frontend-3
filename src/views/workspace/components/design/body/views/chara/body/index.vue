@@ -18,7 +18,9 @@ onErrorCaptured((e: ApiError) => {
 </script>
 
 <template>
-  <Suspense>
+  <Status v-if="id === undefined" full empty />
+  <Status v-else-if="error" full error />
+  <Suspense v-else>
     <div center-y gap-2 p-2>
       <TitleCard :id="id" />
       <InfoCard :id="id" />
@@ -26,9 +28,7 @@ onErrorCaptured((e: ApiError) => {
       <EventCard :id="id" />
     </div>
     <template #fallback>
-      <Status v-if="id === undefined" full empty />
-      <Status v-else-if="error" full error />
-      <Status v-else full loading />
+      <Status full loading />
     </template>
   </Suspense>
 </template>

@@ -14,6 +14,6 @@ const { data } = useQuery({
 
 <template>
   <EventDetailCardTrigger :id="id">
-    <ALink>{{ data?.name }}</ALink>
+    <ALink> {{ `${data?.serial}. ${data?.name}` }}</ALink>
   </EventDetailCardTrigger>
 </template>

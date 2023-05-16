@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import DetailCard from './detail-card/index.vue'
-import { useRelationsQuery } from '@/api/graph'
+import { useNodeRelationsQuery } from '@/api/graph'
 import { selectEvent } from '@/api/event'
 import { EVENT } from '@/api/graph/schema'
 import api from '@/api/api'
@@ -26,7 +26,7 @@ const { data, isSuccess, isLoading, isError } = useQuery({
   }),
 })
 
-const { data: relations } = useRelationsQuery({ type: EVENT, id })
+const { data: relations } = useNodeRelationsQuery({ type: EVENT, id })
 
 const sups = computed(() => relations.value?.INCLUDES?.from ?? [])
 const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
@@ -45,7 +45,7 @@ const subs = computed(() => relations.value?.INCLUDES?.to ?? [])
       {{
         `${data?.createdAt.toLocaleDateString()} ${data?.createdAt.toLocaleTimeString()}`
       }}
-      <br >
+      <br />
       最后更新于
       {{
         `${data?.updatedAt.toLocaleDateString()} ${data?.updatedAt.toLocaleTimeString()}`
